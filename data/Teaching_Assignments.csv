@@ -1,0 +1,417 @@
+ASSIGNMENT_ID,GLOBAL_ID,TEACHER_ID,SCHOOL_ID,POSITION_TITLE,SUBJECTS_TAUGHT,GRADE_LEVELS_TAUGHT,START_DATE,END_DATE,EMPLOYMENT_TYPE,SALARY_RANGE,SUPERVISOR_NAME,DEPARTMENT,IS_CURRENT_POSITION,CREATED_DATE,LAST_MODIFIED
+ASG0001,d039c751-c0ba-4bb8-878e-bc28b2ecd8e3,T001,SCH007,Head of Department,Physics,Grades K-5,2011-08-01,2015-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0002,33fce273-6c5d-44c6-a17d-bab08a798bcb,T001,SCH001,Head of Department,Physics,PK-K,2015-08-01,2019-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0003,e01bdb9b-241d-49dc-bede-b89972919656,T001,SCH010,Vice Principal,Administration,PK-K,2019-08-01,,Part-time,,,School Leadership,Yes,2026-06-07,2026-06-07
+ASG0004,d21157e3-d049-4fbd-98ef-46759648b4b6,T002,SCH001,Teacher,Mathematics,Grades 9-10,2017-08-01,2021-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0005,2865c1e4-6030-4995-9bda-410169ddf778,T002,SCH024,Head of Department,Mathematics,Grades 9-12,2021-08-01,,Part-time,,,Mathematics,Yes,2026-06-07,2026-06-07
+ASG0006,401aa303-1593-4d79-8374-da9fcbc23129,T003,SCH001,Teacher,Biology,Grades 6-8,2010-08-01,2014-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0007,da0822db-626e-4547-b2e3-15b7e915d572,T003,SCH027,Subject Coordinator,Biology,Grades 9-10,2014-08-01,2018-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0008,b4d59728-1f10-48fb-9317-59e2d697fa05,T004,SCH002,Teacher,Chemistry,Grades K-5,2016-08-01,2020-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0009,b7cd528f-ec78-46f9-a140-2c30d8cf84ff,T004,SCH013,Head of Department,Chemistry,Grades K-5,2020-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0010,8c98e216-12d7-4d3d-99c6-0486bdf61a66,T005,SCH003,Teacher,English,PK-K,2011-08-01,2014-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0011,01178fd3-343c-40d5-9ea0-0bfa1098cab5,T005,SCH025,Curriculum Coordinator,English,Grades K-5,2014-08-01,2019-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0012,37083f71-df15-42bd-bc50-a09780b7eea6,T006,SCH005,Teacher,Economics,PK-K,2016-08-01,2019-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0013,be45a8fa-6b2c-4d57-a9e8-cf0efe40a35b,T006,SCH033,Head of Department,Economics,PK-K,2019-08-01,,Part-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0014,c5a787a9-5f0a-466c-a008-a8a782b221e6,T007,SCH006,Teacher,History,Grades 6-8,2009-08-01,2012-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0015,73fe68d0-de1e-476e-888d-d05fd4b3907e,T007,SCH029,Dean of Students,Dean of Students,Grades 6-12,2012-08-01,2016-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0016,0f53c0f9-b171-4171-9c35-8cba77afdc53,T008,SCH035,Teacher,Visual Arts,PK-K,2016-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0017,d6d27698-0b4c-4e7e-a31e-5019dbb94f3d,T008,SCH010,Subject Coordinator,Visual Arts,Grades 6-12,2021-08-01,,Full-time,,,Arts,Yes,2026-06-07,2026-06-07
+ASG0018,435e3278-aa63-4dfa-911e-2153a44ce60e,T009,SCH035,Teacher,Spanish,Grades K-5,2017-08-01,2021-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0019,d4c8cc5f-33a0-4812-b56d-ae32813e68a2,T009,SCH036,Head of Department,Spanish,Grades 11-12,2021-08-01,,Full-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0020,c7a22271-1183-4425-b2af-7487cc50f396,T010,SCH037,Teacher,Geography,Grades 6-12,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0021,bdcf81fb-5627-415b-b88e-d0ddb7fe8c0b,T010,SCH036,Teacher,Geography,Grades 6-12,2021-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0022,e5f78d97-64bc-4618-a23b-444ffd7deed1,T011,SCH009,Senior Teacher,Physical Education,PK-K,2007-08-01,2011-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0023,a15bab24-d679-4305-b2d5-f062d58672c6,T011,SCH014,Teacher,Music,PK-K,2012-08-01,2016-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0024,d98c85b6-545b-415a-9752-1925a74c7dc0,T011,SCH023,Teacher,Physical Education,Grades 9-10,2016-08-01,2020-06-30,Part-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0025,bf68053d-4c63-4698-a024-aaa432b9b5f6,T011,SCH031,Head of Department,Physical Education,Grades 9-12,2021-08-01,2023-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0026,29f60243-0134-4a8a-9ba0-4321b6c63b30,T012,SCH010,Teacher,Physical Education,PK-K,2022-08-01,2025-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0027,077c422d-9fa3-45e2-be4c-f01af377889f,T013,SCH001,Teacher,English,Grades 9-12,2006-08-01,2010-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0028,24457a70-82f8-43ba-87fc-f474dcbf0266,T013,SCH026,Senior Teacher,French,PK-K,2011-08-01,2016-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0029,50517737-3a59-4f05-ae46-ea3e3ce5e494,T013,SCH014,Librarian,Librarian,Grades 9-12,2016-08-01,2018-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0030,ee64e1fc-b30a-431a-a2d9-4b1a422d5862,T013,SCH029,Senior Teacher,Design Technology,PK-K,2018-08-01,2021-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0031,d7af0eef-c64d-4332-9c85-38ebc1613c73,T014,SCH027,Senior Teacher,English,Grades K-5,2008-08-01,2010-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0032,6c2e252d-09ad-471f-9714-e32559dd8d41,T014,SCH032,Senior Teacher,English,Grades 9-10,2011-08-01,2016-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0033,5d2e31fb-bfe9-4d81-8bce-d05638649da5,T014,SCH012,Head of Department,English,PK-K,2016-08-01,2021-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0034,1ff1bcad-4b7b-4169-bfa3-84e693931337,T015,SCH015,Teacher,Mathematics,PK-K,2018-08-01,2022-06-30,Part-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0035,a2038f1a-066b-467d-a6f1-3d011ffd1325,T016,SCH009,Teacher,Music,Grades 6-12,2014-08-01,2016-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0036,2c2b318d-4750-4473-a8b9-d7f6e090a0e4,T016,SCH036,Teacher,Music,Grades K-5,2017-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0037,9456ebaa-4fd7-4202-ab12-ef78a1bde37c,T016,SCH015,Teacher,Music,Grades 9-10,2022-08-01,,Full-time,,,Arts,Yes,2026-06-07,2026-06-07
+ASG0038,3493d84c-b7fb-42a4-81d3-b2ff95af0731,T017,SCH001,Teacher,English as an Additional Language,Grades 6-8,2015-08-01,2018-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0039,df60ac98-24a1-4983-9b20-cd7bd260bf3f,T017,SCH012,Senior Teacher,Design Technology,Grades 6-8,2018-08-01,2021-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0040,62be6830-89ff-43ca-8658-25c678c2970c,T018,SCH032,Teacher,Design Technology,PK-K,2009-08-01,2014-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0041,3018bb4c-5269-4d13-85ab-2c00e40b4f1c,T018,SCH011,Teacher,Design Technology,Grades 6-12,2014-08-01,2019-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0042,79a94f4a-d8a5-4795-972f-737535d5ed69,T018,SCH022,Dean of Students,Dean of Students,Grades 9-12,2019-08-01,2021-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0043,a7481a32-47c7-4e97-8cbd-e1587ec1f96c,T019,SCH018,Teacher,Drama,Grades 9-10,2013-08-01,2015-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0044,3582c7af-33eb-4724-8486-6620008e6dea,T019,SCH038,Teacher,Business Management,Grades 9-12,2015-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0045,9e70d893-85d1-45ff-8047-5f10eee0119e,T019,SCH034,Teacher,Drama,Grades 9-12,2021-08-01,,Full-time,,,Arts,Yes,2026-06-07,2026-06-07
+ASG0046,6103b563-f02a-4689-b18c-f2d9d5108c58,T020,SCH034,Senior Teacher,Geography,Grades 9-10,2014-08-01,2016-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0047,dd588881-bb9b-481f-a73b-08f9014a8e5c,T020,SCH012,Senior Teacher,Geography,Grades 9-10,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0048,81feb035-91d1-4079-a7b0-c95297b19d52,T020,SCH031,Teacher,Geography,Grades 9-10,2021-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0049,a95ee190-fa45-4903-af11-89558c3c5407,T021,SCH030,Teacher,English as an Additional Language,Grades 9-12,2018-08-01,2021-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0050,f05281ba-3aa5-4372-aded-e5d390406a36,T021,SCH003,Senior Teacher,Psychology,Grades 6-12,2021-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0051,f0930a06-55a3-460e-88e4-a8de0504a475,T022,SCH020,Teacher,Physics,Grades 6-8,2003-08-01,2008-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0052,08bca12e-45f0-4a17-ae85-bbaf64cb4e69,T022,SCH025,Teacher,English,Grades 6-12,2008-08-01,2011-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0053,1e0b89ac-0494-49c8-9431-2c73e2554059,T022,SCH029,Subject Coordinator,Physical Education,Grades K-5,2012-08-01,2015-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0054,a881462b-c8e0-4fb0-b86c-e22a65e9a975,T022,SCH007,Librarian,Librarian,Grades 9-12,2016-08-01,2018-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0055,bbcdb062-ee3a-4cdf-b101-912190a581ca,T022,SCH017,Teacher,Economics,PK-K,2018-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0056,1e5321ec-9e7e-43a8-a83b-95078a556478,T023,SCH020,Senior Teacher,Music,Grades 6-8,2016-08-01,2019-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0057,4653b949-f3e0-4cc7-a7cd-937d9d1e0970,T023,SCH028,Teacher,Music,Grades 6-8,2019-08-01,2022-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0058,d4dbeab6-d4aa-4660-92bb-58cd79de4463,T024,SCH035,Senior Teacher,Psychology,Grades K-5,2016-08-01,2019-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0059,3516f5a4-ccf7-4845-b9b9-9a144b8c3631,T024,SCH038,Teacher,Psychology,Grades 11-12,2020-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0060,4fbd8c8d-bb9e-43d2-817e-8dcfdc91f304,T025,SCH018,Teacher,French,Grades 11-12,2008-08-01,2010-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0061,8c6ddb3d-de15-4df1-ab34-e5a7c69a139c,T025,SCH001,Teacher,French,Grades 6-12,2011-08-01,2015-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0062,515de8d5-3294-4595-baa6-7cc768e55ebc,T025,SCH028,Athletic Director,Athletic Director,Grades 6-8,2015-08-01,2017-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0063,347c348a-b437-46a6-8f9f-4b8988f5e9d6,T025,SCH004,Senior Teacher,Physical Education,Grades K-5,2018-08-01,2021-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0064,7ecdc492-0f8f-408a-8cc7-d6173466aa9a,T026,SCH001,Teacher,Music,Grades 11-12,2019-08-01,2022-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0065,d85485ba-fa44-4122-80ad-a2f0236fd0ff,T027,SCH030,Teacher,Environmental Systems,Grades 9-10,2016-08-01,2018-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0066,d2ff0597-181b-4fa7-9c03-37f8707078d8,T027,SCH005,Teacher,Environmental Systems,PK-K,2018-08-01,2023-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0067,741f278c-dd3d-4acb-a067-382f3674663c,T028,SCH033,Teacher,Visual Arts,Grades 6-8,2017-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0068,aff72a96-299b-4c82-8343-a53d07a865e8,T028,SCH013,Senior Teacher,Visual Arts,Grades 6-8,2022-08-01,,Full-time,,,Arts,Yes,2026-06-07,2026-06-07
+ASG0069,f571219b-28af-439f-8df7-022c44f2ba37,T029,SCH010,Teacher,Business Management,Grades K-5,2022-08-01,2026-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0070,7abc5f76-f00a-4847-8457-0ece70d536f7,T030,SCH010,Teacher,Psychology,Grades 6-8,2020-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0071,041c4c12-945c-4862-b80d-2f428785c143,T031,SCH016,Teacher,Computer Science,Grades 9-10,2020-08-01,2022-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0072,48b1a58f-de72-4955-9abd-7eb9126a47d7,T031,SCH024,Teacher,Computer Science,Grades 6-8,2022-08-01,2024-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0073,3a87d8d0-b179-43de-8c3d-ed254b37fbef,T032,SCH024,Teacher,Physics,Grades 9-10,2016-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0074,0cf53125-214a-40f5-a8ae-60d26ec772f6,T032,SCH001,Teacher,Physics,Grades 9-10,2021-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0075,5b2d14b8-b256-4328-82d7-ed6c182a656b,T033,SCH024,Senior Teacher,French,Grades 6-12,2017-08-01,2021-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0076,7c5dd107-d56f-4d50-908b-a0a57d651e50,T033,SCH002,Senior Teacher,French,Grades 9-10,2021-08-01,,Full-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0077,7afd80fc-d27d-439a-8d49-37fac6a66990,T034,SCH009,Teacher,Geography,Grades 11-12,2007-08-01,2012-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0078,bcdc9b46-3514-4074-a6a0-2c0d214a722b,T034,SCH025,Senior Teacher,Geography,Grades 9-12,2012-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0079,3d74e109-b24c-4657-9d70-080dd4a10454,T034,SCH020,Librarian,Librarian,Grades K-5,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0080,4ef04b59-68a5-44ad-bbcc-2ff6533a4c74,T034,SCH001,Dean of Students,Dean of Students,Grades K-5,2021-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0081,e732ab5d-4a43-49c7-9cf4-96169d7be9b2,T035,SCH008,Teacher,Environmental Systems,Grades K-5,2000-08-01,2003-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0082,5d22c21f-4ab0-4be8-a456-ae40018f0af6,T035,SCH005,Teacher,Environmental Systems,Grades 11-12,2004-08-01,2009-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0083,77f261a2-0f2a-4a58-9e18-be9c0821c898,T035,SCH022,Senior Teacher,Environmental Systems,Grades 6-8,2010-08-01,2014-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0084,58bcbf19-f5d2-4938-8ab1-3208aaf0ba34,T035,SCH027,Teacher,Environmental Systems,Grades 11-12,2014-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0085,deebe8d0-540e-49fc-ac13-644657d853f9,T035,SCH020,Principal,Administration,PK-K,2016-08-01,2020-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0086,7fbd588f-dcf8-427a-9e04-bf80f555c228,T036,SCH026,Teacher,Biology,Grades 6-8,2012-08-01,2014-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0087,40d29a68-9523-4161-9f43-d136373a6bab,T036,SCH034,Senior Teacher,Biology,Grades 6-8,2015-08-01,2019-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0088,fc454ce7-1c3d-4784-b2d1-a47043bea116,T036,SCH024,Senior Teacher,Biology,Grades 6-8,2020-08-01,2023-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0089,53afa3cc-2449-4f4f-a99f-e0b50bca130f,T036,SCH029,Subject Coordinator,Biology,Grades 6-8,2023-08-01,2025-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0090,5aa833ec-6b43-4e3b-aa95-567d37bedc2f,T037,SCH003,Senior Teacher,Mathematics,Grades K-5,2016-08-01,2018-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0091,41d42cca-bebe-4e44-9129-3417b14ec73b,T037,SCH020,Teacher,Mathematics,PK-K,2019-08-01,2022-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0092,1400e359-ebb8-4516-a82a-f246fa897cc5,T037,SCH033,PYP Coordinator,Mathematics,Grades K-5,2022-08-01,2024-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0093,dc84b551-03c4-40ca-9ec7-92815c91d012,T038,SCH003,Teacher,Environmental Systems,Grades 11-12,2011-08-01,2014-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0094,ffd70656-fd12-4368-87ce-14672da1dd08,T038,SCH015,Senior Teacher,Environmental Systems,Grades 6-8,2015-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0095,6bbcf3a1-2d49-48f6-9bcc-23cfec8ced4a,T038,SCH012,Senior Teacher,Environmental Systems,Grades 6-8,2021-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0096,05fff6b3-bf68-45fa-869b-c9881fa50248,T039,SCH030,Teacher,Design Technology,Grades 9-10,2012-08-01,2015-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0097,c7fe4f89-f512-4b36-9504-a960c831cab8,T039,SCH019,Senior Teacher,Design Technology,Grades 6-12,2015-08-01,2019-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0098,a829851e-5243-4140-a24a-a3a30bb778fc,T039,SCH021,Teacher,Design Technology,Grades 6-12,2019-08-01,2023-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0099,9fbd3184-9e6f-4cb2-95dc-8ce88e2d2ac1,T040,SCH021,Teacher,Geography,Grades 6-12,2019-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0100,54ad58e5-a7f3-4e66-b1df-4dcf4176caf9,T041,SCH014,Teacher,Primary Homeroom,Grades 11-12,2015-08-01,2020-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0101,78735a0c-ab84-4b29-ab68-ff46d34e793b,T041,SCH015,MYP Coordinator,Primary Homeroom,Grades 6-8,2021-08-01,2023-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0102,47454abc-85b9-4995-a3c2-99d0e59182c6,T042,SCH023,Teacher,English,Grades 9-10,2004-08-01,2009-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0103,8a3ecfd7-9bb9-4439-b75c-5478a74e7df5,T042,SCH030,Teacher,English,Grades K-5,2010-08-01,2014-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0104,29b00816-4785-49f6-b8fc-66e315e0548d,T042,SCH001,Athletic Director,Athletic Director,Grades 9-12,2015-08-01,2017-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0105,e5e0510e-e794-43fa-88f2-19006cdf189a,T042,SCH012,PYP Coordinator,Environmental Systems,Grades 11-12,2017-08-01,2019-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0106,abf5d094-2593-4c67-b382-9204c62a116a,T042,SCH005,Dean of Students,Dean of Students,Grades 11-12,2019-08-01,2024-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0107,8a50eef5-e9d0-476a-a3e3-d8ef455196d6,T043,SCH033,Senior Teacher,Computer Science,Grades K-5,2013-08-01,2017-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0108,fb42e839-bd34-489d-88a8-32961340ceb3,T043,SCH003,Teacher,Theory of Knowledge,Grades 9-12,2018-08-01,2022-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0109,0b594094-91c7-437b-9fcc-699e8d0c580f,T043,SCH007,Senior Teacher,Computer Science,Grades 9-12,2023-08-01,,Full-time,,,Technology,Yes,2026-06-07,2026-06-07
+ASG0110,9ac2364c-d833-423a-92c9-7e19c3812120,T044,SCH031,Teacher,Drama,Grades 6-12,2020-08-01,2024-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0111,c767b887-73f5-40fc-abfe-771d266e505f,T045,SCH013,Teacher,Physical Education,Grades 11-12,2018-08-01,2020-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0112,41d2c123-c1fa-40eb-802b-c6025c079966,T045,SCH036,Teacher,Physical Education,Grades 9-10,2021-08-01,2026-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0113,b94ca5f8-30d6-4025-8925-b72e59ebf148,T046,SCH030,Teacher,Music,Grades K-5,2000-08-01,2004-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0114,039a8d78-a382-4d1c-8cdd-d0054d4f089f,T046,SCH002,Teacher,Spanish,Grades 11-12,2005-08-01,2010-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0115,3af980ef-768a-41ca-b5ee-453afb33625c,T046,SCH013,Counselor,Counselor,Grades 11-12,2011-08-01,2015-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0116,c3060306-e383-4915-960e-8520099fa73d,T046,SCH034,Head of School,Administration,Grades K-5,2015-08-01,2018-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0117,c68e1ef8-a054-4da6-88c0-15f97e153ccc,T046,SCH006,Curriculum Coordinator,Primary Homeroom,Grades 9-12,2018-08-01,2021-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0118,363f81d9-45cf-4508-8df1-ac08cb485dcb,T047,SCH035,Teacher,Biology,Grades 6-12,2010-08-01,2012-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0119,e411f629-67b0-4210-ade4-e83d63cdc1dc,T047,SCH033,Teacher,Biology,Grades 6-12,2012-08-01,2015-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0120,10c16392-434b-46c0-878b-2c912a029f36,T047,SCH022,Teacher,Biology,Grades 11-12,2015-08-01,2018-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0121,1e4aa4ca-8c1b-4278-8fe8-11d9fea4a986,T047,SCH039,Teacher,Physical Education,Grades 6-12,2019-08-01,2022-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0122,32f87a8f-07f3-4c64-9af2-37a389637603,T048,SCH038,Teacher,Design Technology,Grades 6-12,2013-08-01,2017-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0123,4b1d2d02-2eea-4b4e-a736-1f5810b6d75c,T048,SCH010,Teacher,Design Technology,Grades 6-12,2017-08-01,2022-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0124,24061b12-6dc3-416c-a8c8-43ea0f9fb2ed,T049,SCH028,Teacher,Physical Education,Grades 9-10,2010-08-01,2012-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0125,ee9ffde6-c182-4739-81a9-30dcd5b442bc,T049,SCH007,Teacher,Physical Education,Grades 6-8,2012-08-01,2015-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0126,21796c18-dbf6-44c1-9d1d-988df4a47ea2,T049,SCH034,Teacher,Physical Education,Grades 9-10,2016-08-01,2018-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0127,9bea90a5-c37c-4747-acf3-d7a792a2dba1,T049,SCH011,Senior Teacher,Physical Education,Grades 6-8,2018-08-01,2020-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0128,be4b0765-2843-4ea8-904b-68af4fb84d2e,T050,SCH006,Teacher,Music,PK-K,2015-08-01,2019-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0129,3ac1ff52-f32b-4e07-96ac-277aeea96847,T050,SCH039,Senior Teacher,Music,Grades 11-12,2020-08-01,2023-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0130,62698b2e-9c31-496c-9748-007f9e61152e,T051,SCH022,Teacher,Spanish,PK-K,2006-08-01,2009-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0131,337db803-6437-4d4d-9937-07290a56fb44,T051,SCH028,Teacher,Physical Education,Grades 9-12,2009-08-01,2011-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0132,dc3c191d-8a4f-49fd-86d4-189c7f536e87,T051,SCH007,Teacher,Physical Education,Grades K-5,2011-08-01,2015-06-30,Part-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0133,c39e4ec0-246b-4e35-86ed-bd28956b453f,T051,SCH034,Teacher,Physical Education,Grades 11-12,2015-08-01,2020-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0134,0fa20dd3-b862-4ae5-aaa3-97a779e5e65e,T052,SCH034,Teacher,Physical Education,PK-K,2004-08-01,2009-06-30,Part-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0135,afa06902-201b-42e2-bf1d-38faa639da30,T052,SCH023,Counselor,Counselor,Grades 9-12,2010-08-01,2012-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0136,353387d5-ef19-40d1-bc36-fb0c9297d528,T052,SCH021,IB DP Coordinator,Mathematics,Grades K-5,2012-08-01,2015-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0137,9be57eb1-f15b-46ec-9b4c-58fd0cd4f7ff,T052,SCH024,MYP Coordinator,Physical Education,Grades 9-12,2016-08-01,2018-06-30,Part-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0138,ca062417-ad75-422d-bece-65cfc00459c9,T052,SCH018,Head of School,Administration,Grades 9-12,2019-08-01,2023-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0139,0ac5d476-6780-462e-ac1c-ccfd78c0fbf3,T053,SCH038,Senior Teacher,Design Technology,Grades 9-12,2018-08-01,2023-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0140,10d5c2ce-4110-4bec-8b3c-1f48f322f25a,T053,SCH031,Teacher,Design Technology,Grades 9-12,2024-08-01,,Full-time,,,Technology,Yes,2026-06-07,2026-06-07
+ASG0141,dea674cd-8f16-413f-97b2-effcf8904952,T054,SCH010,Teacher,Economics,Grades 11-12,2007-08-01,2009-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0142,95c1459b-4cd9-4f2f-8dab-81ce7e040ace,T054,SCH017,Teacher,Economics,Grades K-5,2010-08-01,2014-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0143,bb901e12-5172-42c6-bc6f-e9c1bdbbe729,T054,SCH018,Counselor,Counselor,Grades 6-12,2015-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0144,b08b7467-eb5a-42d9-88cc-2278cd091e83,T054,SCH004,Dean of Students,Dean of Students,Grades K-5,2018-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0145,00449229-d608-4fce-8677-5ea454b855c8,T055,SCH008,Teacher,Visual Arts,Grades K-5,2018-08-01,2020-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0146,395072db-aa0e-4728-8098-2b03975710ab,T055,SCH001,Teacher,Theory of Knowledge,Grades 9-10,2020-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0147,1e0a58fa-46db-4c60-a4bc-7b6d3d5197c6,T056,SCH001,Teacher,Music,PK-K,2014-08-01,2018-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0148,e3dae1a2-45f0-41d9-9e94-c1bf94285c76,T056,SCH010,Teacher,Music,Grades 11-12,2018-08-01,2020-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0149,2877477e-566f-4476-b19f-18c486365bb5,T056,SCH018,Teacher,Music,PK-K,2021-08-01,2025-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0150,75db747b-c61c-44a2-a0e0-f7f65740cba6,T057,SCH022,Teacher,Design Technology,Grades 6-8,2001-08-01,2004-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0151,cecca431-f1f5-4879-a027-66c69cdc6c32,T057,SCH016,Senior Teacher,Design Technology,Grades 9-12,2005-08-01,2009-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0152,0a915453-2330-4c74-b8b3-8e0c2851dc08,T057,SCH017,PYP Coordinator,Design Technology,Grades 9-12,2009-08-01,2014-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0153,5694527e-7950-40f4-84a2-810b94de426e,T057,SCH024,Head of School,Administration,PK-K,2015-08-01,2019-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0154,b262130e-d383-4658-afc5-73c4f2f40daf,T057,SCH031,PYP Coordinator,Design Technology,PK-K,2020-08-01,2022-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0155,6137cdd6-29c8-4f8f-87a3-aa52030fe78a,T058,SCH002,Teacher,Arabic,Grades 9-10,2020-08-01,2022-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0156,63740a48-65b1-4c3d-9f38-d1577a5efc89,T058,SCH029,Teacher,Arabic,PK-K,2023-08-01,2026-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0157,10ec4a42-f4cf-4f62-86a6-55104536dbaf,T059,SCH023,Senior Teacher,Business Management,Grades 6-12,2009-08-01,2011-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0158,cdaaba89-3001-4ea0-b761-ede721542091,T059,SCH012,Teacher,Mandarin,Grades K-5,2011-08-01,2014-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0159,bf7187cc-9e74-4be8-a782-de9725e5e1be,T059,SCH004,Teacher,Business Management,PK-K,2015-08-01,2020-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0160,df2021ab-4445-4c93-8dc4-603a091b7330,T059,SCH019,Senior Teacher,Business Management,Grades 6-12,2021-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0161,4f1440fb-7914-47c9-95d9-7e4d934f489a,T060,SCH024,Teacher,English,Grades K-5,2012-08-01,2016-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0162,6e4e3ffe-8fba-44be-9cc8-f2e481adf3cf,T060,SCH033,Teacher,Physics,PK-K,2016-08-01,2021-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0163,65b4503c-fb0a-4380-b3a8-49cc92d1672d,T060,SCH018,IB DP Coordinator,English,Grades 11-12,2021-08-01,2024-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0164,e3a6e582-e67d-4dff-b134-0303c659c704,T061,SCH025,Teacher,Arabic,Grades 9-12,2009-08-01,2013-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0165,e4cb246b-4276-479d-9e62-a372aeff66dd,T061,SCH008,Teacher,Arabic,Grades 9-10,2014-08-01,2017-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0166,4e4e8c3d-0d35-4366-8f04-b086265466b0,T061,SCH014,Subject Coordinator,Arabic,Grades 11-12,2017-08-01,2022-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0167,777664c0-d7ef-47c3-8762-4e5939b62eaa,T062,SCH035,Senior Teacher,Arabic,Grades 9-10,2008-08-01,2011-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0168,ff2e0fd2-5434-45f6-ac2e-a9b9943a9a08,T062,SCH037,Teacher,Physics,Grades 6-12,2012-08-01,2016-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0169,1f6fbaf7-86fb-4808-a5f2-372675a6b678,T062,SCH008,Senior Teacher,Physics,Grades 11-12,2016-08-01,2021-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0170,7af1ea85-ae6b-4110-81ac-0e8ccade8a81,T063,SCH031,Senior Teacher,Business Management,Grades 9-12,2015-08-01,2020-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0171,e37f3e13-6280-4378-b3a5-8753f92ec2f2,T063,SCH005,IB DP Coordinator,Business Management,Grades 11-12,2021-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0172,365d2b60-9785-44c1-a64f-4317dfe70231,T064,SCH029,Teacher,Chemistry,Grades 9-10,2016-08-01,2021-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0173,5abe4820-72a3-4acf-8fe9-15e22a3d0e46,T064,SCH022,Senior Teacher,Chemistry,Grades 6-8,2021-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0174,2a3d2c55-e07f-431b-b7ed-f1a9203f9c90,T065,SCH031,Teacher,Design Technology,Grades K-5,2010-08-01,2012-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0175,512a0442-4cd3-45d7-925d-aca955382413,T065,SCH019,Teacher,Design Technology,Grades K-5,2013-08-01,2017-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0176,e5f7185f-dda2-4475-ad61-99af14dae52a,T065,SCH022,MYP Coordinator,Design Technology,Grades 9-10,2018-08-01,2020-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0177,5ad98579-cbe6-4d6b-8982-1e198ba2b629,T065,SCH027,Teacher,Geography,Grades 6-12,2020-08-01,2022-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0178,2b086a31-6524-4a9c-bda8-23c0d74057fe,T066,SCH002,Teacher,History,Grades 9-12,2019-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0179,d70bc97c-582f-4520-9a5b-35a8a0eb1685,T066,SCH018,Teacher,History,Grades K-5,2022-08-01,,Part-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0180,2229432e-740a-49c6-a357-8a3d71ea00d3,T067,SCH016,Teacher,Business Management,PK-K,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0181,5f3cd902-beaf-4b5c-9693-f8f3d6e266c1,T067,SCH006,Teacher,Business Management,Grades 11-12,2022-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0182,e9fc3d8b-0295-4072-834e-49db405a8e66,T068,SCH024,Teacher,Geography,Grades 9-10,2012-08-01,2016-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0183,4e031fa0-b965-4311-a032-9b479cc62a76,T068,SCH005,Teacher,Geography,Grades 6-8,2016-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0184,59d0cfbf-2bc2-4b81-8f71-0fd65dd5f29f,T068,SCH030,PYP Coordinator,Geography,Grades 6-12,2022-08-01,2025-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0185,d634f901-0613-4848-9a17-4dd948b580b3,T069,SCH018,Teacher,Economics,Grades 11-12,2009-08-01,2014-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0186,c547e852-74ef-4d22-82c9-10a58379a52a,T069,SCH037,Librarian,Librarian,Grades 6-12,2015-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0187,b4155699-0817-4f77-b0b8-9f89eebe0a4f,T069,SCH016,Teacher,Economics,Grades 9-12,2021-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0188,f2e3abd2-b2d6-47a0-9e9b-b2072b36499f,T070,SCH031,Teacher,Primary Homeroom,PK-K,2016-08-01,2019-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0189,7f6d68a6-2bca-4204-a47f-883493091b7c,T070,SCH030,Senior Teacher,Mathematics,PK-K,2019-08-01,2021-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0190,4727ef60-fcb0-4a1c-b5e2-7bb2e9ab5fba,T071,SCH003,Teacher,Spanish,Grades 6-12,2010-08-01,2012-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0191,6b6f10f5-5961-41b0-ab44-8dbafbc8327c,T071,SCH008,Teacher,Spanish,Grades 6-8,2012-08-01,2015-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0192,29162598-f461-495b-9d7c-5c89dc352caf,T071,SCH012,Teacher,Spanish,PK-K,2015-08-01,2018-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0193,67a177ce-3cae-47c8-9dc6-950fa0d174c9,T071,SCH030,Senior Teacher,Spanish,Grades 11-12,2018-08-01,2020-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0194,56be43a7-5de4-40ba-b8b2-9c29ee9b87a3,T072,SCH008,Senior Teacher,History,Grades 9-12,2010-08-01,2014-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0195,9ee8017b-d004-4980-bf5c-8e5749451434,T072,SCH023,Teacher,History,Grades K-5,2014-08-01,2016-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0196,75b8655a-bf49-4b6f-8e44-d055952e70ea,T072,SCH013,Teacher,History,PK-K,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0197,7b284630-fa4d-46dd-8075-7262c097f398,T073,SCH003,Teacher,Primary Homeroom,Grades 9-12,2005-08-01,2009-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0198,53a20ce6-7fff-407e-934f-985ff02da84e,T073,SCH016,Teacher,Primary Homeroom,Grades K-5,2009-08-01,2013-06-30,Part-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0199,528fd859-beaf-4f94-893f-8fb113625b18,T073,SCH019,Dean of Students,Dean of Students,Grades 6-8,2013-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0200,bbd25e97-2fe9-4677-a38b-69c82ccbda3c,T073,SCH010,Teacher,Primary Homeroom,Grades 9-10,2018-08-01,2021-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0201,79a70f11-7476-41ce-9215-c0f4a2f338a6,T074,SCH008,Teacher,Design Technology,Grades K-5,2011-08-01,2015-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0202,ff97069a-e458-4e32-81e6-8ae76e833b53,T074,SCH036,Teacher,Biology,Grades 6-12,2015-08-01,2018-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0203,6e31abd4-5a64-4f63-9241-ca646863fc96,T074,SCH007,PYP Coordinator,Biology,PK-K,2018-08-01,2022-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0204,ebbb1905-3184-434f-942d-f3f624766100,T075,SCH038,Teacher,Spanish,Grades 11-12,2015-08-01,2017-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0205,4fe6cfb2-f6c7-466a-be1d-8a6b179548b3,T075,SCH031,Senior Teacher,Spanish,Grades 6-12,2018-08-01,2022-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0206,6608c5d4-60b3-4d1a-9c00-a4a7c7664f62,T076,SCH025,Teacher,Physics,Grades 9-10,2008-08-01,2011-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0207,eee6e8ef-9625-4f1c-9a5a-d80068e83fac,T076,SCH018,Teacher,Physics,Grades 6-8,2012-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0208,21db2a3d-c44c-4e85-9f56-124f64d161fb,T076,SCH013,Senior Teacher,English,Grades 9-12,2017-08-01,2019-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0209,13d62a29-32c1-4d39-bdd8-4dcea790d147,T076,SCH039,Athletic Director,Athletic Director,Grades 6-12,2020-08-01,2025-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0210,31070bd8-d443-4728-acd7-764b25f84834,T077,SCH035,Teacher,Mathematics,Grades 6-8,2015-08-01,2020-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0211,507cd878-79db-41b4-a9cb-c0a55e2b6c9d,T077,SCH036,Senior Teacher,Mathematics,PK-K,2020-08-01,2024-06-30,Part-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0212,6e3a8051-94b3-4c2c-ad12-c4d14f9feb11,T078,SCH021,Senior Teacher,Primary Homeroom,Grades 6-8,2017-08-01,2020-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0213,bb9aac9c-024c-48d0-8baf-0ca23e69074c,T078,SCH016,Senior Teacher,Primary Homeroom,Grades 9-10,2021-08-01,2025-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0214,8f88e8f1-e15f-4246-9905-2579fd681ff6,T079,SCH001,Teacher,Spanish,Grades 11-12,2014-08-01,2019-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0215,39c6b5eb-5257-4779-a423-f07a7c806d95,T079,SCH005,Teacher,Spanish,Grades 9-10,2019-08-01,,Part-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0216,cbe0ce4c-45de-446c-8168-cbf1482c7290,T080,SCH036,Teacher,Design Technology,Grades K-5,2018-08-01,2021-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0217,b101aa02-0d89-4170-8b62-dc8c02d12ef7,T080,SCH016,Teacher,Primary Homeroom,Grades 6-8,2021-08-01,2023-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0218,a32aa546-710b-4b4b-bb37-c20831f34b75,T081,SCH007,Teacher,Biology,Grades K-5,2011-08-01,2015-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0219,8b602a19-c921-4f5f-a60d-8dc3141ea354,T081,SCH002,Teacher,Biology,PK-K,2016-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0220,ecf453d4-e682-45f8-b8cd-8fdbf7a88b8c,T081,SCH026,Subject Coordinator,Biology,Grades 9-12,2021-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0221,20c1ac65-6a8d-443a-9f17-c341b726ed00,T082,SCH023,Teacher,Geography,PK-K,2013-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0222,95b1abbc-9372-462c-a54a-eeaf37d0872e,T082,SCH005,Teacher,English as an Additional Language,Grades 6-12,2018-08-01,2022-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0223,10e093b8-d743-492b-96d5-188994878c14,T083,SCH012,Senior Teacher,Chemistry,Grades 6-8,2008-08-01,2012-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0224,cbfa9db6-d6b0-4591-a07b-d8b70d2a575a,T083,SCH010,Senior Teacher,Psychology,Grades 11-12,2013-08-01,2015-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0225,f10206d4-9b81-469a-9bdb-f74429203977,T083,SCH020,Dean of Students,Dean of Students,Grades 6-8,2016-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0226,4ff2ebb2-4b09-4e72-955c-1a93b547866e,T083,SCH025,Counselor,Counselor,Grades 11-12,2021-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0227,a14b4592-fb65-4ec8-8eaf-b7960dc501fd,T084,SCH005,Teacher,Geography,PK-K,2008-08-01,2010-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0228,66733fce-fc6b-4b0f-9c37-04c8793cb4a3,T084,SCH036,Teacher,French,Grades 6-8,2011-08-01,2015-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0229,43b24658-8e74-41a1-9d41-0c450c4b54d8,T084,SCH029,Dean of Students,Dean of Students,Grades 11-12,2015-08-01,2017-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0230,1e3cedd9-cc4b-40ae-b056-192bee377e30,T084,SCH008,Subject Coordinator,English as an Additional Language,Grades 9-12,2018-08-01,2023-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0231,f4ea248e-1fda-4e84-b11e-fa10a19c6e89,T085,SCH010,Teacher,Geography,Grades 9-12,2016-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0232,2046e60e-64d5-47a1-9eaf-29566de6d554,T085,SCH036,Head of Department,Geography,Grades 6-12,2022-08-01,,Part-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0233,e39131d0-d6c4-42d9-9c24-606a6d91e4b0,T086,SCH011,Teacher,Early Years,Grades K-5,2014-08-01,2016-06-30,Full-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0234,5dccb76d-d8a4-4f89-9a63-92cf8540ac1a,T086,SCH018,Teacher,Business Management,PK-K,2017-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0235,13dded6e-ad27-4972-8ff2-3ac9a6f1c767,T086,SCH012,Counselor,Counselor,Grades 11-12,2020-08-01,2023-06-30,Full-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0236,5c5c6abe-247a-4b16-85f7-700e6e3506d7,T087,SCH026,Teacher,Spanish,Grades K-5,2007-08-01,2010-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0237,2f3332a2-2a0f-4a6d-a35d-a98c705a3b99,T087,SCH002,Teacher,Chemistry,Grades 9-10,2011-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0238,8f57fa58-ba84-4351-8e7a-424a1badc7cc,T087,SCH006,Teacher,Visual Arts,PK-K,2017-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0239,1c269636-c912-49eb-9a0f-ce07927d3677,T087,SCH037,MYP Coordinator,Spanish,Grades 11-12,2022-08-01,2025-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0240,386362dd-c1cf-41a4-a1a6-6437556501f9,T088,SCH007,Senior Teacher,English as an Additional Language,PK-K,2016-08-01,2019-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0241,c118272c-aa9f-4325-b33f-77bf2c9493d0,T088,SCH003,Teacher,Theory of Knowledge,PK-K,2020-08-01,2022-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0242,f6409997-5dce-4ece-a952-722b300da3b3,T089,SCH039,Teacher,Mandarin,Grades 6-8,2014-08-01,2016-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0243,b00d12f1-bde3-416c-9138-4c59242ec08f,T089,SCH005,Teacher,Mandarin,Grades 9-10,2016-08-01,2018-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0244,986cb59f-2763-4082-b586-0874e61b7a4b,T089,SCH024,Teacher,Mandarin,Grades K-5,2019-08-01,2021-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0245,febeea55-0e2f-40a8-afc9-eaa4a04e3697,T090,SCH025,Teacher,Arabic,Grades K-5,2018-08-01,2020-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0246,5c1f724f-a3c6-41d7-9b77-1a14325fee31,T090,SCH015,Teacher,Arabic,Grades 6-8,2020-08-01,,Full-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0247,6131c4f6-8de2-4482-974a-d2d78ff2dfbf,T091,SCH023,Teacher,Design Technology,Grades 11-12,2014-08-01,2018-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0248,a05ff86b-c89e-4366-92c1-bb0d7b505cda,T091,SCH025,Senior Teacher,Design Technology,Grades K-5,2019-08-01,2021-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0249,09d640ba-928d-473b-82d4-8278c29f437b,T091,SCH018,PYP Coordinator,Design Technology,Grades 9-10,2021-08-01,2023-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0250,2bc6e1db-f14f-4c12-ae8b-2c94ac1aed5a,T092,SCH037,Senior Teacher,Physics,Grades 11-12,2007-08-01,2012-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0251,a06948a1-9746-4b54-a368-8c43f2d6a139,T092,SCH021,MYP Coordinator,Physics,PK-K,2013-08-01,2015-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0252,6bbaa500-0a4d-4925-9db8-ca0212b90c8f,T092,SCH015,MYP Coordinator,History,Grades 6-8,2016-08-01,2018-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0253,7279f5b1-2113-4e9a-a2c5-0fb3de39cd74,T092,SCH008,Teacher,Physics,Grades 9-10,2019-08-01,2023-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0254,c36cadf0-6e2e-445d-a59f-f6c77a1aab75,T093,SCH030,Senior Teacher,Psychology,Grades 11-12,2009-08-01,2014-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0255,78d05d4f-3db0-437d-9329-6a5e86848ac6,T093,SCH037,Curriculum Coordinator,English as an Additional Language,Grades 11-12,2015-08-01,2018-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0256,5def04c1-8f2d-4acc-83a3-100c62adc38e,T093,SCH010,Teacher,French,Grades 11-12,2018-08-01,2021-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0257,30d10944-1436-4591-85f7-07ca7ca9bdd5,T093,SCH039,IB DP Coordinator,English as an Additional Language,Grades K-5,2022-08-01,,Full-time,,,English,Yes,2026-06-07,2026-06-07
+ASG0258,294428a4-2494-4bd6-9e13-719ccb683946,T094,SCH005,Teacher,History,Grades 9-10,2019-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0259,c86bb8d8-2d3f-4670-bb7d-674fb3540294,T094,SCH009,Teacher,History,Grades 9-10,2021-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0260,0bc21bc3-1fbb-42f9-bcd8-8b66beb30681,T095,SCH027,Teacher,History,Grades 11-12,2007-08-01,2011-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0261,798b01ea-c8af-4910-a881-b1d24fc5d50b,T095,SCH029,Teacher,History,Grades K-5,2011-08-01,2015-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0262,cecae3bb-960c-465e-a5a4-b93bc6448add,T095,SCH023,Librarian,Librarian,Grades K-5,2015-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0263,44e019b5-6693-4993-bfdc-47c05f2188e2,T095,SCH014,Teacher,History,PK-K,2017-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0264,84b77f48-4793-43dc-8f6f-58f0ae75d324,T096,SCH034,Senior Teacher,History,PK-K,2013-08-01,2018-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0265,ccfd0140-e486-4f04-adfc-876129e83c52,T096,SCH002,Athletic Director,Athletic Director,Grades K-5,2019-08-01,2023-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0266,0d71c4dd-3abd-4145-b77b-5718ee2f519a,T097,SCH004,Teacher,Visual Arts,Grades 6-12,2021-08-01,2025-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0267,b52ed180-f357-4432-a5be-b9bb7024e4e2,T098,SCH005,Teacher,Spanish,Grades K-5,2002-08-01,2006-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0268,d98ac4e8-c432-4c91-a24b-b7f4fa7b4088,T098,SCH030,Teacher,Spanish,Grades 6-12,2007-08-01,2010-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0269,3c5842aa-c3aa-4730-8379-9eb190f6ef37,T098,SCH033,Dean of Students,Dean of Students,Grades 6-12,2011-08-01,2014-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0270,5f6439cc-8c65-4ae2-894e-648586bde317,T098,SCH012,Teacher,Spanish,Grades 11-12,2015-08-01,2020-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0271,49da1576-a9ab-478b-896a-7a0c1d96a268,T098,SCH020,Deputy Head,Administration,Grades 9-12,2020-08-01,2022-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0272,027d00c0-ae2e-416e-8b3c-1d04f0d94dfe,T099,SCH025,Senior Teacher,Economics,Grades K-5,2015-08-01,2019-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0273,d26b455e-e9a5-4e20-b87f-29ba72c6ee74,T099,SCH031,Teacher,Economics,PK-K,2020-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0274,7ff8c8e8-53cd-42e2-b3c4-a26e33479cbd,T100,SCH012,Teacher,Computer Science,Grades 9-12,2006-08-01,2011-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0275,f87cf188-110f-4d64-80bc-f1954dffd3ef,T100,SCH019,Head of Department,History,Grades 6-12,2012-08-01,2014-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0276,3cea12c4-3812-4386-b052-451bc5b81df5,T100,SCH003,Teacher,Computer Science,Grades 6-8,2014-08-01,2019-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0277,972fc16e-43d6-406a-b60f-db83cb16697b,T100,SCH009,Teacher,Computer Science,Grades K-5,2019-08-01,2022-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0278,f4e4bd7c-5a24-4488-992d-cbd53fe3d0d9,T101,SCH032,Teacher,Early Years,Grades 6-12,2013-08-01,2016-06-30,Full-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0279,e2316b4e-1caa-4563-b9b5-37c43ef21896,T101,SCH017,Senior Teacher,Early Years,PK-K,2016-08-01,2021-06-30,Part-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0280,a69cb1b1-0f8d-49c1-8eaa-9fc4aa42d45c,T102,SCH036,Teacher,Primary Homeroom,Grades K-5,2013-08-01,2018-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0281,a7236b1f-54cb-400d-8145-587f0ae53708,T102,SCH032,Teacher,Primary Homeroom,Grades 11-12,2018-08-01,2023-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0282,81bf5cab-711a-49ea-94f7-f347385c7d8a,T103,SCH034,Teacher,Early Years,Grades 6-8,2018-08-01,2020-06-30,Full-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0283,9cff470e-210b-40cf-b7c3-cebba220822b,T103,SCH011,Teacher,Early Years,Grades 6-8,2021-08-01,2023-06-30,Part-time,,,Early Years,No,2026-06-07,2026-06-07
+ASG0284,cee9bea0-3000-46c8-9bd4-4ab38cb92628,T104,SCH002,Teacher,Business Management,Grades 11-12,2017-08-01,2022-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0285,10df6ed3-8aab-485d-b6b8-8ad3d118d3e6,T105,SCH023,Teacher,Mandarin,PK-K,2000-08-01,2003-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0286,0ece7956-5079-4033-84d9-73e301097cc0,T105,SCH012,Teacher,Spanish,Grades 9-12,2003-08-01,2005-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0287,073f4e29-c97f-47df-aa30-5acb1b64a40b,T105,SCH031,Teacher,Mandarin,Grades 6-12,2005-08-01,2008-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0288,6358e3aa-3e56-40a1-8ddc-5d61392aa712,T105,SCH018,Teacher,Mandarin,Grades 9-12,2009-08-01,2014-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0289,9f6a0851-ebbd-4314-9967-22288ff34f3d,T105,SCH038,Principal,Administration,Grades 6-12,2015-08-01,2020-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0290,6f155b67-c9cd-4279-b18a-ae6ebfe51941,T106,SCH018,Senior Teacher,Mathematics,Grades 11-12,2006-08-01,2010-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0291,12cf041b-555f-49b4-8a2e-9e0c69e78726,T106,SCH010,Teacher,Mathematics,Grades 9-12,2011-08-01,2013-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0292,1aa5111e-d971-49fd-b24f-4dffcdb98f6c,T106,SCH003,IB DP Coordinator,English,PK-K,2014-08-01,2018-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0293,fc2ade9f-17a6-4383-beb5-073fe9831031,T106,SCH033,Teacher,Mathematics,Grades 6-8,2018-08-01,2022-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0294,e8c0f52d-56fe-49c4-8ffb-03fd219aa5ea,T107,SCH021,Teacher,Computer Science,Grades 6-8,2010-08-01,2015-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0295,1fe20be8-a56f-4d74-8bba-49073b7f7133,T107,SCH009,Teacher,Computer Science,PK-K,2016-08-01,2020-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0296,15e23642-20ba-4ea3-adb5-7c699fea76d9,T107,SCH011,Teacher,Computer Science,Grades 6-8,2020-08-01,2025-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0297,3bf5b62d-d66a-4b3c-b56a-8448c4df9dbd,T108,SCH008,Teacher,Theory of Knowledge,Grades 11-12,2012-08-01,2014-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0298,4d40c4f4-08b7-48c7-9eb6-db35d3d76a70,T108,SCH032,Teacher,Biology,Grades 11-12,2014-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0299,06f2c9db-ac5e-43c1-8163-899b843b74dd,T108,SCH016,Senior Teacher,Biology,Grades 6-8,2016-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0300,48be7a86-5eed-4f32-ad7d-2f3c62e6e449,T109,SCH012,Senior Teacher,Biology,Grades K-5,2013-08-01,2015-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0301,b235d770-d362-496a-8207-10e4645f9024,T109,SCH020,Teacher,Biology,Grades 11-12,2015-08-01,2018-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0302,ff308edd-a022-4a77-b501-4f18436af918,T109,SCH016,Teacher,Biology,Grades 6-12,2018-08-01,2021-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0303,bf19d70c-8637-4244-ae5b-0790da8fa80c,T110,SCH032,Teacher,Physics,Grades 6-8,2013-08-01,2017-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0304,beaa5662-f73e-4e15-8742-fe0b35f27d58,T110,SCH007,Teacher,Physics,PK-K,2017-08-01,2019-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0305,9e47cbad-b560-42ab-a586-bb0c515ad3d9,T110,SCH038,Teacher,Physics,Grades 6-12,2019-08-01,2021-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0306,570f0b66-6f21-41c3-901c-956bce145de9,T111,SCH021,Teacher,Physical Education,PK-K,2013-08-01,2018-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0307,6899a848-6f96-4a4d-88ee-955162ab7bb5,T111,SCH034,Senior Teacher,Physical Education,Grades 6-8,2018-08-01,2022-06-30,Full-time,,,Physical Education & Health,No,2026-06-07,2026-06-07
+ASG0308,98108663-ce1d-4c2e-bfaa-729c599651b3,T111,SCH038,Senior Teacher,Physical Education,PK-K,2022-08-01,,Part-time,,,Physical Education & Health,Yes,2026-06-07,2026-06-07
+ASG0309,3c01603f-d5ca-4e53-a3b1-d490740129af,T112,SCH011,Teacher,Chemistry,Grades 6-12,2016-08-01,2018-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0310,96eeddc4-f465-47b0-b3b7-1dd49bbfeede,T112,SCH017,Teacher,Chemistry,Grades 6-12,2018-08-01,2022-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0311,6b6a7bfa-e3cd-4f4a-a40e-95b1136a2b59,T113,SCH019,Teacher,Business Management,Grades 11-12,2021-08-01,2025-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0312,c96bb1f6-745d-4e2e-b334-e4fb2ee807b9,T114,SCH004,Teacher,Computer Science,Grades 6-12,2004-08-01,2008-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0313,1cbfd42c-f5ac-4d7b-bde5-4be793aeb99d,T114,SCH012,Teacher,Computer Science,Grades 6-12,2008-08-01,2010-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0314,faaaf78b-b571-4aaa-8a9a-23e337682cba,T114,SCH013,PYP Coordinator,History,Grades 9-12,2010-08-01,2013-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0315,c160eb4b-da42-4a21-bcba-362537c8e9ad,T114,SCH016,Teacher,Computer Science,Grades 9-12,2014-08-01,2018-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0316,9ed09b59-a672-4fa2-a92c-f6e65c156f44,T114,SCH028,Principal,Administration,Grades 9-12,2019-08-01,,Full-time,,,School Leadership,Yes,2026-06-07,2026-06-07
+ASG0317,b96e35a3-dd51-4ce1-961a-a9cda70d67c5,T115,SCH026,Teacher,Mandarin,Grades 11-12,2007-08-01,2010-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0318,468e3147-18a6-40e0-8239-cd6f4e94b6ce,T115,SCH031,Teacher,Primary Homeroom,Grades 6-8,2010-08-01,2014-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0319,8bfc48aa-f88d-4e9c-b19d-9e6feae7ecad,T115,SCH015,Subject Coordinator,Mandarin,PK-K,2015-08-01,2019-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0320,bd4e32f2-35ad-483b-92e2-fb993c82bae9,T115,SCH012,Counselor,Counselor,Grades 6-12,2020-08-01,,Full-time,,,English,Yes,2026-06-07,2026-06-07
+ASG0321,6a2ffffe-af28-4be7-972e-b2a5e5814dd8,T116,SCH014,Teacher,Physics,Grades 9-10,2010-08-01,2012-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0322,2786525d-98db-4726-826e-5fdce4f0fc15,T116,SCH030,Teacher,Primary Homeroom,Grades 6-12,2012-08-01,2017-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0323,8d5b618a-cdd2-4e0f-b392-e624f1a09743,T116,SCH007,MYP Coordinator,Physics,Grades K-5,2017-08-01,2020-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0324,2d0a8e14-26bf-4cc8-aa08-df48abca5f6f,T117,SCH015,Teacher,Mandarin,Grades 9-12,2013-08-01,2017-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0325,6595f5da-7b91-4604-b109-6ed3a2123d73,T117,SCH004,Teacher,Mandarin,Grades 6-12,2017-08-01,2022-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0326,126d59e2-c524-4202-8c82-61c7cbdcc282,T118,SCH002,Teacher,English as an Additional Language,Grades K-5,2011-08-01,2013-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0327,b80a92f3-9365-4b64-a04a-f4eb4c6fbebb,T118,SCH001,Teacher,Design Technology,Grades 6-8,2014-08-01,2016-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0328,7668dac9-9ff7-447d-910d-9be4e227b0e0,T118,SCH003,Teacher,Design Technology,Grades 9-12,2017-08-01,2022-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0329,28f87193-b3fb-4b6e-8edf-153e66769570,T119,SCH026,Teacher,Drama,Grades 6-8,2016-08-01,2019-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0330,7cea88b5-d713-4909-bb3c-aff65702cfae,T119,SCH028,Teacher,Drama,Grades K-5,2020-08-01,2022-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0331,7c4cde6e-7ffa-429c-8d5b-c86995601aa4,T119,SCH008,Counselor,Counselor,Grades 9-10,2022-08-01,,Full-time,,,Arts,Yes,2026-06-07,2026-06-07
+ASG0332,8ffc6939-2517-46e2-819c-94b87accbc55,T120,SCH016,Teacher,Spanish,Grades K-5,2019-08-01,2023-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0333,341d16de-34a4-4074-80dd-5dd43f5962a2,T121,SCH033,Senior Teacher,Geography,PK-K,2005-08-01,2010-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0334,43e31a01-dfa6-4165-afb5-9148cc5b72cf,T121,SCH013,Teacher,Biology,Grades 6-12,2011-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0335,3d7537b0-e1d1-48ca-a76d-f59b15df1790,T121,SCH023,Subject Coordinator,Biology,Grades 11-12,2016-08-01,2021-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0336,a305bc76-c07e-4998-90e9-5c15cb821f5e,T121,SCH031,Deputy Head,Administration,Grades 9-12,2021-08-01,,Part-time,,,School Leadership,Yes,2026-06-07,2026-06-07
+ASG0337,b8a1ece3-36d9-4d4f-970c-1e36988475ed,T122,SCH020,Teacher,Economics,PK-K,2006-08-01,2011-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0338,ecc6e037-c2d6-4d97-aa68-709203427136,T122,SCH021,Librarian,Librarian,Grades K-5,2012-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0339,e4bdedfb-3135-4538-b207-68049863a235,T122,SCH024,Teacher,Economics,PK-K,2018-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0340,d58aa262-0c3e-4ebd-937d-a664c05f58b5,T122,SCH001,Deputy Head,Administration,PK-K,2021-08-01,,Full-time,,,School Leadership,Yes,2026-06-07,2026-06-07
+ASG0341,150433d8-d804-4393-89b1-8fb7d774aac0,T123,SCH017,Teacher,Spanish,Grades 6-8,2000-08-01,2004-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0342,72ff4d39-56e9-4880-8eaa-d0d5186611a3,T123,SCH008,Teacher,Spanish,Grades 9-12,2004-08-01,2008-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0343,59e4daed-5cd6-49a2-999a-f7df9983b61c,T123,SCH019,Teacher,Spanish,Grades 6-8,2008-08-01,2013-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0344,b5cf43e7-332b-4af3-9473-28e98a7ae6b7,T123,SCH028,Teacher,Visual Arts,PK-K,2013-08-01,2016-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0345,2341a316-7893-40ee-9228-de13747f5613,T123,SCH036,Deputy Head,Administration,Grades K-5,2016-08-01,2019-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0346,2b30efc7-fbd9-43d8-a69b-fd2b8063d805,T124,SCH004,Teacher,Chemistry,Grades 9-10,2013-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0347,f0a8b359-f5a2-4a9a-963f-4a496623e11d,T124,SCH036,Teacher,Chemistry,Grades 9-10,2017-08-01,2022-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0348,496b60bc-91ba-4d8d-9031-123d3e06271a,T125,SCH010,Senior Teacher,French,Grades 9-12,2018-08-01,2020-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0349,3faaa879-e8b2-46ee-b321-94fe3527e03c,T125,SCH018,Teacher,French,Grades 6-12,2020-08-01,2022-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0350,a2559575-e367-4930-91f4-6d659df0712a,T126,SCH005,Senior Teacher,Physics,Grades K-5,2013-08-01,2016-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0351,1453a1b2-35c4-4489-bbd3-bb6cbdebcbe7,T126,SCH022,Senior Teacher,Physics,Grades 9-10,2016-08-01,2021-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0352,db89a7dd-2aaa-48f3-94b3-2dec0428fcb9,T127,SCH037,Teacher,History,Grades 6-8,2009-08-01,2012-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0353,0ebbf671-4bd5-4c53-88ba-b342e6fd885e,T127,SCH020,Senior Teacher,English,Grades 6-8,2013-08-01,2018-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0354,15dadc91-5e6b-43ab-be6a-6931b24186f6,T127,SCH012,Dean of Students,Dean of Students,PK-K,2019-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0355,d9f5f70b-4c71-4d82-bbbc-adf5da89d32c,T127,SCH011,PYP Coordinator,Biology,PK-K,2021-08-01,2025-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0356,728a3e0b-0b62-4e84-af74-4916a623fcbe,T128,SCH038,Teacher,Drama,Grades 11-12,2011-08-01,2014-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0357,536211f7-3a4a-4139-af75-b8c623515a25,T128,SCH021,Teacher,Drama,PK-K,2014-08-01,2018-06-30,Part-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0358,0aaea4d9-bd9e-4b70-a868-f9c420d01b26,T128,SCH039,Teacher,Drama,Grades 9-10,2018-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0359,55dcf1ed-dba4-49a5-9976-8d08cb26e6b9,T129,SCH015,Teacher,Environmental Systems,Grades 11-12,2018-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0360,fffbb4fc-32a2-4180-8286-e123ea8fc62d,T129,SCH009,Teacher,Environmental Systems,PK-K,2020-08-01,,Full-time,,,Science,Yes,2026-06-07,2026-06-07
+ASG0361,06455f7f-d032-4447-bc51-db7618521e56,T130,SCH039,Teacher,History,Grades 6-8,2016-08-01,2019-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0362,08e33cd2-a7a8-4dcd-84ca-c53686360610,T130,SCH036,Senior Teacher,History,Grades 11-12,2020-08-01,2025-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0363,06d09f97-9a0b-47a9-846e-aa645e14a891,T131,SCH032,Teacher,French,PK-K,2003-08-01,2006-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0364,9d90753d-7915-4906-b88b-2d03b472149a,T131,SCH025,Teacher,Geography,Grades 9-12,2007-08-01,2009-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0365,d913dfe3-653b-45a8-ac06-fcf73b58daad,T131,SCH016,Librarian,Librarian,Grades 9-12,2010-08-01,2015-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0366,94064915-8760-4d8e-a321-8bd95063fed8,T131,SCH007,Teacher,French,Grades 6-12,2016-08-01,2020-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0367,0215c117-3ad6-41e6-b642-2f382e7e296a,T131,SCH023,Senior Teacher,French,Grades K-5,2020-08-01,2023-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0368,9e91c744-0018-4da9-904f-3ba9b34f7046,T132,SCH038,Teacher,Mandarin,Grades K-5,1998-08-01,2002-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0369,3852326c-8c3d-4871-8a33-a96b3a6def8c,T132,SCH013,Senior Teacher,Mandarin,Grades 11-12,2003-08-01,2008-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0370,f437501b-907a-472b-90ac-9530a9fa5457,T132,SCH010,IB DP Coordinator,Mandarin,Grades 11-12,2009-08-01,2011-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0371,f4c039a2-c2d3-4979-931d-b0d5ac00ebda,T132,SCH021,Curriculum Coordinator,Mandarin,Grades 6-12,2011-08-01,2016-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0372,133200b5-a7b7-4ccf-9543-8fa30c6773a5,T132,SCH039,Deputy Head,Administration,Grades 11-12,2017-08-01,2021-06-30,Full-time,,,School Leadership,No,2026-06-07,2026-06-07
+ASG0373,df3ccad9-b922-47e5-8dd6-64f154239952,T133,SCH027,Teacher,Primary Homeroom,Grades 6-12,2019-08-01,2023-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0374,a38d10e1-5491-44af-8faa-bc2a0b5ddb93,T134,SCH026,Teacher,Spanish,Grades 9-10,2014-08-01,2017-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0375,95dbe307-0543-4339-95f4-596fcbfb2cf0,T134,SCH018,Teacher,Drama,Grades 6-12,2018-08-01,2020-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0376,21560408-a301-4222-b5d1-bbadeb725459,T134,SCH022,Teacher,French,Grades 6-8,2021-08-01,,Part-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0377,d968ac06-7536-4183-9d8e-42e97d78d634,T135,SCH010,Teacher,Drama,Grades 6-8,2003-08-01,2007-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0378,21330067-c1cb-4b42-bf1b-68a2f9b3cf72,T135,SCH007,Teacher,Drama,Grades 6-8,2007-08-01,2010-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0379,16983b54-7dbd-48b1-8da0-56d0705e013e,T135,SCH005,Head of Department,Drama,Grades 6-12,2011-08-01,2016-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0380,8ed644cb-35d1-468b-9b32-ff94c89e24a3,T135,SCH013,PYP Coordinator,Drama,Grades 6-12,2016-08-01,2021-06-30,Full-time,,,Arts,No,2026-06-07,2026-06-07
+ASG0381,ecc9c883-7b2b-487a-a7ac-0cbb313b1ffb,T136,SCH035,Teacher,Theory of Knowledge,Grades 6-8,2021-08-01,2024-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0382,2bfee080-1522-4cfd-869c-e4b91c4bd5da,T137,SCH016,Teacher,English as an Additional Language,PK-K,2006-08-01,2009-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0383,bf0502f1-5e04-4393-bb00-4cb980d4bee8,T137,SCH008,Senior Teacher,History,Grades 11-12,2009-08-01,2012-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0384,f26d382b-4ee2-4926-b9cb-16774994f22e,T137,SCH027,MYP Coordinator,English as an Additional Language,Grades 6-12,2013-08-01,2018-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0385,39aaca55-6641-4d0f-a71f-133e78909da2,T137,SCH028,Senior Teacher,English as an Additional Language,Grades 6-8,2019-08-01,2021-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0386,4830dbb1-ebd3-43ee-868d-005b2250f723,T138,SCH009,Teacher,Mathematics,PK-K,2012-08-01,2017-06-30,Full-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0387,fe463c53-f7f6-4380-b0ed-6ac02089da0a,T138,SCH014,Senior Teacher,Mathematics,PK-K,2017-08-01,2021-06-30,Part-time,,,Mathematics,No,2026-06-07,2026-06-07
+ASG0388,294829ce-0e57-4b2e-b89f-bed66fae133a,T139,SCH028,Teacher,French,Grades 9-10,2018-08-01,2021-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0389,cd3a1027-0a0a-454e-962b-867532967dc3,T139,SCH016,Teacher,French,Grades 9-12,2021-08-01,,Full-time,,,Languages,Yes,2026-06-07,2026-06-07
+ASG0390,73bfcf1b-b008-4cf7-8dc8-8e34456cd930,T140,SCH002,Teacher,Physics,Grades 6-12,2017-08-01,2020-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0391,7f3c030c-be80-4e2d-86dc-31b4ac7225dc,T140,SCH012,Teacher,English,Grades 6-8,2021-08-01,,Full-time,,,English,Yes,2026-06-07,2026-06-07
+ASG0392,76ca1a88-6652-4ad4-af6e-286b86af348e,T141,SCH036,Teacher,Psychology,Grades 9-10,2017-08-01,2021-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0393,1c683887-169e-4cae-a0ff-0960a0d436d7,T141,SCH029,Senior Teacher,Psychology,Grades 9-12,2022-08-01,,Full-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0394,3f8d68e6-4bd1-423d-85e8-02847a3b82d6,T142,SCH007,Senior Teacher,Chemistry,Grades 6-8,2009-08-01,2014-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0395,c8cb8fbe-0af1-4147-8a73-2edb9ffb2469,T142,SCH017,Teacher,Chemistry,Grades 6-12,2015-08-01,2019-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0396,85b33a3e-831f-4444-950e-601f214ba50a,T142,SCH011,Senior Teacher,Chemistry,Grades K-5,2019-08-01,2021-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0397,afe000b9-1fad-4dd1-8abc-be69aad75db0,T143,SCH017,Senior Teacher,Computer Science,Grades 6-8,2007-08-01,2012-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0398,bf82824f-1c3a-48a1-82f5-636759fa4ff0,T143,SCH009,Athletic Director,Athletic Director,Grades 6-12,2013-08-01,2018-06-30,Part-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0399,ff1f54d6-60a0-4783-a91c-11747a8e611a,T143,SCH031,Teacher,Computer Science,Grades 9-12,2018-08-01,2022-06-30,Full-time,,,Technology,No,2026-06-07,2026-06-07
+ASG0400,26d77e1e-98fb-402a-be36-a03ef1c6981b,T144,SCH004,Teacher,Theory of Knowledge,Grades 6-12,2017-08-01,2020-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0401,0e79e4ed-50f0-4b95-8fd5-193cf6d4a5cc,T144,SCH017,Teacher,Chemistry,Grades 11-12,2021-08-01,2023-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0402,b61f6b98-e58b-4311-b97b-3ec97440dbd9,T144,SCH001,Subject Coordinator,Business Management,Grades 6-8,2024-08-01,,Part-time,,,Humanities,Yes,2026-06-07,2026-06-07
+ASG0403,6e0bf4f9-0fc7-4206-8e69-52cd1e85b51a,T145,SCH025,Teacher,English,Grades 9-12,2011-08-01,2015-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0404,a8653bc9-5164-4921-a8b8-31f0c936822c,T145,SCH034,Senior Teacher,English,PK-K,2016-08-01,2018-06-30,Part-time,,,English,No,2026-06-07,2026-06-07
+ASG0405,46f0f938-e3e9-400a-96ab-d02023f625c4,T145,SCH036,Teacher,Environmental Systems,Grades K-5,2018-08-01,2020-06-30,Part-time,,,Science,No,2026-06-07,2026-06-07
+ASG0406,b65d716a-21d7-4f8b-ad38-85480ae4f528,T145,SCH038,Counselor,Counselor,PK-K,2020-08-01,2022-06-30,Full-time,,,English,No,2026-06-07,2026-06-07
+ASG0407,ea49205e-3dc9-4ca0-995e-9abab9fcadbd,T146,SCH039,Teacher,Design Technology,Grades K-5,2019-08-01,,Full-time,,,Technology,Yes,2026-06-07,2026-06-07
+ASG0408,b5e8de20-71d4-4cc7-b5a6-bbe41f4a7574,T147,SCH027,Senior Teacher,Chemistry,Grades 11-12,2019-08-01,2023-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0409,c9c2b426-acaa-4f27-9f86-c2d79a4a29c6,T148,SCH025,Teacher,Geography,Grades 9-12,2009-08-01,2013-06-30,Part-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0410,2d5c1779-48d4-4775-bbe6-c05b0876b3ca,T148,SCH036,Teacher,Geography,Grades 11-12,2013-08-01,2017-06-30,Full-time,,,Humanities,No,2026-06-07,2026-06-07
+ASG0411,6da17e10-6fe7-4a07-ae93-876186134953,T148,SCH020,Teacher,Arabic,Grades 11-12,2017-08-01,2022-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0412,cb1d1015-f356-4bb7-8708-414af48d1aac,T149,SCH016,Teacher,French,Grades 9-10,2014-08-01,2018-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0413,d596c61f-7d87-41d6-aa1e-6b892d38d5ec,T149,SCH030,Teacher,Chemistry,Grades K-5,2018-08-01,2022-06-30,Full-time,,,Science,No,2026-06-07,2026-06-07
+ASG0414,3803c7f3-17dc-4f1d-a03a-faaa012abf61,T150,SCH025,Teacher,Arabic,Grades 6-8,2013-08-01,2015-06-30,Full-time,,,Languages,No,2026-06-07,2026-06-07
+ASG0415,c2e810de-5394-424a-ba15-1143dfaebe37,T150,SCH019,Senior Teacher,Primary Homeroom,Grades 11-12,2015-08-01,2018-06-30,Full-time,,,Primary,No,2026-06-07,2026-06-07
+ASG0416,f13c7a6a-b86f-4c9e-a8e7-a0a5929b110a,T150,SCH030,Curriculum Coordinator,Arabic,Grades K-5,2019-08-01,2022-06-30,Part-time,,,Languages,No,2026-06-07,2026-06-07
