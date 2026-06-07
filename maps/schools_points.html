@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_c366d687a25775ebb4056c832e7ad6ee {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_c366d687a25775ebb4056c832e7ad6ee" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_c366d687a25775ebb4056c832e7ad6ee = L.map(
+                "map_c366d687a25775ebb4056c832e7ad6ee",
+                {
+                    center: [20.0, 30.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 2,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_43472951e89c103a77ad632eb15fed97 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+        
+    
+            tile_layer_43472951e89c103a77ad632eb15fed97.addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+            var circle_marker_8d5928ac950eb491d7716fbd195c73f6 = L.circleMarker(
+                [25.21122, 55.26088],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 19.058823529411764, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_2ce93b7013c5e6f9b5feb7faf42b8773 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_63231e4a3e4335a872ab124a3c98a86c = $(`<div id="html_63231e4a3e4335a872ab124a3c98a86c" style="width: 100.0%; height: 100.0%;"><b>American School of Dubai</b><br>Dubai, United Arab Emirates<br>16 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_2ce93b7013c5e6f9b5feb7faf42b8773.setContent(html_63231e4a3e4335a872ab124a3c98a86c);
+            
+        
+
+        circle_marker_8d5928ac950eb491d7716fbd195c73f6.bindPopup(popup_2ce93b7013c5e6f9b5feb7faf42b8773)
+        ;
+
+        
+    
+    
+            circle_marker_8d5928ac950eb491d7716fbd195c73f6.bindTooltip(
+                `<div>
+                     American School of Dubai (16)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_bb8de05e63b243c65f7e60d6247b3b4d = L.circleMarker(
+                [25.20368, 55.28178],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_9b3ce0ef37598b146a4fd48950320670 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_e5fcd069ab77f8cc124e5574fbbb312c = $(`<div id="html_e5fcd069ab77f8cc124e5574fbbb312c" style="width: 100.0%; height: 100.0%;"><b>GEMS World Academy Dubai</b><br>Dubai, United Arab Emirates<br>11 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_9b3ce0ef37598b146a4fd48950320670.setContent(html_e5fcd069ab77f8cc124e5574fbbb312c);
+            
+        
+
+        circle_marker_bb8de05e63b243c65f7e60d6247b3b4d.bindPopup(popup_9b3ce0ef37598b146a4fd48950320670)
+        ;
+
+        
+    
+    
+            circle_marker_bb8de05e63b243c65f7e60d6247b3b4d.bindTooltip(
+                `<div>
+                     GEMS World Academy Dubai (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_291e05e599de1ec48758255a27b11a83 = L.circleMarker(
+                [25.19639, 55.27333],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_4e496b71dae9bfe87e9b6b166c822639 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_744578db2ccf3323e16c30b6b2b31dde = $(`<div id="html_744578db2ccf3323e16c30b6b2b31dde" style="width: 100.0%; height: 100.0%;"><b>Dubai International Academy</b><br>Dubai, United Arab Emirates<br>11 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_4e496b71dae9bfe87e9b6b166c822639.setContent(html_744578db2ccf3323e16c30b6b2b31dde);
+            
+        
+
+        circle_marker_291e05e599de1ec48758255a27b11a83.bindPopup(popup_4e496b71dae9bfe87e9b6b166c822639)
+        ;
+
+        
+    
+    
+            circle_marker_291e05e599de1ec48758255a27b11a83.bindTooltip(
+                `<div>
+                     Dubai International Academy (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_615c8390682a4ecf2c6fb48aee8330a2 = L.circleMarker(
+                [25.20111, 55.2722],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11.529411764705882, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_a1c7f8b25b07ff33c4e0cd8f579305ef = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_3372a6b836fce615e76a6f61560102e5 = $(`<div id="html_3372a6b836fce615e76a6f61560102e5" style="width: 100.0%; height: 100.0%;"><b>Dubai American Academy</b><br>Dubai, United Arab Emirates<br>8 community members<br>Curriculum: IB</div>`)[0];
+                popup_a1c7f8b25b07ff33c4e0cd8f579305ef.setContent(html_3372a6b836fce615e76a6f61560102e5);
+            
+        
+
+        circle_marker_615c8390682a4ecf2c6fb48aee8330a2.bindPopup(popup_a1c7f8b25b07ff33c4e0cd8f579305ef)
+        ;
+
+        
+    
+    
+            circle_marker_615c8390682a4ecf2c6fb48aee8330a2.bindTooltip(
+                `<div>
+                     Dubai American Academy (8)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_63cef17b14440a3f173ee368df22be2d = L.circleMarker(
+                [24.44145, 54.37535],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17.176470588235293, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_ed8bfcc4acfac158b05a7a977660826c = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_ff70ce6f44121f319ad86c650b7358f8 = $(`<div id="html_ff70ce6f44121f319ad86c650b7358f8" style="width: 100.0%; height: 100.0%;"><b>The British School Al Khubairat</b><br>Abu Dhabi, United Arab Emirates<br>14 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_ed8bfcc4acfac158b05a7a977660826c.setContent(html_ff70ce6f44121f319ad86c650b7358f8);
+            
+        
+
+        circle_marker_63cef17b14440a3f173ee368df22be2d.bindPopup(popup_ed8bfcc4acfac158b05a7a977660826c)
+        ;
+
+        
+    
+    
+            circle_marker_63cef17b14440a3f173ee368df22be2d.bindTooltip(
+                `<div>
+                     The British School Al Khubairat (14)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_8e5b5ab8f25781e2e0eea6d100ba22bb = L.circleMarker(
+                [24.45466, 54.39151],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8.705882352941178, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_786eb6e1868d7e1d4139eb9aa828f943 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_39a6c1aca83e921011c2d5eb8d40b084 = $(`<div id="html_39a6c1aca83e921011c2d5eb8d40b084" style="width: 100.0%; height: 100.0%;"><b>American Community School of Abu Dhabi</b><br>Abu Dhabi, United Arab Emirates<br>5 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_786eb6e1868d7e1d4139eb9aa828f943.setContent(html_39a6c1aca83e921011c2d5eb8d40b084);
+            
+        
+
+        circle_marker_8e5b5ab8f25781e2e0eea6d100ba22bb.bindPopup(popup_786eb6e1868d7e1d4139eb9aa828f943)
+        ;
+
+        
+    
+    
+            circle_marker_8e5b5ab8f25781e2e0eea6d100ba22bb.bindTooltip(
+                `<div>
+                     American Community School of Abu Dhabi (5)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_ad4f20de177803e06d8fc71af64b87c2 = L.circleMarker(
+                [13.77531, 100.51781],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.235294117647058, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_55b9d3c3b0fe7695934187cc6139abc2 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_f5e5409f5fe8011f894cf954e943f00d = $(`<div id="html_f5e5409f5fe8011f894cf954e943f00d" style="width: 100.0%; height: 100.0%;"><b>NIST International School</b><br>Bangkok, Thailand<br>13 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_55b9d3c3b0fe7695934187cc6139abc2.setContent(html_f5e5409f5fe8011f894cf954e943f00d);
+            
+        
+
+        circle_marker_ad4f20de177803e06d8fc71af64b87c2.bindPopup(popup_55b9d3c3b0fe7695934187cc6139abc2)
+        ;
+
+        
+    
+    
+            circle_marker_ad4f20de177803e06d8fc71af64b87c2.bindTooltip(
+                `<div>
+                     NIST International School (13)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_511a5886136a3947d5b74edff3495420 = L.circleMarker(
+                [13.7367, 100.48886],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.235294117647058, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_49d1f57eff8b27e632ca2e00eb09a786 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_6841f784378125f073324847b95d6a53 = $(`<div id="html_6841f784378125f073324847b95d6a53" style="width: 100.0%; height: 100.0%;"><b>International School Bangkok</b><br>Bangkok, Thailand<br>13 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_49d1f57eff8b27e632ca2e00eb09a786.setContent(html_6841f784378125f073324847b95d6a53);
+            
+        
+
+        circle_marker_511a5886136a3947d5b74edff3495420.bindPopup(popup_49d1f57eff8b27e632ca2e00eb09a786)
+        ;
+
+        
+    
+    
+            circle_marker_511a5886136a3947d5b74edff3495420.bindTooltip(
+                `<div>
+                     International School Bangkok (13)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1cc4cc1861c78e4ea77ab2cab9e82404 = L.circleMarker(
+                [13.74628, 100.49637],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_d8ae99f251539729ab4dac2302256428 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_8f0505900a242cf0242f4f00727fe524 = $(`<div id="html_8f0505900a242cf0242f4f00727fe524" style="width: 100.0%; height: 100.0%;"><b>Bangkok Patana School</b><br>Bangkok, Thailand<br>9 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_d8ae99f251539729ab4dac2302256428.setContent(html_8f0505900a242cf0242f4f00727fe524);
+            
+        
+
+        circle_marker_1cc4cc1861c78e4ea77ab2cab9e82404.bindPopup(popup_d8ae99f251539729ab4dac2302256428)
+        ;
+
+        
+    
+    
+            circle_marker_1cc4cc1861c78e4ea77ab2cab9e82404.bindTooltip(
+                `<div>
+                     Bangkok Patana School (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4e47623947ba5cb286989a3f8c16c217 = L.circleMarker(
+                [1.34924, 103.80621],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 19.058823529411764, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_84cf3b9dd7905c8193ce66b70439b5e2 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_cb73679f64d0f070f2425efdb709f099 = $(`<div id="html_cb73679f64d0f070f2425efdb709f099" style="width: 100.0%; height: 100.0%;"><b>Singapore American School</b><br>Singapore, Singapore<br>16 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_84cf3b9dd7905c8193ce66b70439b5e2.setContent(html_cb73679f64d0f070f2425efdb709f099);
+            
+        
+
+        circle_marker_4e47623947ba5cb286989a3f8c16c217.bindPopup(popup_84cf3b9dd7905c8193ce66b70439b5e2)
+        ;
+
+        
+    
+    
+            circle_marker_4e47623947ba5cb286989a3f8c16c217.bindTooltip(
+                `<div>
+                     Singapore American School (16)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1f702a199c9e30b4be2e6bc61d6e3cdb = L.circleMarker(
+                [1.35067, 103.82496],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11.529411764705882, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_9d364bb6c6fc718cd429a973cbf94d42 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_76843154e5b6fb8e8a6bc29e016aef2a = $(`<div id="html_76843154e5b6fb8e8a6bc29e016aef2a" style="width: 100.0%; height: 100.0%;"><b>United World College of South East Asia</b><br>Singapore, Singapore<br>8 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_9d364bb6c6fc718cd429a973cbf94d42.setContent(html_76843154e5b6fb8e8a6bc29e016aef2a);
+            
+        
+
+        circle_marker_1f702a199c9e30b4be2e6bc61d6e3cdb.bindPopup(popup_9d364bb6c6fc718cd429a973cbf94d42)
+        ;
+
+        
+    
+    
+            circle_marker_1f702a199c9e30b4be2e6bc61d6e3cdb.bindTooltip(
+                `<div>
+                     United World College of South East Asia (8)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_cea3cde34079e59e94282870516804cf = L.circleMarker(
+                [30.02473, 31.21816],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 20.0, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_e59169510a11f0a0abcda17f0b792f7e = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_e3a9b590d8bba495b32a0602e1aa0735 = $(`<div id="html_e3a9b590d8bba495b32a0602e1aa0735" style="width: 100.0%; height: 100.0%;"><b>Cairo American College</b><br>Cairo, Egypt<br>17 community members<br>Curriculum: IB</div>`)[0];
+                popup_e59169510a11f0a0abcda17f0b792f7e.setContent(html_e3a9b590d8bba495b32a0602e1aa0735);
+            
+        
+
+        circle_marker_cea3cde34079e59e94282870516804cf.bindPopup(popup_e59169510a11f0a0abcda17f0b792f7e)
+        ;
+
+        
+    
+    
+            circle_marker_cea3cde34079e59e94282870516804cf.bindTooltip(
+                `<div>
+                     Cairo American College (17)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_bfadbdf752dbf268cb120e25a36ae02a = L.circleMarker(
+                [30.04573, 31.2386],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 13.411764705882353, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_1edd6143a7eba56059cedba83e125af9 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_527986968a0711e3ac2f70eb7d8b903d = $(`<div id="html_527986968a0711e3ac2f70eb7d8b903d" style="width: 100.0%; height: 100.0%;"><b>American International School in Egypt</b><br>Cairo, Egypt<br>10 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_1edd6143a7eba56059cedba83e125af9.setContent(html_527986968a0711e3ac2f70eb7d8b903d);
+            
+        
+
+        circle_marker_bfadbdf752dbf268cb120e25a36ae02a.bindPopup(popup_1edd6143a7eba56059cedba83e125af9)
+        ;
+
+        
+    
+    
+            circle_marker_bfadbdf752dbf268cb120e25a36ae02a.bindTooltip(
+                `<div>
+                     American International School in Egypt (10)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_5f3fd1310df2d93b4c044c99c0c0ade4 = L.circleMarker(
+                [22.33068, 114.1507],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.588235294117647, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_01a4e87caea352bda56843b97d449df5 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_3e17f318a314416a37b6e7c559f092fa = $(`<div id="html_3e17f318a314416a37b6e7c559f092fa" style="width: 100.0%; height: 100.0%;"><b>Hong Kong International School</b><br>Hong Kong, China<br>7 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_01a4e87caea352bda56843b97d449df5.setContent(html_3e17f318a314416a37b6e7c559f092fa);
+            
+        
+
+        circle_marker_5f3fd1310df2d93b4c044c99c0c0ade4.bindPopup(popup_01a4e87caea352bda56843b97d449df5)
+        ;
+
+        
+    
+    
+            circle_marker_5f3fd1310df2d93b4c044c99c0c0ade4.bindTooltip(
+                `<div>
+                     Hong Kong International School (7)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_65a03a200035d728cce30d94059656f3 = L.circleMarker(
+                [22.3108, 114.15336],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_aadab0851948669b59d1e3598b00ba56 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_41658b93e644172fb5b559d523c6daab = $(`<div id="html_41658b93e644172fb5b559d523c6daab" style="width: 100.0%; height: 100.0%;"><b>Canadian International School of Hong Kong</b><br>Hong Kong, China<br>9 community members<br>Curriculum: IB</div>`)[0];
+                popup_aadab0851948669b59d1e3598b00ba56.setContent(html_41658b93e644172fb5b559d523c6daab);
+            
+        
+
+        circle_marker_65a03a200035d728cce30d94059656f3.bindPopup(popup_aadab0851948669b59d1e3598b00ba56)
+        ;
+
+        
+    
+    
+            circle_marker_65a03a200035d728cce30d94059656f3.bindTooltip(
+                `<div>
+                     Canadian International School of Hong Kong (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4657466140e50953a7ab83da5cfe9bb9 = L.circleMarker(
+                [31.24318, 121.4538],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.11764705882353, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_7db4644a18d59fd7830cc35b7ddc7c82 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_3b5c19680051d9406394183b1b7453eb = $(`<div id="html_3b5c19680051d9406394183b1b7453eb" style="width: 100.0%; height: 100.0%;"><b>Shanghai American School</b><br>Shanghai, China<br>15 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_7db4644a18d59fd7830cc35b7ddc7c82.setContent(html_3b5c19680051d9406394183b1b7453eb);
+            
+        
+
+        circle_marker_4657466140e50953a7ab83da5cfe9bb9.bindPopup(popup_7db4644a18d59fd7830cc35b7ddc7c82)
+        ;
+
+        
+    
+    
+            circle_marker_4657466140e50953a7ab83da5cfe9bb9.bindTooltip(
+                `<div>
+                     Shanghai American School (15)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_5d6e779c82a487c462eec4492527d193 = L.circleMarker(
+                [31.2218, 121.46368],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_6f5e4fb80786f13591703ab8aeb78281 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_f20706652d0a55d3f1464019a335582f = $(`<div id="html_f20706652d0a55d3f1464019a335582f" style="width: 100.0%; height: 100.0%;"><b>Concordia International School Shanghai</b><br>Shanghai, China<br>9 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_6f5e4fb80786f13591703ab8aeb78281.setContent(html_f20706652d0a55d3f1464019a335582f);
+            
+        
+
+        circle_marker_5d6e779c82a487c462eec4492527d193.bindPopup(popup_6f5e4fb80786f13591703ab8aeb78281)
+        ;
+
+        
+    
+    
+            circle_marker_5d6e779c82a487c462eec4492527d193.bindTooltip(
+                `<div>
+                     Concordia International School Shanghai (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_46db7ecfcee4c9bf472757ed8ef42b3d = L.circleMarker(
+                [39.89649, 116.40594],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 18.11764705882353, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_29386ce6ccbc5389eed19dfe2cd5abcd = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_7932ecf1475aeb7355ee98e8390f9fe0 = $(`<div id="html_7932ecf1475aeb7355ee98e8390f9fe0" style="width: 100.0%; height: 100.0%;"><b>International School of Beijing</b><br>Beijing, China<br>15 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_29386ce6ccbc5389eed19dfe2cd5abcd.setContent(html_7932ecf1475aeb7355ee98e8390f9fe0);
+            
+        
+
+        circle_marker_46db7ecfcee4c9bf472757ed8ef42b3d.bindPopup(popup_29386ce6ccbc5389eed19dfe2cd5abcd)
+        ;
+
+        
+    
+    
+            circle_marker_46db7ecfcee4c9bf472757ed8ef42b3d.bindTooltip(
+                `<div>
+                     International School of Beijing (15)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_e8fe0c86e9b2c1ccef488832bfb3273e = L.circleMarker(
+                [9.0455, 38.73195],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11.529411764705882, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_bd927cedb20e6f39541d995a585cb102 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_c0e406d6263d6bb0925f9e0728290beb = $(`<div id="html_c0e406d6263d6bb0925f9e0728290beb" style="width: 100.0%; height: 100.0%;"><b>International Community School of Addis Ababa</b><br>Addis Ababa, Ethiopia<br>8 community members<br>Curriculum: British (IGCSE / A-Level)</div>`)[0];
+                popup_bd927cedb20e6f39541d995a585cb102.setContent(html_c0e406d6263d6bb0925f9e0728290beb);
+            
+        
+
+        circle_marker_e8fe0c86e9b2c1ccef488832bfb3273e.bindPopup(popup_bd927cedb20e6f39541d995a585cb102)
+        ;
+
+        
+    
+    
+            circle_marker_e8fe0c86e9b2c1ccef488832bfb3273e.bindTooltip(
+                `<div>
+                     International Community School of Addis Ababa (8)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_9b70b50c14b55978a98071c8608195c7 = L.circleMarker(
+                [9.04488, 38.72512],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_b2c1ddb48eaf77b026adc580f5007c12 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_cdc737bb3e4c3fbd8f4d4f90cbd0efc9 = $(`<div id="html_cdc737bb3e4c3fbd8f4d4f90cbd0efc9" style="width: 100.0%; height: 100.0%;"><b>Sandford International School</b><br>Addis Ababa, Ethiopia<br>11 community members<br>Curriculum: IB</div>`)[0];
+                popup_b2c1ddb48eaf77b026adc580f5007c12.setContent(html_cdc737bb3e4c3fbd8f4d4f90cbd0efc9);
+            
+        
+
+        circle_marker_9b70b50c14b55978a98071c8608195c7.bindPopup(popup_b2c1ddb48eaf77b026adc580f5007c12)
+        ;
+
+        
+    
+    
+            circle_marker_9b70b50c14b55978a98071c8608195c7.bindTooltip(
+                `<div>
+                     Sandford International School (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_ab942b770963d406e89492371ca9a48b = L.circleMarker(
+                [39.72282, -104.99337],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 13.411764705882353, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_be3001b8463d1e62a92e8625aacfc5c3 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_c8b76f6372230ffe1021a382a78435ba = $(`<div id="html_c8b76f6372230ffe1021a382a78435ba" style="width: 100.0%; height: 100.0%;"><b>Denver International School</b><br>Denver, United States<br>10 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_be3001b8463d1e62a92e8625aacfc5c3.setContent(html_c8b76f6372230ffe1021a382a78435ba);
+            
+        
+
+        circle_marker_ab942b770963d406e89492371ca9a48b.bindPopup(popup_be3001b8463d1e62a92e8625aacfc5c3)
+        ;
+
+        
+    
+    
+            circle_marker_ab942b770963d406e89492371ca9a48b.bindTooltip(
+                `<div>
+                     Denver International School (10)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_947461ba59eedcee204b25656470405f = L.circleMarker(
+                [39.7272, -105.00477],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_eb9f072327272f745917b30fdc30e07c = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_24f59d9f9e9124c3ecf318082ce84c08 = $(`<div id="html_24f59d9f9e9124c3ecf318082ce84c08" style="width: 100.0%; height: 100.0%;"><b>Graland Country Day School</b><br>Denver, United States<br>9 community members<br>Curriculum: British (IGCSE / A-Level)</div>`)[0];
+                popup_eb9f072327272f745917b30fdc30e07c.setContent(html_24f59d9f9e9124c3ecf318082ce84c08);
+            
+        
+
+        circle_marker_947461ba59eedcee204b25656470405f.bindPopup(popup_eb9f072327272f745917b30fdc30e07c)
+        ;
+
+        
+    
+    
+            circle_marker_947461ba59eedcee204b25656470405f.bindTooltip(
+                `<div>
+                     Graland Country Day School (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_4bf6d327880b6e4a8ae9d965fdeafe43 = L.circleMarker(
+                [38.91545, -77.03124],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_c7d4597b03daf0c6ebb768992b24c4bb = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_4d1bbc6a341d449765915f99d59468d2 = $(`<div id="html_4d1bbc6a341d449765915f99d59468d2" style="width: 100.0%; height: 100.0%;"><b>Washington International School</b><br>Washington, United States<br>11 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_c7d4597b03daf0c6ebb768992b24c4bb.setContent(html_4d1bbc6a341d449765915f99d59468d2);
+            
+        
+
+        circle_marker_4bf6d327880b6e4a8ae9d965fdeafe43.bindPopup(popup_c7d4597b03daf0c6ebb768992b24c4bb)
+        ;
+
+        
+    
+    
+            circle_marker_4bf6d327880b6e4a8ae9d965fdeafe43.bindTooltip(
+                `<div>
+                     Washington International School (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_45b8c28b0a6c259e1755e51c98e89c9e = L.circleMarker(
+                [29.38555, 47.98087],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_7a585558345b42df86660cf4af6c1208 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_0b8c26a56cbcb59cc155303d351ab906 = $(`<div id="html_0b8c26a56cbcb59cc155303d351ab906" style="width: 100.0%; height: 100.0%;"><b>American School of Kuwait</b><br>Kuwait City, Kuwait<br>11 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_7a585558345b42df86660cf4af6c1208.setContent(html_0b8c26a56cbcb59cc155303d351ab906);
+            
+        
+
+        circle_marker_45b8c28b0a6c259e1755e51c98e89c9e.bindPopup(popup_7a585558345b42df86660cf4af6c1208)
+        ;
+
+        
+    
+    
+            circle_marker_45b8c28b0a6c259e1755e51c98e89c9e.bindTooltip(
+                `<div>
+                     American School of Kuwait (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_51a46addba2b981b3eb2cb7c19e584f8 = L.circleMarker(
+                [19.06132, 72.88277],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.235294117647058, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_5c58df655a90822506386f308d1c981b = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_0f8e6fe21c829071e1aa08c0dfdd5910 = $(`<div id="html_0f8e6fe21c829071e1aa08c0dfdd5910" style="width: 100.0%; height: 100.0%;"><b>American School of Bombay</b><br>Mumbai, India<br>13 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_5c58df655a90822506386f308d1c981b.setContent(html_0f8e6fe21c829071e1aa08c0dfdd5910);
+            
+        
+
+        circle_marker_51a46addba2b981b3eb2cb7c19e584f8.bindPopup(popup_5c58df655a90822506386f308d1c981b)
+        ;
+
+        
+    
+    
+            circle_marker_51a46addba2b981b3eb2cb7c19e584f8.bindTooltip(
+                `<div>
+                     American School of Bombay (13)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_915df25b3be032c23175d90ba4bd1547 = L.circleMarker(
+                [28.59922, 77.20719],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.588235294117647, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_851f944e67b0481997b122051e8871aa = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_88aee5e8cb5c507941b7a8207e2883aa = $(`<div id="html_88aee5e8cb5c507941b7a8207e2883aa" style="width: 100.0%; height: 100.0%;"><b>American Embassy School New Delhi</b><br>New Delhi, India<br>7 community members<br>Curriculum: British (IGCSE / A-Level)</div>`)[0];
+                popup_851f944e67b0481997b122051e8871aa.setContent(html_88aee5e8cb5c507941b7a8207e2883aa);
+            
+        
+
+        circle_marker_915df25b3be032c23175d90ba4bd1547.bindPopup(popup_851f944e67b0481997b122051e8871aa)
+        ;
+
+        
+    
+    
+            circle_marker_915df25b3be032c23175d90ba4bd1547.bindTooltip(
+                `<div>
+                     American Embassy School New Delhi (7)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_19bbb215d5ce21bea67d63a55efcada3 = L.circleMarker(
+                [-1.27333, 36.81865],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 11.529411764705882, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_aed7e3911f7ff93addaae406e8d3b54e = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_8b109af40f7279c4a1968b6b66275ee9 = $(`<div id="html_8b109af40f7279c4a1968b6b66275ee9" style="width: 100.0%; height: 100.0%;"><b>International School of Kenya</b><br>Nairobi, Kenya<br>8 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_aed7e3911f7ff93addaae406e8d3b54e.setContent(html_8b109af40f7279c4a1968b6b66275ee9);
+            
+        
+
+        circle_marker_19bbb215d5ce21bea67d63a55efcada3.bindPopup(popup_aed7e3911f7ff93addaae406e8d3b54e)
+        ;
+
+        
+    
+    
+            circle_marker_19bbb215d5ce21bea67d63a55efcada3.bindTooltip(
+                `<div>
+                     International School of Kenya (8)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_1b39fd46bad8c407a4aa6e0a734cf0a5 = L.circleMarker(
+                [35.67573, 139.6594],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_f68fd76c78aa9fb461e79f06983db9a4 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_c4b8a5a1576fbc258983c84e243999a5 = $(`<div id="html_c4b8a5a1576fbc258983c84e243999a5" style="width: 100.0%; height: 100.0%;"><b>The American School in Japan</b><br>Tokyo, Japan<br>9 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_f68fd76c78aa9fb461e79f06983db9a4.setContent(html_c4b8a5a1576fbc258983c84e243999a5);
+            
+        
+
+        circle_marker_1b39fd46bad8c407a4aa6e0a734cf0a5.bindPopup(popup_f68fd76c78aa9fb461e79f06983db9a4)
+        ;
+
+        
+    
+    
+            circle_marker_1b39fd46bad8c407a4aa6e0a734cf0a5.bindTooltip(
+                `<div>
+                     The American School in Japan (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_ecf1a61c24c4cff4c71d41aefa47bd8d = L.circleMarker(
+                [51.52517, -0.12383],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_4b5c2ed5d41a5d62da9136c02e325c3c = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_90a4d60c0695099412fb6a82fa20b35e = $(`<div id="html_90a4d60c0695099412fb6a82fa20b35e" style="width: 100.0%; height: 100.0%;"><b>The American School in London</b><br>London, United Kingdom<br>9 community members<br>Curriculum: IB</div>`)[0];
+                popup_4b5c2ed5d41a5d62da9136c02e325c3c.setContent(html_90a4d60c0695099412fb6a82fa20b35e);
+            
+        
+
+        circle_marker_ecf1a61c24c4cff4c71d41aefa47bd8d.bindPopup(popup_4b5c2ed5d41a5d62da9136c02e325c3c)
+        ;
+
+        
+    
+    
+            circle_marker_ecf1a61c24c4cff4c71d41aefa47bd8d.bindTooltip(
+                `<div>
+                     The American School in London (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_b4bec9a2b1068a63bc2b6c0fe8a7b2db = L.circleMarker(
+                [46.19905, 6.13387],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 16.235294117647058, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_d83aff138181a9f73fafc508404b2e0f = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_8ce89daa8a5c6dcfc0fcfc941291941c = $(`<div id="html_8ce89daa8a5c6dcfc0fcfc941291941c" style="width: 100.0%; height: 100.0%;"><b>International School of Geneva</b><br>Geneva, Switzerland<br>13 community members<br>Curriculum: IB</div>`)[0];
+                popup_d83aff138181a9f73fafc508404b2e0f.setContent(html_8ce89daa8a5c6dcfc0fcfc941291941c);
+            
+        
+
+        circle_marker_b4bec9a2b1068a63bc2b6c0fe8a7b2db.bindPopup(popup_d83aff138181a9f73fafc508404b2e0f)
+        ;
+
+        
+    
+    
+            circle_marker_b4bec9a2b1068a63bc2b6c0fe8a7b2db.bindTooltip(
+                `<div>
+                     International School of Geneva (13)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_3e5980522f70670f7732c55a0d1b4102 = L.circleMarker(
+                [3.14473, 101.69401],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 17.176470588235293, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_1f09c8a712cda0956e3baa65f4b82739 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_53a7cafc03c95a90d56a229d92cee08f = $(`<div id="html_53a7cafc03c95a90d56a229d92cee08f" style="width: 100.0%; height: 100.0%;"><b>International School of Kuala Lumpur</b><br>Kuala Lumpur, Malaysia<br>14 community members<br>Curriculum: Canadian</div>`)[0];
+                popup_1f09c8a712cda0956e3baa65f4b82739.setContent(html_53a7cafc03c95a90d56a229d92cee08f);
+            
+        
+
+        circle_marker_3e5980522f70670f7732c55a0d1b4102.bindPopup(popup_1f09c8a712cda0956e3baa65f4b82739)
+        ;
+
+        
+    
+    
+            circle_marker_3e5980522f70670f7732c55a0d1b4102.bindTooltip(
+                `<div>
+                     International School of Kuala Lumpur (14)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_39910b58979f330cffba16d158900545 = L.circleMarker(
+                [-6.21054, 106.8655],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.588235294117647, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_5b22dcfe8ee4ee5bcb7435dd19d11d4b = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_55a1e6a68e228d01e37776bdbcaa7123 = $(`<div id="html_55a1e6a68e228d01e37776bdbcaa7123" style="width: 100.0%; height: 100.0%;"><b>Jakarta Intercultural School</b><br>Jakarta, Indonesia<br>7 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_5b22dcfe8ee4ee5bcb7435dd19d11d4b.setContent(html_55a1e6a68e228d01e37776bdbcaa7123);
+            
+        
+
+        circle_marker_39910b58979f330cffba16d158900545.bindPopup(popup_5b22dcfe8ee4ee5bcb7435dd19d11d4b)
+        ;
+
+        
+    
+    
+            circle_marker_39910b58979f330cffba16d158900545.bindTooltip(
+                `<div>
+                     Jakarta Intercultural School (7)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_dcf2f5f5bcd0a12f24a24053ecf1bcdb = L.circleMarker(
+                [25.27546, 51.51481],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_18160112b468124bf208bab71a7af3f1 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_54c1145f978076e4de1c05a76ab41a0c = $(`<div id="html_54c1145f978076e4de1c05a76ab41a0c" style="width: 100.0%; height: 100.0%;"><b>American School of Doha</b><br>Doha, Qatar<br>9 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_18160112b468124bf208bab71a7af3f1.setContent(html_54c1145f978076e4de1c05a76ab41a0c);
+            
+        
+
+        circle_marker_dcf2f5f5bcd0a12f24a24053ecf1bcdb.bindPopup(popup_18160112b468124bf208bab71a7af3f1)
+        ;
+
+        
+    
+    
+            circle_marker_dcf2f5f5bcd0a12f24a24053ecf1bcdb.bindTooltip(
+                `<div>
+                     American School of Doha (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_efe093d0d6501e3a7aceddbefe92db8e = L.circleMarker(
+                [23.59998, 58.39491],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_fc7ea66e7a89a0efd833bc4947d10ccb = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_5a47e5761d0a98406e305f520c26589e = $(`<div id="html_5a47e5761d0a98406e305f520c26589e" style="width: 100.0%; height: 100.0%;"><b>The American International School of Muscat</b><br>Muscat, Oman<br>11 community members<br>Curriculum: British (IGCSE / A-Level)</div>`)[0];
+                popup_fc7ea66e7a89a0efd833bc4947d10ccb.setContent(html_5a47e5761d0a98406e305f520c26589e);
+            
+        
+
+        circle_marker_efe093d0d6501e3a7aceddbefe92db8e.bindPopup(popup_fc7ea66e7a89a0efd833bc4947d10ccb)
+        ;
+
+        
+    
+    
+            circle_marker_efe093d0d6501e3a7aceddbefe92db8e.bindTooltip(
+                `<div>
+                     The American International School of Muscat (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_fe1332cc8c60f03715eb749cd55eaf2b = L.circleMarker(
+                [-23.55572, -46.6514],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.588235294117647, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_9dd710d4990b03930e55f72e72193816 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_d44aa1f4dacfd299ae325f4e2fd15f79 = $(`<div id="html_d44aa1f4dacfd299ae325f4e2fd15f79" style="width: 100.0%; height: 100.0%;"><b>Graded - The American School of Sao Paulo</b><br>Sao Paulo, Brazil<br>7 community members<br>Curriculum: British (IGCSE / A-Level)</div>`)[0];
+                popup_9dd710d4990b03930e55f72e72193816.setContent(html_d44aa1f4dacfd299ae325f4e2fd15f79);
+            
+        
+
+        circle_marker_fe1332cc8c60f03715eb749cd55eaf2b.bindPopup(popup_9dd710d4990b03930e55f72e72193816)
+        ;
+
+        
+    
+    
+            circle_marker_fe1332cc8c60f03715eb749cd55eaf2b.bindTooltip(
+                `<div>
+                     Graded - The American School of Sao Paulo (7)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_f96db56dd62f9500335224cffa5fb975 = L.circleMarker(
+                [6.52345, 3.39405],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 19.058823529411764, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_b279829a703920ae021c28a1368c08b9 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_c2b5b3df7672bd623a00dcba5404afca = $(`<div id="html_c2b5b3df7672bd623a00dcba5404afca" style="width: 100.0%; height: 100.0%;"><b>American International School of Lagos</b><br>Lagos, Nigeria<br>16 community members<br>Curriculum: IB</div>`)[0];
+                popup_b279829a703920ae021c28a1368c08b9.setContent(html_c2b5b3df7672bd623a00dcba5404afca);
+            
+        
+
+        circle_marker_f96db56dd62f9500335224cffa5fb975.bindPopup(popup_b279829a703920ae021c28a1368c08b9)
+        ;
+
+        
+    
+    
+            circle_marker_f96db56dd62f9500335224cffa5fb975.bindTooltip(
+                `<div>
+                     American International School of Lagos (16)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_104b3d477a7bf899aba01b82d9a24f37 = L.circleMarker(
+                [5.6003, -0.18117],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10.588235294117647, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_2faef899aebd2e93ebf5d1d6672dc2b6 = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_6f01eb872a14ee6f81f37dd25c883d86 = $(`<div id="html_6f01eb872a14ee6f81f37dd25c883d86" style="width: 100.0%; height: 100.0%;"><b>Lincoln Community School Accra</b><br>Accra, Ghana<br>7 community members<br>Curriculum: IB</div>`)[0];
+                popup_2faef899aebd2e93ebf5d1d6672dc2b6.setContent(html_6f01eb872a14ee6f81f37dd25c883d86);
+            
+        
+
+        circle_marker_104b3d477a7bf899aba01b82d9a24f37.bindPopup(popup_2faef899aebd2e93ebf5d1d6672dc2b6)
+        ;
+
+        
+    
+    
+            circle_marker_104b3d477a7bf899aba01b82d9a24f37.bindTooltip(
+                `<div>
+                     Lincoln Community School Accra (7)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_50590c4549a29ea3858d74fa4c63f154 = L.circleMarker(
+                [21.02524, 105.82446],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 14.352941176470589, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_6c2eabf54c72aaa784f3018687973e0f = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_7410db26da1eef63115b3aed7353df3f = $(`<div id="html_7410db26da1eef63115b3aed7353df3f" style="width: 100.0%; height: 100.0%;"><b>United Nations International School of Hanoi</b><br>Hanoi, Vietnam<br>11 community members<br>Curriculum: Combined IB/American</div>`)[0];
+                popup_6c2eabf54c72aaa784f3018687973e0f.setContent(html_7410db26da1eef63115b3aed7353df3f);
+            
+        
+
+        circle_marker_50590c4549a29ea3858d74fa4c63f154.bindPopup(popup_6c2eabf54c72aaa784f3018687973e0f)
+        ;
+
+        
+    
+    
+            circle_marker_50590c4549a29ea3858d74fa4c63f154.bindTooltip(
+                `<div>
+                     United Nations International School of Hanoi (11)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_marker_0150bcdb74953cd0508559ca13c7fdcf = L.circleMarker(
+                [10.80967, 106.63771],
+                {"bubblingMouseEvents": true, "color": "#0b6b78", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#17A2B8", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 12.470588235294118, "stroke": true, "weight": 1}
+            ).addTo(map_c366d687a25775ebb4056c832e7ad6ee);
+        
+    
+        var popup_670b5633a12fde793daaeee363c008ab = L.popup({"maxWidth": 260});
+
+        
+            
+                var html_8e712c04274fefe532b85e1edca0ecba = $(`<div id="html_8e712c04274fefe532b85e1edca0ecba" style="width: 100.0%; height: 100.0%;"><b>International School Ho Chi Minh City</b><br>Ho Chi Minh City, Vietnam<br>9 community members<br>Curriculum: American (AP)</div>`)[0];
+                popup_670b5633a12fde793daaeee363c008ab.setContent(html_8e712c04274fefe532b85e1edca0ecba);
+            
+        
+
+        circle_marker_0150bcdb74953cd0508559ca13c7fdcf.bindPopup(popup_670b5633a12fde793daaeee363c008ab)
+        ;
+
+        
+    
+    
+            circle_marker_0150bcdb74953cd0508559ca13c7fdcf.bindTooltip(
+                `<div>
+                     International School Ho Chi Minh City (9)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
