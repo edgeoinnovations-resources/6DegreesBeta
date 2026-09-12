@@ -103,6 +103,11 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
   padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; user-select: none;
 }
 .checkrow label .swatch { width: 12px; height: 12px; border-radius: 3px; }
+/* Selected sub-tab within a view (Who knows whom). */
+.checkrow label.sel {
+  background: #eef6f8; border-color: var(--turquoise);
+  color: var(--turquoise-dark); font-weight: 600;
+}
 
 /* legend */
 .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
@@ -199,4 +204,42 @@ svg text { font-family: var(--font); }
   .tab-nav { width: 56px; }
   .tab-btn span.tab-label { display: none; }
   .side-panel { width: 100%; }
+}
+
+/* ── Explore landing screen (beta feedback: de-rank the analytical views) ───── */
+.explore-grid {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.explore-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 18px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel); font: inherit; color: var(--ink);
+  text-align: left; cursor: pointer;
+  transition: border-color .12s, box-shadow .12s, transform .12s;
+}
+.explore-card:hover {
+  border-color: var(--turquoise);
+  box-shadow: 0 6px 18px -10px rgba(11,107,120,.45);
+  transform: translateY(-1px);
+}
+.explore-card .ec-title { font-size: 16px; font-weight: 650; }
+.explore-card .ec-blurb { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.explore-card .ec-go { margin-top: 4px; font-size: 12.5px; font-weight: 600; color: var(--turquoise-dark); }
+
+.back-link {
+  display: inline-block; margin-bottom: 12px; padding: 6px 10px;
+  border: 1px solid var(--line); border-radius: 7px;
+  background: var(--panel); color: var(--muted);
+  font: inherit; font-size: 12.5px; cursor: pointer;
+}
+.back-link:hover { border-color: var(--turquoise); color: var(--turquoise-dark); }
+
+/* Seeded beta-group records whose schools/years are still guesses. */
+.badge-unconfirmed {
+  display: inline-block; margin-left: 6px; padding: 1px 7px;
+  border: 1px dashed var(--orange); border-radius: 999px;
+  background: #fff4ef; color: #b8410f;
+  font-size: 10.5px; font-weight: 600; white-space: nowrap;
+  vertical-align: middle; cursor: help;
 }

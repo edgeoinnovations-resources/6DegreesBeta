@@ -9,11 +9,11 @@
 // A "Spread" slider loosens the forces in either mode so the web isn't clustered tight.
 import { el } from '../widgets.js';
 import {
-  DEGREE_META, DEGREES, degreeColor, regionOf, regionColor, REGION_COLORS, ACCENT,
+  DEGREE_META, DEGREES, degreeColor, regionOf, regionColor, REGION_COLORS, roleCategory, ACCENT,
 } from '../degrees.js';
 
 export const view = {
-  id: 'network', num: 2, title: 'Network',
+  id: 'network', num: 4, title: 'Network',
   _sim: null, _g3d: null, _orbit: null,
   render(root, ctx) {
     const { data, idx, counts, tooltip, state } = ctx;
@@ -122,7 +122,7 @@ export const view = {
     const node2d = zoomG.append('g').selectAll('circle').data(nodes).join('circle')
       .attr('stroke', '#fff').attr('stroke-width', 1).style('cursor', 'pointer')
       .on('mousemove', (ev, d) => tooltip.show(
-        `<strong>${d.t.FULL_NAME}</strong><br>${d.t.SPECIALIZATION} · ${d.t.NATIONALITY}<br>${counts.get(d.id) || 0} connections · ${d.t.YEARS_EXPERIENCE} yrs`, ev.clientX, ev.clientY))
+        `<strong>${d.t.FULL_NAME}</strong>${meta(d.t) ? `<br>${meta(d.t)}` : ''}<br>${counts.get(d.id) || 0} connections${d.t.YEARS_EXPERIENCE ? ` · ${d.t.YEARS_EXPERIENCE} yrs` : ''}`, ev.clientX, ev.clientY))
       .on('mouseleave', () => tooltip.hide())
       .on('click', (ev, d) => openPanel(d));
 
@@ -246,13 +246,13 @@ export const view = {
       panel.append(
         el('button.close', { text: '×', onclick: () => panel.classList.remove('open') }),
         el('h3', { text: d.t.FULL_NAME }),
-        el('div.sub', { text: `${d.t.SPECIALIZATION} · ${d.t.NATIONALITY} · ${d.t.YEARS_EXPERIENCE} yrs · ${counts.get(d.id) || 0} connections` }),
+        el('div.sub', { text: [meta(d.t), d.t.YEARS_EXPERIENCE ? `${d.t.YEARS_EXPERIENCE} yrs` : '', `${counts.get(d.id) || 0} connections`].filter(Boolean).join(' · ') }),
         el('div', {}, [el('button.btn.ghost', { text: 'Open in ego graph →', onclick: () => ctx.navigateTo('ego', { teacher: d.id }) })]),
         el('h4', { text: 'Postings', style: 'margin:14px 0 4px;font-size:13px;' }),
         el('ul', {}, postings.map((p) => {
           const s = idx.schoolById.get(p.SCHOOL_ID) || {};
-          return el('li', { html: `<strong>${p.POSITION_TITLE}</strong> — ${s.SCHOOL_NAME || p.SCHOOL_ID}` +
-            `<small>${s.CITY || ''}, ${s.COUNTRY || ''} · ${(p.START_DATE || '').slice(0, 4)}–${(p.END_DATE || '').slice(0, 4) || 'present'} · ${p.SUBJECTS_TAUGHT || ''}</small>` });
+          return el('li', { html: `<strong>${roleCategory(p.POSITION_TITLE)}</strong> — ${s.SCHOOL_NAME || p.SCHOOL_ID}` +
+            `<small>${s.CITY || ''}, ${s.COUNTRY || ''} · ${(p.START_DATE || '').slice(0, 4)}–${(p.END_DATE || '').slice(0, 4) || 'present'}</small>` });
         })),
       );
       panel.classList.add('open');
@@ -284,3 +284,7 @@ function homeCountry(t, idx) {
   const current = postings.find((p) => p.IS_CURRENT_POSITION === 'Yes') || postings[postings.length - 1];
   return (idx.schoolById.get(current.SCHOOL_ID) || {}).COUNTRY || null;
 }
+
+// Specialization/nationality are blank on the seeded beta-group records, so join only
+// what's actually present rather than emitting orphan " · " separators.
+const meta = (t) => [t.SPECIALIZATION, t.NATIONALITY].filter(Boolean).join(' · ');

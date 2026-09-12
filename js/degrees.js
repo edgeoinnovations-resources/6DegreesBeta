@@ -24,6 +24,37 @@ export const degreeColor = (d) => (DEGREE_META[d] || {}).color || '#cccccc';
 export const degreeLabel = (d) => (DEGREE_META[d] || {}).label || `Degree ${d}`;
 export const degreeShort = (d) => (DEGREE_META[d] || {}).short || `Degree ${d}`;
 
+// ── Role categories ────────────────────────────────────────────────────────
+// Linda (7 Jun 2026): "we talked about NOT having teaching assignment, because that gets
+// tricky - hard to list them all, so many people cross divisions or change jobs, etc.
+// I think it would be helpful to have basics - student, faculty, staff, administrator."
+//
+// So specific job titles, subjects-taught, grade levels and departments are no longer
+// surfaced anywhere in the UI. Each posting is bucketed into one of these four instead.
+// 'Student' exists for the TCK case Linda raised (someone who attended an international
+// school and later taught in one); no demo record uses it yet.
+export const ROLE_CATEGORIES = ['Student', 'Faculty', 'Staff', 'Administrator'];
+
+const ROLE_BY_TITLE = {
+  'Student': 'Student',
+  'Teacher': 'Faculty', 'Senior Teacher': 'Faculty', 'Head of Department': 'Faculty',
+  'Subject Coordinator': 'Faculty', 'PYP Coordinator': 'Faculty', 'MYP Coordinator': 'Faculty',
+  'IB DP Coordinator': 'Faculty', 'Curriculum Coordinator': 'Faculty', 'Teaching Assistant': 'Faculty',
+  'Counselor': 'Staff', 'Librarian': 'Staff', 'Athletic Director': 'Staff',
+  'Dean of Students': 'Administrator', 'Deputy Head': 'Administrator', 'Principal': 'Administrator',
+  'Vice Principal': 'Administrator', 'Head of School': 'Administrator',
+};
+
+// A posting's role category. Unknown titles fall back to Faculty, which is the safe
+// default for this community (and is what ~80% of records are).
+export const roleCategory = (positionTitle) => ROLE_BY_TITLE[positionTitle] || 'Faculty';
+
+// The role categories a teacher has held, in the canonical order above.
+export function rolesOf(idx, teacherId) {
+  const seen = new Set((idx.postingsByTeacher.get(teacherId) || []).map((p) => roleCategory(p.POSITION_TITLE)));
+  return ROLE_CATEGORIES.filter((r) => seen.has(r));
+}
+
 // ── Region grouping (coarse, for color-by-region modes) ─────────────────────
 const REGION_BY_COUNTRY = {
   'United Arab Emirates': 'Middle East', 'Qatar': 'Middle East', 'Saudi Arabia': 'Middle East',
@@ -71,6 +102,15 @@ export function buildIndexes(data) {
 }
 
 export const teacherName = (idx, id) => (idx.teacherById.get(id) || {}).FULL_NAME || id;
+
+// The six of us are seeded into the demo graph with INFERRED schools and years
+// (see data/beta_group.json). Anything not yet corrected by its owner is marked in the
+// UI so nobody mistakes a placeholder for their real history.
+export const needsConfirming = (t) => !!(t && t.IS_BETA_GROUP && !t.DETAILS_CONFIRMED);
+export const CONFIRM_HINT = 'Seeded from the group chat — schools and years are guesses, not your real history. Tell Paul the right ones.';
+export const confirmBadge = (t) => (needsConfirming(t)
+  ? ` <span class="badge-unconfirmed" title="${CONFIRM_HINT}">details to confirm</span>`
+  : '');
 
 // ── Adjacency & connection counts ───────────────────────────────────────────
 // adjacency: Map<teacherId, Array<{ other, degree, type, label, time, overlap, verified }>>

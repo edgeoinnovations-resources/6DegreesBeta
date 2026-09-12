@@ -5,12 +5,12 @@ import { el, teacherTypeahead } from '../widgets.js';
 import { DEGREE_META, DEGREES, degreeColor, degreeLabel, ACCENT, teacherName } from '../degrees.js';
 
 export const view = {
-  id: 'ego', num: 1, title: 'Ego graph',
+  id: 'ego', num: 1, title: 'Connections',
   render(root, ctx) {
     const { data, idx, adj, counts, tooltip, state } = ctx;
 
     root.appendChild(el('div.view-head', {}, [
-      el('h2', { text: 'Ego graph' }),
+      el('h2', { text: 'Your connections' }),
       el('p', { html: 'Concentric rings around one teacher. Ring = relationship degree (1 closest … 6 outermost), color = degree, node size = total connections. Hover a node for <em>why</em> the link exists; click any node to re-center. The orange badge marks a <strong>mutually verified</strong> link.' }),
     ]));
 

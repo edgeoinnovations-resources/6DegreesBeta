@@ -3,7 +3,7 @@
 // COMPARED teachers were in the same school / city / country at the same time, that span is
 // highlighted — you watch a relationship degree forming. Defaults to T001 vs T002 (same-school overlap).
 import { el, teacherTypeahead } from '../widgets.js';
-import { regionOf, regionColor, parseYear, postingYears, ACCENT, PRIMARY } from '../degrees.js';
+import { regionOf, regionColor, parseYear, postingYears, roleCategory, ACCENT, PRIMARY } from '../degrees.js';
 
 const NOW = 2026;
 
@@ -18,8 +18,11 @@ export const view = {
     ]));
 
     let colorBy = 'region';
-    let A = state.params.compareA || 'T001';
-    let B = state.params.compareB || 'T002';
+    // Default to two of the beta group who genuinely overlapped at one school, so the
+    // highlighted co-location band is a real one people recognise.
+    const seeded = (id, fallback) => (ctx.idx.teacherById.has(id) ? id : fallback);
+    let A = state.params.compareA || seeded('B001', 'T001');
+    let B = state.params.compareB || seeded('B002', 'T002');
 
     const controls = el('div.controls');
     const aBox = el('div.control-group', {}, [el('label', { text: 'Compare A' })]);
@@ -106,7 +109,7 @@ export const view = {
             .attr('fill', colorFor(s)).attr('stroke', isPair ? '#fff' : 'none').attr('stroke-width', 0.5)
             .style('cursor', 'pointer')
             .on('mousemove', (ev) => tooltip.show(
-              `<strong>${t.FULL_NAME}</strong><br>${p.POSITION_TITLE} — ${s.SCHOOL_NAME}<br>${s.CITY}, ${s.COUNTRY} · ${start}–${end >= NOW ? 'present' : end}`,
+              `<strong>${t.FULL_NAME}</strong><br>${roleCategory(p.POSITION_TITLE)} — ${s.SCHOOL_NAME}<br>${s.CITY}, ${s.COUNTRY} · ${start}–${end >= NOW ? 'present' : end}`,
               ev.clientX, ev.clientY))
             .on('mouseleave', () => tooltip.hide());
         });
