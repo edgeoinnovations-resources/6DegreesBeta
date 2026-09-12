@@ -57,17 +57,50 @@ export function rolesOf(idx, teacherId) {
 
 // ── Region grouping (coarse, for color-by-region modes) ─────────────────────
 const REGION_BY_COUNTRY = {
-  'United Arab Emirates': 'Middle East', 'Qatar': 'Middle East', 'Saudi Arabia': 'Middle East',
-  'Kuwait': 'Middle East', 'Oman': 'Middle East', 'Jordan': 'Middle East', 'Egypt': 'Middle East',
-  'Singapore': 'Asia', 'Thailand': 'Asia', 'China': 'Asia', 'Hong Kong': 'Asia', 'Japan': 'Asia',
-  'South Korea': 'Asia', 'Malaysia': 'Asia', 'India': 'Asia', 'Vietnam': 'Asia', 'Indonesia': 'Asia',
-  'United Kingdom': 'Europe', 'Germany': 'Europe', 'France': 'Europe', 'Switzerland': 'Europe',
-  'Netherlands': 'Europe', 'Spain': 'Europe', 'Italy': 'Europe',
-  'United States': 'Americas', 'Canada': 'Americas', 'Brazil': 'Americas', 'Mexico': 'Americas',
-  'Argentina': 'Americas', 'Chile': 'Americas', 'Colombia': 'Americas',
-  'Nigeria': 'Africa', 'Kenya': 'Africa', 'South Africa': 'Africa', 'Ghana': 'Africa',
-  'Morocco': 'Africa', 'Tanzania': 'Africa', 'Ethiopia': 'Africa',
-  'Australia': 'Oceania', 'New Zealand': 'Oceania',
+  // Covers every country in data/demo_data.json (126 of them, from the ISR school
+  // list). Generated from GeoNames continent codes, with the Middle East split out
+  // by hand because the app treats it as its own region -- and Egypt counts as
+  // Middle East here, which is the convention the first version already used.
+  // Middle East
+  'Egypt': 'Middle East', 'Iran': 'Middle East', 'Iraq': 'Middle East', 'Israel': 'Middle East',
+  'Jordan': 'Middle East', 'Kuwait': 'Middle East', 'Lebanon': 'Middle East',
+  'Oman': 'Middle East', 'Palestine': 'Middle East', 'Qatar': 'Middle East',
+  'Saudi Arabia': 'Middle East', 'Syria': 'Middle East', 'United Arab Emirates': 'Middle East',
+  'Yemen': 'Middle East',
+  // Asia
+  'Afghanistan': 'Asia', 'Armenia': 'Asia', 'Azerbaijan': 'Asia', 'Bangladesh': 'Asia',
+  'Cambodia': 'Asia', 'China': 'Asia', 'Georgia': 'Asia', 'Hong Kong': 'Asia', 'India': 'Asia',
+  'Indonesia': 'Asia', 'Japan': 'Asia', 'Kazakhstan': 'Asia', 'Kyrgyzstan': 'Asia', 'Laos': 'Asia',
+  'Macau': 'Asia', 'Malaysia': 'Asia', 'Myanmar': 'Asia', 'Nepal': 'Asia', 'Pakistan': 'Asia',
+  'Philippines': 'Asia', 'Singapore': 'Asia', 'Sri Lanka': 'Asia', 'Taiwan': 'Asia',
+  'Thailand': 'Asia', 'Turkmenistan': 'Asia', 'Uzbekistan': 'Asia', 'Vietnam': 'Asia',
+  // Europe
+  'Albania': 'Europe', 'Austria': 'Europe', 'Belarus': 'Europe', 'Belgium': 'Europe',
+  'Bulgaria': 'Europe', 'Croatia': 'Europe', 'Cyprus': 'Europe', 'Czech Republic': 'Europe',
+  'Denmark': 'Europe', 'Estonia': 'Europe', 'Finland': 'Europe', 'France': 'Europe',
+  'Germany': 'Europe', 'Greece': 'Europe', 'Hungary': 'Europe', 'Italy': 'Europe',
+  'Latvia': 'Europe', 'Lithuania': 'Europe', 'Luxembourg': 'Europe', 'Moldova': 'Europe',
+  'Monaco': 'Europe', 'Netherlands': 'Europe', 'Norway': 'Europe', 'Poland': 'Europe',
+  'Portugal': 'Europe', 'Romania': 'Europe', 'Russia': 'Europe', 'Serbia': 'Europe',
+  'Slovakia': 'Europe', 'Slovenia': 'Europe', 'Spain': 'Europe', 'Sweden': 'Europe',
+  'Switzerland': 'Europe', 'Ukraine': 'Europe',
+  // Americas
+  'Argentina': 'Americas', 'Bahamas': 'Americas', 'Bolivia': 'Americas', 'Brazil': 'Americas',
+  'Chile': 'Americas', 'Colombia': 'Americas', 'Cuba': 'Americas',
+  'Dominican Republic': 'Americas', 'Ecuador': 'Americas', 'Guyana': 'Americas',
+  'Honduras': 'Americas', 'Jamaica': 'Americas', 'Mexico': 'Americas', 'Panama': 'Americas',
+  'Paraguay': 'Americas', 'Peru': 'Americas', 'United States': 'Americas', 'Venezuela': 'Americas',
+  // Africa
+  'Algeria': 'Africa', 'Angola': 'Africa', 'Burkina Faso': 'Africa', 'Cameroon': 'Africa',
+  'Eritrea': 'Africa', 'Ethiopia': 'Africa', 'Gabon': 'Africa', 'Kenya': 'Africa',
+  'Liberia': 'Africa', 'Libya': 'Africa', 'Madagascar': 'Africa', 'Malawi': 'Africa',
+  'Mali': 'Africa', 'Mauritania': 'Africa', 'Morocco': 'Africa', 'Namibia': 'Africa',
+  'Niger': 'Africa', 'Nigeria': 'Africa', 'Rwanda': 'Africa', 'Senegal': 'Africa',
+  'South Africa': 'Africa', 'Sudan': 'Africa', 'Tanzania': 'Africa', 'Togo': 'Africa',
+  'Tunisia': 'Africa', 'Uganda': 'Africa', 'Zambia': 'Africa', 'Zimbabwe': 'Africa',
+  // Oceania
+  'Australia': 'Oceania', 'East Timor': 'Oceania', 'Marshall Islands': 'Oceania',
+  'Northern Mariana Islands': 'Oceania', 'Papua New Guinea': 'Oceania',
 };
 export const regionOf = (country) => REGION_BY_COUNTRY[country] || 'Other';
 export const REGION_COLORS = {
@@ -106,6 +139,17 @@ export const teacherName = (idx, id) => (idx.teacherById.get(id) || {}).FULL_NAM
 // The six of us are seeded into the demo graph with INFERRED schools and years
 // (see data/beta_group.json). Anything not yet corrected by its owner is marked in the
 // UI so nobody mistakes a placeholder for their real history.
+// Whether the dataset carries any acknowledged ("mutual") link at all.
+//
+// The first demo's VERIFIED column was random noise -- almost exactly 18% "mutual" at
+// every single degree -- which made the mutual badge and the "verified only" filter
+// look meaningful while carrying no signal. The generator no longer invents it, because
+// whether two people acknowledge each other is not something it can know. So the UI asks
+// this question and hides those controls entirely rather than offering a filter that
+// matches nothing. When a real acknowledgement layer lands, they light up on their own.
+export const hasAcknowledged = (data) =>
+  (data.colleagueships || []).some((c) => c.VERIFIED === 'mutual');
+
 export const needsConfirming = (t) => !!(t && t.IS_BETA_GROUP && !t.DETAILS_CONFIRMED);
 export const CONFIRM_HINT = 'Seeded from the group chat — schools and years are guesses, not your real history. Tell Paul the right ones.';
 export const confirmBadge = (t) => (needsConfirming(t)

@@ -18,25 +18,54 @@ with no build step so non-developers can edit it.
 | **Relationship degree (1–6)** | Co-location strength on a single pair. 1 = same school same time … 6 = same country different time. | Precomputed in `colleagueships` |
 | **Separation (hop count)** | Fewest hops between two people through the connection graph — the classic "six degrees of separation". | Computed with **BFS** in `js/degrees.js` |
 
-### ⚠ A structural caveat worth knowing before building more on top of this
+### The six degrees, and why the first demo made them look broken
 
-The degree scale is a **strength label, not a filter on who you know**, and treating every
-degree as a "connection" makes the graph almost complete:
+| Degree | Meaning |
+|--------|---------|
+| 1 | Same school, same time |
+| 2 | Same school, different time |
+| 3 | Same city, same time |
+| 4 | Same city, different time |
+| 5 | Same country, same time |
+| 6 | Same country, different time |
 
-- **42.7%** of all possible pairs have a direct edge.
-- At degree ≤ 6 the median person is directly linked to **66 of the other 155 people**.
-- Degrees 5 and 6 — "same country, same/different time" — are **28.6%** of all edges. They
-  mean no more than *"we were both in Thailand at some point."*
-- Consequently average separation is **~1.6 hops** with a **diameter of 3**. There is no
-  such thing as six degrees of separation inside a graph this dense.
+For any pair, the **strongest (lowest) relationship found across all their postings wins** —
+share a city and you get 3/4, never 5/6.
 
-The unbuilt piece that fixes this is the one the team already designed and never
-implemented — Dave, 13 Sep 2025: *"Checkmark 'I know this person' (default setting 'I
-don't know this person')"*, and the June meeting's conclusion that it *"should be shared
-by both parties"*. Co-location is **evidence that two people may have crossed paths**;
-acknowledgement is what makes it a connection. The `VERIFIED` column already has the shape
-for this (`mutual` / `one-sided` / `unverified`) but its current values are synthetic and
-spread evenly across all six degrees, so it carries no signal yet.
+The first demo made this scheme look unusable: 42% of all possible pairs were directly
+linked, the median person was linked to 66 of the other 155, average separation was 1.59
+hops and nothing was more than 3 hops from anything. "People you both know" answered 61.
+
+**That was the geography, not the degree definitions.** The old demo had 39 schools in 25
+countries, and only *five* of those countries contained more than one city — so degrees
+5 and 6 could barely occur and everyone collapsed into everyone else. Rebuilding on the
+real school geography fixed it with the rules completely unchanged:
+
+| | Old (39 schools, 25 countries, 156 people) | Now (620 schools, 126 countries, 1,206 people) |
+|---|---|---|
+| Density | 42.2% | **3.0%** |
+| Median direct connections | 66 | **35** |
+| Average separation | 1.59 hops | **2.49 hops** |
+| Diameter | 3 | **4** |
+| "People you both know" (Paul + Linda) | 61 | **18** |
+
+Separation now distributes like a real network — 3% at one hop, 45% at two, 51% at three —
+across one fully connected component with nobody isolated.
+
+### Still open: co-location is not acknowledgement
+
+Degree 1 means two people were at the same school at the same time. In a school of 1,600
+that is evidence they *may* have crossed paths, not proof they know each other. The piece
+the team designed and has not built is Dave's (13 Sep 2025) *"Checkmark 'I know this
+person' (default setting 'I don't know this person')"*, with the June meeting's conclusion
+that it *"should be shared by both parties"*.
+
+The `VERIFIED` column exists for exactly this (`mutual` / `one-sided` / `unverified`). In
+the first demo its values were random noise — almost exactly 18% "mutual" at every degree
+— which made the mutual badge and the "verified only" filter look meaningful while
+carrying no signal. The generator no longer invents it, so everything is `unverified`, and
+the UI hides those controls until real acknowledgement exists (`hasAcknowledged()` in
+`js/degrees.js`). They light up on their own when it does.
 
 ## The views
 
@@ -107,6 +136,36 @@ Columns stay a 3D-mode-only feature on purpose: MapLibre's own documentation war
 `fill-extrusion` produces artifacts under globe projection and recommends mercator for it.
 Rather than ship a state that is always wrong, the mode model makes it unreachable.
 
+## Where the geography comes from
+
+`data/isr_schools.json` holds 2,127 schools in 152 countries, taken from the two school
+lists published by International Schools Review. **ISR lists country and school name only
+— it never states the city**, so the city is inferred and every row records how:
+
+| `city_source` | Meaning | Count |
+|---|---|---|
+| `name` | the city appears verbatim in the school name | 840 |
+| `fuzzy` | the name contains a near-miss spelling of a real city (ISR's "Durress" → Durrës) | 31 |
+| `fallback-largest-city` | **a guess** — the name reveals nothing, so the country's largest city was assumed | 1,256 |
+
+Coordinates are **city centroids** from GeoNames (via `geonamescache`), not school
+addresses.
+
+`tools/build_demo_data.py` uses only the `name` and `fuzzy` rows — the guesses are
+ignored entirely — which yields **620 schools across 395 cities in 126 countries, 63 of
+them with more than one city**. To see more of degrees 5 and 6, more countries need more
+cities; single-city countries (and genuinely, Singapore) can never produce them.
+
+```bash
+python3 tools/build_demo_data.py --dry-run              # report, write nothing
+python3 tools/build_demo_data.py                        # default: 1,200 teachers
+python3 tools/build_demo_data.py --teachers 800 --schools-per-city 2
+```
+
+It is deterministic (fixed seed), recomputes every colleagueship from the postings, and
+folds in the beta group from `data/beta_group.json`. Output is 8.2 MB of JSON, which
+GitHub Pages gzips to about 400 KB.
+
 ## The beta group in the demo graph
 
 The first beta ran on 150 invented teachers and none of the actual testers, which is part
@@ -132,12 +191,12 @@ relationship is recomputed from the postings, so there is no hand-maintained edg
 drift out of sync:
 
 ```bash
-python3 tools/build_seed.py --dry-run   # show what would change
-python3 tools/build_seed.py             # write data/demo_data.json
+python3 tools/build_demo_data.py        # rebuilds everything, beta group included
 ```
 
-It is idempotent (seeded rows are prefixed `B` / `ASG9` / `COLB` and stripped before
-re-adding), so it is safe to run repeatedly.
+`tools/build_seed.py` is the older, narrower tool: it merges the beta group into an
+*existing* `demo_data.json` without regenerating the fictional teachers. `build_demo_data.py`
+supersedes it for a full rebuild and folds the beta group in itself.
 
 ## Data shown and not shown
 

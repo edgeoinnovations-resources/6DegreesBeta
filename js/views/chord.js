@@ -51,7 +51,9 @@ export const view = {
         weight.set(b, (weight.get(b) || 0) + 1);
       }
       let names = [...weight.keys()].sort((x, y) => weight.get(y) - weight.get(x));
-      if (mode === 'SCHOOL_ID') names = names.slice(0, 18); // top schools only
+      // Cap both modes: the demo geography is 126 countries and 620 schools, and a chord
+      // diagram stops communicating long before that many arcs.
+      names = names.slice(0, mode === 'SCHOOL_ID' ? 18 : 24);
       const keep = new Set(names);
       const index = new Map(names.map((n, i) => [n, i]));
       const N = names.length;

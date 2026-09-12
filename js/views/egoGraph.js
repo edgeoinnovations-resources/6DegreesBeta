@@ -11,7 +11,7 @@ export const view = {
 
     root.appendChild(el('div.view-head', {}, [
       el('h2', { text: 'Your connections' }),
-      el('p', { html: 'Concentric rings around one teacher. Ring = relationship degree (1 closest … 6 outermost), color = degree, node size = total connections. Hover a node for <em>why</em> the link exists; click any node to re-center. The orange badge marks a <strong>mutually verified</strong> link.' }),
+      el('p', { html: 'Concentric rings around one teacher. Ring = relationship degree (1 closest … 6 outermost), color = degree, node size = total connections. Hover a node for <em>why</em> the link exists; click any node to re-center.' }),
     ]));
 
     const controls = el('div.controls');

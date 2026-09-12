@@ -127,20 +127,42 @@ export const view = {
       .on('click', (ev, d) => openPanel(d));
 
     node2d.call(d3.drag()
-      .on('start', (ev, d) => { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('start', (ev, d) => { live = true; if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
       .on('drag', (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
-      .on('end', (ev, d) => { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+      .on('end', (ev, d) => {
+        if (!ev.active) sim.alphaTarget(0);
+        d.fx = null; d.fy = null;
+        // let it relax briefly, then stop repainting every link again
+        setTimeout(() => { live = false; sim.stop(); paint(); }, 1200);
+      }));
 
     const radius2d = (d) => 3 + Math.sqrt(sizeVal(d)) * (sizeMode === 'experience' ? 1.7 : 1.5);
+
+    // PERFORMANCE. The community is 1,206 people and ~21,500 links. Repainting every
+    // link on every tick means ~86,000 SVG attribute writes per frame for roughly 300
+    // frames, which pins the main thread for many seconds and makes the whole page feel
+    // broken. So the layout is SETTLED FIRST with the renderer detached, then drawn once.
+    // Dragging still animates live, because that is a handful of frames the user asked
+    // for rather than a start-up cost they did not.
+    const paint = () => {
+      link2d.attr('x1', (d) => d.source.x).attr('y1', (d) => d.source.y)
+            .attr('x2', (d) => d.target.x).attr('y2', (d) => d.target.y);
+      node2d.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+    };
+    let live = false;                        // only true while a node is being dragged
     const sim = d3.forceSimulation(nodes)
       .force('link', d3.forceLink(links2d).id((d) => d.id).distance(linkDist).strength(0.22))
       .force('charge', d3.forceManyBody().strength(chargeStrength()))
       .force('center', d3.forceCenter(W / 2, H / 2))
       .force('collide', d3.forceCollide().radius((d) => radius2d(d) + 2))
-      .on('tick', () => {
-        link2d.attr('x1', (d) => d.source.x).attr('y1', (d) => d.source.y).attr('x2', (d) => d.target.x).attr('y2', (d) => d.target.y);
-        node2d.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
-      });
+      .on('tick', () => { if (live) paint(); });
+
+    const settle = (ticks) => {
+      sim.stop();
+      for (let i = 0; i < ticks; i++) sim.tick();
+      paint();
+    };
+    settle(240);
     self._sim = sim;
     node2d.attr('r', radius2d).attr('fill', nodeColorOf);
     if (state.params.teacher) {
@@ -221,7 +243,9 @@ export const view = {
     function applySpread() {
       sim.force('charge').strength(chargeStrength());
       sim.force('link').distance(linkDist);
-      sim.alpha(0.6).restart();
+      // settle then paint once, rather than repainting ~21,500 links for 300 frames
+      sim.alpha(0.6);
+      settle(140);
       if (g3d) { g3d.d3Force('charge').strength(chargeStrength()); g3d.d3Force('link').distance(linkDist); g3d.d3ReheatSimulation(); }
     }
     function applyFilter() {
@@ -229,7 +253,9 @@ export const view = {
       if (g3d) g3d.linkVisibility((l) => activeDeg.has(l.degree));
     }
     function applySize() {
-      node2d.attr('r', radius2d); sim.force('collide').radius((d) => radius2d(d) + 2); sim.alpha(0.3).restart();
+      node2d.attr('r', radius2d);
+      sim.force('collide').radius((d) => radius2d(d) + 2);
+      sim.alpha(0.3); settle(90);
       if (g3d) g3d.nodeVal((n) => Math.max(1, sizeVal(n)));
     }
     function applyColor() {

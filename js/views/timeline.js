@@ -49,6 +49,14 @@ export const view = {
     sliderWrap.append(el('span.muted', { text: 'Year' }), slider, yearLbl);
     root.appendChild(sliderWrap);
 
+    const scopeSel = el('select', {}, [
+      el('option', { value: 'linked', text: 'the pair + people they are linked to' }),
+      el('option', { value: 'pair', text: 'just these two' }),
+      el('option', { value: 'all', text: `everyone (first ${80} by start year)` }),
+    ]);
+    scopeSel.addEventListener('change', () => { scope = scopeSel.value; redraw(); });
+    controls.appendChild(el('div.control-group', {}, [el('label', { text: 'Show' }), scopeSel]));
+
     const wrap = el('div.viz-wrap', { style: 'overflow:auto;max-height:62vh;' });
     root.appendChild(wrap);
 
@@ -58,17 +66,33 @@ export const view = {
       return colorBy === 'school' ? schoolColor(school.SCHOOL_ID) : regionColor(school.COUNTRY);
     }
 
-    // Order: compared pair first, then everyone else by first posting year.
+    // SCOPE. The community is 1,206 people; one row each would be a 19,000px scroll and
+    // you would never find anyone in it. This view exists to compare two careers, so it
+    // shows the pair plus (by default) only the people they are actually linked to.
+    let scope = 'linked';
+    const MAX_ROWS = 80;
+
     function rows() {
-      const teachers = data.teachers.slice();
       const firstYear = (t) => {
         const ps = idx.postingsByTeacher.get(t.TEACHER_ID) || [];
         return ps.length ? parseYear(ps[0].START_DATE) || NOW : NOW;
       };
-      teachers.sort((x, y) => firstYear(x) - firstYear(y));
       const pinned = [A, B].filter(Boolean);
-      const rest = teachers.filter((t) => !pinned.includes(t.TEACHER_ID));
-      return [...pinned.map((id) => idx.teacherById.get(id)).filter(Boolean), ...rest];
+      const pinnedRows = pinned.map((id) => idx.teacherById.get(id)).filter(Boolean);
+
+      if (scope === 'pair') return pinnedRows;
+
+      let pool;
+      if (scope === 'linked') {
+        const near = new Set();
+        for (const id of pinned) for (const e of (ctx.adj.get(id) || [])) near.add(e.other);
+        for (const id of pinned) near.delete(id);
+        pool = [...near].map((id) => idx.teacherById.get(id)).filter(Boolean);
+      } else {
+        pool = data.teachers.filter((t) => !pinned.includes(t.TEACHER_ID));
+      }
+      pool.sort((x, y) => firstYear(x) - firstYear(y));
+      return [...pinnedRows, ...pool.slice(0, MAX_ROWS)];
     }
 
     let xScale, nowLine, nowText;

@@ -260,3 +260,28 @@ svg text { font-family: var(--font); }
 .map-overlay .overlay-body { margin-top: 8px; }
 .map-overlay.collapsed .overlay-body { display: none; }
 .map-overlay.collapsed { padding-bottom: 10px; }
+
+/* ── Build-your-own matrix: axis editors ────────────────────────────────────── */
+.axis-grid {
+  display: grid; gap: 14px; margin-bottom: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.axis-box {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel); padding: 12px;
+}
+.axis-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.axis-head strong { flex: 1; font-size: 13.5px; }
+.axis-box .typeahead { width: 100%; }
+.axis-box .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 6px 3px 9px; border: 1px solid var(--line); border-radius: 999px;
+  background: #f4fafb; font-size: 12px; max-width: 100%;
+}
+.chip > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip button {
+  border: none; background: none; cursor: pointer; color: var(--muted);
+  font-size: 14px; line-height: 1; padding: 0 2px;
+}
+.chip button:hover { color: var(--orange); }

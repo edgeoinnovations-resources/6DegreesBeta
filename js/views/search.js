@@ -30,7 +30,7 @@
 import { el, teacherTypeahead } from '../widgets.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
-  teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge,
+  teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
 } from '../degrees.js';
 
 export const view = {
@@ -129,8 +129,11 @@ function whoDoIKnowAt(ctx) {
       return;
     }
 
+    const ack = hasAcknowledged(data);
     const table = el('table.data');
-    table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'Role there', 'Link', 'Shared context', 'Verified', ''].map((h) => el('th', { text: h })))]));
+    const heads = ack ? ['Name', 'Role there', 'Link', 'Shared context', 'Verified', '']
+                      : ['Name', 'Role there', 'Link', 'Shared context', ''];
+    table.appendChild(el('thead', {}, [el('tr', {}, heads.map((h) => el('th', { text: h })))]));
     const tb = el('tbody');
     matches.forEach((m) => {
       const t = idx.teacherById.get(m.id) || {};
@@ -143,7 +146,7 @@ function whoDoIKnowAt(ctx) {
         el('td', { html: `${theirPosting ? roleCategory(theirPosting.POSITION_TITLE) : '—'}<br><small class="muted">${yrs}</small>` }),
         el('td', { html: degPill(m.edge.degree) }),
         el('td', { html: `${m.edge.label || ''}<br><small class="muted">${degreeLabel(m.edge.degree)}</small>` }),
-        el('td', { html: m.edge.verified === 'mutual' ? '<span class="badge-mutual">mutual ✓</span>' : (m.edge.verified || '') }),
+        ack ? el('td', { html: m.edge.verified === 'mutual' ? '<span class="badge-mutual">mutual ✓</span>' : (m.edge.verified || '') }) : null,
         el('td', {}, [el('button.btn.ghost', { text: 'connections →', onclick: () => ctx.navigateTo('ego', { teacher: m.id }) })]),
       ]));
     });
@@ -293,11 +296,12 @@ function findPeople(ctx) {
     fCurr = sel('curriculum', curricula), fRole = sel('role', ROLE_CATEGORIES);
   const minYears = el('input', { type: 'number', min: 0, max: 40, value: 0, style: 'width:64px;' });
   const verifiedOnly = el('input', { type: 'checkbox' });
+  const ackAvailable = hasAcknowledged(data);
 
   const controls = el('div.controls');
   controls.append(fCountry, fCity, fCurr, fRole,
     el('div.control-group', {}, [el('label', { text: 'Min years' }), minYears]),
-    el('div.control-group', {}, [el('label', {}, [verifiedOnly, ' verified (mutual) only'])]),
+    ackAvailable ? el('div.control-group', {}, [el('label', {}, [verifiedOnly, ' verified (mutual) only'])]) : null,
     el('button.btn', { text: 'Search', onclick: run }));
   pane.appendChild(controls);
 
@@ -307,7 +311,7 @@ function findPeople(ctx) {
   function run() {
     const c = val(fCountry), city = val(fCity), curr = val(fCurr), role = val(fRole);
     const minY = +minYears.value || 0;
-    const vOnly = verifiedOnly.checked;
+    const vOnly = ackAvailable && verifiedOnly.checked;
 
     const mutualSet = vOnly ? new Set(data.colleagueships.filter((x) => x.VERIFIED === 'mutual')
       .flatMap((x) => [x.TEACHER_A_ID, x.TEACHER_B_ID])) : null;
