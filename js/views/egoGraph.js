@@ -34,9 +34,15 @@ const LABEL_GAP_DEG = 40;      // angular gap at 12 o'clock for the ring label
                                // (a label like "degree 2 \u00b7 50" is ~90px wide, which
                                //  subtends well over 26\u00b0 on the inner rings)
 const BAND_LIMIT = 3;          // more bands than this and the ring gets capped instead
-const MIN_ARC_TO_LABEL = 30;   // px of arc per node needed before names are always shown
-const MIN_RADIAL_TO_LABEL = 22; // px between neighbouring rings needed for the same
-const labelFits = (d) => d.arcPerNode >= MIN_ARC_TO_LABEL && d.clearance >= MIN_RADIAL_TO_LABEL;
+const MIN_RADIAL_TO_LABEL = 26; // px between neighbouring rings needed to show a name
+// Whether a name can be shown depends on its ACTUAL rendered width, not a guess: a fixed
+// threshold let long names ("Christian", "Francesca") print straight over the nodes on
+// the next ring round. Measured per element once the text is set.
+function labelFits(el, d) {
+  let w = 0;
+  try { w = el.getComputedTextLength(); } catch { w = 0; }
+  return d.clearance >= MIN_RADIAL_TO_LABEL && w + 8 <= d.arcPerNode;
+}
 const CANVAS_MAX = 760;
 const LABEL_MARGIN = 54;   // room outside the outer ring for the name labels
 const CANVAS_MIN = 460;
@@ -82,10 +88,6 @@ export const view = {
     const gRings = svg.append('g');
     const gSpokes = svg.append('g').attr('fill', 'none');
     const gNodes = svg.append('g');
-    // Ring labels go ABOVE the nodes, with a white casing, so they stay readable where a
-    // node happens to sit near the 12 o'clock gap.
-    const gRingLabels = svg.append('g').attr('paint-order', 'stroke')
-      .attr('stroke', '#ffffff').attr('stroke-width', 3.5).attr('stroke-linejoin', 'round');
     const gCenter = svg.append('g');
 
     let destroyed = false;
@@ -289,28 +291,6 @@ export const view = {
         .merge(ringSel).attr('cx', cx).attr('cy', cy))
         .attr('r', (d) => d.r).attr('stroke', (d) => degreeColor(d.degree));
 
-      // ── Ring labels, in the reserved gap, carrying their counts ─────────────
-      const labelData = plan.filter((p) => p.bands.length).map((p) => ({
-        degree: p.degree,
-        r: p.bands[p.bands.length - 1] + (p.maxNodeR || 0) + padUsed / 2,
-        n: (byDeg.get(p.degree) || []).length,
-      }));
-      // Two rings close together would print their labels on top of each other; walk
-      // outward and push each one up until it clears the previous.
-      const MIN_LABEL_SEP = 14;
-      for (let i = 1; i < labelData.length; i++) {
-        const prev = labelData[i - 1];
-        if (labelData[i].r - prev.r < MIN_LABEL_SEP) labelData[i].r = prev.r + MIN_LABEL_SEP;
-      }
-      const rlSel = gRingLabels.selectAll('text.ringlab').data(labelData, (d) => d.degree);
-      rlSel.exit().remove();
-      T(rlSel.enter().append('text').attr('class', 'ringlab')
-        .attr('text-anchor', 'middle').attr('font-size', 10.5).attr('font-weight', 600)
-        .merge(rlSel))
-        .attr('x', cx).attr('y', (d) => cy - d.r - 5)
-        .attr('fill', (d) => (d.degree >= 5 ? '#9ab8c0' : degreeColor(d.degree)))
-        .text((d) => `degree ${d.degree} · ${d.n}`);
-
       // ── Spokes: gentle curves, faint by default, lit on hover ──────────────
       const spokePath = (d) => {
         const mx = (cx + d.x) / 2, my = (cy + d.y) / 2;
@@ -361,10 +341,9 @@ export const view = {
         .attr('text-anchor', (d) => (Math.cos(d.ang) < -0.15 ? 'end' : (Math.cos(d.ang) > 0.15 ? 'start' : 'middle')))
         .attr('dy', (d) => (Math.abs(Math.cos(d.ang)) <= 0.15 ? (Math.sin(d.ang) > 0 ? '0.9em' : '-0.25em') : '0.32em'))
         .text((d) => teacherName(idx, d.id).split(' ')[0])
-        // Only label where there is room both along the ring and between rings; the
-        // rest reveal on hover. Without the radial test, two nodes on neighbouring rings
-        // at similar angles print their names on top of each other.
-        .style('display', (d) => (labelFits(d) ? null : 'none'));
+        // Only label where there is room both along the ring and between rings; the rest
+        // reveal on hover. Measured after the text is set, so it reflects the real width.
+        .each(function (d) { this.style.display = labelFits(this, d) ? '' : 'none'; });
 
       // NOTE: build the transition explicitly here. T() returns a plain selection when
       // animate is false, and .delay() exists only on transitions -- calling it on a
@@ -397,7 +376,7 @@ export const view = {
           gSpokes.selectAll('path.spoke').style('opacity', 0.22).attr('stroke-width', 1.2);
           d3.select(ev.currentTarget).select('text.nm')
             .attr('font-weight', null)
-            .style('display', (d) => (labelFits(d) ? null : 'none'));
+            .each(function (d) { this.style.display = labelFits(this, d) ? '' : 'none'; });
           railHighlight(null);
         })
         .on('click', (ev, d) => recentre(d.id));

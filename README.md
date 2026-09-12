@@ -117,13 +117,16 @@ overlap again.
 Other things that follow from the geometry:
 
 - **Labels** need room both along the ring *and* between rings, or two nodes on
-  neighbouring rings print their names on top of each other. Where there isn't room, names
-  appear on hover instead. They sit radially outward from each node, which fans them out.
+  neighbouring rings print their names on top of each other. Whether a name fits is decided
+  from its **measured** width (`getComputedTextLength`), not a fixed threshold — a guess let
+  long names like "Christian" print over the next ring. Where there isn't room, names appear
+  on hover instead. They sit radially outward from each node, which fans them out.
 - **Rings are staggered angularly** so nodes on neighbouring rings don't line up on the
   same spoke.
-- **Ring labels** live in a reserved 40° gap at the top, carry their counts
-  ("degree 2 · 50"), are drawn above the nodes with a white casing, and are pushed apart
-  when two rings end up close.
+- **No ring captions.** The rings briefly carried "degree N · count" captions at the top;
+  they were removed as unnecessary and confusing — the legend and the rail already say
+  which degree is which. The 40° gap that existed to make room for them is now available
+  to nodes, giving each ring ~12% more space.
 - **Angular position means something**: each ring is ordered by region, then country.
 - **Empty rings are not drawn.** Faint alternating zone tints make rings read as regions.
 - **Spokes** are gentle curves, faint by default and lit on hover; hovering dims everything
