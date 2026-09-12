@@ -41,12 +41,15 @@
 //   3D     — mercator + pitch.         Points + arcs + headcount columns.
 // ─────────────────────────────────────────────────────────────────────────────
 import { el, teacherTypeahead } from '../widgets.js';
-import { regionColor, roleCategory, PRIMARY } from '../degrees.js';
+import { regionColor, roleCategory, PRIMARY, ACCENT } from '../degrees.js';
 
+// `points` and `columns` are declared per mode rather than inferred, so what each mode
+// draws is readable in one place. In 3D the city columns replace the school dots — the
+// dots sat at the columns' feet and just added clutter.
 const MODES = {
-  flat: { label: 'Flat', projection: 'mercator', pitch: 0, columns: false },
-  globe: { label: 'Globe', projection: 'globe', pitch: 0, columns: false },
-  '3d': { label: '3D', projection: 'mercator', pitch: 55, columns: true },
+  flat: { label: 'Flat', projection: 'mercator', pitch: 0, points: true, columns: false },
+  globe: { label: 'Globe', projection: 'globe', pitch: 0, points: true, columns: false },
+  '3d': { label: '3D', projection: 'mercator', pitch: 55, points: false, columns: true },
 };
 
 // Screen-space targets for the headcount columns (see header note).
@@ -149,10 +152,26 @@ export const view = {
 
     // ── Controls ─────────────────────────────────────────────────────────────
     let mode = MODES[ctx.state.params.mapMode] ? ctx.state.params.mapMode : 'flat';
-    let showArcs = true;
+    let showArcs = false;
 
     const overlay = el('div.map-overlay');
-    overlay.appendChild(el('h3', { text: 'Worldwide community' }));
+
+    // Collapsible: open by default, but the panel covers a good chunk of the map and
+    // people want it out of the way once they've set things up.
+    const collapseBtn = el('button.collapse-toggle', {
+      type: 'button', title: 'Collapse panel', 'aria-expanded': 'true', text: '\u2212',
+    });
+    overlay.appendChild(el('div.overlay-head', {}, [
+      el('h3', { text: 'Worldwide community' }),
+      collapseBtn,
+    ]));
+    const overlayBody = el('div.overlay-body');
+    collapseBtn.addEventListener('click', () => {
+      const open = overlay.classList.toggle('collapsed') === false;
+      collapseBtn.textContent = open ? '\u2212' : '+';
+      collapseBtn.title = open ? 'Collapse panel' : 'Expand panel';
+      collapseBtn.setAttribute('aria-expanded', String(open));
+    });
 
     const modeRow = el('div.checkrow', { style: 'margin-bottom:10px;' });
     const modeBtns = new Map();
@@ -162,16 +181,17 @@ export const view = {
       modeRow.appendChild(b);
       modeBtns.set(id, b);
     });
-    overlay.appendChild(modeRow);
+    overlayBody.appendChild(modeRow);
 
+    // Arcs are OFF by default: 242 great circles over the whole world is a thicket, and
+    // it buries the school points. Opt in when you actually want migration.
     const arcsCb = el('input', { type: 'checkbox' });
-    arcsCb.checked = true;
     arcsCb.addEventListener('change', () => { showArcs = arcsCb.checked; applyVisibility(); });
-    overlay.appendChild(el('div.control-group', {}, [el('label', {}, [arcsCb, ' Migration arcs'])]));
+    overlayBody.appendChild(el('div.control-group', {}, [el('label', {}, [arcsCb, ' Migration arcs'])]));
 
     // Says out loud why columns aren't offered outside 3D, instead of silently misbehaving.
     const modeNote = el('p.muted', { style: 'font-size:11px;margin:2px 0 8px;' });
-    overlay.appendChild(modeNote);
+    overlayBody.appendChild(modeNote);
 
     const journeyBox = el('div.control-group', { style: 'flex-direction:column;align-items:stretch;gap:6px;margin-top:6px;' });
     journeyBox.appendChild(el('label', { text: 'Fly a teacher’s journey' }));
@@ -180,11 +200,13 @@ export const view = {
     const flyBtn = el('button.btn.accent', { text: '▶ Fly the journey' });
     flyBtn.addEventListener('click', () => (flying ? stopJourney() : flyJourney(journeyId)));
     journeyBox.appendChild(flyBtn);
-    overlay.appendChild(journeyBox);
+    overlayBody.appendChild(journeyBox);
 
-    overlay.appendChild(el('div.legend', { style: 'margin-top:10px;' }, [
+    const legend = el('div.legend', { style: 'margin-top:10px;' }, [
       el('span.item', {}, [el('span.swatch', { style: `background:${PRIMARY}` }), 'arc = a teacher move']),
-    ]));
+    ]);
+    overlayBody.appendChild(legend);
+    overlay.appendChild(overlayBody);
     shell.appendChild(overlay);
 
     const panel = el('div.side-panel');
@@ -250,6 +272,33 @@ export const view = {
         },
       });
 
+      // ── One teacher's journey ───────────────────────────────────────────
+      // Drawn from its own sources so that during a flight we can hide the entire
+      // community and show nothing but this person's career. Paul: "every single line
+      // and dot should be gone except for the individuals career journey."
+      map.addSource('journey-line', { type: 'geojson', data: emptyFC() });
+      map.addLayer({
+        id: 'journey-line', type: 'line', source: 'journey-line',
+        layout: { 'line-cap': 'round', 'line-join': 'round', visibility: 'none' },
+        paint: {
+          'line-color': ACCENT,
+          'line-width': ['interpolate', ['linear'], ['zoom'], 1, 2.5, 6, 4.5],
+          'line-opacity': 0.95,
+        },
+      });
+      map.addSource('journey-points', { type: 'geojson', data: emptyFC() });
+      map.addLayer({
+        id: 'journey-points', type: 'circle', source: 'journey-points',
+        layout: { visibility: 'none' },
+        paint: {
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 6, 6, 11],
+          'circle-color': ACCENT,
+          'circle-opacity': 0.95,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#ffffff',
+        },
+      });
+
       map.on('click', 'school-circles', (e) => openRoster(e.features[0].properties.id));
       map.on('click', 'arc-lines', (e) => {
         const p = e.features[0].properties;
@@ -258,6 +307,7 @@ export const view = {
           .setHTML(`<strong>${p.fromName} → ${p.toName}</strong><br>${p.count} teacher move(s)`)
           .addTo(map));
       });
+      map.on('click', 'journey-points', (e) => openRoster(e.features[0].properties.schoolId));
       map.on('click', 'headcount-columns', (e) => {
         const p = e.features[0].properties;
         addPopup(new maplibregl.Popup({ offset: 8 })
@@ -266,7 +316,7 @@ export const view = {
           .addTo(map));
       });
 
-      for (const id of ['school-circles', 'arc-lines', 'headcount-columns']) {
+      for (const id of ['school-circles', 'arc-lines', 'headcount-columns', 'journey-points']) {
         map.on('mouseenter', id, () => { map.getCanvas().style.cursor = 'pointer'; });
         map.on('mouseleave', id, () => { map.getCanvas().style.cursor = ''; });
       }
@@ -276,7 +326,7 @@ export const view = {
       map.on('zoomend', rescaleColumns);
 
       // Any manual interaction cancels an in-flight journey rather than fighting the user.
-      map.on('dragstart', () => { if (flying) stopJourney(); });
+      map.on('dragstart', () => { if (flying && !journeyDone) stopJourney(); });
 
       applyMode();
     });
@@ -351,11 +401,29 @@ export const view = {
       }
     }
 
+    // Single source of truth for what is drawn. Called on mode change, on the arcs
+    // toggle, and at the start/end of a journey.
     function applyVisibility() {
       if (!loaded) return;
       const vis = (id, on) => { if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none'); };
+
+      if (flying) {
+        // Solo mode: the whole community goes away so the career reads clearly.
+        vis('arc-lines', false);
+        vis('headcount-columns', false);
+        vis('school-circles', false);
+        vis('journey-line', true);
+        vis('journey-points', true);
+        legend.style.display = 'none';
+        return;
+      }
+
       vis('arc-lines', showArcs);
       vis('headcount-columns', MODES[mode].columns);
+      vis('school-circles', MODES[mode].points);
+      vis('journey-line', false);
+      vis('journey-points', false);
+      legend.style.display = showArcs ? '' : 'none';
     }
 
     // ── School roster ────────────────────────────────────────────────────────
@@ -385,13 +453,56 @@ export const view = {
     // The old version leaked: it never cancelled its timer chain (so it kept flying a
     // removed map after you left the view) and never removed the popups it dropped.
     let flying = false;
+    // Set once the last stop has landed. While a flight is still running, panning
+    // cancels it; after it has finished we keep the journey up so it can be studied.
+    let journeyDone = false;
+
+    function setJourneyData(stops, upto) {
+      if (!loaded) return;
+      const pts = stops.slice(0, upto + 1);
+      const lineSrc = map.getSource('journey-line');
+      const ptSrc = map.getSource('journey-points');
+      if (!lineSrc || !ptSrc) return;
+
+      // One great-circle segment per move, so the path curves the same way the
+      // migration arcs do and stays correct under globe projection.
+      const segments = [];
+      for (let k = 1; k < pts.length; k++) {
+        segments.push({
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: greatCircle(
+              [+pts[k - 1].LONGITUDE, +pts[k - 1].LATITUDE],
+              [+pts[k].LONGITUDE, +pts[k].LATITUDE],
+            ),
+          },
+          properties: { step: k },
+        });
+      }
+      lineSrc.setData({ type: 'FeatureCollection', features: segments });
+      ptSrc.setData({
+        type: 'FeatureCollection',
+        features: pts.map((s, k) => ({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [+s.LONGITUDE, +s.LATITUDE] },
+          properties: { schoolId: s.SCHOOL_ID, name: s.SCHOOL_NAME, step: k + 1 },
+        })),
+      });
+    }
 
     function stopJourney() {
       flying = false;
+      journeyDone = false;
       flyBtn.textContent = '▶ Fly the journey';
       for (const t of timers) clearTimeout(t);
       timers.clear();
       clearPopups();
+      const lineSrc = map.getSource('journey-line');
+      const ptSrc = map.getSource('journey-points');
+      if (lineSrc) lineSrc.setData(emptyFC());
+      if (ptSrc) ptSrc.setData(emptyFC());
+      applyVisibility();   // brings the community back
     }
 
     function flyJourney(teacherId) {
@@ -404,14 +515,18 @@ export const view = {
       flying = true;
       flyBtn.textContent = '■ Stop';
       panel.classList.remove('open');
+      applyVisibility();   // hides the community, reveals the journey layers
+
+      const who = (idx.teacherById.get(teacherId) || {}).FULL_NAME || teacherId;
 
       let i = 0;
       const hop = () => {
-        if (!flying || destroyed || i >= stops.length) {
-          if (flying) stopJourney();
-          return;
-        }
+        if (!flying || destroyed || i >= stops.length) return;
         const s = stops[i];
+
+        // The path grows a leg at a time, so you can see the career accumulate.
+        setJourneyData(stops, i);
+
         map.flyTo({
           center: [+s.LONGITUDE, +s.LATITUDE],
           zoom: 4.2,
@@ -421,9 +536,23 @@ export const view = {
         });
         addPopup(new maplibregl.Popup({ closeOnClick: false, offset: 12 })
           .setLngLat([+s.LONGITUDE, +s.LATITUDE])
-          .setHTML(`<strong>${s.SCHOOL_NAME}</strong><br>${s.CITY}, ${s.COUNTRY}`)
+          .setHTML(`<strong>${i + 1}. ${s.SCHOOL_NAME}</strong><br>${s.CITY}, ${s.COUNTRY}`)
           .addTo(map));
         i++;
+
+        if (i >= stops.length) {
+          // Hold on the finished journey rather than snapping the community back the
+          // instant the last stop lands — the whole point is to look at it.
+          later(() => {
+            if (!flying || destroyed) return;
+            const all = stops.map((x) => [+x.LONGITUDE, +x.LATITUDE]);
+            const b = all.reduce((acc, c) => acc.extend(c), new maplibregl.LngLatBounds(all[0], all[0]));
+            map.fitBounds(b, { padding: 90, pitch: MODES[mode].pitch, duration: 1800 });
+            journeyDone = true;
+            flyBtn.textContent = `■ Clear ${who.split(' ')[0]}'s journey`;
+          }, 2000);
+          return;
+        }
         later(hop, 2600);
       };
       hop();
@@ -444,6 +573,8 @@ export const view = {
 };
 
 // ── geometry helpers ────────────────────────────────────────────────────────
+const emptyFC = () => ({ type: 'FeatureCollection', features: [] });
+
 const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
 const toRad = (d) => (d * Math.PI) / 180;
 const toDeg = (r) => (r * 180) / Math.PI;

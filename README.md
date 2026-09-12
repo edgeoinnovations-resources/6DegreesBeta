@@ -67,11 +67,24 @@ live behind a single **Explore** entry. Nothing was deleted, only de-ranked.
 The map has **three mutually exclusive modes** rather than free-combining checkboxes,
 because some combinations cannot render correctly:
 
-| Mode | Projection | Layers |
-|------|-----------|--------|
-| **Flat** | mercator, no pitch | points + arcs |
-| **Globe** | globe | points + arcs |
-| **3D** | mercator + 55° pitch | points + arcs + headcount columns |
+| Mode | Projection | Draws |
+|------|-----------|-------|
+| **Flat** | mercator, no pitch | school points |
+| **Globe** | globe | school points |
+| **3D** | mercator + 55° pitch | headcount columns, **no** school points |
+
+In 3D the columns replace the school dots — the dots sat at the columns' feet and only
+added clutter. **Migration arcs are off by default** in every mode: 242 great circles over
+the whole world is a thicket that buries everything else, so it's opt-in.
+
+**Fly a teacher's journey** is a solo view. While it runs, every other dot and line is
+hidden and only that person's career is drawn — their stops in order, joined by
+great-circle legs that accumulate one hop at a time. When the last stop lands the camera
+frames the whole journey and holds it, so panning around no longer cancels it; the button
+becomes *Clear …'s journey*. Clearing empties the journey sources and restores whatever
+the current mode was showing.
+
+The control panel collapses to its title bar, and starts open.
 
 Two bugs Dave reported — *"you don't see the columns until you zoom in"* and *"on the globe
 projection they are out in space"* — were both structural, not tuning problems:
@@ -111,8 +124,8 @@ example (12 Sep 2025). The builder reproduces it exactly:
 |------|--------|---------|
 | Paul S. + Linda H. | 1 | American School of Dubai, same time |
 | Linda H. + Dave S. | 2 | American School of Dubai, different time |
-| Linda H. + Dee | 3 | Addis Ababa, same time, different school |
-| Dee + Sarah P. | 1 | ICS Addis Ababa, same time |
+| Linda H. + Dee M. | 3 | Addis Ababa, same time, different school |
+| Dee M. + Sarah P. | 1 | ICS Addis Ababa, same time |
 
 To correct anyone's details, edit `data/beta_group.json` and re-run the builder — every
 relationship is recomputed from the postings, so there is no hand-maintained edge list to
