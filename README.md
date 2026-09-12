@@ -118,15 +118,18 @@ Other things that follow from the geometry:
 
 - **Labels** need room both along the ring *and* between rings, or two nodes on
   neighbouring rings print their names on top of each other. Whether a name fits is decided
-  from its **measured** width (`getComputedTextLength`), not a fixed threshold — a guess let
-  long names like "Christian" print over the next ring. Where there isn't room, names appear
-  on hover instead. They sit radially outward from each node, which fans them out.
+  from its **measured** width (`getComputedTextLength`) plus an arc margin, not a fixed
+  threshold — a guess let long names like "Christian" print over the next ring. With six
+  rings in a few hundred pixels, ring spacing is only ~26–38 px, so no radial threshold
+  cleanly separates "fits" from "collides"; the arc requirement is what thins them out.
+  Where there isn't room, names appear on hover instead, and the rail always lists everyone.
+  They sit radially outward from each node, which fans them out.
 - **Rings are staggered angularly** so nodes on neighbouring rings don't line up on the
   same spoke.
 - **No ring captions.** The rings briefly carried "degree N · count" captions at the top;
   they were removed as unnecessary and confusing — the legend and the rail already say
-  which degree is which. The 40° gap that existed to make room for them is now available
-  to nodes, giving each ring ~12% more space.
+  which degree is which. The 40° gap that existed only to make room for them is gone too,
+  so rings are complete circles and each has ~12% more space for nodes.
 - **Angular position means something**: each ring is ordered by region, then country.
 - **Empty rings are not drawn.** Faint alternating zone tints make rings read as regions.
 - **Spokes** are gentle curves, faint by default and lit on hover; hovering dims everything

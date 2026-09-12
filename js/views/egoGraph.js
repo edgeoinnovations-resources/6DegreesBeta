@@ -30,21 +30,34 @@ import {
 const NODE_R = [6, 12];        // gentle range: size no longer fights the layout
 const RING_PAD = 30;           // clear space between ring zones -- must fit a label line
 const NODE_GAP = 5;            // minimum arc between neighbouring nodes
-const LABEL_GAP_DEG = 40;      // angular gap at 12 o'clock for the ring label
-                               // (a label like "degree 2 \u00b7 50" is ~90px wide, which
-                               //  subtends well over 26\u00b0 on the inner rings)
+// No angular gap. The rings briefly carried "degree N · count" captions at 12 o'clock
+// and this reserved room for them; the captions were removed as unnecessary, so the
+// full circle now goes to nodes -- about 12% more room per ring.
+const LABEL_GAP_DEG = 0;
 const BAND_LIMIT = 3;          // more bands than this and the ring gets capped instead
-const MIN_RADIAL_TO_LABEL = 26; // px between neighbouring rings needed to show a name
-// Whether a name can be shown depends on its ACTUAL rendered width, not a guess: a fixed
-// threshold let long names ("Christian", "Francesca") print straight over the nodes on
-// the next ring round. Measured per element once the text is set.
+const MIN_RADIAL_TO_LABEL = 24; // px of radial clearance before a name may be shown
+const LABEL_ARC_MARGIN = 26;    // px of arc a name needs beyond its own width
+// Whether a name can be shown. Three tests, each earning its place:
+//
+//  • MEASURED width, not a fixed threshold — a guess let long names ("Christian",
+//    "Francesca") print straight over their neighbours.
+//  • A generous arc margin. Names are drawn just outside their node as a wide horizontal
+//    box, so they reach into whatever is angularly near them on the neighbouring ring.
+//    With six rings in a few hundred pixels, ring spacing is ~26-38px and no radial
+//    threshold separates "fits" from "collides" — tuning it either admits the collisions
+//    or suppresses every label. A wider arc requirement is what actually thins them out.
+//  • Only the outermost band of a degree. A no-op while each degree needs just one band,
+//    but it matters for a dense ego where degree 1 or 2 splits into several.
+//
+// Everything unlabelled shows its name on hover, and the rail always lists everyone.
 function labelFits(el, d) {
+  if (!d.isOuterBand) return false;
   let w = 0;
   try { w = el.getComputedTextLength(); } catch { w = 0; }
-  return d.clearance >= MIN_RADIAL_TO_LABEL && w + 8 <= d.arcPerNode;
+  return d.clearance >= MIN_RADIAL_TO_LABEL && w + LABEL_ARC_MARGIN <= d.arcPerNode;
 }
 const CANVAS_MAX = 760;
-const LABEL_MARGIN = 54;   // room outside the outer ring for the name labels
+const LABEL_MARGIN = 64;   // room outside the outer ring for the name labels
 const CANVAS_MIN = 460;
 
 export const view = {
@@ -255,6 +268,7 @@ export const view = {
               ringR: r,
               arcPerNode: (2 * Math.PI * r * (1 - LABEL_GAP_DEG / 360)) / slice.length,
               clearance: clearanceAt(rawR),
+              isOuterBand: b === p.bands.length - 1,
             });
           });
         });
