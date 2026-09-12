@@ -78,7 +78,7 @@ live behind a single **Explore** entry. Nothing was deleted, only de-ranked.
 
 ### Primary
 
-1. **Connections** — concentric rings around one person, ring = relationship degree. Click any node to re-centre.
+1. **Connections** — concentric rings around one person, ring = relationship degree. See [Connections](#connections-how-the-rings-are-laid-out).
 2. **Who knows whom** — the merged answer tool, in three tabs:
    - *At a school* — "I'm looking at that school; who do I know there?"
    - *With a person* — the chain between you two, plus **who you both know**.
@@ -90,6 +90,47 @@ live behind a single **Explore** entry. Nothing was deleted, only de-ranked.
 
 **Matrix** (school × school heatmap) · **Timeline** (two careers on one axis) ·
 **Chord** (country-to-country flows) · **Insights** (community aggregates).
+
+## Connections: how the rings are laid out
+
+Rings are sized by **what they must hold**, not by degree number. The first version spaced
+them evenly (`ringR = maxR * d / 6`), but connections pile into degrees 1 and 2. On the
+densest person in the demo (97 connections) that meant:
+
+| Degree | People | Ring circumference | Space needed | |
+|---|---|---|---|---|
+| 1 | 26 | 262 px | 649 px | **2.5× oversubscribed** |
+| 2 | 50 | 524 px | 1,361 px | **2.6× oversubscribed** |
+| 3 | 4 | 785 px | 100 px | 13% used |
+| 5 | 2 | 1,309 px | 47 px | 4% used |
+
+So the inner rings collapsed into a solid donut of overlapping circles while the outer
+rings sat empty. Now each ring gets the radius its own population needs, and a ring too
+crowded for one circle is split into concentric **bands** inside its own zone, which keeps
+"ring = degree" true.
+
+The layout **fits by shrinking the nodes and the ring padding** until the whole plan sits
+inside the canvas. It deliberately does *not* scale the finished plan — ring capacity is
+computed from those radii, so scaling afterwards silently invalidates it and the nodes
+overlap again.
+
+Other things that follow from the geometry:
+
+- **Labels** need room both along the ring *and* between rings, or two nodes on
+  neighbouring rings print their names on top of each other. Where there isn't room, names
+  appear on hover instead. They sit radially outward from each node, which fans them out.
+- **Rings are staggered angularly** so nodes on neighbouring rings don't line up on the
+  same spoke.
+- **Ring labels** live in a reserved 40° gap at the top, carry their counts
+  ("degree 2 · 50"), are drawn above the nodes with a white casing, and are pushed apart
+  when two rings end up close.
+- **Angular position means something**: each ring is ordered by region, then country.
+- **Empty rings are not drawn.** Faint alternating zone tints make rings read as regions.
+- **Spokes** are gentle curves, faint by default and lit on hover; hovering dims everything
+  else, and re-centring animates nodes to their new rings rather than redrawing.
+- **A list rail** fills the width that used to be dead space, holds every person however
+  crowded the rings are, and is hover- and click-linked to the graph. Crowded rings cap at
+  34 drawn with a "show every person" toggle; the rail always has the full list.
 
 ## Map: Flat / Globe / 3D
 

@@ -285,3 +285,39 @@ svg text { font-family: var(--font); }
   font-size: 14px; line-height: 1; padding: 0 2px;
 }
 .chip button:hover { color: var(--orange); }
+
+/* ── Connections view: graph + list rail ───────────────────────────────────── */
+.ego-layout { display: flex; gap: 16px; align-items: flex-start; }
+.ego-canvas {
+  flex: 1 1 auto; min-width: 0;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; padding: 6px 0;
+}
+.ego-rail {
+  flex: 0 0 240px; max-height: 74vh; overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.ego-rail .rail-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  padding-bottom: 8px; margin-bottom: 4px; border-bottom: 1px solid var(--line);
+}
+.ego-rail .rail-sec { margin-top: 12px; }
+.ego-rail .rail-sec-head {
+  display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 650;
+}
+.ego-rail .rail-sec-head .swatch { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+.ego-rail .rail-sec-head .muted { margin-left: auto; font-weight: 500; font-size: 12px; }
+.ego-rail .rail-sec-sub { font-size: 11.5px; margin: 1px 0 6px 18px; }
+.ego-rail ul { list-style: none; margin: 0; padding: 0; }
+.ego-rail li {
+  padding: 5px 7px; border-radius: 6px; font-size: 12.5px; cursor: pointer;
+  transition: background .1s;
+}
+.ego-rail li small { display: block; color: var(--muted); font-size: 11px; }
+.ego-rail li:hover, .ego-rail li.hot { background: #eef6f8; }
+
+@media (max-width: 900px) {
+  .ego-layout { flex-direction: column; }
+  .ego-rail { flex: 1 1 auto; width: 100%; max-height: 50vh; }
+}
