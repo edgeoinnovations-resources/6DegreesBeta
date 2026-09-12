@@ -153,6 +153,9 @@ export const view = {
     // ── Controls ─────────────────────────────────────────────────────────────
     let mode = MODES[ctx.state.params.mapMode] ? ctx.state.params.mapMode : 'flat';
     let showArcs = false;
+    // Declared up here with the rest of the view state because applyMode() reads it and
+    // is called from the controls block below, before the map is constructed.
+    let loaded = false;
 
     const overlay = el('div.map-overlay');
 
@@ -202,12 +205,17 @@ export const view = {
     journeyBox.appendChild(flyBtn);
     overlayBody.appendChild(journeyBox);
 
-    const legend = el('div.legend', { style: 'margin-top:10px;' }, [
+    const legend = el('div.legend', { style: `margin-top:10px;${showArcs ? '' : 'display:none;'}` }, [
       el('span.item', {}, [el('span.swatch', { style: `background:${PRIMARY}` }), 'arc = a teacher move']),
     ]);
     overlayBody.appendChild(legend);
     overlay.appendChild(overlayBody);
     shell.appendChild(overlay);
+
+    // Paint the panel to match the starting state right away. applyMode() bails before
+    // touching the map while !loaded, so this only sets the selected chip and the note --
+    // otherwise the panel sits with no mode selected until the basemap finishes loading.
+    applyMode();
 
     const panel = el('div.side-panel');
     shell.appendChild(panel);
@@ -222,8 +230,6 @@ export const view = {
       attributionControl: true,
     });
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
-
-    let loaded = false;
 
     // Handy when debugging the map from the console: window.__6deg.map, .state()
     // (Defined with defineProperty rather than Object.assign: Object.assign INVOKES
