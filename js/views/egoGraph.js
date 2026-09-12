@@ -114,9 +114,6 @@ export const view = {
       center.append('text').attr('text-anchor', 'middle').attr('dy', '0.35em')
         .attr('fill', '#fff').attr('font-size', 11).attr('font-weight', 700)
         .text(egoT ? egoT.FIRST_NAME : ego);
-      center.append('text').attr('text-anchor', 'middle').attr('y', 42)
-        .attr('font-size', 12).attr('font-weight', 600).attr('fill', '#1f2a30')
-        .text(egoT ? egoT.FULL_NAME : ego);
 
       // Count summary under the picker.
       const summary = DEGREES.map((d) => `${(byDeg.get(d) || []).length}×deg${d}`).join('  ·  ');
