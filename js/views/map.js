@@ -53,7 +53,9 @@ const MODES = {
 };
 
 // Screen-space targets for the headcount columns (see header note).
-const COLUMN_RADIUS_PX = 9;
+// Radius halved from 9px on Paul's note — at 9px the columns read as fat stubs and
+// crowded each other in the Gulf, where several cities sit close together.
+const COLUMN_RADIUS_PX = 4.5;
 const COLUMN_MAX_HEIGHT_PX = 130;
 
 export const view = {
