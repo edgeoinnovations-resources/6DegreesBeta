@@ -1,0 +1,162 @@
+{
+  "_what_this_is": "The six of us, seeded into the demo graph so the beta group can see themselves in it instead of only fictional teachers. First name + last initial only. This file is the editable source of truth: correct it, re-run `python3 tools/build_seed.py`, and every connection is recomputed from scratch.",
+  "_how_the_dates_were_chosen": "READ THIS BEFORE TRUSTING ANYTHING HERE. Nobody has given me their real career history, so the schools and years below are INFERRED from what people happened to mention in the WhatsApp thread, and are placeholders. Every posting is marked \"confirmed\": false and shows in the app with a 'details to confirm' marker until someone corrects it. What IS deliberate is the SHAPE of the connections — those are taken from Linda's own worked example (12 Sep 2025): she asked whether a first-degree link meant someone you taught with (her and the ASD group), someone at the same school at a different time (her and Dave), or someone in the same city at the same time (her and Dee).",
+  "_to_correct_this": "For each person: fix nationality/specialization if you want them shown, then fix each posting's school_id, role, start and end, and set confirmed to true. school_id values come from data/demo_data.json (schools[].SCHOOL_ID). Add a posting by copying a block. If a school someone worked at isn't in the demo school list yet, say so rather than picking a near-miss.",
+  "_roles": [
+    "Student",
+    "Faculty",
+    "Staff",
+    "Administrator"
+  ],
+  "people": [
+    {
+      "id": "B001",
+      "first": "Paul",
+      "last_initial": "S",
+      "nationality": "",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH021",
+          "role": "Faculty",
+          "start": "2012-08-01",
+          "end": "2017-06-30",
+          "confirmed": false,
+          "_from_chat": "'3 of my colleagues now all worked together in Denver'. Your South American schools are NOT in the demo school list — Roosevelt/Colegio FDR Lima was the one you and Linda both noted Google had missed."
+        },
+        {
+          "school_id": "SCH001",
+          "role": "Faculty",
+          "start": "2018-08-01",
+          "end": null,
+          "current": true,
+          "confirmed": false,
+          "_from_chat": "You and Linda say 'see you at work tomorrow', so you're at the same school at the same time — Linda's degree-1 case."
+        }
+      ]
+    },
+    {
+      "id": "B002",
+      "first": "Linda",
+      "last_initial": "H",
+      "nationality": "",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH020",
+          "role": "Faculty",
+          "start": "2014-08-01",
+          "end": "2018-06-30",
+          "confirmed": false,
+          "_from_chat": "'Dee and I have common cities at common times but no common school' — so you need an Addis posting at a DIFFERENT Addis school from Dee, overlapping in time. That's degree 3."
+        },
+        {
+          "school_id": "SCH001",
+          "role": "Faculty",
+          "start": "2018-08-01",
+          "end": null,
+          "current": true,
+          "confirmed": false,
+          "_from_chat": "'Me and all the ASD people'. You also taught a year in Minnesota and one in the US — no Minnesota school exists in the demo list yet."
+        }
+      ]
+    },
+    {
+      "id": "B003",
+      "first": "Dave",
+      "last_initial": "S",
+      "nationality": "",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH001",
+          "role": "Faculty",
+          "start": "2006-08-01",
+          "end": "2011-06-30",
+          "confirmed": false,
+          "_from_chat": "'Dave and I have ASD- but also a common schools at different times' — same school as Linda, non-overlapping. That's degree 2."
+        },
+        {
+          "school_id": "SCH032",
+          "role": "Faculty",
+          "start": "2011-08-01",
+          "end": "2016-06-30",
+          "confirmed": false,
+          "_from_chat": "'They'd be first degree from Jakarta'."
+        },
+        {
+          "school_id": "SCH025",
+          "role": "Faculty",
+          "start": "2016-08-01",
+          "end": "2021-06-30",
+          "confirmed": false,
+          "_from_chat": "'and now second degree from everyone at ASB'. Your two Honduras one-year posts aren't in the demo school list — 'neither of the schools we taught at (1 year jobs) were there'."
+        }
+      ]
+    },
+    {
+      "id": "B004",
+      "first": "Dee",
+      "last_initial": "M",
+      "nationality": "Canadian",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH019",
+          "role": "Faculty",
+          "start": "2015-08-01",
+          "end": null,
+          "current": true,
+          "confirmed": false,
+          "_from_chat": "Addis Ababa throughout; 'Melkem Addis Amet … from Addis!'. Nationality Canadian — you bought a house 3 hours north of Toronto."
+        }
+      ],
+      "_note": "Last initial confirmed by Paul, 12 Sep 2026."
+    },
+    {
+      "id": "B005",
+      "first": "Sarah",
+      "last_initial": "P",
+      "nationality": "",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH019",
+          "role": "Faculty",
+          "start": "2019-08-01",
+          "end": null,
+          "current": true,
+          "confirmed": false,
+          "_from_chat": "Dee added you to the group and you two were side by side ('adjacent pedi chairs'), so: same city as Dee, and placed at the same school to make it a degree 1. Correct this if you were at a different Addis school."
+        }
+      ]
+    },
+    {
+      "id": "B006",
+      "first": "Melissa",
+      "last_initial": "D",
+      "nationality": "",
+      "specialization": "",
+      "postings": [
+        {
+          "school_id": "SCH006",
+          "role": "Faculty",
+          "start": "2012-08-01",
+          "end": "2020-06-30",
+          "confirmed": true,
+          "_from_chat": "Paul, 12 Sep 2026: 'Melissa was also at ACS in Abu Dhabi (American Community School) Let's say for 8 years.' School and 8-year duration are confirmed; the exact start/end years are placed to sit before her current posting."
+        },
+        {
+          "school_id": "SCH001",
+          "role": "Faculty",
+          "start": "2020-08-01",
+          "end": null,
+          "current": true,
+          "confirmed": false,
+          "_from_chat": "STILL A GUESS. Nothing in the thread says where Melissa teaches now — 'also at ACS' implies somewhere else currently, and ASD Dubai is a placeholder so she isn't isolated in the graph. Please replace."
+        }
+      ],
+      "_note": "Last initial confirmed by Paul, 12 Sep 2026."
+    }
+  ]
+}

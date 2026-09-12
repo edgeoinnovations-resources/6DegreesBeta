@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>6 Degrees — Guide Book</title>
+<style>
+  :root{
+    --turquoise:#17A2B8; --turquoise-dark:#0b6b78; --orange:#FF6B35;
+    --ink:#1f2a30; --muted:#6a7a82; --line:#e3eaed; --bg:#f6f9fa;
+  }
+  @page{ size:A4; margin:18mm 16mm; }
+  *{ box-sizing:border-box; }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); margin:0; font-size:11.2px; line-height:1.55;
+  }
+  h1,h2,h3,h4{ letter-spacing:-.3px; }
+  a{ color:var(--turquoise-dark); }
+  code{ background:#eef6f8; padding:1px 5px; border-radius:4px; font-size:.92em; color:var(--turquoise-dark); }
+  .muted{ color:var(--muted); }
+
+  /* ── Cover ── */
+  .cover{
+    height:247mm; display:flex; flex-direction:column; justify-content:center;
+    page-break-after:always; padding:0 6mm;
+    background:linear-gradient(150deg,#ffffff 0%, #eef9fb 55%, #ffffff 100%);
+  }
+  .cover .mark{
+    width:96px;height:96px;border-radius:24px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--turquoise),var(--turquoise-dark));
+    color:#fff;font-size:46px;font-weight:700;margin-bottom:26px;
+    box-shadow:0 10px 30px rgba(23,162,184,.25);
+  }
+  .cover h1{ font-size:46px; margin:0; }
+  .cover h1 .deg{ color:var(--turquoise); }
+  .cover .tag{ font-size:16px; color:var(--muted); margin:10px 0 0; max-width:58ch; }
+  .cover .rule{ height:5px;width:120px;background:var(--orange);border-radius:3px;margin:26px 0; }
+  .cover .meta{ font-size:12px; color:var(--muted); }
+  .cover .meta b{ color:var(--ink); }
+
+  /* ── Section chrome ── */
+  .page{ page-break-before:always; }
+  .feat-head{
+    display:flex; align-items:center; gap:14px; margin:0 0 6px;
+    border-bottom:2px solid var(--turquoise); padding-bottom:10px;
+  }
+  .feat-num{
+    flex:0 0 auto; width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:var(--turquoise); color:#fff; font-weight:700; font-size:17px;
+  }
+  .feat-head h2{ margin:0; font-size:21px; }
+  .feat-head .sub{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  h3{ color:var(--turquoise-dark); font-size:13.5px; margin:16px 0 4px; }
+  .lead{ font-size:12.5px; color:#3a474d; margin:10px 0 6px; }
+  ul{ margin:4px 0 8px; padding-left:18px; }
+  li{ margin:3px 0; }
+  .demo{
+    margin:12px 0 4px; padding:10px 13px; border-left:4px solid var(--orange);
+    background:#fff5f0; border-radius:0 8px 8px 0; font-size:11px;
+  }
+  .demo b{ color:#a8400f; }
+  .note{
+    margin:10px 0; padding:10px 13px; border:1px solid var(--line);
+    background:#fff; border-radius:8px; font-size:10.6px;
+  }
+  .kbd{ background:#eef6f8;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:10px; }
+
+  /* degree legend */
+  .legend{ display:flex; flex-wrap:wrap; gap:7px; margin:8px 0; }
+  .chip{ display:flex; align-items:center; gap:6px; font-size:10px; padding:4px 9px;
+    border:1px solid var(--line); border-radius:999px; background:#fff; }
+  .sw{ width:12px;height:12px;border-radius:3px; }
+
+  table{ border-collapse:collapse; width:100%; font-size:10.4px; margin:8px 0; }
+  th,td{ text-align:left; padding:5px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ color:var(--muted); font-weight:600; }
+
+  .two{ display:flex; gap:18px; }
+  .two > div{ flex:1; }
+  .pill{ display:inline-block; padding:1px 8px; border-radius:999px; font-size:10px;
+    background:#eef6f8; color:var(--turquoise-dark); }
+  .pill.o{ background:#fff1ea; color:#a8400f; }
+  footer.f{ margin-top:20px; padding-top:8px; border-top:1px solid var(--line);
+    font-size:9.5px; color:var(--muted); display:flex; justify-content:space-between; }
+</style>
+</head>
+<body>
+
+<!-- ───────────────────────── COVER ───────────────────────── -->
+<section class="cover">
+  <div class="mark">6&deg;</div>
+  <h1>6 <span class="deg">Degrees</span></h1>
+  <p class="tag">A guide book to the international-school-teacher networking map — how every feature works, and what to point at when you show it.</p>
+  <div class="rule"></div>
+  <div class="meta">
+    <b>What it is.</b> A read-only map of how teachers are connected by shared <b>place</b> and <b>time</b>.<br>
+    Runs entirely in the browser · no build step · deploys to GitHub Pages.<br><br>
+    <b>Live:</b> edgeoinnovations-resources.github.io/6DegreesBeta/
+  </div>
+</section>
+
+<!-- ───────────────────────── HOW IT WORKS ───────────────────────── -->
+<section class="page">
+  <div class="feat-head">
+    <div class="feat-num" style="background:var(--turquoise-dark)">★</div>
+    <div><h2>Before you start: two ideas the whole app rests on</h2>
+    <div class="sub">Read this page once — every feature uses these two words.</div></div>
+  </div>
+
+  <h3>1 · Relationship degree (1–6)</h3>
+  <p class="lead">How <i>strong</i> a single connection between two people is, based purely on whether they shared a school / city / country, and whether they were there at the same time. It is pre-computed for every pair — the app never guesses it.</p>
+  <div class="legend">
+    <span class="chip"><span class="sw" style="background:#0b6b78"></span>1 · same school, same time</span>
+    <span class="chip"><span class="sw" style="background:#17A2B8"></span>2 · same school, different time</span>
+    <span class="chip"><span class="sw" style="background:#5cbecd"></span>3 · same city, same time</span>
+    <span class="chip"><span class="sw" style="background:#93d6e1"></span>4 · same city, different time</span>
+    <span class="chip"><span class="sw" style="background:#bfe6ed"></span>5 · same country, same time</span>
+    <span class="chip"><span class="sw" style="background:#e2f3f7"></span>6 · same country, different time</span>
+  </div>
+  <p class="muted" style="font-size:10.4px;">Colour runs on one scale: degree 1 is the most saturated turquoise, degree 6 the faintest. The same six colours are used in every view.</p>
+
+  <h3>2 · Separation (hop count)</h3>
+  <p class="lead">The classic "six degrees of separation" — the <i>fewest steps</i> to get from one person to another by hopping along connections. A direct link is 1 hop; a friend-of-a-friend is 2. The app computes this live with a breadth-first search.</p>
+  <div class="note"><b>Don't mix them up.</b> "Degree" describes <i>one</i> link's strength (1–6). "Separation" counts <i>how many</i> links you cross between two people. In this demo community the average separation is about <span class="pill">1.6 hops</span> and the widest gap (the diameter) is <span class="pill">3 hops</span>.</div>
+
+  <h3>The colour scheme</h3>
+  <p class="lead">Turquoise <span class="pill">#17A2B8</span> is the primary colour. Orange <span class="pill o">#FF6B35</span> is reserved for two things only: the <b>person you're focused on</b>, and a <b>mutually verified</b> link (it earns a badge).</p>
+
+  <h3>Getting around</h3>
+  <ul>
+    <li>The eight features are tabs down the left side. Your <b>focused teacher</b> shows in the top-right and carries between views.</li>
+    <li>Most views have a <b>search-as-you-type</b> box — start typing a name, specialization, or nationality.</li>
+    <li>Default focus is <b>Sarah Mitchell (T001)</b>, the demo "hero" who has one clean example of every degree 1–6.</li>
+  </ul>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>The two ideas</span></footer>
+</section>
+
+<!-- ───────────────────────── 1 EGO ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">1</div>
+    <div><h2>Ego graph</h2><div class="sub">"Who is this one person connected to, and how closely?"</div></div></div>
+  <p class="lead">One teacher sits at the centre. Everyone they're connected to is placed on a ring — the closer the ring, the stronger the connection (ring&nbsp;1 = same school same time, out to ring&nbsp;6). Bigger dots = people with more connections overall.</p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Re-centre</b> on anyone by clicking their dot, or by typing a name in the <i>Center on</i> box.</li>
+    <li><b>Hover a dot</b> to see <i>why</i> the link exists — the shared school/city/country and the years that overlapped.</li>
+    <li>An <b>orange ring + badge</b> means the connection is <b>mutually verified</b> (both people confirmed it).</li>
+  </ul>
+  <div class="demo"><b>Demo tip:</b> Start on <b>Sarah Mitchell</b>. She has exactly one clean example on every ring — James Thompson on ring 1 (same school, overlapping years) all the way out to Hannah Eriksson on ring 6 (same country, different years). It's the cleanest way to teach the 1–6 idea.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 1 · Ego graph</span></footer>
+</section>
+
+<!-- ───────────────────────── 2 NETWORK ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">2</div>
+    <div><h2>Force-directed network</h2><div class="sub">"Show me the whole community at once."</div></div></div>
+  <p class="lead">Every teacher is a dot; every connection is a line, coloured by its degree. Related people naturally cluster together. This is the big-picture view — spread it out, filter it down, and view it flat or in 3D.</p>
+  <h3>Spread it out</h3>
+  <p class="lead">The <b>Spread</b> slider pushes the dots further apart so you can actually see who links to whom. Slide it up if the web looks too clustered, down to pull it back together.</p>
+  <h3>2D or 3D</h3>
+  <ul>
+    <li><b>2D (flat):</b> drag a dot to pull the web around, scroll to zoom, click a dot for that person's postings.</li>
+    <li><b>3D (spin &amp; fly):</b> the cluster floats in space — <b>drag</b> to spin it around, <b>scroll</b> to fly in and out, <b>right-drag</b> to pan, and <b>click a dot</b> to fly the camera right up to that person. The <b>Auto-orbit</b> button slowly circles the whole cluster for a hands-free fly-around.</li>
+  </ul>
+  <h3>Filter &amp; style (works in both)</h3>
+  <ul>
+    <li><b>Degree checkboxes (1–6)</b> turn each class of line on or off — uncheck 4, 5, 6 to leave only the strong same-school and same-city links and watch the clusters tighten.</li>
+    <li><b>Node size:</b> by number of connections, or by years of experience.</li>
+    <li><b>Colour by:</b> strongest link's degree, or home region (Middle East, Asia, Europe…).</li>
+  </ul>
+  <div class="demo"><b>Demo tip:</b> Switch to <b>3D</b>, nudge <b>Spread</b> up a couple of notches, then press <b>Auto-orbit</b> — the community turns slowly in space while you talk. Click any dot to fly straight to that person.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 2 · Network</span></footer>
+</section>
+
+<!-- ───────────────────────── 3 MATRIX ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">3</div>
+    <div><h2>Adjacency matrix</h2><div class="sub">"Which schools share the most people?"</div></div></div>
+  <p class="lead">A grid of schools against schools. Each square is shaded by how many teachers worked at <i>both</i> of those schools — darker turquoise means more shared people. The diagonal is each school's own headcount.</p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Hover a square</b> to see the count and the names of the shared teachers.</li>
+    <li><b>Order rows/columns by</b>: <i>country cluster</i> (dense blocks appear along the diagonal — schools in the same country trade staff), <i>most-shared first</i>, or <i>alphabetical</i>.</li>
+  </ul>
+  <p class="muted" style="font-size:10.6px;">Why a grid instead of more dots? At full scale the network view becomes a hairball. A matrix stays readable no matter how many schools you add — dense regions show up as solid blocks.</p>
+  <div class="demo"><b>Demo tip:</b> Order by <b>country cluster</b> and point at the square blocks hugging the diagonal — that's a regional teacher market visible at a glance.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 3 · Matrix</span></footer>
+</section>
+
+<!-- ───────────────────────── 4 CHORD ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">4</div>
+    <div><h2>Chord diagram</h2><div class="sub">"Where do teachers go next?"</div></div></div>
+  <p class="lead">A circle of places. Each ribbon is a flow of teachers moving from one place to another, read from people's consecutive postings. The thicker the ribbon, the more teachers made that move; the arrow shows direction.</p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Flows between</b> toggle: country&nbsp;↔&nbsp;country (the big migration picture) or school&nbsp;↔&nbsp;school (the busiest individual schools only, for readability).</li>
+    <li><b>Hover a ribbon</b> for the exact "from → to" and the number of moves; hover an arc for a place's total moves in and out.</li>
+  </ul>
+  <div class="demo"><b>Demo tip:</b> Stay at country level and find the thickest ribbon — that's the strongest "career corridor" in the community (e.g. teachers moving between Gulf states). It answers a recruiter's first question: <i>where does talent flow?</i></div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 4 · Chord</span></footer>
+</section>
+
+<!-- ───────────────────────── 5 MAP ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">5</div>
+    <div><h2>Map (2D · 3D · globe)</h2><div class="sub">"Show the community on the actual world."</div></div></div>
+  <p class="lead">A real world map with every school as a circle — bigger circles are schools more community members passed through. Coloured arcs show people moving between schools.</p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Click a school</b> to open its roster — who taught there and in which years, as a mini timeline.</li>
+    <li><b>Migration arcs</b> (toggle): each arc is a teacher move from one school to another; thicker arcs = more moves. Click an arc for the count.</li>
+    <li><b>3D headcount columns</b> (toggle): tilts the map and raises a column over each city, taller where more members worked.</li>
+    <li><b>Globe projection</b> (toggle): wraps the map onto a globe for the "worldwide community" look.</li>
+    <li><b>Fly the journey</b>: pick a teacher and press play — the camera hops through their postings in order, popping up each school.</li>
+  </ul>
+  <div class="demo"><b>Demo tip:</b> Pick Sarah Mitchell and <b>Fly the journey</b> — the camera travels Bangkok → Dubai → Singapore, turning her CV into a story you can watch.</div>
+  <div class="note">Uses a free, no-key basemap, so it always loads. Arcs and 3D columns are drawn with deck.gl; if a network blocks it, the school circles still work on their own.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 5 · Map</span></footer>
+</section>
+
+<!-- ───────────────────────── 6 TIMELINE ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">6</div>
+    <div><h2>Timeline (Gantt)</h2><div class="sub">"Watch a connection actually form."</div></div></div>
+  <p class="lead">Time runs left to right. Each teacher gets a row, and each posting is a coloured bar spanning the years they were there. This is where you <i>see</i> a relationship degree being created.</p>
+  <h3>How to use it</h3>
+  <ul>
+    <li><b>Compare A vs B</b>: pick two people. Wherever their bars cover the <i>same school, city, or country at the same time</i>, that span is highlighted in orange and labelled with the degree it creates.</li>
+    <li><b>Colour by</b>: school or region.</li>
+    <li><b>Year slider</b>: drag the vertical "now" line across the years to scrub through the community's history.</li>
+  </ul>
+  <div class="demo"><b>Demo tip:</b> The default pair — <b>Sarah Mitchell vs James Thompson</b> — overlaps at the American School of Dubai from 2017–2019. That highlighted orange band <i>is</i> their degree-1 connection, shown forming in real time.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 6 · Timeline</span></footer>
+</section>
+
+<!-- ───────────────────────── 7 INSIGHTS ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">7</div>
+    <div><h2>Insights dashboard</h2><div class="sub">"The numbers behind the whole community."</div></div></div>
+  <p class="lead">All aggregate — no individuals are singled out. The headline is the real "six degrees" number for this community.</p>
+  <table>
+    <tr><th>Card / chart</th><th>What it tells you</th></tr>
+    <tr><td><b>Average separation</b></td><td>The mean number of hops between any two reachable people — the literal "degrees of separation" figure (~1.6 here).</td></tr>
+    <tr><td><b>Network diameter</b></td><td>The widest gap in the community — the longest of all the shortest paths (3 hops).</td></tr>
+    <tr><td>Degree distribution</td><td>How many connections fall into each degree 1–6.</td></tr>
+    <tr><td>Average tenure by region</td><td>Typical years per posting in each part of the world.</td></tr>
+    <tr><td>Curriculum mix by region</td><td>Share of IB / British / American / other schools per region.</td></tr>
+    <tr><td>Most-connected schools</td><td>The schools the most members have passed through.</td></tr>
+    <tr><td>Biggest corridors</td><td>The top country-to-country migration flows.</td></tr>
+    <tr><td>Connection growth</td><td>How connections accumulated over the years — drag the slider to scrub.</td></tr>
+  </table>
+  <div class="demo"><b>Demo tip:</b> Lead with the big orange number. "In this community, any two people are on average fewer than two introductions apart" lands the whole premise in one sentence.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 7 · Insights</span></footer>
+</section>
+
+<!-- ───────────────────────── 8 SEARCH ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num">8</div>
+    <div><h2>Search &amp; pathfinder</h2><div class="sub">"Find people, and trace how any two are linked."</div></div></div>
+  <p class="lead">Five tools share this tab; pick one from the row of buttons at the top.</p>
+  <h3>Faceted search</h3>
+  <p class="lead">Filter teachers by country, city, school, role, subject, minimum years, curriculum, or verified-only. Each result links straight into the ego graph.</p>
+  <h3>Pathfinder</h3>
+  <p class="lead">Pick person A and person B and see the chain that links them, each hop labelled with its degree and the shared context. Three modes:</p>
+  <ul>
+    <li><b>Featured demo chain</b> — the curated warm-intro story (all strong, degree-1 hops).</li>
+    <li><b>Strongest links</b> — favours the strongest connections even if it takes an extra hop.</li>
+    <li><b>Fewest hops</b> — the shortest possible chain, the literal degrees of separation.</li>
+  </ul>
+  <div class="note"><b>Why three modes?</b> The "best" path depends on what you mean by best. The demo's signature chain <span class="pill">Sarah&nbsp;→&nbsp;Grace&nbsp;→&nbsp;Carlos&nbsp;→&nbsp;Imani</span> is three warm, same-school hops — great for a <i>quality-of-introduction</i> story. But the graph also has a shorter two-hop route between the same pair. "Fewest hops" shows that one. Both are true; they answer different questions.</div>
+  <h3>Who do I know at School X?</h3>
+  <p class="lead">Pick a school and a maximum link strength — get the people you're already connected to there, ready for a warm intro.</p>
+  <h3>Reverse recruiting</h3>
+  <p class="lead">Build a query like <i>"people within 2 degrees of Sarah who taught Physics in 2+ countries"</i> and get a shortlist table.</p>
+  <h3>Natural language (coming soon)</h3>
+  <p class="lead">A preview of asking questions in plain English. It's a deliberate stub — the real version will run safely on the server, never in your browser.</p>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Feature 8 · Search &amp; pathfinder</span></footer>
+</section>
+
+<!-- ───────────────────────── EDITING / RUNNING ───────────────────────── -->
+<section class="page">
+  <div class="feat-head"><div class="feat-num" style="background:var(--orange)">✎</div>
+    <div><h2>Running &amp; editing it</h2><div class="sub">For the non-developer keeping this alive.</div></div></div>
+  <h3>See it live</h3>
+  <p class="lead">It's already online at <code>edgeoinnovations-resources.github.io/6DegreesBeta/</code>. Nothing to install to <i>view</i> it.</p>
+  <h3>Run it on your own computer</h3>
+  <p class="lead">Because it loads a data file, it needs a tiny local server (double-clicking the HTML won't work):</p>
+  <ul>
+    <li>Open Terminal in the project folder.</li>
+    <li>Run <code>python3 -m http.server 8000</code></li>
+    <li>Open <code>http://localhost:8000/</code> in a browser.</li>
+  </ul>
+  <h3>Change the data</h3>
+  <p class="lead">All the people, schools, postings, and connections live in one file: <code>data/demo_data.json</code>. Edit it (or regenerate it from the CSVs) and every view updates — no rebuilding. When you later move to a live database, only one small file, <code>js/loadData.js</code>, changes; nothing else moves.</p>
+  <div class="note"><b>Privacy by design:</b> salary and supervisor fields are kept blank and are never shown anywhere. No passwords or keys live in the site's files.</div>
+  <footer class="f"><span>6 Degrees — Guide Book</span><span>Running &amp; editing</span></footer>
+</section>
+
+</body>
+</html>
