@@ -53,9 +53,10 @@ const MODES = {
 };
 
 // Screen-space targets for the headcount columns (see header note).
-// Radius halved from 9px on Paul's note — at 9px the columns read as fat stubs and
-// crowded each other in the Gulf, where several cities sit close together.
-const COLUMN_RADIUS_PX = 4.5;
+// Tuned down twice on Paul's notes: 9 -> 4.5 -> 3. At 9 the columns read as fat stubs
+// and cities close together (the Gulf cluster) merged into one mass. 3 is his call for
+// the right width — a 6px diameter on screen at any zoom.
+const COLUMN_RADIUS_PX = 3;
 const COLUMN_MAX_HEIGHT_PX = 130;
 
 export const view = {

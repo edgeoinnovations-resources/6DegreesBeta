@@ -92,7 +92,7 @@ projection they are out in space"* — were both structural, not tuning problems
 - **Columns were invisible** because they were extruded circles of a fixed 30 km radius. At
   world zoom that is **0.62 pixels** wide. They are now sized in *screen space*: radius and
   height are recomputed from metres-per-pixel on every view change, so a column is always
-  ~9 px across and the tallest is always ~130 px high, at every zoom.
+  ~6 px across and the tallest is always ~130 px high, at every zoom.
 - **Globe detached the overlay** because arcs and columns were drawn by **deck.gl** on top
   of MapLibre. deck.gl syncs to MapLibre's *mercator* camera; switch to globe and the two
   cameras disagree. That is an open upstream bug ([visgl/deck.gl#9466](https://github.com/visgl/deck.gl/issues/9466),
