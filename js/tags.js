@@ -15,7 +15,7 @@
 //
 // An approved tag also CREATES a connection (see the `connections` view), which
 // is the only way two people who never shared a place can appear linked at all.
-import { supabase } from './supabaseClient.js';
+import { supabase, friendlyDbError } from './supabaseClient.js';
 import { el } from './widgets.js';
 
 let _types = null;
@@ -125,7 +125,7 @@ export function tagSection(ctx, otherId, onChanged) {
             btn.disabled = true; btn.textContent = 'Sending…';
             const ctxInput = row.querySelector('input');
             const { error } = await createTag(otherId, ty.key, ctxInput?.value);
-            if (error) { btn.disabled = false; btn.textContent = 'Confirm this'; note0(row, error.message); return; }
+            if (error) { btn.disabled = false; btn.textContent = 'Confirm this'; note0(row, friendlyDbError(error, 'send that')); return; }
             onChanged?.();
           });
           action.append(
@@ -139,13 +139,13 @@ export function tagSection(ctx, otherId, onChanged) {
           } else {
             const yes = el('button.btn.accent', { type: 'button', text: 'Confirm' });
             const no = el('button.btn.ghost', { type: 'button', text: 'Decline' });
-            yes.addEventListener('click', async () => { await respondToTag(mine.id, 'approved'); onChanged?.(); });
-            no.addEventListener('click', async () => { await respondToTag(mine.id, 'declined'); onChanged?.(); });
+            yes.addEventListener('click', () => respond(row, mine.id, 'approved', 'confirm that', onChanged));
+            no.addEventListener('click', () => respond(row, mine.id, 'declined', 'decline that', onChanged));
             action.append(el('span.tag-state.pending', { text: 'They say yes — do you?' }), yes, no);
           }
         } else if (mine.status === 'approved') {
           const revoke = el('button.btn.ghost', { type: 'button', text: 'Remove' });
-          revoke.addEventListener('click', async () => { await respondToTag(mine.id, 'revoked'); onChanged?.(); });
+          revoke.addEventListener('click', () => respond(row, mine.id, 'revoked', 'remove that', onChanged));
           action.append(el('span.tag-state.ok', { text: 'Confirmed by you both' }), revoke);
         } else {
           action.appendChild(el('span.tag-state', { text: mine.status === 'declined' ? 'Declined' : 'Removed' }));
@@ -174,17 +174,31 @@ export function tagSection(ctx, otherId, onChanged) {
         nBtn.disabled = true; nMsg.textContent = 'Saving…';
         const { error } = await saveNote(otherId, ta.value, note?.id);
         nBtn.disabled = false;
-        nMsg.textContent = error ? error.message : 'Saved.';
+        nMsg.textContent = error ? friendlyDbError(error, 'save your note') : 'Saved.';
       });
       nWrap.append(ta, el('div', { style: 'display:flex;gap:8px;align-items:center;margin-top:6px;' }, [nBtn, nMsg]));
       body.appendChild(nWrap);
     } catch (err) {
       body.className = 'auth-msg error';
-      body.textContent = err.message || String(err);
+      body.textContent = friendlyDbError(err, 'load your connection');
     }
   })();
 
   return wrap;
+}
+
+// Respond to a tag, and only move on if the database actually accepted it. These
+// buttons used to ignore the result and reload, so a refused change looked like it
+// had worked until the page came back unchanged.
+async function respond(row, id, status, action, onChanged) {
+  row.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+  const { error } = await respondToTag(id, status);
+  if (error) {
+    row.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+    note0(row, friendlyDbError(error, action));
+    return;
+  }
+  onChanged?.();
 }
 
 function note0(row, msg) {

@@ -10,6 +10,7 @@
 //              live behind it. Nothing is deleted, only de-ranked.
 import { loadData, invalidate } from './loadData.js';
 import { requireSession, loadMyProfile, signOut } from './auth.js';
+import { friendlyDbError } from './supabaseClient.js';
 import { BUILD } from './config.js';
 import { connectionsIcon } from './connectionsInbox.js';
 import { onboardingView } from './onboarding.js';
@@ -131,9 +132,7 @@ async function boot() {
     data = await loadData();
   } catch (err) {
     container.innerHTML = `<div class="view"><div class="error-box">
-      Could not load your data from Supabase.<br>${err.message}<br><br>
-      If this says <code>permission denied</code>, your sign-in may have expired —
-      try signing out and back in.
+      ${friendlyDbError(err, 'load the community')}
     </div></div>`;
     return;
   }
@@ -212,7 +211,7 @@ async function boot() {
       v.render(root, ctx);
     } catch (err) {
       console.error(`[6deg] view "${v.id}" failed:`, err);
-      root.appendChild(el('div.error-box', { html: `View <b>${v.title}</b> failed to render: ${err.message}` }));
+      root.appendChild(el('div.error-box', { text: `Something went wrong showing ${v.title}. Reload the page, and if it keeps happening let Paul know. Reference: ${err?.name || 'render'}.` }));
     }
   }
   ctx.activate = activate;

@@ -11,7 +11,7 @@
 //   * Role is one of four basics, never a job title or subject. (Linda, 7 Jun
 //     2026: "we talked about NOT having teaching assignment".)
 //   * Months and years. (Paul: "I think we can do months and years.")
-import { supabase } from './supabaseClient.js';
+import { supabase, friendlyDbError } from './supabaseClient.js';
 import { el } from './widgets.js';
 
 const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
@@ -80,7 +80,7 @@ function schoolPicker(onPick, initial = {}) {
   (async () => {
     try {
       [schools, cities] = await Promise.all([schoolCatalogue(), cityCatalogue()]);
-    } catch (err) { note.textContent = `Couldn’t load the lists: ${err.message}`; return; }
+    } catch (err) { note.textContent = friendlyDbError(err, 'load the school list'); return; }
     for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
     const countries = [...new Set(schools.map((r) => r.country))].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
@@ -197,7 +197,7 @@ function schoolPicker(onPick, initial = {}) {
           }
           status.textContent = `Already listed as “${dup[1]}”${dup[2] ? ` under ${dup[2]}` : ''}.`;
         } else {
-          status.textContent = m.replace(/^.*?:\s*/, '');
+          status.textContent = friendlyDbError(error, 'add that school');
         }
         go.disabled = false;
         return;
@@ -486,11 +486,8 @@ export function onboardingView(user, profile, onDone) {
       onDone();
     } catch (err) {
       status.className = 'auth-msg error';
-      const m = err.message || String(err);
-      status.textContent = /not signed in|28000|JWT/i.test(m)
-        ? 'Your sign-in expired while you were filling this in. Reload the page — what you typed is saved — then sign in and press Save again.'
-        : m;
-      console.error('[6deg] save failed:', err);
+      // What they typed is kept in the draft, so it's safe to tell them to reload.
+      status.textContent = friendlyDbError(err, 'save your details');
       save.disabled = false;
       save.textContent = isNew ? 'Join 6 Degrees' : 'Save changes';
     }

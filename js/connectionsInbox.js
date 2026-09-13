@@ -8,7 +8,7 @@
 // It carries a count of what is waiting on YOU, and opens a window with three
 // groups: things to answer, things you have asked for, and what is already
 // confirmed (which you can undo).
-import { supabase } from './supabaseClient.js';
+import { supabase, friendlyDbError } from './supabaseClient.js';
 import { el } from './widgets.js';
 import { tagTypes, respondToTag } from './tags.js';
 
@@ -69,6 +69,21 @@ export async function openInbox(ctx) {
 
     const refresh = async () => { close(); await ctx.reload(); };
 
+    // Run a change and only reload if it worked; otherwise say why on that row.
+    // (These used to ignore errors and reload as though they had succeeded.)
+    const act = async (r, action, fn) => {
+      r.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+      const { error } = await fn();
+      if (error) {
+        r.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+        let msg = r.querySelector('.inbox-err');
+        if (!msg) { msg = el('p.inbox-err'); r.appendChild(msg); }
+        msg.textContent = friendlyDbError(error, action);
+        return;
+      }
+      refresh();
+    };
+
     const row = (t, actions) => {
       const other = t.requester_id === ctx.me ? t.subject_id : t.requester_id;
       const r = el('div.inbox-row');
@@ -76,9 +91,9 @@ export async function openInbox(ctx) {
         el('strong', { text: nameOf(ctx, other) }),
         el('small', { text: label(t.tag_key) + (t.context ? ` · “${t.context}”` : '') }),
       ]));
-      const act = el('div.inbox-act');
-      actions.forEach((a) => act.appendChild(a));
-      r.appendChild(act);
+      const buttons = el('div.inbox-act');
+      actions.forEach((a) => buttons.appendChild(a));
+      r.appendChild(buttons);
       return r;
     };
 
@@ -86,26 +101,27 @@ export async function openInbox(ctx) {
     const toAnswer = tags.filter((t) => t.status === 'pending' && t.subject_id === ctx.me).map((t) => {
       const yes = el('button.btn.accent', { type: 'button', text: 'Confirm' });
       const no = el('button.btn.ghost', { type: 'button', text: 'Decline' });
-      yes.addEventListener('click', async () => { await respondToTag(t.id, 'approved'); refresh(); });
-      no.addEventListener('click', async () => { await respondToTag(t.id, 'declined'); refresh(); });
-      return row(t, [yes, no]);
+      const r = row(t, [yes, no]);
+      yes.addEventListener('click', () => act(r, 'confirm that', () => respondToTag(t.id, 'approved')));
+      no.addEventListener('click', () => act(r, 'decline that', () => respondToTag(t.id, 'declined')));
+      return r;
     });
 
     // 2. waiting on them
     const waiting = tags.filter((t) => t.status === 'pending' && t.requester_id === ctx.me).map((t) => {
       const undo = el('button.btn.ghost', { type: 'button', text: 'Withdraw' });
-      undo.addEventListener('click', async () => {
-        await supabase.from('connection_tags').delete().eq('id', t.id);
-        refresh();
-      });
-      return row(t, [el('span.tag-state.pending', { text: 'Waiting' }), undo]);
+      const r = row(t, [el('span.tag-state.pending', { text: 'Waiting' }), undo]);
+      undo.addEventListener('click', () => act(r, 'withdraw that',
+        () => supabase.from('connection_tags').delete().eq('id', t.id)));
+      return r;
     });
 
     // 3. confirmed
     const confirmed = tags.filter((t) => t.status === 'approved').map((t) => {
       const rm = el('button.btn.ghost', { type: 'button', text: 'Remove' });
-      rm.addEventListener('click', async () => { await respondToTag(t.id, 'revoked'); refresh(); });
-      return row(t, [el('span.tag-state.ok', { text: 'Confirmed' }), rm]);
+      const r = row(t, [el('span.tag-state.ok', { text: 'Confirmed' }), rm]);
+      rm.addEventListener('click', () => act(r, 'remove that', () => respondToTag(t.id, 'revoked')));
+      return r;
     });
 
     body.append(
@@ -115,7 +131,7 @@ export async function openInbox(ctx) {
     );
   } catch (err) {
     body.className = 'auth-msg error';
-    body.textContent = err.message || String(err);
+    body.textContent = friendlyDbError(err, 'load your connections');
   }
 }
 

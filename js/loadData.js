@@ -34,7 +34,7 @@ export async function loadData() {
   ]);
 
   for (const r of [profilesRes, postingsRes, connRes, tagsRes]) {
-    if (r.error) throw new Error(`${r.error.message} (${r.error.code || 'no code'})`);
+    if (r.error) throw r.error;   // keep code/details intact for friendlyDbError
   }
 
   // ── teachers ──────────────────────────────────────────────────────────────

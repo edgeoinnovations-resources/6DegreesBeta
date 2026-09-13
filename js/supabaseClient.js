@@ -53,3 +53,54 @@ export function friendlyAuthError(err) {
   }
   return msg;
 }
+
+// ── Database errors, in words a person can act on ───────────────────────────
+// Linda was shown `insert or update on table "schools" violates foreign key
+// constraint "schools_added_by_fkey"` — raw Postgres, meaningless to her and
+// useless as a report. Every error the UI shows goes through here now.
+//
+// Each message keeps a short REFERENCE (the Postgres/PostgREST code) so a
+// screenshot is still diagnosable, and the full error always goes to the
+// console with the action that failed.
+const FRIENDLY_BY_CODE = {
+  '23503': 'Something this depends on isn’t set up yet.',
+  '23505': 'That already exists.',
+  '23514': 'Some of that isn’t in a form we can save.',
+  '23502': 'Something required is missing.',
+  '22P02': 'Some of that isn’t in a form we can save.',
+  '22007': 'One of the dates isn’t valid.',
+  '22008': 'One of the dates isn’t valid.',
+  '42501': 'The database refused that — your sign-in may have expired.',
+  PGRST301: 'Your sign-in has expired.',
+  PGRST303: 'Your sign-in has expired.',
+};
+
+// Codes whose message WE wrote in SQL (raise exception ... using errcode), so the
+// text is already meant for people and should be shown as-is.
+const AUTHORED_CODES = new Set(['22023', '28000', 'P0001']);
+
+export function friendlyDbError(err, action = 'do that') {
+  const code = err?.code || '';
+  const raw = err?.message || String(err || '');
+  console.error(`[6deg] failed to ${action}:`, { code, message: raw, details: err?.details, hint: err?.hint, err });
+
+  if (/Failed to fetch|NetworkError|Load failed/i.test(raw)) {
+    return 'Couldn’t reach the server. Check your connection and try again.';
+  }
+  if (/JWT|expired/i.test(raw) && !AUTHORED_CODES.has(code)) {
+    return 'Your sign-in has expired. Reload the page and sign in again — nothing is lost.';
+  }
+  if (AUTHORED_CODES.has(code) && raw && !/ALREADY_LISTED/.test(raw)) {
+    return raw;
+  }
+
+  const lead = FRIENDLY_BY_CODE[code] || `Couldn’t ${action}.`;
+  const signIn = code === '42501' || code.startsWith('PGRST30');
+  const next = signIn
+    ? ' Reload the page and sign in again, then try once more.'
+    : code === '23505'
+      ? ''
+      : ' Try again, and if it keeps happening let Paul know.';
+  const ref = code ? ` Reference: ${code}.` : '';
+  return `${lead}${next}${ref}`;
+}
