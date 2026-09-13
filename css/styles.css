@@ -378,3 +378,13 @@ body.signed-out .header-ego { display: none; }
 }
 .ym select { min-width: 92px; }
 .still-here { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+
+/* Adding a school that isn't listed */
+.add-school {
+  flex: 1 1 100%; margin-top: 8px; padding: 10px 12px;
+  background: #fff4ef; border: 1px dashed var(--orange); border-radius: 8px;
+}
+.add-school input[type=text] {
+  flex: 1 1 260px; min-width: 200px; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 7px; font: inherit; font-size: 14px;
+}

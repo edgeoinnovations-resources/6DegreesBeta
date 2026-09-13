@@ -18,35 +18,33 @@ const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
-// ── School catalogue, fetched once ──────────────────────────────────────────
-// Fetched in ONE request and cascaded in memory rather than a query per level.
-// PostgREST caps a response at 1,000 rows by default and there are 2,130 schools,
-// so the per-level queries silently dropped everything past the cap — which is
-// why a country late in the alphabet (Venezuela) had no chance of appearing even
-// once the RLS policy was fixed. The whole catalogue is ~150KB and makes the
-// cascade instant.
-let _schools = null;
-async function allSchools() {
-  if (_schools) return _schools;
+// ── Reference data, fetched once ────────────────────────────────────────────
+// One request each, paginated past PostgREST's 1,000-row default cap — there are
+// 2,130 schools and 32,966 cities, and querying a level at a time silently
+// dropped everything past the cap (which is how Venezuela went missing).
+async function fetchAll(table, cols, order) {
   const page = 1000;
   const out = [];
   for (let from = 0; ; from += page) {
-    const { data, error } = await supabase
-      .from('schools')
-      .select('id,name,city,country,city_source')
-      .order('country').order('city').order('name')
-      .range(from, from + page - 1);
+    let q = supabase.from(table).select(cols);
+    for (const o of order) q = q.order(o);
+    const { data, error } = await q.range(from, from + page - 1);
     if (error) throw error;
     out.push(...(data || []));
     if (!data || data.length < page) break;
   }
-  _schools = out;
   return out;
 }
 
-// ── School picker: country → city → school ──────────────────────────────────
+let _schools = null, _cities = null;
+const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,name,city,country,country_code,city_source', ['country', 'city', 'name']));
+const cityCatalogue  = async () => (_cities  ??= await fetchAll('cities', 'id,name,country_code,latitude,longitude,population', ['country_code', 'name']));
+export function invalidateCatalogue() { _schools = null; }
+
+// ── School picker: country → city → school, with escape hatches ─────────────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
-// dropdown?" — and the only sane way to choose from 2,130 schools.
+// dropdown?" — plus her other request from the same day, "with the option to add
+// a school that's not listed", which is what the two "not listed" paths are.
 function schoolPicker(onPick, initial = {}) {
   const wrap = el('div.school-picker');
   const cSel = el('select', { 'aria-label': 'Country' }, [el('option', { value: '', text: 'Country…' })]);
@@ -55,52 +53,133 @@ function schoolPicker(onPick, initial = {}) {
   wrap.append(cSel, citySel, sSel);
 
   const note = el('p.muted', { style: 'font-size:11.5px;margin:6px 0 0;flex:1 1 100%;' });
-  wrap.appendChild(note);
+  const addBox = el('div.add-school');
+  addBox.style.display = 'none';
+  wrap.append(note, addBox);
 
-  let rows = [];
+  let schools = [], cities = [], ccOf = new Map();
+
+  const CITY_OTHER = '__other__';
+  const SCHOOL_NEW = '__new__';
 
   (async () => {
     try {
-      rows = await allSchools();
-    } catch (err) {
-      note.textContent = `Couldn’t load the school list: ${err.message}`;
-      return;
-    }
-    const countries = [...new Set(rows.map((r) => r.country))].sort();
+      [schools, cities] = await Promise.all([schoolCatalogue(), cityCatalogue()]);
+    } catch (err) { note.textContent = `Couldn’t load the lists: ${err.message}`; return; }
+    for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
+    const countries = [...new Set(schools.map((r) => r.country))].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
-    note.textContent = `${rows.length.toLocaleString()} schools in ${countries.length} countries.`;
+    note.textContent = `${schools.length.toLocaleString()} schools in ${countries.length} countries.`;
     if (initial.country) { cSel.value = initial.country; cSel.dispatchEvent(new Event('change')); }
   })();
 
+  const resetSchools = () => {
+    sSel.innerHTML = ''; sSel.appendChild(el('option', { value: '', text: 'School…' }));
+    addBox.style.display = 'none'; addBox.innerHTML = '';
+  };
+
   cSel.addEventListener('change', () => {
     citySel.innerHTML = ''; citySel.appendChild(el('option', { value: '', text: 'City…' }));
-    sSel.innerHTML = ''; sSel.appendChild(el('option', { value: '', text: 'School…' }));
+    resetSchools();
     sSel.disabled = true; citySel.disabled = !cSel.value;
     onPick(null);
     if (!cSel.value) return;
-    const cities = [...new Set(rows.filter((r) => r.country === cSel.value)
+
+    // cities that already have schools, then everywhere else in that country
+    const withSchools = [...new Set(schools.filter((r) => r.country === cSel.value)
       .map((r) => r.city).filter(Boolean))].sort();
-    cities.forEach((c) => citySel.appendChild(el('option', { value: c, text: c })));
+    withSchools.forEach((c) => citySel.appendChild(el('option', { value: c, text: c })));
+    citySel.appendChild(el('option', { value: CITY_OTHER, text: '— another city in this country —' }));
     if (initial.city) { citySel.value = initial.city; citySel.dispatchEvent(new Event('change')); }
   });
 
+  // The full gazetteer for a country, shown only when the listed cities don't cover it.
+  function showAllCities() {
+    const cc = ccOf.get(cSel.value);
+    const pool = cities.filter((c) => c.country_code === cc)
+      .sort((a, b) => b.population - a.population);
+    citySel.innerHTML = '';
+    citySel.appendChild(el('option', { value: '', text: `City… (${pool.length.toLocaleString()} in ${cSel.value})` }));
+    pool.slice().sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((c) => citySel.appendChild(el('option', { value: c.name, text: c.name })));
+    note.textContent = `Showing every city in ${cSel.value}. Pick yours, then add your school.`;
+  }
+
   citySel.addEventListener('change', () => {
-    sSel.innerHTML = ''; sSel.appendChild(el('option', { value: '', text: 'School…' }));
+    if (citySel.value === CITY_OTHER) { showAllCities(); onPick(null); return; }
+    resetSchools();
     sSel.disabled = !citySel.value;
     onPick(null);
     if (!citySel.value) return;
-    const here = rows.filter((r) => r.country === cSel.value && r.city === citySel.value);
+
+    const here = schools.filter((r) => r.country === cSel.value && r.city === citySel.value);
     here.forEach((r) => sSel.appendChild(el('option', { value: r.id, text: r.name })));
-    // Be honest that some cities are inferred, so a missing school has an explanation.
+    sSel.appendChild(el('option', { value: SCHOOL_NEW, text: '+ My school isn’t listed…' }));
+
     const guessed = here.filter((r) => r.city_source === 'fallback-largest-city').length;
-    note.textContent = guessed
-      ? `${guessed} of these were filed under ${citySel.value} because the source list didn’t say `
-        + 'which city. If yours is missing, try another city — or tell Paul and it gets added.'
-      : `${here.length} school${here.length === 1 ? '' : 's'} in ${citySel.value}.`;
+    note.textContent = here.length
+      ? (guessed
+        ? `${here.length} here. ${guessed} were filed under ${citySel.value} because the source list didn’t say which city.`
+        : `${here.length} school${here.length === 1 ? '' : 's'} in ${citySel.value}.`)
+      : `No schools listed in ${citySel.value} yet — add yours.`;
     if (initial.school_id) { sSel.value = String(initial.school_id); onPick(Number(initial.school_id)); }
   });
 
-  sSel.addEventListener('change', () => onPick(sSel.value ? Number(sSel.value) : null));
+  // ── Adding a school ───────────────────────────────────────────────────────
+  function showAddSchool() {
+    addBox.innerHTML = '';
+    addBox.style.display = '';
+    const nameInput = el('input', { type: 'text', placeholder: 'Escola Americana de Campinas', 'aria-label': 'School name' });
+    const go = el('button.btn', { type: 'button', text: 'Add it' });
+    const status = el('span.muted', { style: 'font-size:12px;' });
+    addBox.append(
+      el('p.muted', { style: 'font-size:11.5px;margin:0 0 6px;', text: `Adding a school in ${citySel.value}, ${cSel.value}. Everyone will be able to pick it.` }),
+      el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' }, [nameInput, go, status]),
+    );
+
+    go.addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (name.length < 2) { status.textContent = 'Give it a name.'; return; }
+      go.disabled = true; status.textContent = 'Adding…';
+
+      const cc = ccOf.get(cSel.value);
+      const city = cities.find((c) => c.country_code === cc && c.name === citySel.value);
+      const { data: { user } } = await supabase.auth.getUser();
+
+      const { data, error } = await supabase.from('schools').insert({
+        name,
+        city: citySel.value,
+        country: cSel.value,
+        country_code: cc || null,
+        latitude: city?.latitude ?? null,
+        longitude: city?.longitude ?? null,
+        city_source: 'manual',
+        is_verified: false,
+        added_by: user.id,
+      }).select('id,name,city,country,country_code,city_source').single();
+
+      if (error) {
+        status.textContent = error.message.replace(/^.*?:\s*/, '');
+        go.disabled = false;
+        return;
+      }
+      schools.push(data);
+      _schools = schools;
+      const opt = el('option', { value: data.id, text: data.name });
+      sSel.insertBefore(opt, sSel.lastElementChild);
+      sSel.value = String(data.id);
+      onPick(data.id);
+      addBox.style.display = 'none';
+      note.textContent = `Added ${data.name}. Others can pick it now too.`;
+    });
+  }
+
+  sSel.addEventListener('change', () => {
+    if (sSel.value === SCHOOL_NEW) { showAddSchool(); onPick(null); return; }
+    addBox.style.display = 'none';
+    onPick(sSel.value ? Number(sSel.value) : null);
+  });
+
   return wrap;
 }
 
