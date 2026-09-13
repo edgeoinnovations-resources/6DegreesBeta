@@ -11,6 +11,7 @@
 import { loadData, invalidate } from './loadData.js';
 import { requireSession, loadMyProfile, signOut } from './auth.js';
 import { BUILD } from './config.js';
+import { connectionsIcon } from './connectionsInbox.js';
 import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
@@ -146,7 +147,7 @@ async function boot() {
     navigateTo(viewId, params = {}) { activate(viewId, params); },
   };
 
-  mountHeaderAccount(user, profile);
+  mountHeaderAccount(user, profile, ctx);
 
   // Header ego readout.
   const headerEgo = document.getElementById('header-ego');
@@ -229,10 +230,14 @@ boot();
 
 
 // ── Header account controls ─────────────────────────────────────────────────
-function mountHeaderAccount(user, profile) {
+function mountHeaderAccount(user, profile, ctx) {
   const host = document.getElementById('header-account');
   if (!host) return;
   host.innerHTML = '';
+
+  // Paul, 13 Sep 2026: a small icon at the top that says "Connections" on hover,
+  // opening a window to validate and edit them.
+  if (ctx) host.appendChild(connectionsIcon(ctx));
 
   const who = el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
   const build = el('span.acct-build', { text: BUILD, title: 'Which version of the app you are running' });

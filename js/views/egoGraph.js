@@ -22,10 +22,15 @@
 // empty space either side. The canvas is now square-ish and the leftover width becomes a
 // list rail, which is the thing Dee actually said she liked ("I like the list versions").
 // ─────────────────────────────────────────────────────────────────────────────
-import { el, teacherTypeahead } from '../widgets.js';
+import { el } from '../widgets.js';
+import { openPersonCard } from '../personCard.js';
 import {
   DEGREE_META, DEGREES, degreeColor, degreeLabel, regionOf, ACCENT, teacherName, confirmBadge,
 } from '../degrees.js';
+
+// Ring 0 holds mutually confirmed connections, drawn in the accent colour.
+const RINGS = [0, ...DEGREES];
+const ringColor = (d) => (d ? degreeColor(d) : ACCENT);
 
 const NODE_R = [6, 12];        // gentle range: size no longer fights the layout
 const RING_PAD = 30;           // clear space between ring zones -- must fit a label line
@@ -68,14 +73,13 @@ export const view = {
 
     root.appendChild(el('div.view-head', {}, [
       el('h2', { text: 'Your connections' }),
-      el('p', { html: 'Concentric rings around one person. Ring = relationship degree (1 closest … 6 outermost), colour = degree. Hover for <em>why</em> the link exists; click anyone to re-centre on them.' }),
+      el('p', { html: 'Concentric rings around one person. Ring = relationship degree (1 closest … 6 outermost), colour = degree. You are always at the centre. Hover for <em>why</em> a link exists; click anyone to see their details.' }),
     ]));
 
+    // No "Center on" picker. You are the centre of your own graph, always —
+    // Melissa: "I should always remain at the center of my ego-graph"; Dee:
+    // "it's always tied to the user who is logged in."
     const controls = el('div.controls');
-    const picker = el('div.control-group', {}, [el('label', { text: 'Center on' })]);
-    picker.appendChild(teacherTypeahead(data.teachers, idx,
-      (id) => recentre(id), { value: state.egoTeacher }));
-    controls.appendChild(picker);
 
     let showAll = false;
     const showAllWrap = el('div.control-group');
@@ -83,6 +87,7 @@ export const view = {
     showAllCb.addEventListener('change', () => { showAll = showAllCb.checked; draw(true); });
     showAllWrap.appendChild(el('label', {}, [showAllCb, ' Show every person on crowded rings']));
     controls.appendChild(showAllWrap);
+    controls.appendChild(contrastToggle(() => draw(false)));
     controls.appendChild(legend());
     root.appendChild(controls);
 
@@ -106,10 +111,9 @@ export const view = {
     let destroyed = false;
     this.teardown = () => { destroyed = true; };
 
-    function recentre(id) {
-      state.egoTeacher = id;
-      draw(true);
-      ctx.refreshHeader();
+    // Clicking someone opens their details. It does NOT move the graph.
+    function showPerson(id) {
+      openPersonCard(ctx, id);
     }
 
     // ── Ring sizing ──────────────────────────────────────────────────────────
@@ -120,7 +124,7 @@ export const view = {
       const plan = [];
       let cursor = 50;                       // outside the ego glow (r=46), not inside it
 
-      for (const d of DEGREES) {
+      for (const d of RINGS) {
         const people = byDeg.get(d) || [];
         if (!people.length) { plan.push({ degree: d, bands: [], people: [], hidden: 0 }); continue; }
 
@@ -160,7 +164,11 @@ export const view = {
     // ── Draw ─────────────────────────────────────────────────────────────────
     function draw(animate) {
       if (destroyed) return;
-      const ego = state.egoTeacher;
+      // Declared up front: the ring guides read it well before the nodes do, and
+      // `const` in a temporal dead zone throws rather than reading as undefined.
+      const hc = highContrast();
+      // Always the signed-in user. There is no longer any way to move it.
+      const ego = ctx.me || state.egoTeacher;
       const egoT = idx.teacherById.get(ego);
 
       // strongest (lowest-degree) link per person
@@ -180,10 +188,15 @@ export const view = {
         const country = s ? s.COUNTRY : 'zz';
         return `${regionOf(country)}|${country}|${t.FULL_NAME || n.id}`;
       };
+      // A mutually confirmed connection is the STRONGEST link there is — you have
+      // both said you know each other — so it belongs closest to the centre, not
+      // on another axis. Someone with no shared place at all (the conference
+      // case) has no degree, and this ring is the only place they can live.
       const byDeg = new Map();
       for (const n of neighbours) {
-        if (!byDeg.has(n.degree)) byDeg.set(n.degree, []);
-        byDeg.get(n.degree).push(n);
+        const ring = n.degree ?? 0;      // 0 = the acknowledged ring, inside degree 1
+        if (!byDeg.has(ring)) byDeg.set(ring, []);
+        byDeg.get(ring).push(n);
       }
       for (const list of byDeg.values()) list.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
 
@@ -286,11 +299,11 @@ export const view = {
       zoneSel.exit().remove();
       T(zoneSel.enter().append('circle').attr('class', 'zone')
         .attr('cx', cx).attr('cy', cy).attr('r', (d) => d.outer)
-        .attr('fill', (d) => degreeColor(d.degree)).attr('fill-opacity', 0)
+        .attr('fill', (d) => ringColor(d.degree)).attr('fill-opacity', 0)
         .merge(zoneSel)
         .attr('cx', cx).attr('cy', cy))
         .attr('r', (d) => d.outer)
-        .attr('fill', (d) => degreeColor(d.degree))
+        .attr('fill', (d) => ringColor(d.degree))
         .attr('fill-opacity', (d) => (d.degree % 2 ? 0.07 : 0.03));
       gZones.selectAll('circle.zone').attr('pointer-events', 'none')
         .sort((a, b) => b.outer - a.outer);           // largest first so inner zones show
@@ -300,10 +313,11 @@ export const view = {
       const ringSel = gRings.selectAll('circle.ring').data(ringData, (d) => d.degree);
       ringSel.exit().remove();
       T(ringSel.enter().append('circle').attr('class', 'ring')
-        .attr('fill', 'none').attr('stroke-dasharray', '3 5').attr('stroke-opacity', 0.5)
+        .attr('fill', 'none').attr('stroke-dasharray', hc ? '6 3' : '3 5')
+        .attr('stroke-opacity', hc ? 0.95 : 0.5)
         .attr('cx', cx).attr('cy', cy).attr('r', (d) => d.r)
         .merge(ringSel).attr('cx', cx).attr('cy', cy))
-        .attr('r', (d) => d.r).attr('stroke', (d) => degreeColor(d.degree));
+        .attr('r', (d) => d.r).attr('stroke', (d) => ringColor(d.degree));
 
       // ── Spokes: gentle curves, faint by default, lit on hover ──────────────
       const spokePath = (d) => {
@@ -322,7 +336,7 @@ export const view = {
         .attr('d', `M${cx},${cy}Q${cx},${cy} ${cx},${cy}`);
       T(spEnter.merge(spSel))
         .attr('d', spokePath)
-        .attr('stroke', (d) => degreeColor(d.degree))
+        .attr('stroke', (d) => ringColor(d.degree))
         .style('opacity', 0.22);
 
       // ── Nodes ───────────────────────────────────────────────────────────────
@@ -343,9 +357,22 @@ export const view = {
       nAll.select('circle.halo').attr('r', (d) => d.r + 1.5);
       nAll.select('circle.dot')
         .attr('r', (d) => d.r)
-        .attr('fill', (d) => degreeColor(d.degree))
+        .attr('fill', (d) => ringColor(d.degree))
         // A light outline so degree 5/6 (#bfe6ed, #e2f3f7) stay visible against white.
-        .attr('stroke', 'rgba(31,42,48,0.22)').attr('stroke-width', 1);
+        .attr('stroke', hc ? 'rgba(31,42,48,0.75)' : 'rgba(31,42,48,0.22)')
+        .attr('stroke-width', hc ? 1.6 : 1);
+
+      // The number carries the degree when colour cannot.
+      nAll.selectAll('text.dnum').remove();
+      if (hc) {
+        nAll.append('text').attr('class', 'dnum')
+          .attr('text-anchor', 'middle').attr('dy', '0.34em')
+          .attr('font-size', (d) => Math.max(8, d.r * 1.15))
+          .attr('font-weight', 700)
+          .attr('fill', (d) => (d.degree && d.degree <= 3 ? '#fff' : '#21323a'))
+          .style('pointer-events', 'none')
+          .text((d) => (d.degree ? String(d.degree) : '✓'));
+      }
 
       // Labels sit OUTWARD along the spoke and rotate with it, which fans them out
       // instead of stacking them horizontally above each node.
@@ -375,7 +402,9 @@ export const view = {
         tooltip.show(
           `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}<br>` +
           `${[t.SPECIALIZATION, t.NATIONALITY].filter(Boolean).join(' · ')}<br>` +
-          `<span style="color:${degreeColor(d.degree)}">●</span> Degree ${d.degree} — ${degreeLabel(d.degree)}<br>` +
+          (d.degree
+            ? `<span style="color:${ringColor(d.degree)}">●</span> Degree ${d.degree} — ${degreeLabel(d.degree)}<br>`
+            : `<span style="color:${ACCENT}">●</span> <strong>Confirmed connection</strong> — you both said you know each other<br>`) +
           `<em>${d.label || ''}${d.overlap ? ` · ${d.overlap}` : ''}</em>`,
           ev.clientX, ev.clientY);
         gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === d.id ? 1 : 0.22));
@@ -393,7 +422,7 @@ export const view = {
             .each(function (d) { this.style.display = labelFits(this, d) ? '' : 'none'; });
           railHighlight(null);
         })
-        .on('click', (ev, d) => recentre(d.id));
+        .on('click', (ev, d) => showPerson(d.id));
 
       // ── Ego at the centre: unmistakable, with a soft halo ───────────────────
       gCenter.attr('transform', `translate(${cx},${cy})`);
@@ -408,7 +437,12 @@ export const view = {
           .attr('fill', '#fff').attr('font-size', 12).attr('font-weight', 700);
       }
       gCenter.select('text.lab').text(egoT ? egoT.FIRST_NAME : ego);
-      gCenter.style('cursor', 'default');
+      gCenter.style('cursor', 'pointer')
+        .on('click', () => showPerson(ego))
+        .on('mousemove', (ev) => tooltip.show(
+          `<strong>${egoT ? egoT.FULL_NAME : 'You'}</strong><br><small>Click for your details</small>`,
+          ev.clientX, ev.clientY))
+        .on('mouseleave', () => tooltip.hide());
 
       // ── The rail: every person, grouped by degree, however crowded the rings ─
       buildRail(byDeg, neighbours.length, hiddenTotal);
@@ -425,21 +459,23 @@ export const view = {
         hiddenTotal ? el('span.muted', { style: 'font-size:11.5px;', text: `${hiddenTotal} not drawn` }) : null,
       ]));
 
-      for (const d of DEGREES) {
+      for (const d of RINGS) {
         const list = byDeg.get(d) || [];
         if (!list.length) continue;
         const sec = el('div.rail-sec');
         sec.appendChild(el('div.rail-sec-head', {}, [
-          el('span.swatch', { style: `background:${degreeColor(d)}` }),
-          el('span', { text: `Degree ${d}` }),
+          el('span.swatch', { style: `background:${ringColor(d)}` }),
+          el('span', { text: d ? `Degree ${d}` : 'Confirmed' }),
           el('span.muted', { text: String(list.length) }),
         ]));
-        sec.appendChild(el('div.muted.rail-sec-sub', { text: DEGREE_META[d].short }));
+        sec.appendChild(el('div.muted.rail-sec-sub', {
+          text: d ? DEGREE_META[d].short : 'You both confirmed you know each other',
+        }));
         const ul = el('ul');
         list.forEach((n) => {
           const t = idx.teacherById.get(n.id) || {};
           const li = el('li', { html: `${t.FULL_NAME || n.id}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}</small>` });
-          li.addEventListener('click', () => recentre(n.id));
+          li.addEventListener('click', () => showPerson(n.id));
           li.addEventListener('mouseenter', () => {
             gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === n.id ? 1 : 0.22));
             gSpokes.selectAll('path.spoke').style('opacity', (o) => (o.id === n.id ? 0.95 : 0.05));
@@ -477,9 +513,40 @@ export const view = {
 
 function legend() {
   const wrap = el('div.legend');
+  wrap.appendChild(el('span.item', {}, [
+    el('span.swatch', { style: `background:${ACCENT}` }),
+    el('span', { text: '✓ · Confirmed connection' }),
+  ]));
   DEGREES.forEach((d) => wrap.appendChild(el('span.item', {}, [
     el('span.swatch', { style: `background:${DEGREE_META[d].color}` }),
     el('span', { text: `${d} · ${DEGREE_META[d].short}` }),
   ])));
   return wrap;
+}
+
+// Melissa, 13 Sep 2026: "Do we know any color blind folks? Can they see the
+// gradient color differences? The dashed lines might need to be more pronounced"
+// — and "It's really pretty though. I don't want that to change."
+//
+// So it is a toggle, not a redesign. The palette is a single-hue ramp that varies
+// mostly in LIGHTNESS, which is already the colour-blind-friendly way to do it;
+// the real problem is that degrees 5 and 6 (#bfe6ed, #e2f3f7) are nearly white
+// for everybody. High-contrast mode prints the degree number inside every node
+// and strengthens the rings, so colour stops being the only carrier of meaning.
+const HC_KEY = 'sixdeg.highContrast';
+export const highContrast = () => { try { return localStorage.getItem(HC_KEY) === '1'; } catch { return false; } };
+function setHighContrast(on) {
+  try { localStorage.setItem(HC_KEY, on ? '1' : '0'); } catch {}
+  document.body.classList.toggle('high-contrast', on);
+}
+
+function contrastToggle(onChange) {
+  const cb = el('input', { type: 'checkbox' });
+  cb.checked = highContrast();
+  document.body.classList.toggle('high-contrast', cb.checked);
+  cb.addEventListener('change', () => { setHighContrast(cb.checked); onChange(); });
+  return el('div.control-group', {}, [
+    el('label', { title: 'Show the degree number on every node and strengthen the rings' },
+      [cb, ' Easier to tell apart']),
+  ]);
 }
