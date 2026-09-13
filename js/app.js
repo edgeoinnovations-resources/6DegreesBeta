@@ -8,7 +8,9 @@
 //   PRIMARY  — the four views that answer a teacher's actual questions.
 //   EXPLORE  — one nav entry leading to a landing screen; the four analytical views
 //              live behind it. Nothing is deleted, only de-ranked.
-import { loadData } from './loadData.js';
+import { loadData, invalidate } from './loadData.js';
+import { requireSession, loadMyProfile, signOut } from './auth.js';
+import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
 } from './degrees.js';
@@ -24,12 +26,16 @@ import { view as insightsView } from './views/insights.js';
 import { view as searchView } from './views/search.js';
 
 // Order here IS the nav order.
-const PRIMARY = [egoView, searchView, mapView, networkView];
-const EXPLORE = [matrixView, timelineView, chordView, insightsView];
+// Paul, 12 Sep 2026: "I'm thinking the Network graph is unnecessary." Dee agreed
+// ("although it's super fun to play with lol!"). Demoted into Explore rather than
+// deleted — at 1,200 people it was a hairball, but the work survives if wanted.
+const PRIMARY = [egoView, searchView, mapView];
+const EXPLORE = [matrixView, timelineView, chordView, insightsView, networkView];
 
 // One-line "why you'd open this" for each Explore card.
 const EXPLORE_BLURB = {
   matrix: 'Which two schools share the most people. Pick the schools on each axis yourself.',
+  network: 'The whole community as one force-directed web. Fun to pull apart; hard to read.',
   timeline: 'Two careers side by side on one time axis — see exactly where they overlapped.',
   chord: 'Where teachers move next, aggregated into country-to-country flows.',
   insights: 'The community in aggregate: average separation, tenure by region, top corridors.',
@@ -91,14 +97,30 @@ function decodeHash(hash) {
 
 async function boot() {
   const container = document.getElementById('view-container');
+
+  // ── Gate ────────────────────────────────────────────────────────────────
+  // Nothing renders without a session. ("Nothing. Redirect to sign-in.")
+  await requireSession(container);
+
+  // A session is not a profile. Someone signed in with no row in profiles has
+  // not registered yet, and registering is the only thing they can do.
+  let { user, profile } = await loadMyProfile();
+  if (!profile) {
+    container.innerHTML = '';
+    container.appendChild(onboardingView(user, null, () => { invalidate(); location.reload(); }));
+    document.getElementById('tab-nav').innerHTML = '';
+    mountHeaderAccount(user, null);
+    return;
+  }
+
   let data;
   try {
     data = await loadData();
   } catch (err) {
     container.innerHTML = `<div class="view"><div class="error-box">
-      Could not load <code>./data/demo_data.json</code>.<br>${err.message}<br><br>
-      If you opened <code>index.html</code> directly, serve it instead:
-      <code>python3 -m http.server</code> then open <code>http://localhost:8000/</code>.
+      Could not load your data from Supabase.<br>${err.message}<br><br>
+      If this says <code>permission denied</code>, your sign-in may have expired —
+      try signing out and back in.
     </div></div>`;
     return;
   }
@@ -112,13 +134,18 @@ async function boot() {
   // Default to a real member of the beta group rather than a fictional teacher, so the
   // first thing anyone sees is someone they know. (Dee: "if I meet someone at a
   // conference … 'look, we were both here!'" — that only lands with real people in it.)
-  const DEFAULT_FOCUS = idx.teacherById.has('B001') ? 'B001' : 'T001';
-  const state = { egoTeacher: DEFAULT_FOCUS, params: {} };
+  // You are the centre of your own graph, always. (Dee, 12 Sep 2026: "Do we keep
+  // it focused on 'me' ... it's always tied to the user who is logged in".)
+  const state = { egoTeacher: user.id, me: user.id, profile, params: {} };
 
   const ctx = {
     data, idx, adj, counts, tooltip, state,
+    me: user.id, user, profile,
+    reload: async () => { invalidate(); location.reload(); },
     navigateTo(viewId, params = {}) { activate(viewId, params); },
   };
+
+  mountHeaderAccount(user, profile);
 
   // Header ego readout.
   const headerEgo = document.getElementById('header-ego');
@@ -198,3 +225,16 @@ async function boot() {
 }
 
 boot();
+
+
+// ── Header account controls ─────────────────────────────────────────────────
+function mountHeaderAccount(user, profile) {
+  const host = document.getElementById('header-account');
+  if (!host) return;
+  host.innerHTML = '';
+
+  const who = el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
+  const out = el('button.acct-btn', { type: 'button', text: 'Sign out', title: 'Sign out' });
+  out.addEventListener('click', signOut);
+  host.append(who, out);
+}

@@ -1,49 +1,125 @@
-// loadData.js — THE swappable data layer.
+// loadData.js — THE data layer. Now Supabase.
 //
-// This is the ONLY file that changes when the demo moves to Supabase.
-// Every view consumes the object returned here; no view fetches data directly.
+// This file was written from the start as the one place that would change when
+// the demo became real: "loadData() is the only thing that changes for Supabase.
+// Every view consumes the object it returns; no view talks to the data source
+// directly." That is now cashed in — the views are untouched.
 //
-// The returned shape is:
-//   {
-//     teachers:       [ { TEACHER_ID, FULL_NAME, NATIONALITY, SPECIALIZATION, ... } ],
-//     schools:        [ { SCHOOL_ID, SCHOOL_NAME, CITY, COUNTRY, LATITUDE, LONGITUDE, ... } ],
-//     assignments:    [ { ASSIGNMENT_ID, TEACHER_ID, SCHOOL_ID, START_DATE, END_DATE, ... } ],
-//     colleagueships: [ { TEACHER_A_ID, TEACHER_B_ID, DEGREE, SHARED_CONTEXT_*, VERIFIED, ... } ],
-//   }
+// The shape returned is deliberately the SAME as the old static file, so the
+// eight views keep working:
+//   { teachers, schools, assignments, colleagueships }
+//
+// Two differences that matter:
+//   * Only schools someone has actually worked at are returned. The table holds
+//     2,130 of them; shipping all of that to draw a map of six people would be
+//     absurd, and the picker queries the table directly when you need the rest.
+//   * A connection can now have a NULL degree: a mutually approved tag between
+//     two people who never shared a place. Views must tolerate that.
+import { supabase } from './supabaseClient.js';
 
 let _cache = null;
+
+export function invalidate() { _cache = null; }
 
 export async function loadData() {
   if (_cache) return _cache;
 
-  // GitHub Pages: a static file served verbatim. Relative path — the site lives at a subpath.
-  const res = await fetch('./data/demo_data.json');
-  if (!res.ok) throw new Error(`Failed to load demo_data.json: ${res.status}`);
-  const raw = await res.json();
+  const [profilesRes, postingsRes, connRes, tagsRes] = await Promise.all([
+    supabase.from('public_profiles').select('*'),
+    supabase.from('postings')
+      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,country,latitude,longitude,city_source)'),
+    supabase.from('connections').select('*'),
+    supabase.from('connection_tags')
+      .select('id, requester_id, subject_id, tag_key, status, context, created_at, responded_at'),
+  ]);
+
+  for (const r of [profilesRes, postingsRes, connRes, tagsRes]) {
+    if (r.error) throw new Error(`${r.error.message} (${r.error.code || 'no code'})`);
+  }
+
+  // ── teachers ──────────────────────────────────────────────────────────────
+  // Column names stay in the old SHAPE so the views need no changes, even
+  // though the database is snake_case.
+  const teachers = (profilesRes.data || []).map((p) => ({
+    TEACHER_ID: p.id,
+    FULL_NAME: p.display_name || 'Former member',
+    FIRST_NAME: p.first_name || p.display_name || '',
+    LAST_NAME: p.last_initial ? `${p.last_initial}.` : '',
+    NATIONALITY: p.nationality || '',
+    SPECIALIZATION: p.specialization || '',
+    YEARS_EXPERIENCE: null,          // derived below from postings
+    STATUS: p.status,
+    IS_GHOST: p.status === 'ghost',
+    EMAIL: '',                        // never fetched, never shown
+  }));
+
+  // ── schools actually in use ───────────────────────────────────────────────
+  const schoolById = new Map();
+  for (const a of postingsRes.data || []) {
+    const s = a.schools;
+    if (s && !schoolById.has(s.id)) {
+      schoolById.set(s.id, {
+        SCHOOL_ID: String(s.id),
+        SCHOOL_NAME: s.name,
+        CITY: s.city || '',
+        COUNTRY: s.country,
+        LATITUDE: s.latitude,
+        LONGITUDE: s.longitude,
+        CITY_INFERRED: s.city_source === 'fallback-largest-city',
+        CURRICULUM_TYPE: '',
+        ENROLLMENT_SIZE: null,
+      });
+    }
+  }
+
+  // ── assignments ───────────────────────────────────────────────────────────
+  const assignments = (postingsRes.data || []).map((a) => ({
+    ASSIGNMENT_ID: String(a.id),
+    TEACHER_ID: a.profile_id,
+    SCHOOL_ID: String(a.school_id),
+    POSITION_TITLE: a.role,          // already one of the four role categories
+    START_DATE: a.start_date,
+    END_DATE: a.end_date,
+    IS_CURRENT_POSITION: a.end_date ? 'No' : 'Yes',
+    SALARY_RANGE: '',
+    SUPERVISOR_NAME: '',
+  }));
+
+  // years of experience, derived rather than asked for
+  const yearsBy = new Map();
+  const thisYear = new Date().getFullYear();
+  for (const a of assignments) {
+    const from = +String(a.START_DATE).slice(0, 4);
+    const to = a.END_DATE ? +String(a.END_DATE).slice(0, 4) : thisYear;
+    if (Number.isFinite(from)) {
+      yearsBy.set(a.TEACHER_ID, (yearsBy.get(a.TEACHER_ID) || 0) + Math.max(0, to - from));
+    }
+  }
+  for (const t of teachers) t.YEARS_EXPERIENCE = yearsBy.get(t.TEACHER_ID) ?? 0;
+
+  // ── connections ───────────────────────────────────────────────────────────
+  // degree may be null for a tag-only link: acknowledged, not co-located.
+  const colleagueships = (connRes.data || []).map((c, i) => ({
+    COLLEAGUESHIP_ID: `C${i}`,
+    TEACHER_A_ID: c.profile_a,
+    TEACHER_B_ID: c.profile_b,
+    DEGREE: c.degree,                        // null === acknowledged only
+    SHARED_CONTEXT_TYPE: c.context_type || '',
+    SHARED_CONTEXT_LABEL: c.context_label || '',
+    TIME_RELATION: c.time_relation || '',
+    OVERLAP_YEARS: c.overlap_years || '',
+    ACKNOWLEDGED: !!c.acknowledged,
+    TAG_KEYS: c.tag_keys ? c.tag_keys.split(',') : [],
+    VERIFIED: c.acknowledged ? 'mutual' : 'unverified',
+  }));
 
   _cache = {
-    teachers: raw.teachers || [],
-    schools: raw.schools || [],
-    assignments: raw.assignments || [],
-    colleagueships: raw.colleagueships || [],
-    generated_at: raw.generated_at,
+    teachers,
+    schools: [...schoolById.values()],
+    assignments,
+    colleagueships,
+    tags: tagsRes.data || [],
+    generated_at: new Date().toISOString().slice(0, 10),
   };
   return _cache;
-
-  // ──────────────────────────────────────────────────────────────────────────
-  // Future (Supabase) — replace the body above with something like:
-  //
-  //   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-  //   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY); // anon key only — RLS enforced
-  //   const [teachers, schools, assignments, colleagueships] = await Promise.all([
-  //     supabase.from('teachers').select('*'),
-  //     supabase.from('schools').select('*'),
-  //     supabase.from('teaching_assignments').select('*'),
-  //     supabase.from('colleagueships').select('*'),
-  //   ]);
-  //   return { teachers: teachers.data, schools: schools.data,
-  //            assignments: assignments.data, colleagueships: colleagueships.data };
-  //
-  // Return the SAME shape and nothing else in the app moves.
-  // ──────────────────────────────────────────────────────────────────────────
 }

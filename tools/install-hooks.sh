@@ -62,7 +62,13 @@ if [ -n "$TEXT_FILES" ]; then
     # Every match, not just the first: -m1 would stop at a legitimate @6degrees.demo
     # address and never see a real one further down the file.
     HIT=$(grep -oE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' "$f" 2>/dev/null \
-      | grep -v '6degrees\.demo' | grep -v 'noreply@' | sort -u | head -3 | tr '\n' ' ' || true)
+      | grep -v '6degrees\.demo' \
+      | grep -v 'noreply@' \
+      `# RFC 2606 reserves these for documentation - they can never be a real person` \
+      | grep -viE '@(example|test|invalid|localhost)\.(com|org|net|test)$' \
+      `# obvious form placeholders` \
+      | grep -viE '^(you|name|your\.name|firstname\.lastname)@' \
+      | sort -u | head -3 | tr '\n' ' ' || true)
     [ -n "$HIT" ] && LEAKED="$LEAKED
   $f: $HIT"
   done
