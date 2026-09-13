@@ -5,7 +5,8 @@
 // never asks for anything the app does not use, and it lets you leave.
 //
 // Shape follows what the group settled on:
-//   * First name + last initial only. (Paul, 12 Sep 2026.)
+//   * First and last name. (Originally first name + last initial only; Paul changed
+//     that on 13 Sep 2026: "we enter full last names instead of just the initial".)
 //   * Country → city → school, in that order. (Linda, 6 Sep 2025: "Country
 //     dropdown first / City dropdown next / Then school dropdown?")
 //   * Role is one of four basics, never a job title or subject. (Linda, 7 Jun
@@ -355,14 +356,17 @@ export function onboardingView(user, profile, onDone) {
     el('h2', { text: isNew ? 'Welcome — tell us where you’ve been' : 'Your details' }),
     el('p', {
       html: isNew
-        ? 'This is the real thing now, so only what the map actually needs. Everyone in the group sees your <strong>first name and last initial</strong>, where you’ve worked and when. <strong>Nobody ever sees your email address.</strong>'
+        ? 'This is the real thing now, so only what the map actually needs. Everyone in the group sees your <strong>first and last name</strong>, where you’ve worked and when. <strong>Nobody ever sees your email address.</strong>'
         : 'Edit your history. Connections recompute the moment you save.',
     }),
   ]));
 
   // identity
   const first = el('input', { type: 'text', required: 'required', placeholder: 'Paul', value: profile?.first_name || '' });
-  const initial = el('input', { type: 'text', maxlength: '1', placeholder: 'S', value: profile?.last_initial || '', style: 'width:64px;' });
+  // Full last name. Someone who registered while only an initial was asked for has
+  // last_name = null; the box starts empty and says why.
+  const lastName = el('input', { type: 'text', maxlength: '80', placeholder: 'Morgan', value: profile?.last_name || '' });
+  const hadOnlyInitial = !!(profile && !profile.last_name && profile.last_initial);
   const nationality = el('input', { type: 'text', placeholder: 'Canadian', value: profile?.nationality || '' });
   const specialization = el('input', { type: 'text', placeholder: 'Physics', value: profile?.specialization || '' });
 
@@ -371,10 +375,13 @@ export function onboardingView(user, profile, onDone) {
     el('h4', { text: 'You' }),
     el('div.controls', {}, [
       el('div.control-group', {}, [el('label', { text: 'First name' }), first]),
-      el('div.control-group', {}, [el('label', { text: 'Last initial' }), initial]),
+      el('div.control-group', {}, [el('label', { text: 'Last name' }), lastName]),
       el('div.control-group', {}, [el('label', { text: 'Nationality (optional)' }), nationality]),
       el('div.control-group', {}, [el('label', { text: 'Subject / role (optional)' }), specialization]),
     ]),
+    hadOnlyInitial
+      ? el('p.auth-msg', { style: 'margin:6px 2px 0;', text: `We now ask for your full last name — until you add it you show as “${profile.display_name}”.` })
+      : null,
     el('p.muted', { style: 'font-size:12px;margin:6px 2px 0;', text: `Signed in as ${user.email} — this is never shown to anyone else.` }),
   );
   root.appendChild(who);
@@ -393,7 +400,7 @@ export function onboardingView(user, profile, onDone) {
   root.appendChild(postWrap);
 
   const snapshot = () => ({
-    first: first.value, initial: initial.value,
+    first: first.value, last: lastName.value,
     nationality: nationality.value, specialization: specialization.value,
     postings: [...rows.children].map((r) => r._state),
   });
@@ -409,7 +416,7 @@ export function onboardingView(user, profile, onDone) {
     if (!profile) {
       const d = readDraft();
       if (d) {
-        first.value = d.first || ''; initial.value = d.initial || '';
+        first.value = d.first || ''; lastName.value = d.last || '';
         nationality.value = d.nationality || ''; specialization.value = d.specialization || '';
         // Postings need their school ids resolved back to country/city to re-populate
         // the cascade, so rebuild from the catalogue.
@@ -445,6 +452,12 @@ export function onboardingView(user, profile, onDone) {
     status.className = 'auth-msg';
     const f = first.value.trim();
     if (!f) { status.className = 'auth-msg error'; status.textContent = 'First name is required.'; return; }
+    if (!lastName.value.trim()) {
+      status.className = 'auth-msg error';
+      status.textContent = 'Last name is required.';
+      lastName.focus();
+      return;
+    }
 
     const wanted = [...rows.children].map((r) => r._state)
       .filter((s) => s.school_id && s.start);
@@ -468,7 +481,7 @@ export function onboardingView(user, profile, onDone) {
       // transaction, so nobody ends up half-registered.
       const { error } = await supabase.rpc('save_my_profile', {
         p_first_name: f,
-        p_last_initial: initial.value.trim() || null,
+        p_last_name: lastName.value.trim(),
         p_nationality: nationality.value.trim() || null,
         p_specialization: specialization.value.trim() || null,
         p_postings: wanted.map((st) => ({

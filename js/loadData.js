@@ -44,7 +44,7 @@ export async function loadData() {
     TEACHER_ID: p.id,
     FULL_NAME: p.display_name || 'Former member',
     FIRST_NAME: p.first_name || p.display_name || '',
-    LAST_NAME: p.last_initial ? `${p.last_initial}.` : '',
+    LAST_NAME: p.last_name || (p.last_initial ? `${p.last_initial}.` : ''),
     NATIONALITY: p.nationality || '',
     SPECIALIZATION: p.specialization || '',
     YEARS_EXPERIENCE: null,          // derived below from postings

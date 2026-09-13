@@ -6,8 +6,8 @@ teachers. People are connected by **relationship degrees 1–6** based purely on
 with no build step so non-developers can edit it.
 
 > All fictional teachers use `@6degrees.demo` emails and jittered coordinates. The six
-> real beta-group members are seeded with **first name + last initial only and no email
-> address at all** — see [The beta group](#the-beta-group-in-the-demo-graph).
+> Real members register with their **first and last name** (a last initial only, until 13 Sep
+> 2026) and **no email address is ever shown**.
 
 ---
 
