@@ -250,16 +250,47 @@ function mountHeaderAccount(user, profile, ctx) {
   // opening a window to validate and edit them.
   if (ctx) host.appendChild(connectionsIcon(ctx));
 
-  // Your name is the way into your own details.
-  const who = profile && ctx
-    ? el('button.acct-who.acct-edit', {
-        type: 'button', title: 'Edit your details and postings',
-        text: `${profile.display_name} · Edit details`,
-      })
-    : el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
-  if (profile && ctx) who.addEventListener('click', () => ctx.navigateTo('me'));
-  const build = el('span.acct-build', { text: BUILD, title: 'Which version of the app you are running' });
-  const out = el('button.acct-btn', { type: 'button', text: 'Sign out', title: 'Sign out' });
-  out.addEventListener('click', signOut);
-  host.append(build, who, out);
+  // Your name opens a menu. Paul, 13 Sep 2026: "I want the user to be able to
+  // click their name at the top and then a drop down menu to emerge where they can
+  // edit their details" — rather than an "Edit details" label sitting on the page.
+  const label = profile ? profile.display_name : (user.email || 'Account');
+  const wrap = el('div.acct-menu-wrap');
+  const trigger = el('button.acct-trigger', {
+    type: 'button', 'aria-haspopup': 'menu', 'aria-expanded': 'false',
+  }, [el('span', { text: label }), el('span.acct-caret', { text: '▾', 'aria-hidden': 'true' })]);
+
+  const menu = el('div.acct-menu', { role: 'menu' });
+  menu.hidden = true;
+
+  const item = (text, onClick) => {
+    const b = el('button.acct-item', { type: 'button', role: 'menuitem', text });
+    b.addEventListener('click', () => { close(); onClick(); });
+    return b;
+  };
+  if (profile && ctx) menu.appendChild(item('Your details', () => ctx.navigateTo('me')));
+  menu.appendChild(item('Sign out', signOut));
+  // The build stamp is for diagnosing "did the fix reach you?" — useful, but not
+  // something that belongs on the main screen.
+  menu.appendChild(el('div.acct-build', { text: BUILD, title: 'Which version of the app you are running' }));
+
+  const onDoc = (e) => { if (!wrap.contains(e.target)) close(); };
+  const onKey = (e) => { if (e.key === 'Escape') { close(); trigger.focus(); } };
+  function open() {
+    menu.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    const first = menu.querySelector('.acct-item');
+    if (first) first.focus();
+  }
+  function close() {
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('mousedown', onDoc);
+    document.removeEventListener('keydown', onKey);
+  }
+  trigger.addEventListener('click', () => (menu.hidden ? open() : close()));
+
+  wrap.append(trigger, menu);
+  host.appendChild(wrap);
 }

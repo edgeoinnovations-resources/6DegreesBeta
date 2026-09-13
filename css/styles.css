@@ -498,3 +498,28 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   color: var(--turquoise-dark); cursor: pointer; padding: 4px 6px; border-radius: 6px;
 }
 .acct-edit:hover { background: #eef6f8; text-decoration: underline; }
+
+/* ── Account dropdown (click your name) ─────────────────────────────────────── */
+.acct-menu-wrap { position: relative; }
+.acct-trigger {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; background: none; font: inherit; font-size: 13.5px;
+  color: var(--ink); cursor: pointer; padding: 5px 9px; border-radius: 8px;
+}
+.acct-trigger:hover, .acct-trigger[aria-expanded="true"] { background: #eef6f8; border-color: var(--line); }
+.acct-caret { font-size: 11px; color: var(--muted); }
+.acct-menu {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 70; min-width: 190px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 14px 34px -14px rgba(11,107,120,.45); padding: 6px;
+}
+.acct-item {
+  display: block; width: 100%; text-align: left; border: none; background: none;
+  font: inherit; font-size: 13.5px; color: var(--ink); padding: 8px 10px;
+  border-radius: 7px; cursor: pointer;
+}
+.acct-item:hover, .acct-item:focus { background: #eef6f8; outline: none; }
+.acct-menu .acct-build {
+  margin: 4px 4px 0; padding: 6px 6px 2px; border-top: 1px solid var(--line);
+  font-size: 10.5px; color: #9ab8c0; border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;
+}
