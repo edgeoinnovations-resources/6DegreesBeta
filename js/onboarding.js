@@ -18,9 +18,35 @@ const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
+// ── School catalogue, fetched once ──────────────────────────────────────────
+// Fetched in ONE request and cascaded in memory rather than a query per level.
+// PostgREST caps a response at 1,000 rows by default and there are 2,130 schools,
+// so the per-level queries silently dropped everything past the cap — which is
+// why a country late in the alphabet (Venezuela) had no chance of appearing even
+// once the RLS policy was fixed. The whole catalogue is ~150KB and makes the
+// cascade instant.
+let _schools = null;
+async function allSchools() {
+  if (_schools) return _schools;
+  const page = 1000;
+  const out = [];
+  for (let from = 0; ; from += page) {
+    const { data, error } = await supabase
+      .from('schools')
+      .select('id,name,city,country,city_source')
+      .order('country').order('city').order('name')
+      .range(from, from + page - 1);
+    if (error) throw error;
+    out.push(...(data || []));
+    if (!data || data.length < page) break;
+  }
+  _schools = out;
+  return out;
+}
+
 // ── School picker: country → city → school ──────────────────────────────────
-// 2,130 schools is far too many for one list, and the cascade is also how a
-// school gets found when its name doesn't contain its city.
+// Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
+// dropdown?" — and the only sane way to choose from 2,130 schools.
 function schoolPicker(onPick, initial = {}) {
   const wrap = el('div.school-picker');
   const cSel = el('select', { 'aria-label': 'Country' }, [el('option', { value: '', text: 'Country…' })]);
@@ -28,48 +54,50 @@ function schoolPicker(onPick, initial = {}) {
   const sSel = el('select', { 'aria-label': 'School', disabled: 'disabled' }, [el('option', { value: '', text: 'School…' })]);
   wrap.append(cSel, citySel, sSel);
 
-  const missing = el('p.muted', { style: 'font-size:11.5px;margin:6px 0 0;' });
-  wrap.appendChild(missing);
+  const note = el('p.muted', { style: 'font-size:11.5px;margin:6px 0 0;flex:1 1 100%;' });
+  wrap.appendChild(note);
 
-  let countries = [];
+  let rows = [];
 
   (async () => {
-    // distinct countries, via a lightweight select
-    const { data, error } = await supabase.from('schools').select('country').order('country');
-    if (error) { missing.textContent = `Couldn’t load schools: ${error.message}`; return; }
-    countries = [...new Set((data || []).map((r) => r.country))];
+    try {
+      rows = await allSchools();
+    } catch (err) {
+      note.textContent = `Couldn’t load the school list: ${err.message}`;
+      return;
+    }
+    const countries = [...new Set(rows.map((r) => r.country))].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
+    note.textContent = `${rows.length.toLocaleString()} schools in ${countries.length} countries.`;
     if (initial.country) { cSel.value = initial.country; cSel.dispatchEvent(new Event('change')); }
   })();
 
-  cSel.addEventListener('change', async () => {
+  cSel.addEventListener('change', () => {
     citySel.innerHTML = ''; citySel.appendChild(el('option', { value: '', text: 'City…' }));
     sSel.innerHTML = ''; sSel.appendChild(el('option', { value: '', text: 'School…' }));
     sSel.disabled = true; citySel.disabled = !cSel.value;
-    missing.textContent = '';
+    onPick(null);
     if (!cSel.value) return;
-    const { data } = await supabase.from('schools')
-      .select('city').eq('country', cSel.value).order('city');
-    const cities = [...new Set((data || []).map((r) => r.city).filter(Boolean))];
+    const cities = [...new Set(rows.filter((r) => r.country === cSel.value)
+      .map((r) => r.city).filter(Boolean))].sort();
     cities.forEach((c) => citySel.appendChild(el('option', { value: c, text: c })));
     if (initial.city) { citySel.value = initial.city; citySel.dispatchEvent(new Event('change')); }
   });
 
-  citySel.addEventListener('change', async () => {
+  citySel.addEventListener('change', () => {
     sSel.innerHTML = ''; sSel.appendChild(el('option', { value: '', text: 'School…' }));
     sSel.disabled = !citySel.value;
-    missing.textContent = '';
+    onPick(null);
     if (!citySel.value) return;
-    const { data } = await supabase.from('schools')
-      .select('id,name,city_source').eq('country', cSel.value).eq('city', citySel.value).order('name');
-    (data || []).forEach((s) => sSel.appendChild(el('option', { value: s.id, text: s.name })));
+    const here = rows.filter((r) => r.country === cSel.value && r.city === citySel.value);
+    here.forEach((r) => sSel.appendChild(el('option', { value: r.id, text: r.name })));
     // Be honest that some cities are inferred, so a missing school has an explanation.
-    const guessed = (data || []).filter((s) => s.city_source === 'fallback-largest-city').length;
-    if (guessed) {
-      missing.textContent = `${guessed} of these were filed under ${citySel.value} because the source `
-        + 'list didn’t say which city. If your school is missing, check another city — or tell Paul.';
-    }
-    if (initial.school_id) sSel.value = String(initial.school_id);
+    const guessed = here.filter((r) => r.city_source === 'fallback-largest-city').length;
+    note.textContent = guessed
+      ? `${guessed} of these were filed under ${citySel.value} because the source list didn’t say `
+        + 'which city. If yours is missing, try another city — or tell Paul and it gets added.'
+      : `${here.length} school${here.length === 1 ? '' : 's'} in ${citySel.value}.`;
+    if (initial.school_id) { sSel.value = String(initial.school_id); onPick(Number(initial.school_id)); }
   });
 
   sSel.addEventListener('change', () => onPick(sSel.value ? Number(sSel.value) : null));
