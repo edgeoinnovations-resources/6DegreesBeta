@@ -523,3 +523,24 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   margin: 4px 4px 0; padding: 6px 6px 2px; border-top: 1px solid var(--line);
   font-size: 10.5px; color: #9ab8c0; border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;
 }
+
+/* School search by name (works regardless of how a school's city was filed) */
+.school-search { position: relative; flex: 1 1 100%; }
+.school-search input[type=search] {
+  width: 100%; padding: 9px 11px; font: inherit; font-size: 14px;
+  border: 1px solid var(--line); border-radius: 8px;
+}
+.school-results {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 40;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 9px;
+  box-shadow: 0 12px 30px -14px rgba(11,107,120,.45); max-height: 300px; overflow-y: auto;
+}
+.school-result {
+  display: block; width: 100%; text-align: left; border: none; background: none;
+  font: inherit; padding: 8px 11px; cursor: pointer; border-bottom: 1px solid var(--line);
+}
+.school-result:last-child { border-bottom: none; }
+.school-result:hover { background: #eef6f8; }
+.school-result strong { display: block; font-size: 13.5px; font-weight: 600; }
+.school-result small { display: block; font-size: 11.5px; color: var(--muted); }
+.school-result.empty { cursor: default; color: var(--muted); font-size: 12.5px; }

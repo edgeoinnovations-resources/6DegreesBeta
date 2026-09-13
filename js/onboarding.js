@@ -55,6 +55,21 @@ function schoolPicker(onPick, initial = {}) {
   const note = el('p.muted', { style: 'font-size:11.5px;margin:6px 0 0;flex:1 1 100%;' });
   const addBox = el('div.add-school');
   addBox.style.display = 'none';
+
+  // Search by NAME, regardless of city. The cities were inferred from school names
+  // and are wrong in places — AES was filed under "Delhi" while Linda looked under
+  // "New Delhi" — so a city-first cascade alone lets people conclude a school is
+  // missing when it isn't. Melissa asked for this in Sep 2025: "start to type the
+  // country, school name, and have the dropdown catch up to that typing?"
+  const searchWrap = el('div.school-search');
+  const search = el('input', {
+    type: 'search', placeholder: 'Or type part of the school’s name…',
+    'aria-label': 'Search schools by name', autocomplete: 'off',
+  });
+  const results = el('div.school-results');
+  results.hidden = true;
+  searchWrap.append(search, results);
+  wrap.prepend(searchWrap);
   wrap.append(note, addBox);
 
   let schools = [], cities = [], ccOf = new Map();
@@ -166,7 +181,24 @@ function schoolPicker(onPick, initial = {}) {
       }).select('id,name,city,country,country_code,city_source').single();
 
       if (error) {
-        status.textContent = error.message.replace(/^.*?:\s*/, '');
+        const m = error.message || '';
+        const dup = m.match(/ALREADY_LISTED\|([^|]*)\|([^|]*)/);
+        if (dup) {
+          // It exists — possibly filed under a different city than the one being
+          // looked at. Take them straight to it rather than saying "pick it from
+          // the list" about a list where it doesn't appear.
+          const existing = schools.find((r) => r.country === cSel.value && r.name === dup[1]);
+          if (existing) {
+            selectSchool(existing);
+            note.textContent = `That school is already listed as “${existing.name}”`
+              + (existing.city ? `, filed under ${existing.city}` : '') + ' — selected it for you.';
+            go.disabled = false;
+            return;
+          }
+          status.textContent = `Already listed as “${dup[1]}”${dup[2] ? ` under ${dup[2]}` : ''}.`;
+        } else {
+          status.textContent = m.replace(/^.*?:\s*/, '');
+        }
         go.disabled = false;
         return;
       }
@@ -187,6 +219,57 @@ function schoolPicker(onPick, initial = {}) {
     onPick(sSel.value ? Number(sSel.value) : null);
   });
 
+  // Drive the cascade to one specific school. The change handlers are synchronous
+  // (everything is in memory), so each step's options exist before the next.
+  function selectSchool(row) {
+    cSel.value = row.country;
+    cSel.dispatchEvent(new Event('change'));
+    if (row.city && ![...citySel.options].some((o) => o.value === row.city)) {
+      citySel.insertBefore(el('option', { value: row.city, text: row.city }), citySel.lastElementChild);
+    }
+    citySel.value = row.city || '';
+    citySel.dispatchEvent(new Event('change'));
+    sSel.value = String(row.id);
+    onPick(row.id);
+    addBox.style.display = 'none';
+  }
+
+  const fold = (x) => (x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const closeResults = () => { results.hidden = true; results.innerHTML = ''; };
+  search.addEventListener('input', () => {
+    const terms = fold(search.value).split(/\s+/).filter((t) => t.length > 1);
+    results.innerHTML = '';
+    if (!terms.length) { closeResults(); return; }
+    const inCountry = cSel.value && cSel.value !== '';
+    const hits = schools
+      .filter((r) => !inCountry || r.country === cSel.value)
+      .filter((r) => { const h = fold(`${r.name} ${r.city} ${r.country}`); return terms.every((t) => h.includes(t)); })
+      .slice(0, 12);
+    if (!hits.length) {
+      results.appendChild(el('div.school-result.empty', {
+        text: inCountry ? `Nothing matching in ${cSel.value}. Pick a city below and add it.` : 'Nothing matching. Pick a country and city below and add it.',
+      }));
+    }
+    hits.forEach((r) => {
+      const row = el('button.school-result', { type: 'button' }, [
+        el('strong', { text: r.name }),
+        el('small', { text: [r.city, r.country].filter(Boolean).join(', ') }),
+      ]);
+      row.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        selectSchool(r);
+        search.value = '';
+        closeResults();
+        note.textContent = `Selected ${r.name} (${[r.city, r.country].filter(Boolean).join(', ')}).`;
+      });
+      results.appendChild(row);
+    });
+    results.hidden = false;
+  });
+  search.addEventListener('blur', () => setTimeout(closeResults, 150));
+  search.addEventListener('keydown', (e) => { if (e.key === 'Escape') { search.value = ''; closeResults(); } });
+
+  wrap._selectSchool = selectSchool;
   return wrap;
 }
 
