@@ -70,7 +70,7 @@ function schoolPicker(onPick, initial = {}) {
     const countries = [...new Set(schools.map((r) => r.country))].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
     note.textContent = `${schools.length.toLocaleString()} schools in ${countries.length} countries.`;
-    if (initial.country) { cSel.value = initial.country; cSel.dispatchEvent(new Event('change')); }
+    if (initial.country) { cSel.value = initial.country; initial.country = null; cSel.dispatchEvent(new Event('change')); }
   })();
 
   const resetSchools = () => {
@@ -90,7 +90,7 @@ function schoolPicker(onPick, initial = {}) {
       .map((r) => r.city).filter(Boolean))].sort();
     withSchools.forEach((c) => citySel.appendChild(el('option', { value: c, text: c })));
     citySel.appendChild(el('option', { value: CITY_OTHER, text: '— another city in this country —' }));
-    if (initial.city) { citySel.value = initial.city; citySel.dispatchEvent(new Event('change')); }
+    if (initial.city) { citySel.value = initial.city; initial.city = null; citySel.dispatchEvent(new Event('change')); }
   });
 
   // The full gazetteer for a country, shown only when the listed cities don't cover it.
@@ -122,7 +122,14 @@ function schoolPicker(onPick, initial = {}) {
         ? `${here.length} here. ${guessed} were filed under ${citySel.value} because the source list didn’t say which city.`
         : `${here.length} school${here.length === 1 ? '' : 's'} in ${citySel.value}.`)
       : `No schools listed in ${citySel.value} yet — add yours.`;
-    if (initial.school_id) { sSel.value = String(initial.school_id); onPick(Number(initial.school_id)); }
+    // Apply the pre-filled values ONCE. Re-applying them on every change would
+    // re-select a stale school when someone edits a posting's country or city.
+    if (initial.school_id) {
+      const sid = initial.school_id;
+      initial.school_id = null;
+      sSel.value = String(sid);
+      if (sSel.value === String(sid)) onPick(Number(sid));
+    }
   });
 
   // ── Adding a school ───────────────────────────────────────────────────────

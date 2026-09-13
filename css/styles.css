@@ -490,3 +490,11 @@ body.high-contrast .legend .swatch { outline: 1px solid rgba(31,42,48,.5); }
 body.high-contrast .deg-pill,
 body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); }
 .auth-build { display: inline-block; margin-top: 6px; font-size: 10.5px; color: #b7ccd2; }
+
+/* "Your details" reuses the registration form, which brings its own .view. */
+.view > .view { padding: 0; min-height: 0; }
+.acct-edit {
+  border: none; background: none; font: inherit; font-size: 13px;
+  color: var(--turquoise-dark); cursor: pointer; padding: 4px 6px; border-radius: 6px;
+}
+.acct-edit:hover { background: #eef6f8; text-decoration: underline; }

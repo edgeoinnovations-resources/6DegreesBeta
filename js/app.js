@@ -65,8 +65,19 @@ const exploreView = {
   },
 };
 
+// Editing your own history. The registration form already handled an existing
+// profile, but nothing led back to it once you had joined — Linda registered, then
+// realised she'd left out a school, and had no way in. Reached from your name in
+// the header; not a nav tab, because it is about you, not about the community.
+const meView = {
+  id: 'me', num: '✎', title: 'Your details',
+  render(root, ctx) {
+    root.appendChild(onboardingView(ctx.user, ctx.profile, () => ctx.reload()));
+  },
+};
+
 const NAV = [...PRIMARY, exploreView];
-const ALL_VIEWS = [...PRIMARY, exploreView, ...EXPLORE];
+const ALL_VIEWS = [...PRIMARY, exploreView, ...EXPLORE, meView];
 
 // ── Shared tooltip helper, handed to every view via ctx ─────────────────────
 const tipEl = document.getElementById('tooltip');
@@ -239,7 +250,14 @@ function mountHeaderAccount(user, profile, ctx) {
   // opening a window to validate and edit them.
   if (ctx) host.appendChild(connectionsIcon(ctx));
 
-  const who = el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
+  // Your name is the way into your own details.
+  const who = profile && ctx
+    ? el('button.acct-who.acct-edit', {
+        type: 'button', title: 'Edit your details and postings',
+        text: `${profile.display_name} · Edit details`,
+      })
+    : el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
+  if (profile && ctx) who.addEventListener('click', () => ctx.navigateTo('me'));
   const build = el('span.acct-build', { text: BUILD, title: 'Which version of the app you are running' });
   const out = el('button.acct-btn', { type: 'button', text: 'Sign out', title: 'Sign out' });
   out.addEventListener('click', signOut);
