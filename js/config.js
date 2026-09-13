@@ -17,3 +17,9 @@ export const SUPABASE_ANON_KEY =
 // Where magic links come back to. Must match a redirect URL allowed in the
 // dashboard under Authentication → URL Configuration, or the link bounces.
 export const REDIRECT_URL = `${location.origin}${location.pathname}`;
+
+// Build stamp, shown in the header. GitHub Pages caches JS for ~10 minutes, so
+// after a deploy a browser can be running a MIX of old and new modules — which
+// makes "did my fix reach you?" unanswerable without it. Updated by
+// tools/stamp-build.sh on every commit.
+export const BUILD = '  UTC';

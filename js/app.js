@@ -10,6 +10,7 @@
 //              live behind it. Nothing is deleted, only de-ranked.
 import { loadData, invalidate } from './loadData.js';
 import { requireSession, loadMyProfile, signOut } from './auth.js';
+import { BUILD } from './config.js';
 import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
@@ -234,7 +235,8 @@ function mountHeaderAccount(user, profile) {
   host.innerHTML = '';
 
   const who = el('span.acct-who', { text: profile ? profile.display_name : (user.email || '') });
+  const build = el('span.acct-build', { text: BUILD, title: 'Which version of the app you are running' });
   const out = el('button.acct-btn', { type: 'button', text: 'Sign out', title: 'Sign out' });
   out.addEventListener('click', signOut);
-  host.append(who, out);
+  host.append(build, who, out);
 }
