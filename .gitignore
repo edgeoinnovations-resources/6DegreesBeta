@@ -34,3 +34,15 @@ WhatsApp Chat*/
 
 # Working drafts not part of the deployed site
 6degrees_enrollment_form.html
+
+# ── Supabase ────────────────────────────────────────────────────────────────
+# Secrets NEVER belong in this repo. The project URL and anon key are public by
+# design (they ship to every browser and are protected by RLS); the service_role
+# key and DB password bypass RLS entirely and must stay local.
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+**/service_role*
+**/*secret*
