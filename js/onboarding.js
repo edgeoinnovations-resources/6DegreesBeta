@@ -240,6 +240,22 @@ function postingRow(posting, onRemove) {
   return row;
 }
 
+// ── Draft autosave ──────────────────────────────────────────────────────────
+// This form is long, and the two ways out of it — a reload, or a sign-in that
+// expired while you were typing — both used to throw the lot away. Keep a draft
+// locally so neither does. It never leaves the browser.
+const DRAFT_KEY = 'sixdeg.onboarding.draft';
+
+function saveDraft(d) {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); } catch {}
+}
+function readDraft() {
+  try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch { return null; }
+}
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch {}
+}
+
 // ── The form ────────────────────────────────────────────────────────────────
 export function onboardingView(user, profile, onDone) {
   const root = el('div.view');
@@ -286,13 +302,45 @@ export function onboardingView(user, profile, onDone) {
   postWrap.appendChild(addBtn);
   root.appendChild(postWrap);
 
+  const snapshot = () => ({
+    first: first.value, initial: initial.value,
+    nationality: nationality.value, specialization: specialization.value,
+    postings: [...rows.children].map((r) => r._state),
+  });
+  root.addEventListener('change', () => saveDraft(snapshot()));
+  root.addEventListener('input', () => saveDraft(snapshot()));
+
   const status = el('p.auth-msg');
   const save = el('button.btn.accent', { type: 'button', text: isNew ? 'Join 6 Degrees' : 'Save changes' });
   root.append(el('div', { style: 'display:flex;gap:10px;align-items:center;margin-top:14px;' }, [save, status]));
 
   // existing postings
   (async () => {
-    if (!profile) { addRow(); return; }
+    if (!profile) {
+      const d = readDraft();
+      if (d) {
+        first.value = d.first || ''; initial.value = d.initial || '';
+        nationality.value = d.nationality || ''; specialization.value = d.specialization || '';
+        // Postings need their school ids resolved back to country/city to re-populate
+        // the cascade, so rebuild from the catalogue.
+        const cat = await schoolCatalogue().catch(() => []);
+        const byId = new Map(cat.map((x) => [x.id, x]));
+        (d.postings || []).filter((p) => p.school_id || p.start).forEach((p) => {
+          const sc = byId.get(p.school_id);
+          addRow({
+            school_id: p.school_id, role: p.role,
+            start_date: p.start, end_date: p.current ? null : p.end,
+            _country: sc?.country, _city: sc?.city,
+          });
+        });
+        if (!rows.children.length) addRow();
+        status.className = 'auth-msg';
+        status.textContent = 'Restored what you had typed.';
+        return;
+      }
+      addRow();
+      return;
+    }
     const { data } = await supabase
       .from('postings')
       .select('id, school_id, role, start_date, end_date, schools(name, city, country)')
@@ -324,8 +372,22 @@ export function onboardingView(user, profile, onDone) {
 
     save.disabled = true; save.textContent = 'Saving…';
     try {
+      // Use the id from the CURRENT session rather than the one captured when the
+      // page booted. This form is long — someone can sit on it past a token
+      // refresh — and RLS compares against the JWT the request actually carries,
+      // so a stale captured id fails `with check (id = auth.uid())` with nothing
+      // but "new row violates row-level security policy" to show for it.
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) {
+        throw new Error('Your sign-in expired while you were filling this in. Reload the page and sign in again — nothing you typed is lost if you keep this tab open.');
+      }
+      const uid = session.user.id;
+      if (user?.id && user.id !== uid) {
+        console.warn('[6deg] session user changed while the form was open', user.id, '->', uid);
+      }
+
       const { error: pErr } = await supabase.from('profiles').upsert({
-        id: user.id,
+        id: uid,
         first_name: f,
         last_initial: initial.value.trim() || null,
         nationality: nationality.value.trim() || null,
@@ -333,15 +395,15 @@ export function onboardingView(user, profile, onDone) {
       });
       if (pErr) throw pErr;
 
-      await supabase.from('privacy_settings').upsert({ profile_id: user.id }, { onConflict: 'profile_id' });
+      await supabase.from('privacy_settings').upsert({ profile_id: uid }, { onConflict: 'profile_id' });
 
       // Replace postings wholesale: simpler than diffing, and the trigger
       // recomputes degrees either way.
-      const { error: dErr } = await supabase.from('postings').delete().eq('profile_id', user.id);
+      const { error: dErr } = await supabase.from('postings').delete().eq('profile_id', uid);
       if (dErr) throw dErr;
       const { error: iErr } = await supabase.from('postings').insert(
         wanted.map((s) => ({
-          profile_id: user.id,
+          profile_id: uid,
           school_id: s.school_id,
           role: s.role,
           start_date: s.start,
@@ -350,12 +412,18 @@ export function onboardingView(user, profile, onDone) {
       );
       if (iErr) throw iErr;
 
+      clearDraft();
       status.className = 'auth-msg ok';
       status.textContent = 'Saved.';
       onDone();
     } catch (err) {
       status.className = 'auth-msg error';
-      status.textContent = err.message || String(err);
+      const m = err.message || String(err);
+      status.textContent = /row-level security/i.test(m)
+        ? 'The database refused that write, which usually means your sign-in expired. '
+          + 'Reload and sign in again, then try once more.'
+        : m;
+      console.error('[6deg] save failed:', err);
       save.disabled = false;
       save.textContent = isNew ? 'Join 6 Degrees' : 'Save changes';
     }
