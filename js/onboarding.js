@@ -372,45 +372,23 @@ export function onboardingView(user, profile, onDone) {
 
     save.disabled = true; save.textContent = 'Saving…';
     try {
-      // Use the id from the CURRENT session rather than the one captured when the
-      // page booted. This form is long — someone can sit on it past a token
-      // refresh — and RLS compares against the JWT the request actually carries,
-      // so a stale captured id fails `with check (id = auth.uid())` with nothing
-      // but "new row violates row-level security policy" to show for it.
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user?.id) {
-        throw new Error('Your sign-in expired while you were filling this in. Reload the page and sign in again — nothing you typed is lost if you keep this tab open.');
-      }
-      const uid = session.user.id;
-      if (user?.id && user.id !== uid) {
-        console.warn('[6deg] session user changed while the form was open', user.id, '->', uid);
-      }
-
-      const { error: pErr } = await supabase.from('profiles').upsert({
-        id: uid,
-        first_name: f,
-        last_initial: initial.value.trim() || null,
-        nationality: nationality.value.trim() || null,
-        specialization: specialization.value.trim() || null,
-      });
-      if (pErr) throw pErr;
-
-      await supabase.from('privacy_settings').upsert({ profile_id: uid }, { onConflict: 'profile_id' });
-
-      // Replace postings wholesale: simpler than diffing, and the trigger
-      // recomputes degrees either way.
-      const { error: dErr } = await supabase.from('postings').delete().eq('profile_id', uid);
-      if (dErr) throw dErr;
-      const { error: iErr } = await supabase.from('postings').insert(
-        wanted.map((s) => ({
-          profile_id: uid,
-          school_id: s.school_id,
-          role: s.role,
-          start_date: s.start,
-          end_date: s.current ? null : s.end,
+      // One server-side call. The client deliberately does NOT send an id: the
+      // database takes auth.uid() as the only possible answer, so the id it
+      // writes and the id RLS checks cannot disagree. Everything is one
+      // transaction, so nobody ends up half-registered.
+      const { error } = await supabase.rpc('save_my_profile', {
+        p_first_name: f,
+        p_last_initial: initial.value.trim() || null,
+        p_nationality: nationality.value.trim() || null,
+        p_specialization: specialization.value.trim() || null,
+        p_postings: wanted.map((st) => ({
+          school_id: st.school_id,
+          role: st.role,
+          start_date: st.start,
+          end_date: st.current ? null : st.end,
         })),
-      );
-      if (iErr) throw iErr;
+      });
+      if (error) throw error;
 
       clearDraft();
       status.className = 'auth-msg ok';
@@ -419,9 +397,8 @@ export function onboardingView(user, profile, onDone) {
     } catch (err) {
       status.className = 'auth-msg error';
       const m = err.message || String(err);
-      status.textContent = /row-level security/i.test(m)
-        ? 'The database refused that write, which usually means your sign-in expired. '
-          + 'Reload and sign in again, then try once more.'
+      status.textContent = /not signed in|28000|JWT/i.test(m)
+        ? 'Your sign-in expired while you were filling this in. Reload the page — what you typed is saved — then sign in and press Save again.'
         : m;
       console.error('[6deg] save failed:', err);
       save.disabled = false;
