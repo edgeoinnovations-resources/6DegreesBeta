@@ -37,8 +37,16 @@ export function friendlyAuthError(err) {
     return 'That email hasn’t been invited to 6 Degrees yet — ask someone in the group to add you. '
          + '(If you believe it has been, tell Paul: the sign-up itself failed.)';
   }
-  if (/rate limit|too many/i.test(msg)) {
-    return 'Too many sign-in emails just went out. Wait a minute and try again.';
+  // This is NOT a per-person limit and it is not a minute. Supabase's built-in
+  // sender allows only a couple of messages per hour ACROSS THE WHOLE PROJECT,
+  // so one person working through several sign-ins uses up everyone's allowance —
+  // which is exactly how Sarah got blocked by Paul's attempts without ever having
+  // requested a link herself. Saying "wait a minute" sends people back to press
+  // the button again and fail again.
+  if (/rate limit|too many|over_email_send_rate_limit/i.test(msg)) {
+    return 'Sign-in emails are rate limited while we’re on the free plan — only a couple an hour, '
+         + 'shared across everyone. Someone else has probably just used them up. '
+         + 'Try again in a while, or message Paul and he can sort it.';
   }
   if (/redirect/i.test(msg)) {
     return 'This site isn’t on the allowed redirect list yet — tell Paul.';

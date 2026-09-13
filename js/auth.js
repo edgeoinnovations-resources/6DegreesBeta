@@ -5,7 +5,7 @@
 // database enforces that with a trigger on auth.users, so it holds however
 // someone arrives, not just through this screen.
 import { supabase, cleanAuthParamsFromUrl, friendlyAuthError } from './supabaseClient.js';
-import { REDIRECT_URL } from './config.js';
+import { REDIRECT_URL, BUILD } from './config.js';
 import { el } from './widgets.js';
 
 // ── Sign-in screen ──────────────────────────────────────────────────────────
@@ -33,7 +33,8 @@ function signInScreen(onSent) {
   card.append(form, msg);
 
   card.append(el('p.auth-foot', {
-    html: 'Invite only while we’re in beta. If your email isn’t on the list, ask someone in the group to add you.',
+    html: 'Invite only while we’re in beta. If your email isn’t on the list, ask someone in the group to add you.'
+      + `<br><span class="auth-build">${BUILD}</span>`,
   }));
 
   form.addEventListener('submit', async (e) => {

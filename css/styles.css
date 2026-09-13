@@ -489,3 +489,4 @@ body.high-contrast .ego-rail .rail-sec-head .swatch { outline: 1px solid rgba(31
 body.high-contrast .legend .swatch { outline: 1px solid rgba(31,42,48,.5); }
 body.high-contrast .deg-pill,
 body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); }
+.auth-build { display: inline-block; margin-top: 6px; font-size: 10.5px; color: #b7ccd2; }
