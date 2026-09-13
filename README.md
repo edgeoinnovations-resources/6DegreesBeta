@@ -303,6 +303,29 @@ python3 -m http.server 8000
 # open http://localhost:8000/
 ```
 
+
+## Error log — start every session here
+
+Every failure anyone hits is written to `public.client_errors`: database errors
+(through `friendlyDbError`), sign-in errors, view render failures, and any uncaught
+exception or unhandled promise rejection. Each row carries the screen, the build
+stamp, the error code and a stack trace where there is one.
+
+```bash
+bash tools/errors.sh                         # open errors, grouped and counted
+bash tools/errors.sh recent 20               # the latest raw rows
+bash tools/errors.sh code 23503              # every open occurrence of one code
+bash tools/errors.sh resolve 23503 "what fixed it"
+```
+
+It is **write-only to the app**: no member can read it, including their own rows.
+It's read with the linked CLI. It never records email addresses, form contents,
+notes, tag text or sign-in tokens — anything email- or token-shaped is stripped in
+the browser and again in the database. Identical errors are sent once per page
+load, at most 25 per load; anonymous (signed-out) writes are capped at 200 an hour
+so the public anon key can't be used to fill the database. Rows older than 90 days
+are swept automatically.
+
 ## Privacy / data notes
 
 - **The repository must not contain real people's data.** `.gitignore` excludes the

@@ -3,7 +3,7 @@
 // Loaded from a CDN as an ES module, in keeping with the rest of the project:
 // no bundler, no node_modules, relative paths only.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.47.10';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY, BUILD } from './config.js';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
@@ -14,6 +14,74 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     flowType: 'pkce',
     storageKey: 'sixdeg.auth',
   },
+});
+
+
+// ── Error log ───────────────────────────────────────────────────────────────
+// Every failure is written to public.client_errors so it can be reviewed and
+// fixed later, rather than discovered one screenshot at a time. Write-only: no
+// member can read the log (see supabase/migrations/20260913001700_client_error_log.sql).
+//
+// Deliberately careful, because these are real people:
+//   * no email addresses, form contents, notes, tag text or URL tokens — anything
+//     email- or token-shaped is stripped here AND again in the database;
+//   * capped per page load, and identical errors are sent once, so a loop that
+//     throws cannot flood the free-tier database;
+//   * the logger can never throw, and never logs its own failures (which would
+//     recurse).
+const LOG_CAP = 25;
+let logged = 0;
+const seen = new Set();
+
+const scrub = (x, max) => String(x ?? '')
+  .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[email]')
+  .replace(/eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, '[token]')
+  .slice(0, max);
+
+function safePath() {
+  const h = location.hash || '';
+  // A magic link arrives with tokens in the fragment. Never send those.
+  const hash = /token|code=|error_description/.test(h) ? '#[auth]' : h.split('?')[0];
+  return (location.pathname + hash).slice(0, 200);
+}
+
+export function logError({ action = '', code = '', message = '', stack = '' } = {}) {
+  try {
+    if (logged >= LOG_CAP) return;
+    const key = `${action}|${code}|${message}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    logged += 1;
+    supabase.from('client_errors').insert({
+      build: String(BUILD).slice(0, 60),
+      view: String(window.__6degView || '').slice(0, 40),
+      action: scrub(action, 80),
+      code: scrub(code, 40),
+      message: scrub(message, 1000),
+      stack: scrub(stack, 4000),
+      path: safePath(),
+      user_agent: String(navigator.userAgent || '').slice(0, 300),
+    }).then(() => {}, () => {});   // fire and forget; a failed log is not itself logged
+  } catch { /* the logger must never break the app */ }
+}
+
+// Anything nobody caught.
+window.addEventListener('error', (e) => {
+  logError({
+    action: 'uncaught error',
+    code: e.error?.name || 'Error',
+    message: e.message || String(e.error || ''),
+    stack: e.error?.stack || `${e.filename || ''}:${e.lineno || ''}:${e.colno || ''}`,
+  });
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const r = e.reason;
+  logError({
+    action: 'unhandled promise',
+    code: r?.code || r?.name || 'Rejection',
+    message: r?.message || String(r || ''),
+    stack: r?.stack || '',
+  });
 });
 
 // Strip the auth fragment once a session is established, so a copied URL never
@@ -30,6 +98,7 @@ export function cleanAuthParamsFromUrl() {
 // into something a person can act on.
 export function friendlyAuthError(err) {
   const msg = (err && (err.message || err.error_description || '')) || 'Something went wrong.';
+  logError({ action: 'sign in', code: err?.code || err?.status || '', message: msg });
   // The invite-only trigger raises a clear exception, but GoTrue swallows it and
   // returns this generic wrapper instead. Verified 13 Sep 2026: an uninvited
   // address gets exactly "Database error saving new user".
@@ -83,6 +152,7 @@ export function friendlyDbError(err, action = 'do that') {
   const code = err?.code || '';
   const raw = err?.message || String(err || '');
   console.error(`[6deg] failed to ${action}:`, { code, message: raw, details: err?.details, hint: err?.hint, err });
+  logError({ action, code, message: [raw, err?.details, err?.hint].filter(Boolean).join(' | '), stack: err?.stack || '' });
 
   if (/Failed to fetch|NetworkError|Load failed/i.test(raw)) {
     return 'Couldn’t reach the server. Check your connection and try again.';

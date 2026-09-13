@@ -8,7 +8,7 @@
 // It carries a count of what is waiting on YOU, and opens a window with three
 // groups: things to answer, things you have asked for, and what is already
 // confirmed (which you can undo).
-import { supabase, friendlyDbError } from './supabaseClient.js';
+import { supabase, friendlyDbError, logError } from './supabaseClient.js';
 import { el } from './widgets.js';
 import { tagTypes, respondToTag } from './tags.js';
 
@@ -154,7 +154,7 @@ export function connectionsIcon(ctx) {
         .select('id', { count: 'exact', head: true })
         .eq('subject_id', ctx.me)
         .eq('status', 'pending');
-      if (error) return;
+      if (error) { logError({ action: 'count pending connections', code: error.code, message: error.message }); return; }
       if (count > 0) {
         badge.textContent = String(count);
         badge.style.display = '';
@@ -165,7 +165,7 @@ export function connectionsIcon(ctx) {
         btn.title = 'Connections';
         btn.classList.remove('has-pending');
       }
-    } catch {}
+    } catch (err) { logError({ action: 'count pending connections', code: err?.name, message: err?.message }); }
   };
   refresh();
   // Someone may confirm while you have the page open.

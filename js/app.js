@@ -10,7 +10,7 @@
 //              live behind it. Nothing is deleted, only de-ranked.
 import { loadData, invalidate } from './loadData.js';
 import { requireSession, loadMyProfile, signOut } from './auth.js';
-import { friendlyDbError } from './supabaseClient.js';
+import { friendlyDbError, logError } from './supabaseClient.js';
 import { BUILD } from './config.js';
 import { connectionsIcon } from './connectionsInbox.js';
 import { onboardingView } from './onboarding.js';
@@ -207,10 +207,12 @@ async function boot() {
     container.appendChild(root);
     refreshHeader();
     current = v;
+    window.__6degView = v.id;   // tags logged errors with the screen they happened on
     try {
       v.render(root, ctx);
     } catch (err) {
       console.error(`[6deg] view "${v.id}" failed:`, err);
+      logError({ action: `render ${v.id}`, code: err?.name || 'Error', message: err?.message || String(err), stack: err?.stack || '' });
       root.appendChild(el('div.error-box', { text: `Something went wrong showing ${v.title}. Reload the page, and if it keeps happening let Paul know. Reference: ${err?.name || 'render'}.` }));
     }
   }
