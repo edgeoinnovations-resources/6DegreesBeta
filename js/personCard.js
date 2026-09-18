@@ -41,10 +41,17 @@ export function openPersonCard(ctx, id, extras = []) {
   card.appendChild(close);
 
   // ── who ───────────────────────────────────────────────────────────────────
-  const meta = [t.SPECIALIZATION, t.NATIONALITY].filter(Boolean).join(' · ');
+  // Nationality and subject were dropped on 18 Sep 2026 — they fed nothing and the
+  // seven of us had already written USA, American and Canadian for the same field.
+  // What belongs here instead is the formal first name, and only when it differs
+  // from the name someone goes by: a colleague searching for "Deanna" needs to
+  // recognise "Dee Milne".
+  const goesBy = t.PREFERRED_NAME && t.GIVEN_NAME && t.PREFERRED_NAME !== t.GIVEN_NAME
+    ? `${t.GIVEN_NAME} ${t.LAST_NAME}`.trim()
+    : '';
   card.append(
     el('h3.person-name', { text: t.FULL_NAME }),
-    meta ? el('p.person-meta', { text: meta }) : null,
+    goesBy ? el('p.person-meta', { text: goesBy }) : null,
   );
 
   if (t.IS_GHOST) {

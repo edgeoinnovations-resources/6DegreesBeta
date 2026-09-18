@@ -152,7 +152,14 @@ function schoolPicker(onPick, initial = {}) {
   function showAddSchool() {
     addBox.innerHTML = '';
     addBox.style.display = '';
-    const nameInput = el('input', { type: 'text', placeholder: 'Escola Americana de Campinas', 'aria-label': 'School name' });
+    // No example name here. This box used to say "Escola Americana de Campinas" —
+    // Paul's own school — and Linda read the grey text as a prefilled value:
+    // "When I try to add a school it's prefilled with your Brazilian school."
+    // The hint asks for what Dee asked for instead: the full name, not an acronym.
+    const nameInput = el('input', {
+      type: 'text', autocomplete: 'off', 'aria-label': 'School name',
+      placeholder: 'Full name, not an abbreviation',
+    });
     const go = el('button.btn', { type: 'button', text: 'Add it' });
     const status = el('span.muted', { style: 'font-size:12px;' });
     addBox.append(
@@ -362,13 +369,27 @@ export function onboardingView(user, profile, onDone) {
   ]));
 
   // identity
-  const first = el('input', { type: 'text', required: 'required', placeholder: 'Paul', value: profile?.first_name || '' });
+  //
+  // NO EXAMPLE VALUES in these boxes. They used to be placeholder:'Paul' and
+  // placeholder:'Morgan', and on 13-14 Sep Linda and Dee both reported Paul's name
+  // "autofilled" into their own form. It was never autofill: it was grey example
+  // text that reads exactly like a filled field. Labels say what each box is, so
+  // an example earns nothing and costs confusion.
+  const first = el('input', {
+    type: 'text', required: 'required', autocomplete: 'off', value: profile?.first_name || '',
+  });
   // Full last name. Someone who registered while only an initial was asked for has
   // last_name = null; the box starts empty and says why.
-  const lastName = el('input', { type: 'text', maxlength: '80', placeholder: 'Morgan', value: profile?.last_name || '' });
+  const lastName = el('input', {
+    type: 'text', maxlength: '80', autocomplete: 'off', value: profile?.last_name || '',
+  });
   const hadOnlyInitial = !!(profile && !profile.last_name && profile.last_initial);
-  const nationality = el('input', { type: 'text', placeholder: 'Canadian', value: profile?.nationality || '' });
-  const specialization = el('input', { type: 'text', placeholder: 'Physics', value: profile?.specialization || '' });
+  // Dee, 14 Sep 2026: "could we add a 'commonly used name' field? Like my name is
+  // Deanna but 99% of the world knows me as Dee." Optional; when set it replaces
+  // the first name everywhere the app shows a name.
+  const preferred = el('input', {
+    type: 'text', maxlength: '60', autocomplete: 'off', value: profile?.preferred_name || '',
+  });
 
   const who = el('div.card');
   who.append(
@@ -376,8 +397,10 @@ export function onboardingView(user, profile, onDone) {
     el('div.controls', {}, [
       el('div.control-group', {}, [el('label', { text: 'First name' }), first]),
       el('div.control-group', {}, [el('label', { text: 'Last name' }), lastName]),
-      el('div.control-group', {}, [el('label', { text: 'Nationality (optional)' }), nationality]),
-      el('div.control-group', {}, [el('label', { text: 'Subject / role (optional)' }), specialization]),
+      el('div.control-group', {}, [
+        el('label', { text: 'Goes by (optional)' }), preferred,
+        el('small.muted', { style: 'font-size:11px;', text: 'If people know you by another name — Deanna who goes by Dee.' }),
+      ]),
     ]),
     hadOnlyInitial
       ? el('p.auth-msg', { style: 'margin:6px 2px 0;', text: `We now ask for your full last name — until you add it you show as “${profile.display_name}”.` })
@@ -400,8 +423,7 @@ export function onboardingView(user, profile, onDone) {
   root.appendChild(postWrap);
 
   const snapshot = () => ({
-    first: first.value, last: lastName.value,
-    nationality: nationality.value, specialization: specialization.value,
+    first: first.value, last: lastName.value, preferred: preferred.value,
     postings: [...rows.children].map((r) => r._state),
   });
   root.addEventListener('change', () => saveDraft(snapshot()));
@@ -417,7 +439,7 @@ export function onboardingView(user, profile, onDone) {
       const d = readDraft();
       if (d) {
         first.value = d.first || ''; lastName.value = d.last || '';
-        nationality.value = d.nationality || ''; specialization.value = d.specialization || '';
+        preferred.value = d.preferred || '';
         // Postings need their school ids resolved back to country/city to re-populate
         // the cascade, so rebuild from the catalogue.
         const cat = await schoolCatalogue().catch(() => []);
@@ -482,8 +504,7 @@ export function onboardingView(user, profile, onDone) {
       const { error } = await supabase.rpc('save_my_profile', {
         p_first_name: f,
         p_last_name: lastName.value.trim(),
-        p_nationality: nationality.value.trim() || null,
-        p_specialization: specialization.value.trim() || null,
+        p_preferred_name: preferred.value.trim() || null,
         p_postings: wanted.map((st) => ({
           school_id: st.school_id,
           role: st.role,

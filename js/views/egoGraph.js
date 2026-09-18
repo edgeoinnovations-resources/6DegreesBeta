@@ -188,13 +188,19 @@ export const view = {
         const country = s ? s.COUNTRY : 'zz';
         return `${regionOf(country)}|${country}|${t.FULL_NAME || n.id}`;
       };
-      // A mutually confirmed connection is the STRONGEST link there is — you have
-      // both said you know each other — so it belongs closest to the centre, not
-      // on another axis. Someone with no shared place at all (the conference
-      // case) has no degree, and this ring is the only place they can live.
+      // A confirmed connection NEVER moves anyone. Dee, 17 Sep 2026, seeing Linda
+      // at degree 3 with a confirmed social tag: "I wonder if we could have the 3rd
+      // Degree 'outlined' to show that Linda is 3 degrees from me BUT there is a
+      // social or professional connection?" So the degree places you and the
+      // outline marks you — which is also the only reading consistent with degrees
+      // coming from place and time alone.
+      //
+      // Ring 0 is therefore NOT "confirmed people". It is only for someone with no
+      // shared country at all — the conference case — who has no degree and so has
+      // nowhere else to live.
       const byDeg = new Map();
       for (const n of neighbours) {
-        const ring = n.degree ?? 0;      // 0 = the acknowledged ring, inside degree 1
+        const ring = n.degree ?? 0;      // 0 only when there is no shared place at all
         if (!byDeg.has(ring)) byDeg.set(ring, []);
         byDeg.get(ring).push(n);
       }
@@ -348,6 +354,10 @@ export const view = {
         .style('opacity', 0).style('cursor', 'pointer');
       nEnter.append('circle').attr('class', 'halo')
         .attr('fill', 'none').attr('stroke', '#fff').attr('stroke-width', 3);
+      // Dee's outline. Drawn OUTSIDE the white halo so it reads as a ring around the
+      // person rather than a thicker edge on the dot, and it survives on every degree
+      // colour including the palest.
+      nEnter.append('circle').attr('class', 'confirmed-outline').attr('fill', 'none');
       nEnter.append('circle').attr('class', 'dot');
       nEnter.append('text').attr('class', 'nm')
         .attr('text-anchor', 'middle').attr('font-size', 9.5).attr('fill', '#42525a');
@@ -355,6 +365,15 @@ export const view = {
       const nAll = nEnter.merge(nSel);
 
       nAll.select('circle.halo').attr('r', (d) => d.r + 1.5);
+      nAll.select('circle.confirmed-outline')
+        .attr('r', (d) => d.r + 4.5)
+        .attr('stroke', ACCENT)
+        .attr('stroke-width', hc ? 2.4 : 1.8)
+        .attr('stroke-opacity', (d) => (d.acknowledged ? (hc ? 1 : 0.9) : 0))
+        // Dashed in high contrast too, so it is distinguishable without relying on
+        // the accent colour alone.
+        .attr('stroke-dasharray', hc ? '3 2' : null)
+        .style('pointer-events', 'none');
       nAll.select('circle.dot')
         .attr('r', (d) => d.r)
         .attr('fill', (d) => ringColor(d.degree))
@@ -401,10 +420,16 @@ export const view = {
         const t = idx.teacherById.get(d.id) || {};
         tooltip.show(
           `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}<br>` +
-          `${[t.SPECIALIZATION, t.NATIONALITY].filter(Boolean).join(' · ')}<br>` +
+          (t.GIVEN_NAME && t.PREFERRED_NAME && t.GIVEN_NAME !== t.PREFERRED_NAME
+            ? `<small class="muted">${t.GIVEN_NAME} ${t.LAST_NAME}</small><br>` : '') +
           (d.degree
             ? `<span style="color:${ringColor(d.degree)}">●</span> Degree ${d.degree} — ${degreeLabel(d.degree)}<br>`
-            : `<span style="color:${ACCENT}">●</span> <strong>Confirmed connection</strong> — you both said you know each other<br>`) +
+            : `<span style="color:${ACCENT}">●</span> No shared school, city or country<br>`) +
+          // The degree and the confirmation are two separate facts about the same
+          // pair, so show both rather than letting one replace the other.
+          (d.acknowledged
+            ? `<span style="color:${ACCENT}">◎</span> <strong>Confirmed connection</strong> — you both said you know each other<br>`
+            : '') +
           `<em>${d.label || ''}${d.overlap ? ` · ${d.overlap}` : ''}</em>`,
           ev.clientX, ev.clientY);
         gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === d.id ? 1 : 0.22));
@@ -465,16 +490,20 @@ export const view = {
         const sec = el('div.rail-sec');
         sec.appendChild(el('div.rail-sec-head', {}, [
           el('span.swatch', { style: `background:${ringColor(d)}` }),
-          el('span', { text: d ? `Degree ${d}` : 'Confirmed' }),
+          el('span', { text: d ? `Degree ${d}` : 'No shared place' }),
           el('span.muted', { text: String(list.length) }),
         ]));
         sec.appendChild(el('div.muted.rail-sec-sub', {
-          text: d ? DEGREE_META[d].short : 'You both confirmed you know each other',
+          text: d ? DEGREE_META[d].short
+                  : 'Confirmed, but you have never shared a school, city or country',
         }));
         const ul = el('ul');
         list.forEach((n) => {
           const t = idx.teacherById.get(n.id) || {};
-          const li = el('li', { html: `${t.FULL_NAME || n.id}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}</small>` });
+          const ring = n.acknowledged
+            ? `<span class="confirmed-mark" title="Confirmed connection">◎</span>`
+            : '';
+          const li = el('li', { html: `${t.FULL_NAME || n.id}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}</small>` });
           li.addEventListener('click', () => showPerson(n.id));
           li.addEventListener('mouseenter', () => {
             gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === n.id ? 1 : 0.22));
@@ -514,8 +543,8 @@ export const view = {
 function legend() {
   const wrap = el('div.legend');
   wrap.appendChild(el('span.item', {}, [
-    el('span.swatch', { style: `background:${ACCENT}` }),
-    el('span', { text: '✓ · Confirmed connection' }),
+    el('span.swatch.ring-swatch', { style: `border-color:${ACCENT}` }),
+    el('span', { text: 'Confirmed connection — outlined, on its own degree' }),
   ]));
   DEGREES.forEach((d) => wrap.appendChild(el('span.item', {}, [
     el('span.swatch', { style: `background:${DEGREE_META[d].color}` }),

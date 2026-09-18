@@ -14,6 +14,14 @@ ok()   { echo "  OK    $*"; }
 warn() { echo "  WARN  $*"; warns=$((warns+1)); }
 fail() { echo "  FAIL  $*"; fails=$((fails+1)); }
 
+# A count that came back non-numeric means the query itself failed — usually a
+# second supabase command running at the same time. Reporting that as a data FAIL
+# sent a whole session chasing duplicate schools that did not exist (18 Sep 2026).
+counted() {
+  case "$1" in ''|*[!0-9]*) warn "$2 could not be checked — the query returned no number"; return 1 ;; esac
+  return 0
+}
+
 # Run SQL and print the first row's value for column $2 (or all rows with -a).
 q1() {
   "$SB" db query "$1" --linked 2>/dev/null | python3 -c '
@@ -22,7 +30,7 @@ raw = sys.stdin.read()
 try:
     d, _ = json.JSONDecoder().raw_decode(raw[raw.index("{"):])
     rows = d.get("rows") or []
-    print(rows[0].get(sys.argv[1], "") if rows else "")
+    print(rows[0].get(sys.argv[1], "") if rows else "QUERY_FAILED")
 except Exception:
     print("QUERY_FAILED")
 ' "$2"
@@ -70,7 +78,8 @@ except Exception:
 echo; echo "== 4. Errors reported by members =="
 OPEN=$(q1 "select count(*) as n from public.client_errors where resolved_at is null;" n)
 LAST24=$(q1 "select count(*) as n from public.client_errors where created_at > now() - interval '24 hours';" n)
-if [ "$OPEN" = "0" ]; then ok "no open errors"; else warn "$OPEN open error(s), $LAST24 in the last 24h — run: bash tools/errors.sh"; fi
+if ! counted "$OPEN" "open errors"; then :
+elif [ "$OPEN" = "0" ]; then ok "no open errors"; else warn "$OPEN open error(s), $LAST24 in the last 24h — run: bash tools/errors.sh"; fi
 
 echo; echo "== 5. Security advisors =="
 # Findings accepted on 13 Sep 2026 (see CLAUDE.md, "Accepted advisor findings").
@@ -107,18 +116,22 @@ BAD_TIME=$(q1 "select count(*) as n from public.colleagueships
   where (degree % 2 = 1) <> (time_relation = 'same time')
      or (degree % 2 = 0 and coalesce(overlap_years,'') <> '')
      or (degree % 2 = 1 and coalesce(overlap_years,'') = '');" n)
-[ "$BAD_TIME" = "0" ] && ok "every degree agrees with its time relation and overlap" \
-  || fail "$BAD_TIME connection(s) whose degree contradicts its own time data — run: select public.recompute_all();"
+counted "$BAD_TIME" "degree/time agreement" &&
+  { [ "$BAD_TIME" = "0" ] && ok "every degree agrees with its time relation and overlap" \
+  || fail "$BAD_TIME connection(s) whose degree contradicts its own time data — run: select public.recompute_all();"; }
 DUPES=$(q1 "with n as (select id, country, public.school_name_key(name) k from public.schools)
   select count(*) as n from n a join n b on a.country=b.country and a.k=b.k and a.id<b.id;" n)
-[ "$DUPES" = "0" ] && ok "no duplicate schools" \
-  || fail "$DUPES duplicate school pair(s) — same-school colleagues will compute as degree 3 instead of 1"
+counted "$DUPES" "duplicate schools" &&
+  { [ "$DUPES" = "0" ] && ok "no duplicate schools" \
+  || fail "$DUPES duplicate school pair(s) — same-school colleagues will compute as degree 3 instead of 1"; }
 UNREVIEWED=$(q1 "select count(*) as n from public.schools where added_by is not null and is_verified = false;" n)
-[ "$UNREVIEWED" = "0" ] && ok "no member-added schools awaiting review" \
-  || warn "$UNREVIEWED member-added school(s) unverified — check spelling, city, and near-duplicates"
+counted "$UNREVIEWED" "member-added schools" &&
+  { [ "$UNREVIEWED" = "0" ] && ok "no member-added schools awaiting review" \
+  || warn "$UNREVIEWED member-added school(s) unverified — check spelling, city, and near-duplicates"; }
 NOPOST=$(q1 "select count(*) as n from public.profiles p where status='active'
   and not exists (select 1 from public.postings x where x.profile_id=p.id);" n)
-[ "$NOPOST" = "0" ] && ok "every active member has at least one posting" || warn "$NOPOST active member(s) with no postings"
+counted "$NOPOST" "members without postings" &&
+  { [ "$NOPOST" = "0" ] && ok "every active member has at least one posting" || warn "$NOPOST active member(s) with no postings"; }
 
 echo; echo "== 7. Membership =="
 echo "  members $(q1 "select count(*) as n from public.profiles where status='active';" n)  ·  \

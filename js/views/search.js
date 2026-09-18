@@ -31,6 +31,7 @@ import { el, teacherTypeahead } from '../widgets.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
   teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
+  currentPosting,
 } from '../degrees.js';
 
 export const view = {
@@ -142,7 +143,7 @@ function whoDoIKnowAt(ctx) {
         ? `${(theirPosting.START_DATE || '').slice(0, 4)}–${(theirPosting.END_DATE || '').slice(0, 4) || 'present'}`
         : '';
       tb.appendChild(el('tr', {}, [
-        el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}<br><small class="muted">${t.SPECIALIZATION || ''}</small>` }),
+        el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}` }),
         el('td', { html: `${theirPosting ? roleCategory(theirPosting.POSITION_TITLE) : '—'}<br><small class="muted">${yrs}</small>` }),
         el('td', { html: degPill(m.edge.degree) }),
         el('td', { html: `${m.edge.label || ''}<br><small class="muted">${degreeLabel(m.edge.degree)}</small>` }),
@@ -238,7 +239,7 @@ function withAPerson(ctx) {
       mutual.slice(0, 100).forEach((m) => {
         const t = idx.teacherById.get(m.id) || {};
         tb.appendChild(el('tr', {}, [
-          el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}<br><small class="muted">${t.SPECIALIZATION || ''}</small>` }),
+          el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}` }),
           el('td', { text: rolesOf(idx, m.id).join(', ') }),
           el('td', { html: `${degPill(m.ea.degree)}<br><small class="muted">${m.ea.label || ''}</small>` }),
           el('td', { html: `${degPill(m.eb.degree)}<br><small class="muted">${m.eb.label || ''}</small>` }),
@@ -269,7 +270,7 @@ function renderChain(chain, idx, ctx) {
     const endpoint = i === 0 || i === chain.length - 1;
     const node = el(`div.path-node${endpoint ? '.endpoint' : ''}`, { style: 'cursor:pointer;' }, [
       el('div.nm', { text: t.FULL_NAME || step.id }),
-      el('div.meta', { text: `${t.SPECIALIZATION || ''} · ${t.NATIONALITY || ''}` }),
+      el('div.meta', { text: rolesOf(idx, step.id).join(', ') }),
     ]);
     node.addEventListener('click', () => ctx.navigateTo('ego', { teacher: step.id }));
     wrap.appendChild(node);
@@ -332,17 +333,15 @@ function findPeople(ctx) {
     out.appendChild(el('p.muted', { style: 'margin:8px 2px;', text: `${results.length} person(s)` }));
 
     const table = el('table.data');
-    table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'Role', 'Specialization', 'Nationality', 'Yrs', 'Current school', 'Conns', ''].map((h) => el('th', { text: h })))]));
+    table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'Role', 'Yrs', 'Current school', 'Conns', ''].map((h) => el('th', { text: h })))]));
     const tb = el('tbody');
     results.slice(0, 200).forEach((t) => {
       const ps = idx.postingsByTeacher.get(t.TEACHER_ID) || [];
-      const cur = ps.find((p) => p.IS_CURRENT_POSITION === 'Yes') || ps[ps.length - 1];
+      const cur = currentPosting(ps);
       const sc = cur ? idx.schoolById.get(cur.SCHOOL_ID) : null;
       tb.appendChild(el('tr', {}, [
         el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}` }),
         el('td', { text: rolesOf(idx, t.TEACHER_ID).join(', ') }),
-        el('td', { text: t.SPECIALIZATION || '' }),
-        el('td', { text: t.NATIONALITY || '' }),
         el('td', { text: String(t.YEARS_EXPERIENCE ?? '') }),
         el('td', { text: sc ? `${sc.SCHOOL_NAME}, ${sc.COUNTRY}` : '—' }),
         el('td', { text: String(counts.get(t.TEACHER_ID) || 0) }),

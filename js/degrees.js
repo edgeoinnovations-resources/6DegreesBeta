@@ -156,6 +156,24 @@ export const confirmBadge = (t) => (needsConfirming(t)
   ? ` <span class="badge-unconfirmed" title="${CONFIRM_HINT}">details to confirm</span>`
   : '');
 
+// ── Where someone is now ────────────────────────────────────────────────────
+// The posting someone currently holds, or their most recent one.
+//
+// Dee, 14 Sep 2026: "@Sarah — says you are currently at Almaty and not ICS."
+// Sarah had entered Almaty first and Sarah blamed herself ("Probably user error").
+// It was not: the old rule took the FIRST posting in array order with no end date,
+// so the order rows came back in decided where someone worked. Dates decide now:
+//   * if any posting is open-ended, the one that started most recently;
+//   * otherwise the one that ended most recently.
+// Dates are ISO (YYYY-MM-DD), so string comparison is date comparison.
+export function currentPosting(postings) {
+  if (!postings || !postings.length) return null;
+  const open = postings.filter((p) => !p.END_DATE);
+  const pool = open.length ? open : postings;
+  const key = (p) => String((open.length ? p.START_DATE : p.END_DATE) || p.START_DATE || '');
+  return pool.reduce((best, p) => (key(p) > key(best) ? p : best));
+}
+
 // ── Adjacency & connection counts ───────────────────────────────────────────
 // adjacency: Map<teacherId, Array<{ other, degree, type, label, time, overlap, verified }>>
 export function buildAdjacency(colleagueships) {
@@ -173,6 +191,10 @@ export function buildAdjacency(colleagueships) {
       time: c.TIME_RELATION,
       overlap: c.OVERLAP_YEARS,
       verified: c.VERIFIED,
+      // Both people confirmed they know each other. It sits ALONGSIDE the degree
+      // and never alters it — degrees come from place and time alone.
+      acknowledged: !!c.ACKNOWLEDGED,
+      tagKeys: c.TAG_KEYS || [],
     };
     add(c.TEACHER_A_ID, c.TEACHER_B_ID, { other: c.TEACHER_B_ID, ...base });
     add(c.TEACHER_B_ID, c.TEACHER_A_ID, { other: c.TEACHER_A_ID, ...base });

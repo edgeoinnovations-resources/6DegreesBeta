@@ -39,14 +39,17 @@ export function teacherTypeahead(teachers, idx, onPick, { placeholder = 'Search 
 
   function render() {
     const q = input.value.trim().toLowerCase();
+    // Searching a formal first name has to find someone listed by the name they go
+    // by, so match GIVEN_NAME too: "Deanna" must find "Dee Milne".
     matches = !q ? teachers.slice(0, 30) : teachers.filter((t) =>
       t.FULL_NAME.toLowerCase().includes(q) ||
-      (t.SPECIALIZATION || '').toLowerCase().includes(q) ||
-      (t.NATIONALITY || '').toLowerCase().includes(q)
+      (t.GIVEN_NAME || '').toLowerCase().includes(q)
     ).slice(0, 30);
     results.innerHTML = '';
     matches.forEach((t, i) => {
-      const row = el('div', { html: `${t.FULL_NAME} <small>· ${t.SPECIALIZATION} · ${t.TEACHER_ID}</small>` });
+      const alias = t.GIVEN_NAME && t.PREFERRED_NAME && t.GIVEN_NAME !== t.PREFERRED_NAME
+        ? ` <small>· ${t.GIVEN_NAME}</small>` : '';
+      const row = el('div', { html: `${t.FULL_NAME}${alias}` });
       if (i === hl) row.classList.add('hl');
       row.addEventListener('mousedown', (e) => { e.preventDefault(); pick(t); });
       results.appendChild(row);

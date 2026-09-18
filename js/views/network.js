@@ -10,6 +10,7 @@
 import { el } from '../widgets.js';
 import {
   DEGREE_META, DEGREES, degreeColor, regionOf, regionColor, REGION_COLORS, roleCategory, ACCENT,
+  currentPosting,
 } from '../degrees.js';
 
 export const view = {
@@ -184,7 +185,7 @@ export const view = {
         .graphData({ nodes, links: links3d })
         .nodeId('id')
         .nodeLabel((n) => `<div style="font:12px -apple-system,sans-serif;padding:2px 4px;color:#fff;">
-            <b>${n.t.FULL_NAME}</b><br>${n.t.SPECIALIZATION} · ${n.t.NATIONALITY}<br>${counts.get(n.id) || 0} connections</div>`)
+            <b>${n.t.FULL_NAME}</b><br>${counts.get(n.id) || 0} connections</div>`)
         .nodeVal((n) => Math.max(1, sizeVal(n)))
         .nodeColor(nodeColorOf)
         .nodeOpacity(0.92)
@@ -307,10 +308,12 @@ export const view = {
 function homeCountry(t, idx) {
   const postings = idx.postingsByTeacher.get(t.TEACHER_ID) || [];
   if (!postings.length) return null;
-  const current = postings.find((p) => p.IS_CURRENT_POSITION === 'Yes') || postings[postings.length - 1];
-  return (idx.schoolById.get(current.SCHOOL_ID) || {}).COUNTRY || null;
+  const current = currentPosting(postings);
+  return current ? (idx.schoolById.get(current.SCHOOL_ID) || {}).COUNTRY || null : null;
 }
 
-// Specialization/nationality are blank on the seeded beta-group records, so join only
-// what's actually present rather than emitting orphan " · " separators.
-const meta = (t) => [t.SPECIALIZATION, t.NATIONALITY].filter(Boolean).join(' · ');
+// Nationality and subject were dropped on 18 Sep 2026. The formal first name is the
+// only extra identifying detail left, and only worth showing when someone goes by
+// something else.
+const meta = (t) => (t.GIVEN_NAME && t.PREFERRED_NAME && t.GIVEN_NAME !== t.PREFERRED_NAME
+  ? `${t.GIVEN_NAME} ${t.LAST_NAME}`.trim() : '');

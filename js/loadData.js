@@ -43,10 +43,13 @@ export async function loadData() {
   const teachers = (profilesRes.data || []).map((p) => ({
     TEACHER_ID: p.id,
     FULL_NAME: p.display_name || 'Former member',
-    FIRST_NAME: p.first_name || p.display_name || '',
+    // What to call someone: the name they go by, falling back to their first name.
+    FIRST_NAME: p.preferred_name || p.first_name || p.display_name || '',
     LAST_NAME: p.last_name || (p.last_initial ? `${p.last_initial}.` : ''),
-    NATIONALITY: p.nationality || '',
-    SPECIALIZATION: p.specialization || '',
+    // The formal first name, kept because that is what an old staff list will say.
+    // Only shown where it differs from what they go by.
+    GIVEN_NAME: p.first_name || '',
+    PREFERRED_NAME: p.preferred_name || '',
     YEARS_EXPERIENCE: null,          // derived below from postings
     STATUS: p.status,
     IS_GHOST: p.status === 'ghost',
