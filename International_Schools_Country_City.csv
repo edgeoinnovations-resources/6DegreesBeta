@@ -1,0 +1,2134 @@
+﻿ID,Country,City,School,City Confidence,Notes,Source Page
+1,Afghanistan,Kabul,International School Kabul,High,,f_pak
+2,Albania,Durres,Albanian College Durress,High,Source typo: Durress -> Durres,f_pak
+3,Albania,Tirana,Albanian College Tirana,High,,f_pak
+4,Albania,Tirana,Albanian International School,Medium,,f_pak
+5,Albania,Tirana,British School Tirana,High,,f_pak
+6,Albania,Tirana,Kings Tirana,High,,f_pak
+7,Albania,Tirana,Memorial International School Tirana,High,,f_pak
+8,Albania,Tirana,World Academy Tirana,High,,f_pak
+9,Algeria,Algiers,British Campus Algeria,Medium,,f_pak
+10,Algeria,Algiers,British School Algiers,High,,f_pak
+11,Angola,Luanda,American Schools Angola,Medium,,f_pak
+12,Angola,Luanda,Luanda International School,High,,f_pak
+13,Argentina,Buenos Aires,"Lincoln, The American International School",High,"Campus in La Lucila, Greater Buenos Aires",f_pak
+14,Argentina,Quilmes,St. George's College Quilmes,High,Greater Buenos Aires,f_pak
+15,Armenia,Yerevan,CIS Armenia International School,Medium,,f_pak
+16,Armenia,Yerevan,QSI International School of Yerevan,High,,f_pak
+17,Australia,Darwin,Essington School Darwin,High,,f_pak
+18,Australia,Perth,International School Perth,High,,f_pak
+19,Australia,Kilmore,Kilmore International School,High,Victoria,f_pak
+20,Austria,Vienna,Amadeus International School,High,,f_pak
+21,Austria,Vienna,American International School Vienna,High,,f_pak
+22,Austria,Vienna,Danube International School,High,,f_pak
+23,Austria,St. Gilgen,St. Gilgen International School,High,,f_pak
+24,Austria,Vienna,Vienna European School,High,,f_pak
+25,Austria,Vienna,Vienna International School,High,,f_pak
+26,Azerbaijan,Baku,Azerbaijan British College,Medium,,f_pak
+27,Azerbaijan,Baku,Baku International School,High,,f_pak
+28,Azerbaijan,Baku,Baku Modern School,High,,f_pak
+29,Azerbaijan,Baku,British School in Baku,High,,f_pak
+30,Azerbaijan,Baku,European Azerbaijan School,High,,f_pak
+31,Azerbaijan,Baku,International School Azerbaijan,High,,f_pak
+32,Azerbaijan,Baku,School No. 6 Baku,High,,f_pak
+33,Bahamas,Andros Town,AUTEC School,Medium,"AUTEC naval base, Andros Island",f_pak
+34,Bahamas,Freeport,Lucaya International School,High,Grand Bahama,f_pak
+35,Bahamas,Nassau,Lyford Cay International School,High,,f_pak
+36,Bahamas,Nassau,Queens College,High,,f_pak
+37,Bahamas,Nassau,St. Andrew's Nassau,High,,f_pak
+38,Bahrain,Manama,Abdul Rahman Kanoo International School,Medium,Salmabad area,f_pak
+39,Bahrain,Riffa,Al Hekma School,Medium,,f_pak
+40,Bahrain,Manama,Al Raja School,High,,f_pak
+41,Bahrain,Manama,Al Salam School,Low,,f_pak
+42,Bahrain,Riffa,American School Bahrain,Medium,,f_pak
+43,Bahrain,Isa Town,Bahrain Bayan School,High,,f_pak
+44,Bahrain,Manama,Beacon Private School,Medium,,f_pak
+45,Bahrain,Hamala,British School Bahrain,Medium,"Nord Anglia; campus in Hamala, near Manama",f_pak
+46,Bahrain,Manama,Capital School Bahrain,Medium,Bu Quwah,f_pak
+47,Bahrain,Manama,EtonHouse Bahrain,Low,,f_pak
+48,Bahrain,Isa Town,Ibn Khuldoon National School,High,,f_pak
+49,Bahrain,Manama,Modern Knowledge School,Medium,Juffair,f_pak
+50,Bahrain,Manama,Multinational School Bahrain,Medium,Adliya,f_pak
+51,Bahrain,Manama,Nadeen School Bahrain,Medium,Moved to Dilmunia Island (Muharraq),f_pak
+52,Bahrain,Riffa,Naseem International School,Medium,,f_pak
+53,Bahrain,Riffa,Riffa Views International School,High,,f_pak
+54,Bahrain,Saar,St. Christopher's School,Medium,Two campuses: Saar and Isa Town,f_pak
+55,Bahrain,Manama,Talent International & The Infant School,Medium,Salihiya,f_pak
+56,Bangladesh,Dhaka,American International School Dhaka,High,,f_pak
+57,Bangladesh,Dhaka,Australian International School,Medium,,f_pak
+58,Bangladesh,Dhaka,Canadian International School Bangladesh,High,,f_pak
+59,Bangladesh,Dhaka,Canadian Trillinium School Dhaka,High,,f_pak
+60,Bangladesh,Dhaka,Hazrat Shah Taj Uddin Qureshi R High,Low,Could not identify school; capital given,f_pak
+61,Bangladesh,Dhaka,International School Dhaka,High,,f_pak
+62,Bangladesh,Dhaka,"Mallick Preparatory School, Bangladesh",Medium,,f_pak
+63,Bangladesh,Gazipur,Pledge Harbor School and Sports Academy,Medium,Outside Dhaka,f_pak
+64,Bangladesh,Dhaka,Smart Innovations School,Low,,f_pak
+65,Bangladesh,Dhaka,The Laurels Dhaka,High,,f_pak
+66,Barbados,St. John,The Codrington School,Medium,St. John parish; nearest city Bridgetown,f_pak
+67,Belarus,Minsk,QSI International School of Minsk,High,,f_pak
+68,Belgium,Antwerp,Antwerp International School,High,,f_pak
+69,Belgium,Brussels,Bogaerts International School,High,Uccle,f_pak
+70,Belgium,Tervuren,British School of Brussels,High,Near Brussels,f_pak
+71,Belgium,Brussels,International School Brussels,High,,f_pak
+72,Belgium,Brussels,Montgomery International School Brussels,High,,f_pak
+73,Belgium,Waterloo,St John's International School,High,,f_pak
+74,Bermuda,Hamilton,Saltus Grammar School,High,,f_pak
+75,Bermuda,Hamilton,Somersfield Academy,Medium,Devonshire parish,f_pak
+76,Bolivia,La Paz,American Cooperative School La Paz,High,,f_pak
+77,Bolivia,Cochabamba,American International School Bolivia,High,,f_pak
+78,Bolivia,Cochabamba,Cochabamba Cooperative School,High,,f_pak
+79,Bolivia,Santa Cruz de la Sierra,Santa Cruz Cooperative School,High,,f_pak
+80,Bolivia,Santa Cruz de la Sierra,Santa Cruz International School,High,,f_pak
+81,Botswana,Gaborone,Enko Botho Campus,High,,f_pak
+82,Botswana,Gaborone,Westwood International School,High,,f_pak
+83,Brazil,Belo Horizonte,American School of Belo Horizonte-EABH,High,Campus in Nova Lima,f_pak
+84,Brazil,Brasilia,American School of Brasilia,High,,f_pak
+85,Brazil,Sao Paulo,British College Brazil,High,,f_pak
+86,Brazil,Brasilia,British School Brasilia,High,,f_pak
+87,Brazil,Rio de Janeiro,British School of Rio de Janeiro,High,,f_pak
+88,Brazil,Sao Paulo,Chapel School,High,,f_pak
+89,Brazil,Campinas,Escola Americana de Campinas,High,,f_pak
+90,Brazil,Recife,Escola Americana de Recife,High,,f_pak
+91,Brazil,Rio de Janeiro,Escola Americana do Rio de Janeiro,High,,f_pak
+92,Brazil,Sao Paulo,Escola Beit Yaacov,High,,f_pak
+93,Brazil,Sao Paulo,Graded School Sao Paulo,High,,f_pak
+94,Brazil,Curitiba,International School Curitiba,High,,f_pak
+95,Brazil,Macae,International School of Macae,High,,f_pak
+96,Brazil,Salvador,Pan American School of Bahia in Salvador,High,,f_pak
+97,Brazil,Porto Alegre,Pan American School of Porto Alegre,High,,f_pak
+98,Brazil,Rio de Janeiro,Rio International School,High,,f_pak
+99,Brazil,Brasilia,School of the Nations Brasilia,High,,f_pak
+100,Brazil,Sao Paulo,St. Francis College,High,,f_pak
+101,Brazil,Sao Paulo,St. Nicholas School Sao Paulo,High,,f_pak
+102,Brazil,Sao Paulo,St. Paul's School,High,,f_pak
+103,Brazil,Sao Paulo,WAY American School,High,,f_pak
+104,British Virgin Islands,Road Town,Cedar International School,High,Tortola,f_pak
+105,Brunei Darussalam,Bandar Seri Begawan,CfBT Project,Low,Not a school: CfBT teacher-supply project for Brunei government schools,f_pak
+106,Brunei Darussalam,Bandar Seri Begawan,International School of Brunei,High,,f_pak
+107,Brunei Darussalam,Bandar Seri Begawan,Jerudong International School,High,Campus at Jerudong,f_pak
+108,Brunei Darussalam,Bandar Seri Begawan,Miftah An-Nur Islamic International School,Low,,f_pak
+109,Brunei Darussalam,Seria,Panaga School,High,Shell camp at Panaga,f_pak
+110,Bulgaria,Sofia,American College of Sofia,High,,f_pak
+111,Bulgaria,Sofia,Anglo American School Sofia,High,,f_pak
+112,Bulgaria,Sofia,British School Sofia Bulgaria,High,,f_pak
+113,Bulgaria,Sofia,St. George International School,High,,f_pak
+114,Burkina Faso,Ouagadougou,International School of Ouagadougou,High,,f_pak
+115,Cambodia,Phnom Penh,Asian Hope International School,High,,f_pak
+116,Cambodia,Phnom Penh,Australian International School Phnom Penh,High,,f_pak
+117,Cambodia,Phnom Penh,Cambodia International Academy,Medium,,f_pak
+118,Cambodia,Phnom Penh,Canadian International School Cambodia,High,,f_pak
+119,Cambodia,Phnom Penh,CIA First International School,High,,f_pak
+120,Cambodia,Phnom Penh,East West International School,High,,f_pak
+121,Cambodia,Phnom Penh,iCAN British International School (IBIS),High,,f_pak
+122,Cambodia,Phnom Penh,International School Phnom Penh (ISPP),High,,f_pak
+123,Cambodia,Siem Reap,Jay Pritzker Academy,High,,f_pak
+124,Cambodia,Phnom Penh,Learning Jungle International School,Medium,,f_pak
+125,Cambodia,Phnom Penh,Logos International School,High,,f_pak
+126,Cambodia,Phnom Penh,New Gateway International School,Medium,,f_pak
+127,Cambodia,Phnom Penh,Northbridge International School,High,,f_pak
+128,Cambodia,Phnom Penh,Singapore Cambodia International Academy,Medium,,f_pak
+129,Cambodia,Phnom Penh,Southbridge International School,Medium,,f_pak
+130,Cambodia,Phnom Penh,Treehouse International School,Medium,,f_pak
+131,Cambodia,Phnom Penh,Westview International School,Medium,,f_pak
+132,Cambodia,Phnom Penh,Zaman International School,High,,f_pak
+133,Cameroon,Douala,American School Douala,High,,f_pak
+134,Cameroon,Yaounde,American School of Yaounde,High,,f_pak
+135,Cameroon,Douala,Enko La Gaiete International School,High,,f_pak
+136,Cameroon,Douala,The Bridge International School,High,,f_pak
+137,Canada,Ottawa,Academie de la Capitale,High,,f_pak
+138,Canada,Calgary,Banbury Crossroads School,High,,f_pak
+139,Canada,Summerland,Unisus School,High,British Columbia,f_pak
+140,Cayman Island,George Town,Cayman International School,High,Camana Bay,f_pak
+141,Cayman Island,George Town,Cayman Prep & High School,High,,f_pak
+142,Cayman Island,George Town,St Ignatius Catholic School,High,,f_pak
+143,Cayman Island,George Town,Triple C School,High,,f_pak
+144,Chile,Antofagasta,Antofagasta International School,High,,f_pak
+145,Chile,Santiago,Craighouse School,High,,f_pak
+146,Chile,Santiago,Grange School Santiago,High,,f_pak
+147,Chile,Santiago,Nido de Aguilar,High,Source typo: Nido de Aguilas,f_pak
+148,Chile,Santiago,Santiago College,High,,f_pak
+149,China,Beijing,3e International School,High,,f_pak
+150,China,Ningbo,Access International Academy Ningbo,High,,f_pak
+151,China,Tianjin,Admiral Farragut Academy Tianjin,High,,f_pak
+152,China,Beijing,Affiliated High School Peking University,High,,f_pak
+153,China,Guangzhou,Affiliated High School South China Normal University,High,,f_pak
+154,China,Guangzhou,Alcanta International College,Medium,Panyu,f_pak
+155,China,Guangzhou,American International School Guangzhou,High,,f_pak
+156,China,Shanghai,American Lee Academy Shanghai,High,,f_pak
+157,China,Hefei,Anhui International Studies University,Medium,,f_pak
+158,China,Shenzhen,Avenues Shenzhen,High,,f_pak
+159,China,Ningbo,Barstow School Knowledge Link Ningbo,High,,f_pak
+160,China,Chengdu,BASIS International & Bilingual Schools Chengdu,High,,f_pak
+161,China,Wuhan,BASIS International & Bilingual School Wuhan,High,,f_pak
+162,China,Guangzhou,BASIS International School Guangzhou,High,,f_pak
+163,China,Hangzhou,BASIS International School Hangzhou,High,,f_pak
+164,China,Nanjing,BASIS International School Nanjing,High,,f_pak
+165,China,Huizhou,BASIS International School Park Lane Harbour,High,,f_pak
+166,China,Shenzhen,BASIS International School Shenzhen,High,,f_pak
+167,China,Beijing,Beanstalk International Bilingual School,High,,f_pak
+168,China,Beijing,Beijing Changping Xinxuedao International School,High,,f_pak
+169,China,Beijing,Beijing City International School,High,,f_pak
+170,China,Beijing,Beijing Huijia Private School,High,,f_pak
+171,China,Beijing,Beijing International Bilingual Academy,High,,f_pak
+172,China,Guiyang,Beijing International Bilingual Academy – Guiyang,High,,f_pak
+173,China,Beijing,Beijing International School BISS,High,,f_pak
+174,China,Beijing,Beijing National Day School,High,,f_pak
+175,China,Yangzhou,Beijing New Oriental Foreign Language School Yangzhou,High,,f_pak
+176,China,Beijing,Beijing No. 80 High International Dept.,High,,f_pak
+177,China,Beijing,Beijing Tongzhou Shuren,High,,f_pak
+178,China,Beijing,Beijing World Youth Academy,High,,f_pak
+179,China,Beijing,BFSU International Schools,Medium,Group; Beijing given,f_pak
+180,China,Wuxi,Big Bridge Academy Wuxi,High,,f_pak
+181,China,Beijing,BO AI International High School Programme,Low,Could not identify; capital given,f_pak
+182,China,Wuxi,Boston International School Wuxi,High,,f_pak
+183,China,Guangzhou,Britannia International School,Medium,Baiyun District,f_pak
+184,China,Shanghai,Britannica International School Shanghai,High,,f_pak
+185,China,Foshan,Bright Scholar Education Group,Medium,Group with many campuses; HQ Foshan (Shunde),f_pak
+186,China,Shanghai,British International School Shanghai Puxi,High,,f_pak
+187,China,Beijing,British School Beijing Sanlitun,High,,f_pak
+188,China,Beijing,British School Beijing Shunyi Campus,High,,f_pak
+189,China,Guangzhou,British School Guangzhou,High,,f_pak
+190,China,Nanjing,British School of Nanjing,High,,f_pak
+191,China,Shenzhen,Bromsgrove School Missions Hills,High,Source typo: Mission Hills,f_pak
+192,China,Shenzhen,Buena Vista Concordia International School,High,,f_pak
+193,China,Beijing,Cambridge International Centre,Low,Could not identify; capital given,f_pak
+194,China,Daqing,Cambridge Inter'l Centre DaQing No.1,High,,f_pak
+195,China,Beijing,Cambridge International Centre Beijing,High,,f_pak
+196,China,Beijing,Canadian International School Beijing,High,,f_pak
+197,China,Nanning,Canadian International School Guangxi Gaojie,Medium,,f_pak
+198,China,Guangzhou,Canadian International School Guangzhou,High,,f_pak
+199,China,Hefei,Canadian International School Hefei,High,,f_pak
+200,China,Kunshan,Canadian International School Kunshan,High,,f_pak
+201,China,Kunming,Canadian Kunming Number 10 Secondary,High,,f_pak
+202,China,Yantai,Canadian-Sino Education Exchange Centre Yantai,High,,f_pak
+203,China,Changchun,Changchun American International School,High,,f_pak
+204,China,Changshu,Changshu International School,High,,f_pak
+205,China,Changzhou,Changzhou Trina International School,High,,f_pak
+206,China,Beijing,Chaoyang Kaiwen Academy,High,,f_pak
+207,China,Chengdu,Chengdu Meishi International School,High,,f_pak
+208,China,Chongqing,Chongqing Bachuan International School,High,,f_pak
+209,China,Chongqing,Chongqing DEPU Foreign Language School,High,,f_pak
+210,China,Guangzhou,Clifford School of Panyu,High,Panyu,f_pak
+211,China,Shanghai,Concordia International School Shanghai,High,,f_pak
+212,China,Qingdao,Confucius International School,Medium,,f_pak
+213,China,Dalian,Dalian American International School,High,,f_pak
+214,China,Beijing,Daystar Academy,High,,f_pak
+215,China,Shanghai,Dehong Chinese International School,Medium,Group; also Beijing and Xi'an campuses,f_pak
+216,China,Shanghai,Dipont Education,Medium,Education group; HQ Shanghai,f_pak
+217,China,Kunshan,Dipont Huayao Collegiate Kunshan,High,,f_pak
+218,China,Shanghai,DTD Kindergarten Jingan,High,,f_pak
+219,China,Beijing,Dulwich College Beijing,High,,f_pak
+220,China,Shanghai,Dulwich College Shanghai,High,,f_pak
+221,China,Suzhou,Dulwich College Suzhou,High,,f_pak
+222,China,Zhuhai,Dulwich International High School Programme Hengqin,High,Hengqin,f_pak
+223,China,Suzhou,Dulwich International High School Programme Suzhou,High,,f_pak
+224,China,Shanghai,ECNU Affiliated Bilingual School,High,,f_pak
+225,China,Chengdu,EtonHouse International Preschool Chengdu,High,,f_pak
+226,China,Nanjing,EtonHouse International School Nanjing,High,,f_pak
+227,China,Suzhou,EtonHouse International School Suzhou,High,,f_pak
+228,China,Wuxi,EtonHouse International School Wuxi,High,,f_pak
+229,China,Shanghai,Fudan International School,High,,f_pak
+230,China,Shenzhen,Green Oasis School,High,,f_pak
+231,China,Shantou,GTIIT-Affiliated International School,High,,f_pak
+232,China,Chengdu,Guang Ya IB School,Medium,Dujiangyan,f_pak
+233,China,Foshan,Guangdong Country Garden School,High,Shunde,f_pak
+234,China,Guangzhou,Guangzhou Experimental School,High,,f_pak
+235,China,Guangzhou,Guangzhou Nanfang International School,High,,f_pak
+236,China,Guangzhou,Guangzhou SCA School,High,,f_pak
+237,China,Guangzhou,Guangzhou ULink International School,High,,f_pak
+238,China,Guiyang,Guiyang Concord College Sino-Canada,High,,f_pak
+239,China,Tianjin,Haileybury International College,Low,Could not identify; possibly same as Haileybury Tianjin,f_pak
+240,China,Tianjin,Haileybury International School Tianjin,High,,f_pak
+241,China,Wenchang,Hainan College of Foreign Studies,Medium,Hainan,f_pak
+242,China,Hangzhou,Hangzhou #14 Secondary School,High,,f_pak
+243,China,Hangzhou,Hangzhou Dipont School of Arts and Science,High,,f_pak
+244,China,Hangzhou,Hangzhou International School,High,,f_pak
+245,China,Hangzhou,Hangzhou Victoria Kindergarten,High,,f_pak
+246,China,Harbin,Harbin School #9,High,,f_pak
+247,China,Tianjin,Harbor View Tianjin,High,,f_pak
+248,China,Beijing,Harrow Beijing,High,,f_pak
+249,China,Chongqing,Harrow Innovation Leadership Academy Chongqing,High,,f_pak
+250,China,Haikou,Harrow Innovation Leadership Academy Haikou,High,,f_pak
+251,China,Nanning,Harrow Innovation Leadership Academy Nanning,High,,f_pak
+252,China,Guangzhou,Harrow International School Guangzhou,High,,f_pak
+253,China,Shenzhen,Harrow International School Shenzhen Qianhai,High,,f_pak
+254,China,Beijing,HD Schools Beijing,High,,f_pak
+255,China,Ningbo,HD Schools Ningbo,High,,f_pak
+256,China,Hefei,Hefei Thomas School,High,,f_pak
+257,China,Beijing,High School Affiliated to Beijing Normal University,High,,f_pak
+258,China,Tianjin,HIKSVS International School,Medium,,f_pak
+259,China,Shanghai,Hong Qiao International School,High,,f_pak
+260,China,Qingdao,Hongwen School Qingdao,High,,f_pak
+261,China,Shenzhen,Houde Academy Shenzhen,High,,f_pak
+262,China,Beijing,Hsuan Huai Institute,Low,Could not identify; capital given,f_pak
+263,China,Ningbo,Huamao International School,High,,f_pak
+264,China,Shenzhen,Huitong School,Medium,Nanshan,f_pak
+265,China,Beijing,Innova Academy Beijing,High,,f_pak
+266,China,Beijing,Interlingua Language Center Dayang,Low,Could not identify location; capital given,f_pak
+267,China,Beijing,International Montessori School Beijing,High,,f_pak
+268,China,Beijing,International School Beijing-Shunyi,High,,f_pak
+269,China,Dongguan,International School Dongguan,High,,f_pak
+270,China,Nanjing,International School Nanjing Yuhuatai,High,,f_pak
+271,China,Shenzhen,International School Nanshan Shenzhen,High,,f_pak
+272,China,Tianjin,International School Tianjin,High,,f_pak
+273,China,Qingdao,International School Qingdao,High,,f_pak
+274,China,Wuxi,International School Wuxi,High,,f_pak
+275,China,Guangzhou,ISA Liwan International School,High,,f_pak
+276,China,Guangzhou,ISA Science City International School Guangzhou,High,,f_pak
+277,China,Guangzhou,ISA Tianhe International School,High,,f_pak
+278,China,Wuhan,ISA Wuhan School,High,,f_pak
+279,China,Jiaxing,Jiaxing Senior High School,High,,f_pak
+280,China,Jinan,Jinan Foreign Language School International Center,High,,f_pak
+281,China,Jinan,Jinan Thomas School,High,,f_pak
+282,China,Nanchang,JKFZ Cambridge International School,Medium,,f_pak
+283,China,Beijing,JOY EL Academy,Medium,Chaoyang,f_pak
+284,China,Beijing,Kaiwen Academy Haidian,High,,f_pak
+285,China,Kunshan,Kang Chiao International School,Medium,East China campus; HQ Taipei,f_pak
+286,China,Qingdao,Kaplan Qingdao No 2 Middle School,High,,f_pak
+287,China,Beijing,Keystone Academy,High,,f_pak
+288,China,Wuxi,King's College International School Wuxi,High,,f_pak
+289,China,Shenzhen,Kings School Shenzhen International,High,,f_pak
+290,China,Chengdu,KL International School Chengdu Bashu,High,,f_pak
+291,China,Qingdao,Korean International School in Qingdao,High,,f_pak
+292,China,Foshan,Lady Eleanor Holles International School Foshan,High,,f_pak
+293,China,Chengdu,Leman International School Chengdu,High,,f_pak
+294,China,Beijing,Limai Chinese American (International) School,High,,f_pak
+295,China,Shanghai,Little Urban Center,Medium,Preschool group,f_pak
+296,China,Macau,Macau Sam Yuk Middle School,High,Listed under China; located in Macau SAR,f_pak
+297,China,Beijing,Majestic International School,Low,Could not identify; capital given,f_pak
+298,China,Chengdu,Malvern College Chengdu,High,,f_pak
+299,China,Qingdao,Malvern College Qingdao,High,,f_pak
+300,China,Dalian,Maple Leaf Educational Systems – Foreign National School Dalian,High,,f_pak
+301,China,Dalian,Maple Leaf Educational Systems – International School Dalian,High,,f_pak
+302,China,Tianjin,Maple Leaf Educational Systems – Maple Leaf School Tianjin,High,,f_pak
+303,China,Ordos,Maple Leaf Educational Systems – Maple Leaf International School Ordos,High,,f_pak
+304,China,Wuhan,Maple Leaf Educational Systems – Maple Leaf International School Wuhan,High,,f_pak
+305,China,Qingdao,Menaul School Qingdao,High,,f_pak
+306,China,Shenzhen,Merchiston International School,High,,f_pak
+307,China,Beijing,Moonshot Academy,High,,f_pak
+308,China,Suzhou,Mountain Kingston Bilingual School,Medium,,f_pak
+309,China,Jinhua,Myddelton College China,Medium,,f_pak
+310,China,Nanjing,Nanjing Ansheng (Thomas) School,High,,f_pak
+311,China,Nanjing,Nanjing Foreign Language School Xianlin,High,,f_pak
+312,China,Nanjing,Nanjing International School,High,,f_pak
+313,China,Guangzhou,Nansha College Preparatory Academy,High,Nansha,f_pak
+314,China,Guangzhou,Nansha Chinese International College,High,Nansha,f_pak
+315,China,Nantong,Nantong Stalford International School,High,,f_pak
+316,China,Ningbo,Ningbo Foreign Language School,High,,f_pak
+317,China,Ningbo,Ningbo British International School,High,,f_pak
+318,China,Ningbo,Ningbo Zhicheng School International,High,,f_pak
+319,China,Shanghai,Nord Anglia Chinese International School Shanghai,High,,f_pak
+320,China,Guangzhou,Nord Anglia Guangzhou Panyu,High,Panyu,f_pak
+321,China,Shanghai,Nord Anglia International School Shanghai Pudong,High,,f_pak
+322,China,Beijing,Nord Anglia School Beijing Fangshan,High,,f_pak
+323,China,Nantong,Nord Anglia School Nantong,High,,f_pak
+324,China,Shanghai,North American International School,Medium,NAIS Shanghai (also Guangzhou/Wuxi branches),f_pak
+325,China,Wenzhou,Oujing International Kindergarten,Low,Zhejiang province; Wenzhou (Oujiang) assumed,f_pak
+326,China,Qingdao,Okma International Academy Qingdao,High,,f_pak
+327,China,Hangzhou,Olive Tree International Academy,High,"Olive Tree International Academy BFSU, Hangzhou",f_pak
+328,China,Suzhou,Overseas Chinese Academy Chiway Suzhou,High,,f_pak
+329,China,Wuxi,Overseas Chinese Academy Chiway Wuxi,High,,f_pak
+330,China,Dongguan,OX TLC International School,High,,f_pak
+331,China,Changzhou,Oxford International College,Medium,Oxford International College of Changzhou,f_pak
+332,China,Qingdao,Pegasus California School,Medium,,f_pak
+333,China,Jiaxing,Peking University Experimental School Jiaxing,High,,f_pak
+334,China,Suqian,Peking University Experimental School Suqian,High,,f_pak
+335,China,Guangzhou,Phoenix City International School,Medium,Zengcheng district,f_pak
+336,China,Qingdao,Qingdao#1 International School Shandong,High,,f_pak
+337,China,Qingdao,Qingdao Academy China,High,,f_pak
+338,China,Qingdao,Qingdao Amerasia International School,High,,f_pak
+339,China,Qingdao,Qingdao International Foreign Language School,High,,f_pak
+340,China,Chengdu,QSI International School Chengdu,High,,f_pak
+341,China,Dongguan,QSI International School Dongguan,High,,f_pak
+342,China,Shenzhen,QSI International School Shekou,High,Shekou district,f_pak
+343,China,Shenzhen,QSI International School Shenzhen (Futian),High,,f_pak
+344,China,Shenzhen,RDF International School,Medium,"RDF International School, Shenzhen",f_pak
+345,China,Beijing,RDFZ Xishan School,High,,f_pak
+346,China,Nanjing,Reigate Grammar School,Medium,"RGS has Nanjing, Zhangjiagang and Shenzhen campuses; Nanjing given",f_pak
+347,China,Beijing,Renda Fuzhong,High,High School Affiliated to Renmin University of China,f_pak
+348,China,Macau,School of the Nations Macau,High,,f_pak
+349,China,Beijing,School Year Abroad,Medium,"SYA China programme, Beijing",f_pak
+350,China,Fuzhou,Sedbergh School,Medium,Rong Qiao Sedbergh School Fuzhou,f_pak
+351,China,Shanghai,Shanghai American School Puxi & Pudong,High,,f_pak
+352,China,Shanghai,Shanghai Community International,High,,f_pak
+353,China,Shanghai,Shanghai Concord Bilingual School,High,,f_pak
+354,China,Shanghai,Shanghai DTD Academy,High,,f_pak
+355,China,Shanghai,Shanghai Huaer Collegiate School,High,,f_pak
+356,China,Shanghai,Shanghai Jincai International School,High,,f_pak
+357,China,Shanghai,Shanghai Livingston American School,High,,f_pak
+358,China,Shanghai,Shanghai Nanyang Model Private High School,High,,f_pak
+359,China,Shanghai,Shanghai Qibao Dwight High School,High,,f_pak
+360,China,Shanghai,Shanghai Rego International School,High,,f_pak
+361,China,Shanghai,Shanghai Shangde Experimental School,High,,f_pak
+362,China,Shanghai,Shanghai Singapore International,High,,f_pak
+363,China,Shanghai,Shanghai United International School,High,,f_pak
+364,China,Shenzhen,Shekou International School,High,,f_pak
+365,China,Shenzhen,Shen Wai International School,High,,f_pak
+366,China,Macau,Sheng Kung Hui Primary School Macau,High,,f_pak
+367,China,Shenyang,Shenyang Transformation International School,High,,f_pak
+368,China,Shenyang,Shenyang Pacific International School,High,,f_pak
+369,China,Shenyang,Shenyang Pacific International Academy,High,,f_pak
+370,China,Shenzhen,Shenzhen American International School,High,,f_pak
+371,China,Shenzhen,Shenzhen College of Int'l Education,High,,f_pak
+372,China,Shenzhen,Shenzhen Yaohua Experimental School,High,,f_pak
+373,China,Foshan,Shimen Middle School,Medium,"Nanhai district, Foshan",f_pak
+374,China,Chengdu,Shude AP Center Chengdu,High,,f_pak
+375,China,Chengdu,Shude International Foreign Language Sch.,High,,f_pak
+376,China,Beijing,Shuren-Ribet Private School Beijing,High,,f_pak
+377,China,Zhengzhou,Sias International School,Medium,"Xinzheng, Zhengzhou",f_pak
+378,China,Beijing,Sino Bright School,Medium,,f_pak
+379,China,Hefei,Sino-Canada Concord School Hefei High Tech Zone,High,,f_pak
+380,China,Suzhou,Sino Canada High School,Medium,"Wujiang district, Suzhou",f_pak
+381,China,Shanghai,SMIC Private School Shanghai,High,,f_pak
+382,China,Qingdao,Southlands School Qingdao,High,,f_pak
+383,China,Beijing,Springboard International Bilingual School,Medium,Shunyi district,f_pak
+384,China,Xi'an,SSFBC OnCourse Schools,Medium,SSFBC = High School Affiliated to Shaanxi Normal University,f_pak
+385,China,Suzhou,Suzhou Industrial Park Foreign Language School,High,,f_pak
+386,China,Suzhou,Suzhou International Academy BFSU,High,,f_pak
+387,China,Suzhou,Suzhou Singapore International School,High,,f_pak
+388,China,Tianjin,TEDA International School,High,,f_pak
+389,China,Macau,The International School Macao,High,,f_pak
+390,China,Sanya,The International School Sanya,High,,f_pak
+391,China,Shanghai,Tianjiabing International School,Low,Likely Shanghai Tianjiabing HS international dept; several Tin Ka Ping schools exist,f_pak
+392,China,Tianjin,Tianjin Experimental High School,High,,f_pak
+393,China,Tianjin,Tianjin Fayao High School,High,,f_pak
+394,China,Tianjin,Tianjin International School,High,,f_pak
+395,China,Tianjin,Tianjin Rego International School,High,,f_pak
+396,China,Nanjing,Times College,Medium,"Times College, Nanjing (IB)",f_pak
+397,China,Guilin,Treville Foreign Language School,Low,Treville language school found in Guilin; uncertain,f_pak
+398,China,Beijing,Tsinghua High School International,High,,f_pak
+399,China,Beijing,Tsinghua International School,High,,f_pak
+400,China,Beijing,Tsinghua International School Daoxiang Lake,High,,f_pak
+401,China,Dongguan,Tsinglan School,High,Songshan Lake,f_pak
+402,China,Guangzhou,U Link College,Medium,ULink College of Guangzhou,f_pak
+403,China,Suzhou,Ul Link College of Suzhou Industrial Park,High,,f_pak
+404,China,Changshu,United World College Changshu,High,,f_pak
+405,China,Guangzhou,Utahloy International School Guangzhou,High,,f_pak
+406,China,Guangzhou,Utahloy International Zengcheng,High,Zengcheng district,f_pak
+407,China,Beijing,Uxuan Education and Technologies,Low,"Company, not a school; city unknown",f_pak
+408,China,Shanghai,Vanke Bilingual School Minhang,High,Minhang district,f_pak
+409,China,Shenzhen,Vanke Meisha Academy,High,,f_pak
+410,China,Shanghai,Vanke School Pudong,High,,f_pak
+411,China,Shanghai,Vermont Int'l Acad. China / USA,Medium,,f_pak
+412,China,Hangzhou,Wahaha Bilingual School Hangzhou,High,,f_pak
+413,China,Shanghai,Wellington College International,Medium,"Group with Shanghai, Tianjin, Hangzhou campuses; Shanghai given (Tianjin listed separately)",f_pak
+414,China,Tianjin,Wellington College International Tianjin,High,,f_pak
+415,China,Beijing,Western Academy Beijing,High,,f_pak
+416,China,Shanghai,Western International School Shanghai,High,,f_pak
+417,China,Wuhan,Wuhan Ulink College of China Optics Valley,High,,f_pak
+418,China,Changzhou,Wycombe Abbey International School,High,,f_pak
+419,China,Xi'an,Xi'an Hanova International School,High,,f_pak
+420,China,Xi'an,Xi'an Hi-Tech International School,High,,f_pak
+421,China,Xi'an,Xi'an Jiao Tong Affiliated School,High,,f_pak
+422,China,Xi'an,Xi'an Liangjiatan International School,High,,f_pak
+423,China,Xiamen,Xiamen International School,High,,f_pak
+424,China,Hefei,Xinhua Academy,Medium,Hefei Xinhua Academy,f_pak
+425,China,Shanghai,Xiwai International School,High,Songjiang district,f_pak
+426,China,Beijing,Yang Guang Qing School Beijing,High,,f_pak
+427,China,Beijing,Yew Chung International Beijing,High,,f_pak
+428,China,Chongqing,Yew Chung International School Chongqing,High,,f_pak
+429,China,Qingdao,Yew Chung International School Qingdao,High,,f_pak
+430,China,Shanghai,Yew Chung International School Shanghai,High,,f_pak
+431,China,Guangzhou,Yew Wah International Education School Guangzhou,High,,f_pak
+432,China,Shanghai,Yew Wah International Education School Shanghai Gubei,High,,f_pak
+433,China,Shanghai,Yew Wah International Education School Shanghai Lingang,High,,f_pak
+434,China,Yantai,Yew Wah International Education School Yantai,High,,f_pak
+435,China,Yichang,Yichang International School,High,,f_pak
+436,China,Guangzhou,Yinghao College,Medium,Huadu district,f_pak
+437,China,Haikou,Yingya St. Peter's School Hainan,Medium,"Hainan Yingya St Peter's School, Haikou",f_pak
+438,China,Shanghai,Yk Pao School,High,,f_pak
+439,China,Beijing,Yuxin International Curriculum Centre,Low,Beijing Yuxin School assumed,f_pak
+440,China,Weihai,Zhongshi Korean International School,High,,f_pak
+441,China,Zhuhai,Zhuhai International School,High,,f_pak
+442,Colombia,Bogota,AUSCOM – SENA,Low,SENA is a national training body; location unclear,f_pak
+443,Colombia,Barranquilla,British International School (Britanico),Medium,Colegio Britanico Internacional de Barranquilla assumed,f_pak
+444,Colombia,Albania,Colegio Albania,Medium,"Albania, La Guajira (Cerrejon mine town)",f_pak
+445,Colombia,Bogota,Colegio Anglo Colombiano Bogota,High,,f_pak
+446,Colombia,Cali,Colegio Bolivar,High,,f_pak
+447,Colombia,Cartagena,Colegio Britanico Cartagena,High,,f_pak
+448,Colombia,Medellin,Colegio Canadiense,Medium,"La Estrella, Medellin metro",f_pak
+449,Colombia,Cali,Colegio Colombo Britanico,High,,f_pak
+450,Colombia,Bogota,Colegio de Ingleterra – The English School,High,Name typo: Inglaterra,f_pak
+451,Colombia,Bogota,Colegio Gran Bretaña,High,,f_pak
+452,Colombia,Manizales,Colegio Granadino Manizales,High,,f_pak
+453,Colombia,Cartagena,Colegio Jorge Washington Cartagena,High,,f_pak
+454,Colombia,Barranquilla,Colegio Karl C. Parrish,High,,f_pak
+455,Colombia,Bogota,Colegio Los Nogales Bogota,High,,f_pak
+456,Colombia,Bogota,Colegio Nueva Granada Bogota,High,,f_pak
+457,Colombia,Bucaramanga,Colegio Panamericano,High,Floridablanca,f_pak
+458,Colombia,Bogota,Colegio Victoria (The Victoria School),Medium,,f_pak
+459,Colombia,Medellin,Columbus School Medellin,High,,f_pak
+460,Colombia,Bogota,Gimnasio Fontana,High,,f_pak
+461,Colombia,Armenia,Gimnasio Ingles Armenia,High,,f_pak
+462,Colombia,Valledupar,La Sierra International School,Medium,,f_pak
+463,Colombia,Pereira,Liceo Ingles,Medium,,f_pak
+464,Colombia,Bogota,Montessori British School,Medium,,f_pak
+465,"Congo, Democratic Republic",Lubumbashi,International School Lubumbashi,High,,f_pak
+466,"Congo, Democratic Republic",Kinshasa,The American School of Kinshasa,High,,f_pak
+467,"Congo, Republic of",Brazzaville,American International School Brazzaville,High,,f_pak
+468,"Congo, Republic of",Pointe-Noire,International School Pointe-Noire,High,,f_pak
+469,Costa Rica,San Jose,American International School,Medium,"Cariari, Heredia (San Jose metro)",f_pak
+470,Costa Rica,San Jose,Blue Valley School,Medium,Escazu,f_pak
+471,Costa Rica,San Jose,British School,Medium,,f_pak
+472,Costa Rica,Cobano,Centro Educativo Futuro Verde,Medium,Nicoya Peninsula,f_pak
+473,Costa Rica,San Jose,Country Day School,Medium,Escazu; also Guanacaste campus,f_pak
+474,Costa Rica,Nosara,Del Mar Academy,Medium,,f_pak
+475,Costa Rica,San Jose,Golden Valley School,Medium,Heredia,f_pak
+476,Costa Rica,Tilaran,Lakeside International School,Low,Nuevo Arenal,f_pak
+477,Costa Rica,San Jose,Lincoln School,High,,f_pak
+478,Costa Rica,San Jose,Marian Baker School,High,,f_pak
+479,Costa Rica,San Jose,Pan-American School,Medium,Belen,f_pak
+480,Costa Rica,San Jose,United World College Costa Rica,Medium,Santa Ana,f_pak
+481,Cote D'Ivoire,Abidjan,International Community School Abidjan,High,,f_pak
+482,Croatia,Zagreb,American International School Zagreb,High,,f_pak
+483,Cuba,Havana,International School of Havana,High,,f_pak
+484,Curacao,Willemstad,International School Curacao,High,,f_pak
+485,Cyprus,Limassol,American Academy Limassol,High,,f_pak
+486,Cyprus,Nicosia,American International School Cyrus,Medium,Name typo: Cyprus,f_pak
+487,Cyprus,Kyrenia,English School Kyrenia,High,,f_pak
+488,Cyprus,Limassol,Foley's School,Medium,,f_pak
+489,Cyprus,Kyrenia,Girne American College,High,Girne = Kyrenia,f_pak
+490,Cyprus,Limassol,Heritage Private School,Medium,,f_pak
+491,Cyprus,Paphos,Lumio Private School,Medium,,f_pak
+492,Cyprus,Limassol,Trinity Private School Cyprus,Medium,,f_pak
+493,Czech Republic,Prague,Alternativ,Low,alter-nativ.cz; location uncertain,f_pak
+494,Czech Republic,Karlovy Vary,Carlsbad International School,High,Carlsbad = Karlovy Vary,f_pak
+495,Czech Republic,Prague,English International School Prague,High,,f_pak
+496,Czech Republic,Brno,International School Brno,High,,f_pak
+497,Czech Republic,Prague,International School of Prague,High,,f_pak
+498,Czech Republic,Prague,Novy Porg,Medium,,f_pak
+499,Czech Republic,Prague,Park Lane Prague,High,,f_pak
+500,Czech Republic,Prague,Prague British School,High,,f_pak
+501,Czech Republic,Prague,Riverside School,Medium,,f_pak
+502,Denmark,Aarhus,Aarhus Academy for Global Education,High,,f_pak
+503,Denmark,Copenhagen,Copenhagen International School,High,,f_pak
+504,Denmark,Esbjerg,Esbjerg International School,High,,f_pak
+505,Denmark,Ikast,International School Ikast-Brande,High,,f_pak
+506,Denmark,Vejle,The Cosmo-International School,Medium,"The Cosmo - International School of Southern Denmark, Vejle",f_pak
+507,Dominican Republic,Santo Domingo,Abraham Lincoln School,Medium,,f_pak
+508,Dominican Republic,Punta Cana,Cap Cana Heritage School,High,Cap Cana,f_pak
+509,Dominican Republic,Santo Domingo,Carol Morgan School Santo Domingo,High,,f_pak
+510,Dominican Republic,Santo Domingo,International School of Santo Domingo,High,,f_pak
+511,Dominican Republic,Sosua,International School of Sousa,High,Name typo: Sosua,f_pak
+512,Dominican Republic,Santo Domingo,MC School,Medium,,f_pak
+513,Dominican Republic,Santo Domingo,Saint Joseph School,Medium,,f_pak
+514,Dominican Republic,Santo Domingo,St. Michael's School,Medium,,f_pak
+515,"East Timor, Democratic Republic of",Dili,Quality Schools International Dili,High,,f_pak
+516,Ecuador,Quito,Academia Cotopaxi,High,,f_pak
+517,Ecuador,Quito,British School Quito,High,,f_pak
+518,Ecuador,Quito,Colegio Alberto Einstein Quito,High,,f_pak
+519,Ecuador,Guayaquil,Colegio Americano de Guayaquil,High,,f_pak
+520,Ecuador,Quito,Colegio Menor San Francisco de Quito,High,,f_pak
+521,Ecuador,Quito,Fundacion Colegio Americano de Quito,High,,f_pak
+522,Ecuador,Guayaquil,InterAmerican Academy Guayaquil,High,,f_pak
+523,Ecuador,Quito,ISM International Academy Ecuador,Medium,,f_pak
+524,Ecuador,Quito,Liceo Campoverde,Medium,,f_pak
+525,Egypt,Alexandria,Alexandria International Academy,High,,f_pak
+526,Egypt,Cairo,American International School Cairo,High,,f_pak
+527,Egypt,Cairo,American International School West Campus,Medium,6th of October City (Greater Cairo),f_pak
+528,Egypt,Alexandria,American School of Alexandria,High,,f_pak
+529,Egypt,Cairo,British Columbia Canadian International,Medium,,f_pak
+530,Egypt,Cairo,British International School Cairo,High,,f_pak
+531,Egypt,Cairo,British International School Madinaty,High,"Madinaty, New Cairo",f_pak
+532,Egypt,Cairo,British School Al Rehab,High,"Al Rehab, New Cairo",f_pak
+533,Egypt,Alexandria,British School Alexandria,High,,f_pak
+534,Egypt,Cairo,British School of Egypt,Medium,,f_pak
+535,Egypt,Cairo,Cairo American College,High,,f_pak
+536,Egypt,Cairo,Cairo English School,High,,f_pak
+537,Egypt,Cairo,Canadian International School,Medium,,f_pak
+538,Egypt,Cairo,Capital International Schools,Medium,,f_pak
+539,Egypt,Cairo,City International Schools,Medium,,f_pak
+540,Egypt,Cairo,Continental School Cairo,High,,f_pak
+541,Egypt,Cairo,Dover American International School,Medium,,f_pak
+542,Egypt,Cairo,Egypt British International School,Medium,,f_pak
+543,Egypt,Cairo,Egyptian American International School,Medium,,f_pak
+544,Egypt,Cairo,Egyptian American Language School,Medium,,f_pak
+545,Egypt,Cairo,El Alsson British American International School,Medium,,f_pak
+546,Egypt,El Gouna,El Gouna International School,High,,f_pak
+547,Egypt,Cairo,Forsan British School,Medium,,f_pak
+548,Egypt,Alexandria,GEMS Academy Alexandria,High,,f_pak
+549,Egypt,Cairo,GEMS International School Cairo,High,,f_pak
+550,Egypt,Cairo,Global Paradigm School,Medium,,f_pak
+551,Egypt,Cairo,Hayah International Academy,Medium,,f_pak
+552,Egypt,Cairo,Heritage International School,Medium,,f_pak
+553,Egypt,Cairo,Infinity International School,Medium,,f_pak
+554,Egypt,Cairo,Integrated Thebes Schools,Medium,,f_pak
+555,Egypt,Alexandria,International American School Alexandria,High,,f_pak
+556,Egypt,Alexandria,International British School Alexandria,High,,f_pak
+557,Egypt,Cairo,International School Choueifat 6th October,High,6th of October City (Greater Cairo),f_pak
+558,Egypt,Cairo,International School Choueifat Cairo,High,,f_pak
+559,Egypt,Cairo,International School Egypt,Medium,,f_pak
+560,Egypt,Cairo,Kent College Egypt,Medium,West Cairo,f_pak
+561,Egypt,Cairo,Maadi British International School,High,Maadi,f_pak
+562,Egypt,Cairo,Malvern College Egypt,Medium,,f_pak
+563,Egypt,Cairo,Metropolitan International School,Medium,,f_pak
+564,Egypt,Cairo,MISR Language School,Medium,6th of October City,f_pak
+565,Egypt,Cairo,MISR American College,Medium,,f_pak
+566,Egypt,Cairo,Modern American School Egypt,Medium,,f_pak
+567,Egypt,Cairo,Modern English School K-12,Medium,,f_pak
+568,Egypt,Cairo,Narmer American College,Medium,,f_pak
+569,Egypt,Cairo,Nefetari International School,Medium,Name typo: Nefertari,f_pak
+570,Egypt,Cairo,New Cairo British International School,High,,f_pak
+571,Egypt,Cairo,New Vision International Schools,Medium,,f_pak
+572,Egypt,Cairo,Pioneers Language School,Medium,,f_pak
+573,Egypt,Cairo,Regent British School,Medium,,f_pak
+574,Egypt,Cairo,Repton School Cairo,High,,f_pak
+575,Egypt,Cairo,Sakkara Language Center,Medium,,f_pak
+576,Egypt,Alexandria,Schutz American School,High,,f_pak
+577,Egypt,Cairo,Smart International School,Medium,,f_pak
+578,Egypt,Cairo,Smart Village School,Medium,"Smart Village, 6th of October",f_pak
+579,Egypt,Cairo,St. Fatima Language School,Medium,,f_pak
+580,Egypt,Cairo,Thebes American College,Medium,,f_pak
+581,Egypt,Cairo,Uppingham Cairo,High,,f_pak
+582,Egypt,Cairo,Uptown International School,Medium,,f_pak
+583,El Salvador,San Salvador,Academia Britanica Cuscatleca,Medium,"Santa Tecla, San Salvador metro",f_pak
+584,El Salvador,San Salvador,American School El Salvador,High,,f_pak
+585,Eritrea,Asmara,Asmara International Community School,High,,f_pak
+586,Estonia,Tallinn,International School Estonia,High,,f_pak
+587,Estonia,Tallinn,International School Tallinn,High,,f_pak
+588,Ethiopia,Addis Ababa,British International School Addis Ababa,High,,f_pak
+589,Ethiopia,Addis Ababa,Gibson Youth Academy,Medium,,f_pak
+590,Ethiopia,Addis Ababa,International Community School Addis Ababa,High,,f_pak
+591,Ethiopia,Addis Ababa,Sandford International School,Medium,,f_pak
+592,Fiji Islands,Nadi,International School Nadi,High,,f_pak
+593,Fiji Islands,Suva,International School Suva,High,,f_pak
+594,Finland,Helsinki,International School of Helsinki,High,,f_pak
+595,France,Paris,American School Paris,High,Saint-Cloud,f_pak
+596,France,Bordeaux,Bordeaux International School,High,,f_pak
+597,France,Sophia Antipolis,Ebica International School,Medium,"Valbonne, near Nice/Cannes",f_pak
+598,France,Paris,Inter-Community School Paris,High,,f_pak
+599,France,Paris,International School Paris,High,,f_pak
+600,France,Toulouse,International School Toulouse,High,,f_pak
+601,France,Paris,Kingsworth International School,Medium,,f_pak
+602,France,Paris,Malherbe International School,Medium,Le Chesnay area,f_pak
+603,France,Paris,Marymount International School,High,Neuilly-sur-Seine,f_pak
+604,France,Paris,Open Sky International,Medium,,f_pak
+605,Gabon,Libreville,American International School Libreville,High,,f_pak
+606,Gabon,Libreville,Ecole Ruban Vert International School,Medium,,f_pak
+607,Georgia,Tbilisi,British International School Tbilisi,High,,f_pak
+608,Georgia,Tbilisi,European School,Medium,,f_pak
+609,Georgia,Tbilisi,New School International School,Medium,,f_pak
+610,Georgia,Tbilisi,QSI International School Tbilisi,High,,f_pak
+611,Germany,Munich,Bavarian International School,High,Haimhausen,f_pak
+612,Germany,Berlin,Berlin Brandenburg International School,High,Kleinmachnow,f_pak
+613,Germany,Berlin,Berlin British School,High,,f_pak
+614,Germany,Berlin,Berlin Cosmopolitan School,High,,f_pak
+615,Germany,Berlin,Berlin International School,High,,f_pak
+616,Germany,Berlin,Berlin Metropolitan School,High,,f_pak
+617,Germany,Bonn,Bonn International School,High,,f_pak
+618,Germany,Stuttgart,Christian Life Academy,Medium,Christian Life Academy Stuttgart,f_pak
+619,Germany,Cologne,Cologne International School,High,,f_pak
+620,Germany,Dresden,Dresden International School,High,,f_pak
+621,Germany,Frankfurt,European School Rhein Main,Medium,"Bad Vilbel, near Frankfurt",f_pak
+622,Germany,Erlangen,Franconian International School,High,,f_pak
+623,Germany,Frankfurt,Frankfurt International School & Wiesbaden,High,Oberursel; Wiesbaden campus too,f_pak
+624,Germany,Heidelberg,Heidelberger Privatschulcentrum,High,,f_pak
+625,Germany,Bonn,Independent Bonn International School,High,,f_pak
+626,Germany,Bochum,International School of Bochum,High,,f_pak
+627,Germany,Bremen,International School Bremen,High,,f_pak
+628,Germany,Dusseldorf,International School of Dusseldorf,High,,f_pak
+629,Germany,Frankfurt,International School Germany,Low,Generic name; school unidentified,f_pak
+630,Germany,Hamburg,International School Hamburg,High,,f_pak
+631,Germany,Hannover,International School Hannover Region,High,,f_pak
+632,Germany,Heiligenhaus,International School Heilgenhaus,High,Name typo: Heiligenhaus,f_pak
+633,Germany,Neustadt an der Weinstrasse,International School Neustadt,High,,f_pak
+634,Germany,Essen,International School Ruhr,Medium,,f_pak
+635,Germany,Stuttgart,International School Stuttgart,High,,f_pak
+636,Germany,Ulm,International School Ulm,High,,f_pak
+637,Germany,Berlin,International School Villa Amalienhof,Medium,Spandau,f_pak
+638,Germany,Ramstein-Miesenbach,International School Westpfalz,Medium,,f_pak
+639,Germany,Neuss,Internationale Schule am Rhein (ISR),High,"Neuss, near Dusseldorf",f_pak
+640,Germany,Frankfurt,ISF International School Frankfurt Rhein-Main,High,,f_pak
+641,Germany,Berlin,"John F. Kennedy School, Berlin",High,,f_pak
+642,Germany,Heilbronn,Josef Schwarz Schule,Medium,Josef-Schwarz-Schule (Phorms); campuses in Erlenbach and Heilbronn,f_pak
+643,Germany,Hanover,Kammer International Bilingual School,High,,f_pak
+644,Germany,Leipzig,Leipzig International School,High,,f_pak
+645,Germany,Viernheim,Metropolitan International School,High,"MIS Viernheim, near Mannheim",f_pak
+646,Germany,Frankfurt,Metropolitan School Frankfurt,High,,f_pak
+647,Germany,Starnberg,Munich International School,High,"Percha, Starnberg, ~25 km SW of Munich",f_pak
+648,Germany,Berlin,Phorms Berlin,High,,f_pak
+649,Germany,Frankfurt,Phorms Frankfurt,High,,f_pak
+650,Germany,Munich,Phorms Munich,High,,f_pak
+651,Germany,Berlin,Quentin Blake Europe School Berlin,High,,f_pak
+652,Germany,Uberlingen,Salem International College,Medium,Schule Schloss Salem international college at Spetzgart/Uberlingen,f_pak
+653,Germany,Glauchau,Saxony International Schools,Medium,group of schools across Saxony; HQ Glauchau,f_pak
+654,Germany,Cologne,St. George's English International School,Medium,"group with campuses in Cologne, Munich, Duisburg; original Cologne campus given",f_pak
+655,Germany,Berlin,St Petrus Kindergarten,Low,could not identify school,f_pak
+656,Germany,Dreieich,Strothoff International School,High,near Frankfurt,f_pak
+657,Germany,Weimar,Thuringia International School,High,,f_pak
+658,Germany,Hamburg,Wabe International School,High,,f_pak
+659,Ghana,Accra,Canadian Independent College,High,,f_pak
+660,Ghana,Accra,Ghana International School,High,,f_pak
+661,Ghana,Accra,Lincoln Community School,High,,f_pak
+662,Great Britain,Cobham,ACS International Schools – Cobham,High,,f_pak
+663,Great Britain,Egham,ACS International School – Egham,High,,f_pak
+664,Great Britain,London,ACS International Schools – Hillingdon,High,"Hillingdon, west London",f_pak
+665,Great Britain,Bath,Ashwicke Hall School,Medium,"Marshfield, Wiltshire, near Bath; school closed",f_pak
+666,Great Britain,Fareham,Boundary Oak School,High,Hampshire,f_pak
+667,Great Britain,Cambridge,Cambridge International School,High,,f_pak
+668,Great Britain,London,Halcyon London International School,High,,f_pak
+669,Great Britain,London,International Community School London,High,,f_pak
+670,Great Britain,Aberdeen,International School of Aberdeen Scotland,High,,f_pak
+671,Great Britain,London,International School of London,High,,f_pak
+672,Great Britain,London,King Fahad Academy London England,High,,f_pak
+673,Great Britain,London,Marymount International School,High,Kingston upon Thames,f_pak
+674,Great Britain,London,North London International School,High,,f_pak
+675,Great Britain,Reading,Padworth College Berkshire UK,Medium,"Padworth village, near Reading",f_pak
+676,Great Britain,London,Southbank International School,High,,f_pak
+677,Great Britain,Thorpe,TASIS The American School in England,High,"Thorpe, Surrey, near Egham",f_pak
+678,Greece,Athens,American Community Schools Athens,High,,f_pak
+679,Greece,Athens,Ionios School IB,High,Filothei,f_pak
+680,Greece,Thessaloniki,Pinewood School,High,,f_pak
+681,Greece,Athens,St. Catherine's British School,High,,f_pak
+682,Greece,Athens,St Lawrence College,High,Koropi,f_pak
+683,Guam,Santa Rita,Southern High School Guam GPSS,Medium,,f_pak
+684,Guam,Tamuning,St. John's School Tumon Bay,High,Tumon,f_pak
+685,Guatemala,Guatemala City,American School / Colegio Americano,High,,f_pak
+686,Guatemala,Antigua Guatemala,Antigua International School,High,,f_pak
+687,Guatemala,Guatemala City,Colegio Americano del Sur,Medium,,f_pak
+688,Guatemala,Guatemala City,Colegio Decroly Americano,High,,f_pak
+689,Guatemala,Guatemala City,Colegio Inter-Americano,High,,f_pak
+690,Guatemala,Guatemala City,Colegio Maya,High,,f_pak
+691,Guatemala,Guatemala City,Han Al American School,High,,f_pak
+692,Guatemala,Panajachel,Life School,High,,f_pak
+693,Guatemala,Panajachel,Panajachel Colegio International,High,,f_pak
+694,Guatemala,Guatemala City,Village School,Medium,,f_pak
+695,"Guinea, Africa",Conakry,American International School Conakry,High,,f_pak
+696,"Guinea, Africa",Conakry,English Speaking Community School,Medium,,f_pak
+697,"Guinea, Africa",Conakry,International School Conakry,High,,f_pak
+698,Guyana,Georgetown,Georgetown International Academy,High,,f_pak
+699,Haiti,Port-au-Prince,Union School,High,,f_pak
+700,Honduras,San Pedro Sula,Agape Christian Academy,High,,f_pak
+701,Honduras,Zamorano,Allison Bixby Stone School,Medium,"Zamorano (San Antonio de Oriente), near Tegucigalpa",f_pak
+702,Honduras,Tegucigalpa,American School of Tegucigalpa,High,,f_pak
+703,Honduras,Juticalpa,Centro Escolar Concepcion de Maria,Medium,,f_pak
+704,Honduras,Juticalpa,Day-Star School,High,,f_pak
+705,Honduras,Tegucigalpa,DelCampo International School Tegucigalpa,High,,f_pak
+706,Honduras,Tegucigalpa,Discovery International School,Medium,,f_pak
+707,Honduras,Siguatepeque,El Alba Bilingual School Siguatepequ,High,"source name truncated (""Siguatepequ"")",f_pak
+708,Honduras,San Pedro Sula,Escuela Internacional de Sampedrana,High,,f_pak
+709,Honduras,La Ceiba,Mazapan School,High,,f_pak
+710,Honduras,Santa Rosa de Copan,Western International School Honduras,High,,f_pak
+711,Hong Kong,Hong Kong,American International School,High,,f_pak
+712,Hong Kong,Hong Kong,American School Hong Kong,High,,f_pak
+713,Hong Kong,Foshan,ASJ Affiliated School of Jinan University Foshan,High,"listed under Hong Kong on source - actually in Foshan, China",f_pak
+714,Hong Kong,Hong Kong,Australian International School Hong Kong,High,,f_pak
+715,Hong Kong,Hong Kong,Canadian International School Hong Kong,High,,f_pak
+716,Hong Kong,Hong Kong,Carmel Elementary School,High,,f_pak
+717,Hong Kong,Hong Kong,Chinese International School,High,,f_pak
+718,Hong Kong,Hong Kong,Christian Alliance International School,High,,f_pak
+719,Hong Kong,Hong Kong,Creative Secondary School,High,,f_pak
+720,Hong Kong,Hong Kong,Delia School of Canada,High,,f_pak
+721,Hong Kong,Hong Kong,Diocesan Boys School,High,,f_pak
+722,Hong Kong,Hong Kong,Discovery College,High,,f_pak
+723,Hong Kong,Hong Kong,Elsa High School,High,,f_pak
+724,Hong Kong,Hong Kong,French International School,High,,f_pak
+725,Hong Kong,Hong Kong,German Swiss International,High,,f_pak
+726,Hong Kong,Hong Kong,Hong Kong Academy,High,,f_pak
+727,Hong Kong,Hong Kong,Hong Kong International School,High,,f_pak
+728,Hong Kong,Hong Kong,Hong Kong Tech Academy,Medium,,f_pak
+729,Hong Kong,Hong Kong,Independent Schools Foundation Academy,High,,f_pak
+730,Hong Kong,Hong Kong,Inno Secondary School,Medium,,f_pak
+731,Hong Kong,Hong Kong,International Christian School,High,,f_pak
+732,Hong Kong,Hong Kong,International College Hong Kong,High,,f_pak
+733,Hong Kong,Hong Kong,Island Christian Academy,High,,f_pak
+734,Hong Kong,Hong Kong,Kellett School,High,,f_pak
+735,Hong Kong,Hong Kong,King George V School,High,,f_pak
+736,Hong Kong,Hong Kong,Kingston International School,High,,f_pak
+737,Hong Kong,Hong Kong,Lantau International School,High,,f_pak
+738,Hong Kong,Hong Kong,Malvern College Hong Kong,High,,f_pak
+739,Hong Kong,Hong Kong,Mount Kelly International School,High,,f_pak
+740,Hong Kong,Hong Kong,Nord Anglia International School Hong Kong,High,,f_pak
+741,Hong Kong,Hong Kong,Oxbridge School Hong Kong,Medium,,f_pak
+742,Hong Kong,Hong Kong,Phonics Education Association (PEA),Medium,,f_pak
+743,Hong Kong,Hong Kong,Po Leung Kuk Choi Kai Yau,High,,f_pak
+744,Hong Kong,Hong Kong,Renaissance College,High,,f_pak
+745,Hong Kong,Hong Kong,Singapore International School,High,,f_pak
+746,Hong Kong,Hong Kong,South Island School,High,,f_pak
+747,Hong Kong,Hong Kong,Stamford American School Hong Kong,High,,f_pak
+748,Hong Kong,Hong Kong,St. Catherine's International Kindergarten & Nursery,High,,f_pak
+749,Hong Kong,Hong Kong,The Harbour School,High,,f_pak
+750,Hong Kong,Hong Kong,Think International School,High,,f_pak
+751,Hong Kong,Hong Kong,Victoria Educational Organisation,High,,f_pak
+752,Hong Kong,Hong Kong,Victoria Shanghai Academy,High,"despite name, located in Hong Kong (Aberdeen)",f_pak
+753,Hong Kong,Hong Kong,West Island School,High,,f_pak
+754,Hong Kong,Hong Kong,Woodland Group of Schools,High,,f_pak
+755,Hong Kong,Hong Kong,Yew Chung International School,High,,f_pak
+756,Hungary,Budapest,American International School Budapest,High,,f_pak
+757,Hungary,Miskolc,Avalon International School,High,,f_pak
+758,Hungary,Budapest,Britannica International School Budapest,High,,f_pak
+759,Hungary,Budapest,British International School Budapest,High,,f_pak
+760,Hungary,Budapest,Budapest British International School,High,,f_pak
+761,Hungary,Budapest,International School Budapest,High,,f_pak
+762,Hungary,Debrecen,International School Debrecen,High,,f_pak
+763,India,Mumbai,Aditya Birla World Academy,High,,f_pak
+764,India,New Delhi,American Embassy School Delhi,High,,f_pak
+765,India,Chennai,American International School Chennai,High,,f_pak
+766,India,Mumbai,American School Bombay,High,,f_pak
+767,India,Bangalore,Bangalore International School,High,,f_pak
+768,India,Gurgaon,Banyan Tree IB World School Gurgaon,High,,f_pak
+769,India,Supaul,Bivha International School,Medium,"Simrahi Bazar, Supaul district, Bihar",f_pak
+770,India,New Delhi,British School New Delhi,High,,f_pak
+771,India,Bangalore,Canadian International Bangalore,High,,f_pak
+772,India,Lonavala,Cathedral Vidya School,High,,f_pak
+773,India,Karjat,Corvuss American Academy,Medium,near Mumbai,f_pak
+774,India,Mumbai,DSB International School,High,,f_pak
+775,India,Mumbai,Dhirubhai Ambani International School,High,,f_pak
+776,India,Mumbai,Ecole Mondiale World School,High,,f_pak
+777,India,Mumbai,Edubridge International School,Medium,,f_pak
+778,India,Gurgaon,Excelsior American School Gurgaon,High,,f_pak
+779,India,Nashik,Fravashi International Academy Nashik,High,,f_pak
+780,India,Mumbai,Garodia International Centre for Learning Mumbai,High,,f_pak
+781,India,Ooty,Good Sheperd International School,High,"source typo ""Sheperd""",f_pak
+782,India,Bangalore,Greenwood High International School,High,,f_pak
+783,India,Bangalore,Harrow International School Bengaluru,High,,f_pak
+784,India,Gurgaon,Heritage Xperiential Learning School,High,,f_pak
+785,India,Bangalore,Indus International School,High,"group with campuses in Bangalore, Pune, Hyderabad; main campus given",f_pak
+786,India,Lonavala,International School Aamby,Medium,Aamby Valley City,f_pak
+787,India,Bangalore,International School Bangalore,High,,f_pak
+788,India,Hyderabad,International School Hyderabad,High,,f_pak
+789,India,Bangalore,Jain International Residential School,High,,f_pak
+790,India,Mumbai,JBCN International School,High,,f_pak
+791,India,Kodaikanal,Kodaikanal International School,High,,f_pak
+792,India,Mumbai,Lakkshya International School,Low,could not identify school,f_pak
+793,India,Gurgaon,Lancers International School,High,,f_pak
+794,India,Pune,Mahindra International School,High,,f_pak
+795,India,Pune,Mahindra United World College India,High,"Paud, Mulshi, near Pune",f_pak
+796,India,Pune,Mercedes Benz International School,High,,f_pak
+797,India,Pune,MIT Vishwashanti Gurukul,High,Loni Kalbhor,f_pak
+798,India,Hyderabad,Mosaica American School,Medium,also had a Gurgaon campus,f_pak
+799,India,Hyderabad,Oakridge International School,High,group with multiple campuses; main campus city given,f_pak
+800,India,Mumbai,Oberoi International School,High,,f_pak
+801,India,Gurgaon,Pathways World School,High,Aravali campus; group also has Noida campus,f_pak
+802,India,Hyderabad,Sancta Maria International School,High,,f_pak
+803,India,Pune,Sharad Pawar International School,Medium,,f_pak
+804,India,Mumbai,Singapore International School Mumbai,High,,f_pak
+805,India,Bangalore,Stonehill International School,High,,f_pak
+806,India,Gurgaon,St. Xavier's High School Gurgaon,High,,f_pak
+807,India,Chennai,Sushil Hari International Residential School,High,Kelambakkam,f_pak
+808,India,Bangalore,Trio World School Bangalore,High,,f_pak
+809,India,Pune,Vishwashanti Gurukul,Medium,likely MIT Vishwashanti Gurukul duplicate; main campus Pune,f_pak
+810,India,Mussoorie,Woodstock International School,High,,f_pak
+811,Indonesia,Jakarta,ACG International School,High,,f_pak
+812,Indonesia,Denpasar,Asian International School Bali,Low,Bali; exact locality unclear,f_pak
+813,Indonesia,Jakarta,Australian Independent School,High,group; also Bali campus,f_pak
+814,Indonesia,Denpasar,Bali International School,High,Sanur,f_pak
+815,Indonesia,Bandung,Bandung Independent School,High,,f_pak
+816,Indonesia,Jakarta,Beacon Academy,High,,f_pak
+817,Indonesia,Jakarta,Binus International School,High,,f_pak
+818,Indonesia,Tangerang,BINUS Serpong,High,Serpong,f_pak
+819,Indonesia,Jakarta,British International School Jakarta,High,"Bintaro, South Tangerang",f_pak
+820,Indonesia,Canggu,Canggu Community School Bali,High,Bali,f_pak
+821,Indonesia,Surabaya,Cita Hati Christian School,High,,f_pak
+822,Indonesia,Daegu,Daegu International School,High,listed under Indonesia on source - actually in South Korea,f_pak
+823,Indonesia,Seoul,Dulwich College Seoul,High,listed under Indonesia on source - actually in South Korea,f_pak
+824,Indonesia,Denpasar,Dyatmika School Bali,High,,f_pak
+825,Indonesia,Tangerang,Global Jaya School,High,Bintaro,f_pak
+826,Indonesia,Ubud,Green School,High,"Sibang Kaja, Bali",f_pak
+827,Indonesia,Bogor,International School Bogor,High,,f_pak
+828,Indonesia,Jakarta,Jakarta Intercultural School,High,,f_pak
+829,Indonesia,Jakarta,Jakarta International Korean School,High,,f_pak
+830,Indonesia,Jakarta,Jakarta World Academy,High,,f_pak
+831,Indonesia,Kuta Lombok,Mandalika Intercultural School,Medium,"Mandalika, Lombok",f_pak
+832,Indonesia,Medan,Medan Independent School,High,,f_pak
+833,Indonesia,Tembagapura,Mt. Zaagkam International School,High,Papua,f_pak
+834,Indonesia,Jakarta,Netherlands Inter-Community School,High,,f_pak
+835,Indonesia,Jakarta,New Zealand Independent School,High,,f_pak
+836,Indonesia,Jakarta,North Jakarta International School,High,,f_pak
+837,Indonesia,Denpasar,ProEd Global School,Medium,Bali; Umalas/Kerobokan campus,f_pak
+838,Indonesia,Jakarta,Royal Buckingham International School,High,"Sunter, North Jakarta",f_pak
+839,Indonesia,Jakarta,Royal Primary Academy,High,,f_pak
+840,Indonesia,Denpasar,Sanur Independent School,High,Sanur,f_pak
+841,Indonesia,Surabaya,Sekolah Ciputra,High,,f_pak
+842,Indonesia,Denpasar,Sekolah Lentera Kasih Bali,Medium,Bali,f_pak
+843,Indonesia,Mataram,Sekolah Nusa Alam,High,Lombok,f_pak
+844,Indonesia,Tangerang,Sekolah Pelita Harapan,High,group with multiple campuses; Lippo Village main campus given,f_pak
+845,Indonesia,Jakarta,Sekolah Tiara Bangsa – ACS,High,,f_pak
+846,Indonesia,Tangerang,Sinarmas World Academy,High,BSD City,f_pak
+847,Indonesia,Jakarta,Singapore International School,High,group with multiple campuses in Indonesia,f_pak
+848,Indonesia,Surabaya,Singapore National Academy,High,,f_pak
+849,Indonesia,Jakarta,Springfield School,Medium,,f_pak
+850,Indonesia,Denpasar,Sunrise School Bali,Medium,"Kerobokan, Bali",f_pak
+851,Indonesia,Surabaya,Surabaya European School,High,,f_pak
+852,Indonesia,Surabaya,Surabaya Intercultural School,High,,f_pak
+853,Indonesia,Jakarta,Tzu Chi School,High,,f_pak
+854,Indonesia,Yogyakarta,Yogyakarta International School,High,,f_pak
+855,Iran,Tehran,British School Tehran,High,,f_pak
+856,Iraq,Baghdad,American International School,Low,ambiguous name,f_pak
+857,Iraq,Erbil,British International Schools,Medium,British International Schools in Kurdistan,f_pak
+858,Iraq,Baghdad,English International School Baghdad,High,,f_pak
+859,Iraq,Erbil,Ihsan Dogramaci Erbil College,High,,f_pak
+860,Iraq,Erbil,International Maarif Schools Erbil,High,,f_pak
+861,Iraq,Erbil,Ronaki International School Erbil,High,,f_pak
+862,Iraq,Erbil,SABIS International School Choueifat Erbil,High,,f_pak
+863,Iraq,Sulaymaniyah,SABIS International School Choueifat Sulaimani,High,,f_pak
+864,Iraq,Zakho,Zakho British International School,High,,f_pak
+865,Israel,Jerusalem,Anglican International School Jerusalem,High,,f_pak
+866,Israel,Even Yehuda,Walworth Barbour American International,High,near Tel Aviv,f_pak
+867,Italy,Rome,Ambrit International School,High,,f_pak
+868,Italy,Rome,American Overseas School Rome,High,,f_pak
+869,Italy,Milan,American School Milan,High,Noverasco di Opera,f_pak
+870,Italy,Naples,Benedict School,Medium,Pomigliano d'Arco,f_pak
+871,Italy,Milan,Bilingual European School,High,,f_pak
+872,Italy,Turin,Bilingual European School Turin,High,,f_pak
+873,Italy,Milan,British School Milan,High,,f_pak
+874,Italy,Lanciano,Canadian College Italy,High,,f_pak
+875,Italy,Padua,English International School Padua,High,,f_pak
+876,Italy,Trieste,European School Trieste,High,,f_pak
+877,Italy,Treviso,H-International School Treviso,High,,f_pak
+878,Italy,Milan,ICS Milan International School,High,,f_pak
+879,Italy,Bologna,International School Bologna,High,,f_pak
+880,Italy,Brescia,International School Brescia,High,,f_pak
+881,Italy,Florence,International School Florence,High,,f_pak
+882,Italy,Genoa,International School Genoa,High,,f_pak
+883,Italy,Milan,International School Milan,High,,f_pak
+884,Italy,Treviso,International School Treviso,High,,f_pak
+885,Italy,Trieste,International School Trieste,High,,f_pak
+886,Italy,Turin,International School Turin,High,,f_pak
+887,Italy,Verona,International School Verona,High,,f_pak
+888,Italy,Brescia,Lonati Anglo American School,High,,f_pak
+889,Italy,Rome,Marymount International Rome,High,,f_pak
+890,Italy,Modena,Peter Pan English Preschool,Medium,,f_pak
+891,Italy,Milan,Play English Bilingual School Milan,High,,f_pak
+892,Italy,Monza,Play English Bilingual School Monza,High,,f_pak
+893,Italy,Rome,Rome International School,High,,f_pak
+894,Italy,Milan,Sir James Henderson School,High,now British School of Milan,f_pak
+895,Italy,Rome,St. George's British International School,High,,f_pak
+896,Italy,Milan,St Louis School Milan,High,,f_pak
+897,Italy,Udine,Udine International School,High,,f_pak
+898,Italy,Pisa,Westminster International School,High,,f_pak
+899,Jamaica,Kingston,American International School of Kingston,High,,f_pak
+900,Jamaica,Montego Bay,Fairfield International Academy,High,,f_pak
+901,Japan,Sendai,Abroad International School Sendai,High,,f_pak
+902,Japan,Nagoya,Aichi International School,Medium,,f_pak
+903,Japan,Hiroshima,AICJ Academy for International Community,High,,f_pak
+904,Japan,Tokyo,American School in Japan,High,Chofu,f_pak
+905,Japan,Tokyo,Aoba Japan International School,High,,f_pak
+906,Japan,Tokyo,British School Tokyo,High,,f_pak
+907,Japan,Kobe,Canadian Academy,High,,f_pak
+908,Japan,Tokyo,Canadian International School,High,,f_pak
+909,Japan,Tokyo,Capital Tokyo International School,High,,f_pak
+910,Japan,Tokyo,Christian Academy in Japan,High,Higashikurume,f_pak
+911,Japan,Tokyo,Chiyoda International School,Medium,,f_pak
+912,Japan,Kyoto,Doshisha International School Kyoto,High,,f_pak
+913,Japan,Tokyo,EMS International,Low,could not identify school,f_pak
+914,Japan,Kampala,Felice International School,Medium,"listed under Japan on source - actually in Kampala, Uganda",f_pak
+915,Japan,Fukuoka,Fukuoka International School,High,,f_pak
+916,Japan,Tokyo,Global Indian International School,High,,f_pak
+917,Japan,Ota,Gunma Kokusai Academy,High,Gunma Prefecture,f_pak
+918,Japan,Hachimantai,Harrow International School Appi,High,"Appi Kogen, Iwate",f_pak
+919,Japan,Hiroshima,Hiroshima International School,High,,f_pak
+920,Japan,Sapporo,Hokkaido International School,High,,f_pak
+921,Japan,Yokohama,Horizon Japan International School,High,,f_pak
+922,Japan,Tokyo,International School Sacred Heart,High,,f_pak
+923,Japan,Tokyo,Jingumae International Exchange School,High,,f_pak
+924,Japan,Tokyo,K International School Tokyo,High,,f_pak
+925,Japan,Tokyo,KAIS International School,High,,f_pak
+926,Japan,Numazu,Katoh Gakuen,High,,f_pak
+927,Japan,Kumamoto,Kumamoto International School,High,,f_pak
+928,Japan,Kyoto,Kyoto International School,High,,f_pak
+929,Japan,Dazaifu,Linden Hall Elementary School Japan,High,Fukuoka Prefecture,f_pak
+930,Japan,Chiba,Makuhari International School,High,,f_pak
+931,Japan,Kobe,Marist Brothers International School Kobe,High,,f_pak
+932,Japan,Nagoya,Nagoya International High School,High,,f_pak
+933,Japan,Nagoya,Nagoya International School,High,,f_pak
+934,Japan,Tokyo,Nishimachi International School,High,,f_pak
+935,Japan,Uruma,Okinawa Amicus International,High,Okinawa,f_pak
+936,Japan,Osaka,Osaka International School Kwansei Gakuin,High,Minoh,f_pak
+937,Japan,Osaka,Osaka YMCA International School,High,,f_pak
+938,Japan,Tokyo,Phoenix House International School,High,,f_pak
+939,Japan,Tokyo,Seisen International School,High,,f_pak
+940,Japan,Tokyo,St. Mary's International School,High,,f_pak
+941,Japan,Yokohama,St. Maur Intl School Yokohama,High,,f_pak
+942,Japan,Tokyo,Summerhill International School,High,,f_pak
+943,Japan,Tokyo,Tamagawa Academy K-12 Tokyo,High,Machida,f_pak
+944,Japan,Tokyo,Tathva International School,High,,f_pak
+945,Japan,Sendai,Tohoku International School Sendai,High,,f_pak
+946,Japan,Tokyo,Tokyo International School,High,,f_pak
+947,Japan,Tokyo,Tokyo Korean School,High,,f_pak
+948,Japan,Tokyo,Tokyo YMCA International School,High,,f_pak
+949,Japan,Tsukuba,Tsukuba International School,High,,f_pak
+950,Japan,Tokyo,United School Tokyo,High,,f_pak
+951,Japan,Karuizawa,United World College ISAK,High,,f_pak
+952,Japan,Tokyo,Waseda International School Tokyo,High,,f_pak
+953,Japan,Tokyo,Willowbrook International School,High,,f_pak
+954,Japan,Yokohama,Yokohama International School,High,,f_pak
+955,Japan,Tokyo,Yoyogi International School,High,,f_pak
+956,Jordan,Amman,American Community School of Amman,High,,f_pak
+957,Jordan,Amman,Amman Baccalaureate School,High,,f_pak
+958,Jordan,Aqaba,Aqaba International School,High,,f_pak
+959,Jordan,Amman,International Academy Amman,High,,f_pak
+960,Jordan,Amman,International Community School,High,,f_pak
+961,Jordan,Madaba,King's Academy,High,"Boarding school in Manja, Madaba governorate, near Amman",f_pak
+962,Jordan,Amman,Modern American School,High,,f_pak
+963,Jordan,Amman,The School of Life,Low,,f_pak
+964,Kazakhstan,Almaty,Almaty International School,High,,f_pak
+965,Kazakhstan,Astana,Ardingly Astana,High,,f_pak
+966,Kazakhstan,Almaty,Haileybury Almaty,High,,f_pak
+967,Kazakhstan,Astana,Haileybury Astana,High,,f_pak
+968,Kazakhstan,Almaty,Kazakhstan International School Almaty,High,,f_pak
+969,Kazakhstan,Astana,Kazakhstan International School Astana,High,,f_pak
+970,Kazakhstan,Astana,Miras Astana International School,High,,f_pak
+971,Kazakhstan,Almaty,Miras International School Almaty,High,,f_pak
+972,Kazakhstan,Astana,Nazarbayev Intellectual Schools,Medium,Network of ~20 schools across Kazakhstan; head office in Astana,f_pak
+973,Kazakhstan,Astana,NurOrda International School,High,,f_pak
+974,Kazakhstan,Astana,Quality Schools International Astana,High,,f_pak
+975,Kazakhstan,Atyrau,Quality Schools International Atyrau,High,,f_pak
+976,Kazakhstan,Astana,Spectrum International School,High,,f_pak
+977,Kenya,Mombasa,Aga Khan Academy Mombasa,High,,f_pak
+978,Kenya,Nairobi,Aga Khan Academy Nairobi,High,,f_pak
+979,Kenya,Nairobi,Banda School Nairobi,High,,f_pak
+980,Kenya,Nairobi,Braeburn School,High,Group with multiple campuses; original Nairobi campus given,f_pak
+981,Kenya,Nairobi,Brookhouse School,High,,f_pak
+982,Kenya,Nairobi,Durham International School,High,,f_pak
+983,Kenya,Nairobi,Hillcrest International School,High,,f_pak
+984,Kenya,Nairobi,Hillcrest Secondary School Nairobi,High,,f_pak
+985,Kenya,Nairobi,International School of Kenya,High,,f_pak
+986,Kenya,Gilgil,Pembroke House,High,,f_pak
+987,Kenya,Nairobi,St. Austin's Academy Nairobi,High,,f_pak
+988,Kenya,Nairobi,West Nairobi School,High,,f_pak
+989,Korea,Seoul,Asia Pacific International School,High,,f_pak
+990,Korea,Seongnam,BIS Canada,Medium,Bundang district,f_pak
+991,Korea,Seogwipo,Branksome Hall Asia,High,Jeju Global Education City,f_pak
+992,Korea,Busan,Busan Foreign School,High,,f_pak
+993,Korea,Seoul,Canada International School,Medium,,f_pak
+994,Korea,Seoul,Centennial Christian School,Medium,,f_pak
+995,Korea,Incheon,Chadwick International,High,Songdo,f_pak
+996,Korea,Incheon,Cheongna Dalton School,High,Cheongna district,f_pak
+997,Korea,Gapyeong,CheongShim International Academy,High,,f_pak
+998,Korea,Yeosu,Child U-Yeosu,High,,f_pak
+999,Korea,Daegu,Daegu International School,High,,f_pak
+1000,Korea,Seoul,Dwight School Seoul,High,,f_pak
+1001,Korea,Iksan,ECC Ik-San,High,,f_pak
+1002,Korea,Seoul,Etonhouse Prep Seoul,High,,f_pak
+1003,Korea,Jeonju,Global Prodigy Academy,High,,f_pak
+1004,Korea,Eumseong,Global Vision Christian School,Medium,,f_pak
+1005,Korea,Suwon,Gyeonggi Global School,Low,Could not verify; Gyeonggi province,f_pak
+1006,Korea,Suwon,Gyeonggi International School,Low,Possibly duplicate of Gyeonggi Suwon International School,f_pak
+1007,Korea,Suwon,Gyeonggi Suwon International School,High,,f_pak
+1008,Korea,Sacheon,Gyeongnam International Foreign School,High,,f_pak
+1009,Korea,Pohang,Handong International School,High,,f_pak
+1010,Korea,Ulsan,Hyundai Foreign School,High,,f_pak
+1011,Korea,Uijeongbu,Indianhead International School,Medium,,f_pak
+1012,Korea,Seoul,International Christian School Seoul,High,,f_pak
+1013,Korea,Pyeongtaek,International Christian School Pyeongtaek,High,,f_pak
+1014,Korea,Busan,International School Busan,High,,f_pak
+1015,Korea,Geoje,International School Koje,High,,f_pak
+1016,Korea,Seoul,Korea Foreign School,High,,f_pak
+1017,Korea,Seongnam,Korea International School,High,Pangyo main campus; also Seoul campus,f_pak
+1018,Korea,Seoul,Korea Kent Foreign School,High,,f_pak
+1019,Korea,Gwangju,Kwangju Foreign School,High,,f_pak
+1020,Korea,Seoul,Namsan International School,High,,f_pak
+1021,Korea,Seoul,New Zealand International School,Low,,f_pak
+1022,Korea,Seogwipo,North London Collegiate School,High,"NLCS Jeju, Jeju Global Education City",f_pak
+1023,Korea,Seoul,Seoul Foreign School,High,,f_pak
+1024,Korea,Seongnam,Seoul International School,High,,f_pak
+1025,Korea,Seogwipo,St. Johnsbury Academy,High,Jeju Global Education City,f_pak
+1026,Korea,Seoul,St. Paul Preparatory School,High,,f_pak
+1027,Korea,Daejeon,Taejon Christian International,High,,f_pak
+1028,Korea,Seoul,Yongsan International School Seoul,High,,f_pak
+1029,Kosovo,Pristina,American School of Kosova,High,,f_pak
+1030,Kosovo,Pristina,International Learning Group School Kosovo,High,,f_pak
+1031,Kosovo,Pristina,Prishtina High School,High,,f_pak
+1032,Kurdistan,Duhok,American International School,Medium,Kurdistan Region of Iraq; AIS Duhok,f_pak
+1033,Kurdistan,Erbil,British International Schools,Medium,"Group with campuses in Erbil, Sulaymaniyah, Duhok; Erbil given",f_pak
+1034,Kurdistan,Erbil,Ihsan Dogramaci Erbil College,High,,f_pak
+1035,Kurdistan,Erbil,International Maarif Schools Erbil,High,,f_pak
+1036,Kurdistan,Erbil,Ronaki International School Erbil,High,,f_pak
+1037,Kurdistan,Erbil,SABIS International School of Choueifat Erbil,High,,f_pak
+1038,Kurdistan,Zakho,Zakho British International School,High,,f_pak
+1039,Kuwait,Kuwait City,A'Rowad Bilingual School,Low,,f_pak
+1040,Kuwait,Kuwait City,A'Takamul International School,Medium,Sabah Al-Salem area,f_pak
+1041,Kuwait,Kuwait City,Ajial Bilingual School,Medium,"Riggae, Farwaniya governorate",f_pak
+1042,Kuwait,Salwa,Al Danah Universal School,High,,f_pak
+1043,Kuwait,Kuwait City,Al Nibras International School,Low,,f_pak
+1044,Kuwait,Kuwait City,Al'Maalee Bilingual School,Low,,f_pak
+1045,Kuwait,Hawalli,Al-Bayan Bilingual School,High,,f_pak
+1046,Kuwait,Hawalli,Al Bayan International School,Medium,,f_pak
+1047,Kuwait,Kuwait City,Al-Ghanim Bilingual School,Low,,f_pak
+1048,Kuwait,Salwa,American Academy for Girls,High,,f_pak
+1049,Kuwait,Hawalli,American Baccalaureate School,High,,f_pak
+1050,Kuwait,Hawalli,American Creativity Academy,High,Also Khaitan campus,f_pak
+1051,Kuwait,Salmiya,American International School Kuwait,High,,f_pak
+1052,Kuwait,Hawalli,American School Kuwait,High,,f_pak
+1053,Kuwait,Kuwait City,American United School,Medium,Sabah Al-Salem area,f_pak
+1054,Kuwait,Mangaf,Australian College Kuwait,Medium,Also Mishref campus,f_pak
+1055,Kuwait,Salwa,"British School, The",High,British School of Kuwait,f_pak
+1056,Kuwait,Hawalli,Cambridge English School Hawalli,High,,f_pak
+1057,Kuwait,Mangaf,Cambridge English School Mangaf,High,,f_pak
+1058,Kuwait,Kuwait City,Canadian Bilingual School Kuwait,Low,,f_pak
+1059,Kuwait,Kuwait City,Canadian School of Kuwait,Low,,f_pak
+1060,Kuwait,Kuwait City,Conductive Education School,Low,,f_pak
+1061,Kuwait,Kuwait City,Creative Children International School,Low,,f_pak
+1062,Kuwait,Kuwait City,Dasman Bilingual School,High,,f_pak
+1063,Kuwait,Kuwait City,English Academy,Low,,f_pak
+1064,Kuwait,Salwa,English Playgroup and Primary School,Medium,Multiple branches,f_pak
+1065,Kuwait,Fahaheel,English School Fahaheel,High,,f_pak
+1066,Kuwait,Salmiya,English School for Girls,Medium,,f_pak
+1067,Kuwait,Salmiya,"English School, The",Medium,,f_pak
+1068,Kuwait,Salmiya,Fawzia Sultan International School,High,,f_pak
+1069,Kuwait,Kuwait City,Future Bilingual School,Low,,f_pak
+1070,Kuwait,Kuwait City,Global Bilingual Academy,Low,,f_pak
+1071,Kuwait,Kuwait City,Gulf Bilingual School for Disabled,Low,,f_pak
+1072,Kuwait,Salmiya,Gulf British Academy,High,,f_pak
+1073,Kuwait,Salmiya,Gulf English School,High,,f_pak
+1074,Kuwait,Salmiya,Hayat Universal Bilingual School,High,,f_pak
+1075,Kuwait,Kuwait City,Hope School for Special Needs,Low,,f_pak
+1076,Kuwait,Kuwait City,Indian School,Low,Ambiguous name,f_pak
+1077,Kuwait,Kuwait City,International Academy Kuwait,Low,,f_pak
+1078,Kuwait,Kuwait City,International British School Kuwait,Low,,f_pak
+1079,Kuwait,Salmiya,International School Kuwait,Medium,,f_pak
+1080,Kuwait,Kuwait City,Iqra'a American School Kuwait,Low,,f_pak
+1081,Kuwait,Kuwait City,Kuwait Bilingual School,Low,,f_pak
+1082,Kuwait,Kuwait City,Kuwait Bilingual School No 1,Low,,f_pak
+1083,Kuwait,Salwa,Kuwait English School,High,,f_pak
+1084,Kuwait,Salmiya,Kuwait International English School,Medium,,f_pak
+1085,Kuwait,Kuwait City,Kuwait National English School (KNES),Medium,Khaitan area,f_pak
+1086,Kuwait,Kuwait City,Manarat School for Learning Difficulties,Low,,f_pak
+1087,Kuwait,Kuwait City,Martyr Asrar Al-Qabandi Bilingual School,Low,,f_pak
+1088,Kuwait,Kuwait City,New English School,High,Jabriya area,f_pak
+1089,Kuwait,Kuwait City,Nottingham British School,High,"Jleeb Al-Shuyoukh, Farwaniya governorate",f_pak
+1090,Kuwait,Kuwait City,Oxford Academy,Low,,f_pak
+1091,Kuwait,Salmiya,Rawd Al Saleheen,Medium,,f_pak
+1092,Kuwait,Salmiya,The English School Kuwait,Medium,"Possible duplicate of ""English School, The""",f_pak
+1093,Kuwait,Hawalli,Universal American School,High,,f_pak
+1094,Kyrgyzstan,Bishkek,Bishkek International School,High,,f_pak
+1095,Kyrgyzstan,Bishkek,Cambridge Silk Road IS Kyrgyzstan,Medium,,f_pak
+1096,Kyrgyzstan,Bishkek,Oxford International School,Medium,,f_pak
+1097,Kyrgyzstan,Bishkek,QSI Bishkek,High,,f_pak
+1098,Laos,Vientiane,Kiettisack International Schools,High,,f_pak
+1099,Laos,Vientiane,Vientiane International School,High,,f_pak
+1100,Latvia,Riga,Exupery International School,High,"Pinki, Riga suburb",f_pak
+1101,Latvia,Riga,International School Riga,High,,f_pak
+1102,Latvia,Riga,International School Latvia,High,"Pinki, Riga suburb",f_pak
+1103,Latvia,Riga,Kings College Latvia,High,,f_pak
+1104,Lebanon,Beirut,American Community School Beirut,High,,f_pak
+1105,Lebanon,Beirut,International College Beirut,High,,f_pak
+1106,Lebanon,Choueifat,International School of Chouiefat Beruit,High,"Source typos: Choueifat, Beirut; school is in Choueifat, south of Beirut",f_pak
+1107,Lebanon,Beirut,Wellspring Learning Community,High,,f_pak
+1108,Lesotho,Maseru,American International School of Lesotho,High,,f_pak
+1109,Lesotho,Maseru,Machabeng College Lesotho,High,,f_pak
+1110,Liberia,Monrovia,American International School of Monrovia,High,,f_pak
+1111,Libya,Tripoli,American School Tripoli,High,,f_pak
+1112,Libya,Benghazi,Benghazi European School,High,,f_pak
+1113,Libya,Benghazi,International School Benghazi,High,,f_pak
+1114,Libya,Tripoli,International School of Tripoli – GEMS,High,,f_pak
+1115,Lithuania,Vilnius,American International School Vilnius,High,,f_pak
+1116,Lithuania,Vilnius,British School Vilnius,High,,f_pak
+1117,Lithuania,Kaunas,Erudito Licėjus,Medium,Campuses in Kaunas and Vilnius,f_pak
+1118,Lithuania,Vilnius,Vilnius International School,High,,f_pak
+1119,Luxembourg,Luxembourg,International School of Luxembourg,High,,f_pak
+1120,Luxembourg,Luxembourg,St George's International School,High,,f_pak
+1121,Macau,Macau,Colégio Diocesano de São José 5,High,,f_pak
+1122,Macau,Macau,School of the Nations Macau,High,,f_pak
+1123,Macedonia,Skopje,Nova International School,High,,f_pak
+1124,Madagascar,Antananarivo,American School of Antananarivo,High,,f_pak
+1125,Malawi,Lilongwe,Acacia International School,Medium,,f_pak
+1126,Malawi,Lilongwe,Bishop Mackenzie International School,High,,f_pak
+1127,Malawi,Mzuzu,Mzuzu International Academy,High,,f_pak
+1128,Malawi,Blantyre,St. Andrew's International High School,High,,f_pak
+1129,Malawi,Blantyre,St. Andrew's International Primary School,High,,f_pak
+1130,Malawi,Zomba,Sir Harry Johnston International School,High,,f_pak
+1131,Malaysia,Kuala Lumpur,Alice Smith School,High,Primary in KL; secondary in Seri Kembangan,f_pak
+1132,Malaysia,Johor Bahru,Austin Heights International School,High,,f_pak
+1133,Malaysia,Seri Kembangan,Australian International School Malaysia,High,"Selangor, Greater KL",f_pak
+1134,Malaysia,Kajang,Beaconhouse Newlands International School,Medium,Selangor,f_pak
+1135,Malaysia,Kuala Lumpur,British International School Kuala Lumpur,High,,f_pak
+1136,Malaysia,Kuala Lumpur,Cempaka International School,High,Cheras,f_pak
+1137,Malaysia,Tawau,Charis International School,High,Sabah,f_pak
+1138,Malaysia,Kuala Lumpur,Charterhouse Malaysia,High,,f_pak
+1139,Malaysia,Penang,Dalat International School,High,"Tanjung Bungah, Penang Island",f_pak
+1140,Malaysia,Kajang,Eaton International School,Medium,Selangor,f_pak
+1141,Malaysia,Bandar Enstek,Epsom College,High,Negeri Sembilan,f_pak
+1142,Malaysia,Kuala Lumpur,EtonHouse Malaysia International School,Medium,,f_pak
+1143,Malaysia,Sungai Buloh,Excellence Loyalty Commitment School,High,"elc International School, Selangor",f_pak
+1144,Malaysia,Kuala Lumpur,Fairview International School,High,Group with multiple campuses; main KL campus given,f_pak
+1145,Malaysia,Johor Bahru,Forest City International School,High,"Forest City, Gelang Patah",f_pak
+1146,Malaysia,Kuala Lumpur,Garden International School,High,,f_pak
+1147,Malaysia,Penang,GEMS International Pearl City Penang,High,"Simpang Ampat, mainland Penang",f_pak
+1148,Malaysia,Kajang,GEMS International School Metropark,High,"Cheras Selatan, Selangor",f_pak
+1149,Malaysia,Shah Alam,Help International School,High,Subang Bestari,f_pak
+1150,Malaysia,Johor Bahru,International School Johor,Medium,,f_pak
+1151,Malaysia,Kuala Lumpur,International School Kuala Lumpur,High,,f_pak
+1152,Malaysia,Kuala Lumpur,International School ParkCity,High,,f_pak
+1153,Malaysia,Penang,International School Penang (Uplands),High,Batu Kawan,f_pak
+1154,Malaysia,Kuala Lumpur,Invictus International School Malaysia – Spring Hill,Medium,,f_pak
+1155,Malaysia,Kuala Lumpur,Junior Academy,Low,Could not identify,f_pak
+1156,Malaysia,Kota Kinabalu,Kinabalu International School,High,,f_pak
+1157,Malaysia,Cyberjaya,King Henry VIII College,High,,f_pak
+1158,Malaysia,Kuala Lumpur,Kingsgate International School,Medium,"Kingsgate International School, Mont Kiara",f_pak
+1159,Malaysia,Putra Heights,Kingsley International School,Medium,"Subang Jaya, Selangor",f_pak
+1160,Malaysia,Mantin,Kolej Tuanku Ja'afar,High,Negeri Sembilan,f_pak
+1161,Malaysia,Lembah Beringin,Kolej Yayasan UEM,High,Selangor,f_pak
+1162,Malaysia,Iskandar Puteri,Marlborough College,High,Johor,f_pak
+1163,Malaysia,Seremban,Matrix Global School,High,Bandar Sri Sendayan,f_pak
+1164,Malaysia,Kuala Lumpur,Mont' Kiara International School,High,,f_pak
+1165,Malaysia,Putrajaya,Nexus International School,High,,f_pak
+1166,Malaysia,Nilai,Nilai International School,High,,f_pak
+1167,Malaysia,Kajang,Nobel International School,Medium,Selangor,f_pak
+1168,Malaysia,Johor Bahru,Paragon Private and International School,High,,f_pak
+1169,Malaysia,Setia Alam,Peninsula International School,Medium,"Shah Alam area, Selangor",f_pak
+1170,Malaysia,Penang,Prince of Wales Island International School,High,Balik Pulau,f_pak
+1171,Malaysia,Iskandar Puteri,Raffles American School Malaysia,High,Johor,f_pak
+1172,Malaysia,Johor Bahru,Repton International School,High,Gelang Patah,f_pak
+1173,Malaysia,Kota Kinabalu,Sayfol International School Borneo,High,,f_pak
+1174,Malaysia,Johor Bahru,Seri Omega Private & International School,High,,f_pak
+1175,Malaysia,Petaling Jaya,Sri KDU International School,High,Kota Damansara,f_pak
+1176,Malaysia,Johor Bahru,Sri Utama International School,Medium,,f_pak
+1177,Malaysia,Kuala Lumpur,St. Joseph's Institution International Malaysia,High,"Tropicana Metropark, Subang Jaya",f_pak
+1178,Malaysia,Penang,Straits International School,High,Also Rawang campus,f_pak
+1179,Malaysia,Iskandar Puteri,Sunway International School Iskandar,High,,f_pak
+1180,Malaysia,Petaling Jaya,Sunway International School Kuala Lumpur,High,Bandar Sunway,f_pak
+1181,Malaysia,Kuala Lumpur,Taylor's International School,High,Also Puchong campus,f_pak
+1182,Malaysia,Ipoh,Tenby Schools Ipoh,High,,f_pak
+1183,Malaysia,Penang,Tenby Penang,High,,f_pak
+1184,Malaysia,Shah Alam,Tenby Schools Setia Eco Park,High,Setia Alam,f_pak
+1185,Malaysia,Johor Bahru,Tenby Setia Eco Gardens,High,,f_pak
+1186,Malaysia,Kuching,Tunku Putra,High,,f_pak
+1187,Malaysia,Port Dickson,UCSI International School,Medium,Also Subang Jaya campus,f_pak
+1188,Malaysia,Kampar,Westlake International School,High,Perak,f_pak
+1189,Maldives,Male,Ajial International School Maldives,Medium,,f_pak
+1190,Mali,Bamako,American International School Bamako,High,,pan_z
+1191,Malta,Pembroke,Verdala International School,High,,pan_z
+1192,Marshall Islands,Majuro,College of the Marshall Islands,High,,pan_z
+1193,Marshall Islands,Kwajalein,Kwajalein School System,High,,pan_z
+1194,Marshall Islands,Majuro,Majuro Cooperative School,High,,pan_z
+1195,Mauritania,Nouakchott,American International School Nouakchott,High,,pan_z
+1196,Mauritania,Nouakchott,TLC International School,Medium,,pan_z
+1197,Mauritius,Mapou,International Preparatory School,Medium,,pan_z
+1198,Mauritius,Mapou,Northfields International School,High,,pan_z
+1199,Mexico,Durango,American School Durango,High,,pan_z
+1200,Mexico,Tuxtla Gutierrez,American School Foundation of Chiapas,High,,pan_z
+1201,Mexico,Guadalajara,American School Foundation Guadalajara,High,,pan_z
+1202,Mexico,Mexico City,American School Foundation Mexico City,High,,pan_z
+1203,Mexico,Monterrey,American School Foundation Monterrey,High,,pan_z
+1204,Mexico,Pachuca,American School Pachuca,High,,pan_z
+1205,Mexico,Puebla,American School Puebla,High,,pan_z
+1206,Mexico,Tampico,American School of Tampico,High,,pan_z
+1207,Mexico,Torreon,American School Torreon,High,,pan_z
+1208,Mexico,Tuxtla Gutierrez,Canadian Center Tuxtla Gutierrez Chiapas,High,,pan_z
+1209,Mexico,Leon,Canadian School Leon,High,,pan_z
+1210,Mexico,Mexico City,Churchill School Mexico,High,,pan_z
+1211,Mexico,Torreon,Colegio Aleman de Torreon,High,,pan_z
+1212,Mexico,Mexico City,Colegio Atid Mexico City,High,,pan_z
+1213,Mexico,Monterrey,Colegio Ingles Monterrey,High,,pan_z
+1214,Mexico,Torreon,Colegio Ingles Torreon,High,,pan_z
+1215,Mexico,Monterrey,Colegio Madison,Medium,Group with multiple campuses; Monterrey given,pan_z
+1216,Mexico,Cuernavaca,Colegio Marymount,Medium,,pan_z
+1217,Mexico,Tepotzotlan,Colegio Mount Rushmore,High,State of Mexico,pan_z
+1218,Mexico,Mexico City,Colegios Peterson,High,Multiple campuses in Mexico City area,pan_z
+1219,Mexico,Mexico City,Edron Academy Mexico City,High,,pan_z
+1220,Mexico,Mexico City,Escuela Sierra Nevada,Medium,Interlomas/Huixquilucan campus,pan_z
+1221,Mexico,Mexico City,Eton School Mexico City,High,,pan_z
+1222,Mexico,Monterrey,Euroamerican School of Monterrey,High,,pan_z
+1223,Mexico,Mexico City,Greengates School Mexico City,High,,pan_z
+1224,Mexico,Mexico City,Humanitree,High,,pan_z
+1225,Mexico,Monterrey,"Instituto San Roberto, Monterrey",High,,pan_z
+1226,Mexico,Mexico City,Instituto Thomas Jefferson,Medium,Multiple campuses; Mexico City area,pan_z
+1227,Mexico,Queretaro,JFK American School Queretaro,High,,pan_z
+1228,Mexico,Queretaro,John F Kennedy School,Medium,Possible duplicate of JFK American School Queretaro,pan_z
+1229,Mexico,Mexico City,Lancaster School,Medium,,pan_z
+1230,Mexico,Merida,Madison International School Merida,High,,pan_z
+1231,Mexico,Guadalajara,Prepa Tec Guadalajara,High,,pan_z
+1232,Mexico,Isla Mujeres,Volunquest Isla Mujers,High,Source typo: Isla Mujeres,pan_z
+1233,Mexico,Mexico City,Westhill Institute,High,,pan_z
+1234,Mexico,Mexico City,Wingate School,Medium,,pan_z
+1235,Mexico,Mexico City,Winpenny School,High,,pan_z
+1236,Moldova,Chisinau,Heritage International School,High,,pan_z
+1237,Moldova,Chisinau,QSI International School of Chisinau,High,,pan_z
+1238,Monaco,Monaco,British School Monaco,High,,pan_z
+1239,Monaco,Monaco,International School of Monaco,High,,pan_z
+1240,Mongolia,Ulaanbaatar,American School of Ulaanbaatar,High,,pan_z
+1241,Mongolia,Ulaanbaatar,British School Ulaanbaatar,High,,pan_z
+1242,Mongolia,Ulaanbaatar,Canadian School Ulaanbaatar,High,,pan_z
+1243,Mongolia,Ulaanbaatar,English School Mongolia,High,,pan_z
+1244,Mongolia,Ulaanbaatar,International School of Ulaanbaatar,High,,pan_z
+1245,Mongolia,Ulaanbaatar,Jet International School,Medium,,pan_z
+1246,Mongolia,Ulaanbaatar,Orchlon International School,High,,pan_z
+1247,Montenegro,Tivat,Boka School International,Medium,,pan_z
+1248,Montenegro,Tivat,Knightsbridge School International,High,,pan_z
+1249,Morocco,Ifrane,Al Akhawayn School of Ifrane,High,,pan_z
+1250,Morocco,Casablanca,American Academy Casablanca,High,,pan_z
+1251,Morocco,Marrakesh,American School of Marrakesh,High,,pan_z
+1252,Morocco,Tangier,American School of Tangier,High,,pan_z
+1253,Morocco,Marrakesh,British Academy School Marrakech,High,,pan_z
+1254,Morocco,Casablanca,British International School Casablanca,High,,pan_z
+1255,Morocco,Casablanca,Casablanca American School,High,,pan_z
+1256,Morocco,Rabat,Dar Essalam American School,Medium,,pan_z
+1257,Morocco,Casablanca,George Washington Academy,High,,pan_z
+1258,Morocco,Casablanca,International School Morocco,Medium,,pan_z
+1259,Morocco,Casablanca,Khalil Gibran School,Low,,pan_z
+1260,Morocco,Casablanca,London Academy Casablanca,High,,pan_z
+1261,Morocco,Rabat,Rabat American School,High,,pan_z
+1262,Mozambique,Maputo,American International School,High,AIS of Mozambique,pan_z
+1263,Myanmar,Yangon,Asia Language and Business Academy (ALBA),Medium,,pan_z
+1264,Myanmar,Yangon,Ayeyarwaddy International School,Medium,,pan_z
+1265,Myanmar,Yangon,Brainworks – Total International School,High,,pan_z
+1266,Myanmar,Yangon,British School Yangon,High,,pan_z
+1267,Myanmar,Mandalay,Dagun International School,High,,pan_z
+1268,Myanmar,Yangon,Dulwich College Yangon,High,,pan_z
+1269,Myanmar,Mandalay,Higher Cambridge International School,High,,pan_z
+1270,Myanmar,Mandalay,Higher Champs International School,High,,pan_z
+1271,Myanmar,Yangon,International Language & Business Centre,High,ILBC; multiple campuses nationwide,pan_z
+1272,Myanmar,Mandalay,International School Mandalay,High,,pan_z
+1273,Myanmar,Yangon,International School Myanmar,High,,pan_z
+1274,Myanmar,Yangon,International School Yangon,High,,pan_z
+1275,Myanmar,Yangon,Leading Asia Myanmar International School,Medium,,pan_z
+1276,Myanmar,Mandalay,Mandalay International School Acumen,High,,pan_z
+1277,Myanmar,Yangon,Myanmar Interna'l Educational Services,Medium,Source abbreviation in name,pan_z
+1278,Myanmar,Yangon,Myanmar International School,High,,pan_z
+1279,Myanmar,Yangon,Myanmar International School Yangon,High,,pan_z
+1280,Myanmar,Naypyidaw,Naypyitaw International Science Academy,High,,pan_z
+1281,Myanmar,Yangon,Network International School,High,,pan_z
+1282,Myanmar,Yangon,Pride International School,Medium,Also has a Mandalay campus; main campus Yangon,pan_z
+1283,Myanmar,Yangon,Shu Khinn Thar International College,Medium,,pan_z
+1284,Myanmar,Yangon,Thalun International School,Medium,Also has a Mandalay campus; main campus Yangon,pan_z
+1285,Myanmar,Yangon,Yangon Academy International School,High,,pan_z
+1286,Myanmar,Yangon,Yangon International School,High,,pan_z
+1287,Namibia,Windhoek,Windhoek International,High,,pan_z
+1288,Nepal,Kathmandu,British School Kathmandu,High,,pan_z
+1289,Nepal,Kathmandu,Lincoln School,High,,pan_z
+1290,Netherlands,Rotterdam,American International School Rotterdam,High,,pan_z
+1291,Netherlands,Wassenaar,American School of the Hague,High,"Campus in Wassenaar, adjacent to The Hague",pan_z
+1292,Netherlands,The Hague,British School Netherlands,High,Multiple campuses in The Hague/Voorschoten/Leidschenveen,pan_z
+1293,Netherlands,Amstelveen,International School Amsterdam,High,"Located in Amstelveen, Amsterdam suburb",pan_z
+1294,Netherlands,Ommen,International School Eerde,High,,pan_z
+1295,Netherlands,Eindhoven,International School Eindhoven,High,,pan_z
+1296,Netherlands,Hilversum,International School Hilversum,High,,pan_z
+1297,Netherlands,The Hague,International School of the Hague,High,,pan_z
+1298,Netherlands,Apeldoorn,Wittenborg University of Applied Sciences,High,"University, not a school; also Amsterdam campus",pan_z
+1299,Nicaragua,Managua,American Nicaraguan School,High,,pan_z
+1300,Nicaragua,San Juan del Sur,San Juan del Sur Day School,High,,pan_z
+1301,Nicaragua,Managua,St. Augustine Preparatory School,High,,pan_z
+1302,Niger,Niamey,American International School of Niamey,High,,pan_z
+1303,Nigeria,Abuja,American International School of Abuja,High,,pan_z
+1304,Nigeria,Lagos,Ameican International School Lagos,High,"Typo on source: ""Ameican"" = American",pan_z
+1305,Nigeria,Lagos,British International School,High,"Lekki, Lagos",pan_z
+1306,Nigeria,Lagos,Children's International School,High,"Lekki, Lagos",pan_z
+1307,Nigeria,Abeokuta,Day Waterman College,High,"Asu, Ogun State near Abeokuta",pan_z
+1308,Nigeria,Abuja,Glisten International Academy,High,,pan_z
+1309,Nigeria,Ibadan,International School of IITA,High,,pan_z
+1310,Nigeria,Abuja,Jewels Leading Lights International,High,,pan_z
+1311,Nigeria,Kaduna,Kaduna International School,High,,pan_z
+1312,Nigeria,Lagos,Lekki British lnternational School Lagos,High,"Typo on source: ""lnternational""",pan_z
+1313,Nigeria,Lagos,MCF Demonstration Schools,Low,Could not confirm location,pan_z
+1314,Nigeria,Abuja,Regent School Abuja,High,,pan_z
+1315,Nigeria,Lagos,Saint Saviour's School Ikoyi,High,,pan_z
+1316,Nigeria,Calabar,Surefoot American International School,High,,pan_z
+1317,Nigeria,Abuja,Whiteplains British School,High,,pan_z
+1318,Northern Mariana Islands,Saipan,Saipan International School,High,,pan_z
+1319,Norway,Kristiansand,A+ World Academy,Medium,"Ship-based school (Sørlandet), home port Kristiansand",pan_z
+1320,Norway,Stavanger,British International School Stavanger,High,,pan_z
+1321,Norway,Fredrikstad,Children's International School,Medium,Group with several campuses; main campus Fredrikstad,pan_z
+1322,Norway,Gjøvik,Gjøvikregionen International School,High,,pan_z
+1323,Norway,Bergen,International School of Bergen,High,,pan_z
+1324,Norway,Stavanger,International School of Stavanger,High,,pan_z
+1325,Norway,Porsgrunn,International School Telemark,High,,pan_z
+1326,Norway,Kongsberg,Kongsberg International School,High,,pan_z
+1327,Norway,Oslo,Northern Lights International School,High,,pan_z
+1328,Norway,Oslo,Oslo International School,High,"Bekkestua, Bærum",pan_z
+1329,Norway,Sandefjord,Skagerak International School,High,,pan_z
+1330,Norway,Tromso,Tromso International School,High,,pan_z
+1331,Norway,Trondheim,Trondheim International School,High,,pan_z
+1332,Oman,Muscat,A'Soud Global School,Medium,"Group with Muscat, Salalah and Duqm campuses",pan_z
+1333,Oman,Muscat,ABA Oman International School,High,,pan_z
+1334,Oman,Sohar,Al Batinah International School,High,,pan_z
+1335,Oman,Muscat,Al Ibdaa International School,High,,pan_z
+1336,Oman,Muscat,Al Sahwa Schools,High,,pan_z
+1337,Oman,Muscat,Al Shomoukh International School,Medium,,pan_z
+1338,Oman,Muscat,American International School Muscat,High,,pan_z
+1339,Oman,Muscat,Assalam International Group,Low,,pan_z
+1340,Oman,Muscat,Azzan Bin Qais Private School,High,,pan_z
+1341,Oman,Muscat,British School Muscat,High,,pan_z
+1342,Oman,Salalah,British School Salalah,High,,pan_z
+1343,Oman,Muscat,Cheltenham Muscat,High,,pan_z
+1344,Oman,Muscat,Future Pioneers International School,Medium,,pan_z
+1345,Oman,Muscat,Gulf International School,High,,pan_z
+1346,Oman,Sur,Hay Al Sharooq International School,High,,pan_z
+1347,Oman,Jalan Bani Bu Ali,Jalan Private School,Low,,pan_z
+1348,Oman,Muscat,Knowledge Gate International School,High,,pan_z
+1349,Oman,Muscat,Muscat International School,High,,pan_z
+1350,Oman,Muscat,OurPlanet International School,High,,pan_z
+1351,Oman,Muscat,PDO School,High,Ras Al Hamra,pan_z
+1352,Oman,Muscat,Polyglot Institute,High,"Language institute, not a school",pan_z
+1353,Oman,Sur,Qabas Oman School,High,,pan_z
+1354,Oman,Muscat,Royal Guard of Oman Technical College,High,Seeb,pan_z
+1355,Oman,Muscat,Sarh Al Jaameah Private School,High,SQU campus,pan_z
+1356,Oman,Muscat,Seeb International School Muscat,High,,pan_z
+1357,Oman,Muscat,Sultan's School,High,Seeb,pan_z
+1358,Oman,Al Buraimi,Tawam International School,High,,pan_z
+1359,Oman,Muscat,United Private Schools,High,,pan_z
+1360,Oman,Nizwa,University of Nizwa,High,"University, not a school",pan_z
+1361,Pakistan,Lahore,International School Choueifat,High,,pan_z
+1362,Pakistan,Islamabad,International School Islamabad,High,,pan_z
+1363,Pakistan,Karachi,Karachi American School,High,,pan_z
+1364,Pakistan,Lahore,Lahore American School,High,,pan_z
+1365,Pakistan,Lahore,Lahore Grammar School,High,Group with many campuses,pan_z
+1366,Palestine,Gaza,American International School Gaza,High,,pan_z
+1367,Palestine,Nablus,Pioneers Baccalaureate School,High,,pan_z
+1368,Panama,Panama City,International School of Panama,High,,pan_z
+1369,Panama,Panama City,King's College,High,,pan_z
+1370,Panama,Panama City,Magen David Academy,High,,pan_z
+1371,Panama,Panama City,Metropolitan School of Panama,High,,pan_z
+1372,Panama,Panama City,The Casco School,High,,pan_z
+1373,Papua New Guinea,Port Moresby,Ela Murray International School,High,,pan_z
+1374,Papua New Guinea,Port Moresby,International Educational Agency IEA,High,Group operating schools nationwide; HQ Port Moresby,pan_z
+1375,Papua New Guinea,Port Moresby,Port Moresby International School,High,,pan_z
+1376,Paraguay,Asuncion,American School of Asuncion,High,,pan_z
+1377,Paraguay,Asuncion,Asuncion Christian Academy,High,,pan_z
+1378,Paraguay,Asuncion,Pan American International School,High,,pan_z
+1379,Peru,Lima,Colegio EuroAmericano,High,Pachacamac,pan_z
+1380,Peru,Lima,Colegio Peruano Britanico,High,,pan_z
+1381,Peru,Lima,Colegio Roosevelt Lima,High,,pan_z
+1382,Peru,Cajamarca,Davy College,High,,pan_z
+1383,Peru,Lima,Markham College,High,,pan_z
+1384,Peru,Lima,Newton College,High,,pan_z
+1385,Peru,Lima,San Silvestre School,High,,pan_z
+1386,Philippines,Subic Bay,American International School Subic,High,Subic Bay Freeport Zone (Olongapo area),pan_z
+1387,Philippines,Subic Bay,Brent International School Subic,High,Subic Bay Freeport Zone,pan_z
+1388,Philippines,Manila,Brent International Schools,High,"Group; main campus Biñan, Laguna (Metro Manila area)",pan_z
+1389,Philippines,Manila,British School Manila Philippines,High,,pan_z
+1390,Philippines,Cebu,Cebu International School,High,,pan_z
+1391,Philippines,Manila,German European School Manila,High,,pan_z
+1392,Philippines,Cebu,Harvest Christian School International Cebu,High,,pan_z
+1393,Philippines,Manila,International School Manila,High,,pan_z
+1394,Philippines,Manila,King's School Manila,High,,pan_z
+1395,Philippines,Manila,Mahatma Gandhi International,High,Pasay City,pan_z
+1396,Philippines,Angeles City,Noblesse International School,High,,pan_z
+1397,Philippines,Manila,Reedley International School,High,Pasig City,pan_z
+1398,Philippines,Angeles City,Saint Paul American School,High,Clark Freeport Zone,pan_z
+1399,Poland,Warsaw,American School of Warsaw,High,,pan_z
+1400,Poland,Lodz,British International School of the University of Lodz,High,,pan_z
+1401,Poland,Warsaw,British School Warsaw,High,,pan_z
+1402,Poland,Krakow,Embassy International School Krakow,High,,pan_z
+1403,Poland,Warsaw,International American School Warsaw,High,,pan_z
+1404,Poland,Krakow,International School Krakow,High,,pan_z
+1405,Poland,Warsaw,International School Warsaw,High,,pan_z
+1406,Poland,Warsaw,International Trilingual School Warsaw,High,,pan_z
+1407,Poland,Wroclaw,IPS International School,High,Also a Rzeszow campus; main Wroclaw,pan_z
+1408,Poland,Warsaw,Vancouver Schools,High,,pan_z
+1409,Poland,Poznan,World International School,High,"Suchy Las, Poznan",pan_z
+1410,Poland,Wroclaw,Wroclaw Cosmopolitan School,High,,pan_z
+1411,Poland,Wroclaw,Wroclaw International School,High,,pan_z
+1412,Portugal,Lisbon,Brave Generation Academy,Medium,Hub network; HQ Lisbon area,pan_z
+1413,Portugal,Sintra,Carlucci American International School,High,"Linhó, Sintra",pan_z
+1414,Portugal,Joinville,Escao Internacional SOCIESC,Medium,"Listed under wrong country on source: SOCIESC is in Joinville, Brazil; name typo (Escola)",pan_z
+1415,Portugal,Cascais,International Christian School of Cascais,High,,pan_z
+1416,Portugal,Funchal,International Sharing School Madeira,High,,pan_z
+1417,Portugal,Oeiras,International Sharing School Taguspark,High,,pan_z
+1418,Portugal,Cascais,King's College School Cascais,High,,pan_z
+1419,Portugal,Oeiras,Oeiras International School,High,,pan_z
+1420,Portugal,Almancil,Park International School,High,Algarve,pan_z
+1421,Portugal,Estoril,Santo António International School,High,Cascais municipality,pan_z
+1422,Portugal,Cascais,St. Dominic's International School,High,São Domingos de Rana,pan_z
+1423,Portugal,Cascais,St. Julian's School,High,Carcavelos,pan_z
+1424,Portugal,Palmela,St. Peter's International School,High,,pan_z
+1425,Portugal,Sintra,TASIS Portugal,High,"Linhó, Sintra",pan_z
+1426,Portugal,Lisbon,United Lisbon International School,High,,pan_z
+1427,Puerto Rico,Guayama,Guamani Private School,High,,pan_z
+1428,Puerto Rico,Dorado,TASIS Dorado,High,,pan_z
+1429,Qatar,Doha,Academic Bridge Program,High,Qatar Foundation,pan_z
+1430,Qatar,Doha,ACS Doha International School,High,,pan_z
+1431,Qatar,Doha,Al Arqam Academy,High,,pan_z
+1432,Qatar,Doha,Al Jazeera Academy Doha,High,,pan_z
+1433,Qatar,Al Khor,Al Khor International School,High,,pan_z
+1434,Qatar,Doha,Al Maha Academy for Boys,High,,pan_z
+1435,Qatar,Doha,Al Maha Adademy for Girls,High,"Typo on source: ""Adademy""",pan_z
+1436,Qatar,Doha,American School of Doha,High,,pan_z
+1437,Qatar,Doha,Awsaj Academy,High,,pan_z
+1438,Qatar,Doha,Blyth Academy,High,,pan_z
+1439,Qatar,Doha,Cambridge International School Qatar,High,,pan_z
+1440,Qatar,Doha,Cambridge School Doha,High,,pan_z
+1441,Qatar,Doha,Cedars School (Tutoring),Medium,,pan_z
+1442,Qatar,Al Khor,Compass International School Al Khor,High,,pan_z
+1443,Qatar,Doha,Compass International Schools Doha,High,,pan_z
+1444,Qatar,Doha,Doha Academy,High,,pan_z
+1445,Qatar,Doha,Doha British School,High,,pan_z
+1446,Qatar,Doha,Doha College,High,,pan_z
+1447,Qatar,Doha,Doha English Speaking School,High,,pan_z
+1448,Qatar,Dukhan,Dukhan English Academy Doha,Medium,Name says both Dukhan and Doha; Dukhan English School is in Dukhan,pan_z
+1449,Qatar,Doha,Durham School for Girls,High,,pan_z
+1450,Qatar,Doha,Edison International Academy,High,,pan_z
+1451,Qatar,Al Khor,English Modern School Al Khor,High,,pan_z
+1452,Qatar,Al Wakra,English Modern School Al Wakra,High,,pan_z
+1453,Qatar,Doha,English Modern School Doha,High,,pan_z
+1454,Qatar,Doha,Etqan Global Academy,High,,pan_z
+1455,Qatar,Doha,Foundation Program Qatar University,High,,pan_z
+1456,Qatar,Doha,GEMS American Academy Qatar,High,,pan_z
+1457,Qatar,Doha,GEMS Wellington School Qatar,High,,pan_z
+1458,Qatar,Doha,Gulf English School,High,,pan_z
+1459,Qatar,Doha,Hamilton International School,High,,pan_z
+1460,Qatar,Doha,Hayat Universal Bilingual School,High,,pan_z
+1461,Qatar,Doha,International School London,High,"ISL Qatar, Doha",pan_z
+1462,Qatar,Doha,King's College Doha,High,,pan_z
+1463,Qatar,Mesaieed,Mesaieed International School,High,,pan_z
+1464,Qatar,Doha,Michael E DeBakey High School Qatar,High,,pan_z
+1465,Qatar,Doha,Newton British School,High,,pan_z
+1466,Qatar,Doha,Newton International Academy,High,,pan_z
+1467,Qatar,Doha,Newton International Academy Smash,High,,pan_z
+1468,Qatar,Doha,Newton International School,High,,pan_z
+1469,Qatar,Doha,Newton International School D Ring,High,,pan_z
+1470,Qatar,Al Khor,Nord Anglia International School Al Khor,High,,pan_z
+1471,Qatar,Doha,Pearling Season International British School,High,,pan_z
+1472,Qatar,Al Khor,Qatar Academy Al Khor,High,,pan_z
+1473,Qatar,Al Wakra,Qatar Academy Al Wakra,High,,pan_z
+1474,Qatar,Doha,Qatar Academy Doha,High,,pan_z
+1475,Qatar,Doha,Qatar Academy Sidra,High,,pan_z
+1476,Qatar,Doha,Qatar Canadian School,High,,pan_z
+1477,Qatar,Doha,Qatar International School,High,,pan_z
+1478,Qatar,Doha,Qatar Leadership Academy,High,Al Khor area (Qatar Foundation); commonly listed as Doha,pan_z
+1479,Qatar,Doha,Royal Guildford Grammar School,Medium,,pan_z
+1480,Qatar,Doha,SEK International School,High,,pan_z
+1481,Qatar,Doha,Sherborne,High,Sherborne Qatar,pan_z
+1482,Qatar,Doha,Supreme Education Council,High,"Government body, not a school",pan_z
+1483,Qatar,Doha,Swiss International School Qatar,High,,pan_z
+1484,Qatar,Doha,United School International,Medium,,pan_z
+1485,Qatar,Doha,Valley Forge Academy Qatar,High,,pan_z
+1486,Qatar,Doha,Vision International School,High,,pan_z
+1487,Romania,Bucharest,American International School Bucharest,High,,pan_z
+1488,Romania,Bucharest,Avenor College Bucharest,High,,pan_z
+1489,Romania,Timisoara,British International School Timisoara,High,,pan_z
+1490,Romania,Bucharest,British School Bucharest,High,,pan_z
+1491,Romania,Bucharest,Cambridge School Bucharest,High,,pan_z
+1492,Romania,Bucharest,Fundatia International British School,High,,pan_z
+1493,Romania,Bucharest,International School Bucharest,High,,pan_z
+1494,Romania,Cluj-Napoca,Transylvania College,High,,pan_z
+1495,Romania,Bucharest,Verita School,High,,pan_z
+1496,Russia,Yelabuga,Alabuga International School,High,"Alabuga SEZ, Tatarstan",pan_z
+1497,Russia,Moscow,Anglo-American School Moscow,High,,pan_z
+1498,Russia,Kazan,Bala-City International School,High,,pan_z
+1499,Russia,Moscow,British International School Moscow,High,,pan_z
+1500,Russia,Moscow,Brookes Moscow,High,,pan_z
+1501,Russia,Saint Petersburg,Brookes St. Petersburg,High,,pan_z
+1502,Russia,Moscow,Cambridge International School,High,Group; main campus Moscow,pan_z
+1503,Russia,Moscow,E. M. Primakov Gymnasium,High,"Odintsovo, Moscow region",pan_z
+1504,Russia,Moscow,English International School Moscow,High,,pan_z
+1505,Russia,Moscow,English Nursery and Primary School,High,,pan_z
+1506,Russia,Moscow,Heritage International School Moscow,High,,pan_z
+1507,Russia,Saint Petersburg,Insight School Saint Petersburg,High,,pan_z
+1508,Russia,Kazan,International School Kazan,High,,pan_z
+1509,Russia,Moscow,International School Moscow,High,,pan_z
+1510,Russia,Moscow,Riverside International Primary School Moscow,High,,pan_z
+1511,Rwanda,Kigali,Green Hills Academy,High,,pan_z
+1512,Rwanda,Kigali,International School Kigali,High,,pan_z
+1513,Saint Martin,Cupecoy,Caribbean International Academy,High,Located in Sint Maarten (Dutch side),pan_z
+1514,Saint Martin,Philipsburg,St. Maarten International School,Low,Sint Maarten (Dutch side); exact town not confirmed,pan_z
+1515,Saudi Arabia,Jeddah,Advanced Generations Schools,High,,pan_z
+1516,Saudi Arabia,Riyadh,Advanced Learning Schools,High,,pan_z
+1517,Saudi Arabia,Riyadh,Al Forsan International Schools,Medium,,pan_z
+1518,Saudi Arabia,Taif,Al Hada International School,High,,pan_z
+1519,Saudi Arabia,Riyadh,Al Tarbia Al Islamia School Riyadh,High,,pan_z
+1520,Saudi Arabia,Riyadh,Alalameen International School,High,,pan_z
+1521,Saudi Arabia,Riyadh,Aldenham Prep School,High,,pan_z
+1522,Saudi Arabia,Riyadh,Alfaris International School,High,,pan_z
+1523,Saudi Arabia,Jeddah,American International School Jeddah,High,,pan_z
+1524,Saudi Arabia,Riyadh,American International School Riyadh,High,,pan_z
+1525,Saudi Arabia,Jeddah,Andalus International School,Medium,,pan_z
+1526,Saudi Arabia,Riyadh,Artal Preparatory School,High,,pan_z
+1527,Saudi Arabia,Khamis Mushait,Asir Academy,High,,pan_z
+1528,Saudi Arabia,Al Khobar,Bayan Gardens School,High,,pan_z
+1529,Saudi Arabia,Al Khobar,British International School Al Khobar,High,,pan_z
+1530,Saudi Arabia,Jeddah,British International School Jeddah,High,,pan_z
+1531,Saudi Arabia,Riyadh,British International School Riyadh,High,,pan_z
+1532,Saudi Arabia,Riyadh,Brooke House College Riyadh,High,,pan_z
+1533,Saudi Arabia,Dhahran,Dhahran Ahliyya Schools,High,,pan_z
+1534,Saudi Arabia,Riyadh,Downe House Riyadh,High,,pan_z
+1535,Saudi Arabia,Riyadh,Future Window International School,High,,pan_z
+1536,Saudi Arabia,Hail,Hail University,High,"University, not a school",pan_z
+1537,Saudi Arabia,Riyadh,International Institute for Languages,Medium,"Language institute, not a school",pan_z
+1538,Saudi Arabia,Al Khobar,International Programs School,High,,pan_z
+1539,Saudi Arabia,Tabuk,International School Tabuk,High,,pan_z
+1540,Saudi Arabia,Dhahran,ISG – American School Dhahran,High,,pan_z
+1541,Saudi Arabia,Dhahran,ISG – British School Dhahran,High,,pan_z
+1542,Saudi Arabia,Dhahran,ISG Dhahran,High,,pan_z
+1543,Saudi Arabia,Dhahran,ISG Dhahran High School,High,,pan_z
+1544,Saudi Arabia,Jubail,ISG Jubail School,High,,pan_z
+1545,Saudi Arabia,Yanbu,Yanbu International School,High,,pan_z
+1546,Saudi Arabia,Jeddah,Jeddah Knowledge School,High,,pan_z
+1547,Saudi Arabia,Jeddah,Jeddah Prep and Grammar School,High,,pan_z
+1548,Saudi Arabia,Jeddah,Jeddah Private International School,High,,pan_z
+1549,Saudi Arabia,Thuwal,Kaust School at King Abdullah University,High,,pan_z
+1550,Saudi Arabia,Riyadh,King Faisal School,High,,pan_z
+1551,Saudi Arabia,Riyadh,King's College Riyadh,High,,pan_z
+1552,Saudi Arabia,Riyadh,Kingdom Schools,High,,pan_z
+1553,Saudi Arabia,Riyadh,M-Trading & Recruitment Solution,Low,Not a school (recruitment company); location unconfirmed,pan_z
+1554,Saudi Arabia,Riyadh,Misk Schools,High,,pan_z
+1555,Saudi Arabia,Hofuf,Nada International School,High,Al Ahsa,pan_z
+1556,Saudi Arabia,Jeddah,Nahda Academy,Medium,,pan_z
+1557,Saudi Arabia,NEOM,NEOM Community School No.1,High,Tabuk Province,pan_z
+1558,Saudi Arabia,Riyadh,Nobles International School,High,,pan_z
+1559,Saudi Arabia,Jeddah,Nun Academy,High,,pan_z
+1560,Saudi Arabia,Unaizah,Pnaizah Female College,Medium,"Typo on source: ""Pnaizah"" = Unaizah; college, not a school",pan_z
+1561,Saudi Arabia,Al Khobar,Prince Mohammad bin Fahd University,High,"University, not a school",pan_z
+1562,Saudi Arabia,Riyadh,Reigate Grammar School Riyadh,High,,pan_z
+1563,Saudi Arabia,Riyadh,Riyadh Schools,High,,pan_z
+1564,Saudi Arabia,Dammam,Rowad Al Khaleej,High,,pan_z
+1565,Saudi Arabia,Dhahran,Saudi Aramco Schools,High,Group; HQ Dhahran,pan_z
+1566,Saudi Arabia,Riyadh,SEK International School Riyadh,High,,pan_z
+1567,Saudi Arabia,Riyadh,Tarbiyah Namouthajiyah Schools,High,,pan_z
+1568,Saudi Arabia,King Abdullah Economic City,The World Academy,High,Rabigh area,pan_z
+1569,Saudi Arabia,Jeddah,Waad Academy School,High,,pan_z
+1570,Senegal,Dakar,International School Dakar,High,,pan_z
+1571,Serbia,Belgrade,Britannica International School Belgrade,High,,pan_z
+1572,Serbia,Belgrade,British International School Belgrade,High,,pan_z
+1573,Serbia,Belgrade,Brook Hill International School,High,,pan_z
+1574,Serbia,Belgrade,International School Belgrade,High,,pan_z
+1575,Seychelles,Victoria,International School Seychelles,High,,pan_z
+1576,Singapore,Singapore,Anglo Chinese School International,High,,pan_z
+1577,Singapore,Singapore,Australian International School,High,,pan_z
+1578,Singapore,Singapore,Brighton College Singapore,High,,pan_z
+1579,Singapore,Singapore,Canadian International School,High,,pan_z
+1580,Singapore,Singapore,Chatsworth International School,High,,pan_z
+1581,Singapore,Singapore,Chinese International School,High,,pan_z
+1582,Singapore,Singapore,Dover Court Preparatory School,High,,pan_z
+1583,Singapore,Singapore,Etonhouse International School Broadrick,High,,pan_z
+1584,Singapore,Singapore,EtonHouse International School Orchard,High,,pan_z
+1585,Singapore,Singapore,Etonhouse International School Singapore,High,,pan_z
+1586,Singapore,Johor Bahru,Excelsior International School,Medium,"Listed under wrong country on source: Excelsior International School is in Johor Bahru, Malaysia",pan_z
+1587,Singapore,Singapore,GEMS World Academy,High,,pan_z
+1588,Singapore,Singapore,German European School Singapore,High,,pan_z
+1589,Singapore,Singapore,International Community School,High,,pan_z
+1590,Singapore,Singapore,International French School,High,,pan_z
+1591,Singapore,Singapore,International School Singapore,High,,pan_z
+1592,Singapore,Singapore,Invictus International School,High,,pan_z
+1593,Singapore,Singapore,Nexus International School Singapore,High,,pan_z
+1594,Singapore,Singapore,North London Collegiate School Singapore,High,,pan_z
+1595,Singapore,Singapore,NPS International School,High,,pan_z
+1596,Singapore,Singapore,One World International School,High,,pan_z
+1597,Singapore,Singapore,Overseas Family School,High,,pan_z
+1598,Singapore,Singapore,Singapore American School,High,,pan_z
+1599,Singapore,Singapore,Singapore Korean International School,High,,pan_z
+1600,Singapore,Singapore,St. Joseph´s Institution International,High,,pan_z
+1601,Singapore,Singapore,Stamford American International,High,,pan_z
+1602,Singapore,Singapore,Tanglin Trust School,High,,pan_z
+1603,Singapore,Singapore,The Perse School Singapore,High,,pan_z
+1604,Singapore,Singapore,United World College Southeast Asia,High,,pan_z
+1605,Singapore,Singapore,XCL World Academy,High,,pan_z
+1606,Slovakia,Bratislava,Cambridge International School,High,,pan_z
+1607,Slovakia,Bratislava,Galileo School Bratislava,High,,pan_z
+1608,Slovakia,Trnava,Private Bilingual High School BESST,High,,pan_z
+1609,Slovakia,Bratislava,QSI International School Bratislava,High,,pan_z
+1610,Slovakia,Kosice,QSI International School of Kosice,High,,pan_z
+1611,Slovenia,Ljubljana,British International School of Ljubljana,High,,pan_z
+1612,Slovenia,Ljubljana,International School of Ljubljana,High,,pan_z
+1613,Solomon Islands,Honiara,Woodford International School,High,,pan_z
+1614,Somalia (to include Somaliland),Abaarso,Abaarso School of Science and Technology,High,"village near Hargeisa, Somaliland",pan_z
+1615,South Africa,Johannesburg,African Leadership Academy,High,"Honeydew, Roodepoort",pan_z
+1616,South Africa,Cape Town,American International School Cape Town,High,,pan_z
+1617,South Africa,Johannesburg,American International Johannesburg,High,also Pretoria campus,pan_z
+1618,South Africa,Johannesburg,Dayspring International Cambridge,Low,could not verify location,pan_z
+1619,South Africa,Mahikeng,International School South Africa,High,Mafikeng,pan_z
+1620,Spain,Almunecar,Almunecar International School,High,,pan_z
+1621,Spain,Altea,Altea International School,High,,pan_z
+1622,Spain,Palma,American International School Mallorca,High,"Marratxi, Mallorca",pan_z
+1623,Spain,Barcelona,American School Barcelona,High,Esplugues de Llobregat,pan_z
+1624,Spain,Bilbao,American School Bilbao,High,Berango,pan_z
+1625,Spain,Las Palmas,American School Las Palmas,High,,pan_z
+1626,Spain,Madrid,American School Madrid,High,,pan_z
+1627,Spain,Valencia,American School Valencia,High,Pucol,pan_z
+1628,Spain,Madrid,Aquinas American School,High,,pan_z
+1629,Spain,Malaga,Atlas American School Malaga,High,,pan_z
+1630,Spain,Palma,Baleares International College,Medium,"Calvia, Mallorca",pan_z
+1631,Spain,Palma,Bellver International College,High,,pan_z
+1632,Spain,Barcelona,Benjamin Franklin International School,High,,pan_z
+1633,Spain,Benalmadena,British College Benalmadena,High,,pan_z
+1634,Spain,Valencia,British College La Cañada,High,Paterna,pan_z
+1635,Spain,Madrid,British Council School Madrid,High,Pozuelo de Alarcon,pan_z
+1636,Spain,Alicante,British School Alicante,High,,pan_z
+1637,Spain,Almeria,British School Alimeria,High,typo on source: Alimeria,pan_z
+1638,Spain,Barcelona,British School Barcelona,High,Castelldefels,pan_z
+1639,Spain,Cordoba,British School Cordoba,High,,pan_z
+1640,Spain,Barcelona,British College Gava,High,Gava,pan_z
+1641,Spain,Lanzarote,British School Lanzarote,High,Costa Teguise,pan_z
+1642,Spain,Valencia,British School Valencia,High,,pan_z
+1643,Spain,Las Palmas,Canterbury School,High,,pan_z
+1644,Spain,Santiago de Compostela,Chester College International School,High,Oroso,pan_z
+1645,Spain,Lanzarote,Colegio Hispano Britanico Lanzarote,High,Tahiche,pan_z
+1646,Spain,Seville,Colegio San Francisco de Paula,High,,pan_z
+1647,Spain,Benidorm,Costa Blanca International College,High,,pan_z
+1648,Spain,Castellon,Elians British School Castellon,High,,pan_z
+1649,Spain,La Nucia,Elians British School La Nucia,High,,pan_z
+1650,Spain,Barcelona,Emilio Sanchez International School,High,,pan_z
+1651,Spain,Sitges,Escaan International School,High,,pan_z
+1652,Spain,Salou,Escola International Camp Salou,High,Escola Internacional del Camp,pan_z
+1653,Spain,Palma,Green Valley School,High,Mallorca,pan_z
+1654,Spain,Sant Cugat del Valles,GRESOL International-American School,High,Barcelona area,pan_z
+1655,Spain,Madrid,Holy Mary Catholic School,Medium,,pan_z
+1656,Spain,Valencia,Home School Internaciónal,High,Paterna,pan_z
+1657,Spain,Madrid,International College,Medium,"International College Spain, Alcobendas",pan_z
+1658,Spain,Castellon,International English School Castellon,High,,pan_z
+1659,Spain,Madrid,International School Madrid,High,,pan_z
+1660,Spain,Madrid,Kensington School Madrid,High,Pozuelo de Alarcon,pan_z
+1661,Spain,Alicante,King's College – British School Alicante,High,,pan_z
+1662,Spain,Madrid,King's College – Madrid Soto de Vinuelas,High,Tres Cantos,pan_z
+1663,Spain,Murcia,King's College – Murcia,High,,pan_z
+1664,Spain,Palma,King Richard III College Mallorca,High,"Portals Nous, Mallorca",pan_z
+1665,Spain,Palma,Mallorca International School,Medium,"Santa Ponsa, Mallorca",pan_z
+1666,Spain,Ibiza,Morna International College,High,Santa Eularia,pan_z
+1667,Spain,Las Palmas,Oakley College,High,,pan_z
+1668,Spain,Vigo,O Castro British School,High,,pan_z
+1669,Spain,Lanzarote,Queens School Lanzarote Canary Islands,High,,pan_z
+1670,Spain,Manacor,Rafa Nadal International School,High,Mallorca,pan_z
+1671,Spain,Jerez de la Frontera,Sage College – British International School Jerez,High,,pan_z
+1672,Spain,Sotogrande,Sotogrande International School,High,,pan_z
+1673,Spain,Madrid,St. Anne's School,High,,pan_z
+1674,Spain,Fuengirola,St. Anthony's Fuengirola,High,,pan_z
+1675,Spain,Madrid,St. Michael's School,Medium,,pan_z
+1676,Spain,Torremolinos,Sunny View School,High,,pan_z
+1677,Spain,Marbella,Swans International School,High,,pan_z
+1678,Spain,Madrid,The Global College,High,,pan_z
+1679,Spain,Tenerife,Wingate School,High,"Cabo Blanco, Arona",pan_z
+1680,Sri Lanka,Colombo,Colombo International School,High,,pan_z
+1681,Sri Lanka,Galle,Galle International College,High,,pan_z
+1682,Sri Lanka,Colombo,The British School in Colombo,High,,pan_z
+1683,Sri Lanka,Colombo,The Overseas School of Colombo,High,,pan_z
+1684,Sudan,Khartoum,Khartoum American School,High,,pan_z
+1685,Sudan,Khartoum,Khartoum International Community School,High,,pan_z
+1686,Sudan,Khartoum,Nile Valley School,Medium,,pan_z
+1687,Sudan,Khartoum,Nova International School,Medium,,pan_z
+1688,Sudan,Khartoum,Sudan Oxford Academy,Medium,,pan_z
+1689,Sudan,Khartoum,Unity High School Khartoum,High,,pan_z
+1690,Sweden,Malmo,Bladins International School,High,,pan_z
+1691,Sweden,Stockholm,Internationella Engelska Skolan,Medium,group with many campuses across Sweden; HQ Stockholm,pan_z
+1692,Sweden,Malmo,Malmo International School,High,,pan_z
+1693,Sweden,Stockholm,The English School South Stockholm,High,,pan_z
+1694,Switzerland,Basel,Bilingual Kids Academy International School,High,BKA International School,pan_z
+1695,Switzerland,Villars-sur-Ollon,College Alpin Beau Soleil,High,,pan_z
+1696,Switzerland,Geneva,Collège du Léman,High,Versoix,pan_z
+1697,Switzerland,Lugano,The American School,Low,ambiguous; likely duplicate of TASIS Lugano,pan_z
+1698,Switzerland,Etoy,GEMS Academy Etoy,High,,pan_z
+1699,Switzerland,St. Gallen,Institut auf dem Rosenberg,High,,pan_z
+1700,Switzerland,Geneva,Institut International de Lancy,High,Lancy,pan_z
+1701,Switzerland,Zurich,Inter-Community School,High,,pan_z
+1702,Switzerland,Basel,International School Basel,High,Reinach,pan_z
+1703,Switzerland,Bern,International School of Berne,High,Gumligen,pan_z
+1704,Switzerland,Zug,International School Central Switzerland,High,Cham,pan_z
+1705,Switzerland,Geneva,International School Geneva – Campus des Nations,High,,pan_z
+1706,Switzerland,Geneva,International School Geneva – La Châtaigneraie,High,Founex,pan_z
+1707,Switzerland,Geneva,International School Geneva – La Grande Boissière,High,,pan_z
+1708,Switzerland,Lausanne,International School Lausanne,High,,pan_z
+1709,Switzerland,Lugano,International School Ticino,High,Cadempino,pan_z
+1710,Switzerland,Zug,International School Zug and Luzern,High,"group; Zug main campus, also Lucerne",pan_z
+1711,Switzerland,Gstaad,John F. Kennedy International School,High,Saanen,pan_z
+1712,Switzerland,Villars-sur-Ollon,La Garenne International School,High,,pan_z
+1713,Switzerland,Rolle,Le Rosey,High,,pan_z
+1714,Switzerland,Leysin,Leysin American School,High,,pan_z
+1715,Switzerland,Zurich,Lyceum American School,Low,could not verify school,pan_z
+1716,Switzerland,Montreux,St. George's School,High,Clarens,pan_z
+1717,Switzerland,Basel,Swiss International School Basel,High,,pan_z
+1718,Switzerland,Zurich,Swiss International School Zurich North,High,Wallisellen,pan_z
+1719,Switzerland,Lugano,The American School in Switzerland,High,TASIS,pan_z
+1720,Switzerland,Zurich,Zurich International School,High,,pan_z
+1721,Syria,Damascus,Damascus Community School,High,,pan_z
+1722,Syria,Aleppo,ICARDA International School of Aleppo,High,,pan_z
+1723,Taiwan,Hsinchu,American Montessori School Hsinchu,High,,pan_z
+1724,Taiwan,Taichung,American School in Taichung,High,,pan_z
+1725,Taiwan,Taipei,Asia American International Academy,Medium,"Linkou, New Taipei",pan_z
+1726,Taiwan,Taipei,Columbia International College Taiwan,Low,could not verify location,pan_z
+1727,Taiwan,Taichung,Cornel English School,High,,pan_z
+1728,Taiwan,Kaohsiung,Dominican International School Kaohsiung,High,,pan_z
+1729,Taiwan,Taipei,Dominican International School Taipei,High,,pan_z
+1730,Taiwan,Hsinchu,Hsinchu (Holland) International School,High,,pan_z
+1731,Taiwan,Hsinchu,Hsinchu American School,High,,pan_z
+1732,Taiwan,Hsinchu,Hsinchu County American School,High,Zhubei,pan_z
+1733,Taiwan,Kaohsiung,I-Shou International School,High,,pan_z
+1734,Taiwan,Tainan,International Bilingual School Tainan Science Park,High,,pan_z
+1735,Taiwan,Hsinchu,International Bilingual School of Hsinchu,High,,pan_z
+1736,Taiwan,Taichung,Ivy Collegiate Academy Taiwan,High,,pan_z
+1737,Taiwan,Nantou,Juntou International School,High,,pan_z
+1738,Taiwan,Taipei,Kang Chiao International School,High,"Xindian, New Taipei",pan_z
+1739,Taiwan,Kaohsiung,Kaohsiung American School,High,,pan_z
+1740,Taiwan,Taipei,LUYA Academy Taiwan,High,New Taipei City,pan_z
+1741,Taiwan,Taichung,Mingdao High School,High,,pan_z
+1742,Taiwan,Tainan,National Nanke International Experimental,High,,pan_z
+1743,Taiwan,Hsinchu,Pacific American School,High,,pan_z
+1744,Taiwan,Taipei,Taipei American School,High,,pan_z
+1745,Taiwan,Taipei,Taipei European School,High,,pan_z
+1746,Taiwan,Taipei,Taipei Kuei Shan School,High,,pan_z
+1747,Taiwan,Taipei,Tsai Hsing Private School,High,,pan_z
+1748,Tanzania,Dar es Salaam,Aga Khan,Medium,Aga Khan Mzizima Secondary School,pan_z
+1749,Tanzania,Arusha,Braeburn School Arusha,High,,pan_z
+1750,Tanzania,Dar es Salaam,Braeburn Dar es Salaam,High,,pan_z
+1751,Tanzania,Dar es Salaam,Dar Es Salaam International School,High,,pan_z
+1752,Tanzania,Moshi,International School Moshi,High,now UWC East Africa,pan_z
+1753,Tanzania,Dar es Salaam,International School Tanganyika,High,,pan_z
+1754,Tanzania,Zanzibar,International School Zanzibar,High,,pan_z
+1755,Tanzania,Mwanza,Isamilo International School,High,,pan_z
+1756,Tanzania,Morogoro,Morogoro International School,High,,pan_z
+1757,Tanzania,Dodoma,One Planet School Dodoma,High,,pan_z
+1758,Tanzania,Arusha,Peace Matunda School,Medium,,pan_z
+1759,Tanzania,Shinyanga,Savannah Plains International School,High,,pan_z
+1760,Tanzania,Arusha,St. Constantine's International School,High,,pan_z
+1761,Tanzania,Tanga,Tanga International School,High,,pan_z
+1762,Tanzania,Moshi,United World College East Africa,High,Moshi and Arusha campuses,pan_z
+1763,Thailand,Chiang Mai,American Pacific International School,High,,pan_z
+1764,Thailand,Bangkok,American School Bangkok,High,,pan_z
+1765,Thailand,Rayong,American School Bangkok – Green Valley,High,Ban Chang,pan_z
+1766,Thailand,Bangkok,Amnuay Silpa Bilingual School Bangkok,High,,pan_z
+1767,Thailand,Bangkok,Anglo Singapore International School,High,,pan_z
+1768,Thailand,Bangkok,Apple Tree International Kindergarten,Medium,,pan_z
+1769,Thailand,Bangkok,Ascot International School,High,,pan_z
+1770,Thailand,Sriracha,Assumption College Sriracha,High,,pan_z
+1771,Thailand,Bangkok,Australian International School Bangkok,High,,pan_z
+1772,Thailand,Bangkok,Bangkok Patana School,High,,pan_z
+1773,Thailand,Bangkok,Bangkok Preparatory International School,High,,pan_z
+1774,Thailand,Bangkok,BASIS International School Bangkok,High,,pan_z
+1775,Thailand,Bangkok,Beaconhouse Yamsaard School Ladprao,High,,pan_z
+1776,Thailand,Bangkok,Berkeley International School,High,,pan_z
+1777,Thailand,Hat Yai,Bloomsbury School,Medium,,pan_z
+1778,Thailand,Bangkok,Bright Future International Training and Services,Low,"BFITS is a teacher-placement company, not a school",pan_z
+1779,Thailand,Bangkok,Brighton College Bangkok,High,,pan_z
+1780,Thailand,Bangkok,British Columbia International Bangkok,High,,pan_z
+1781,Thailand,Phuket,British International School Phuket,High,,pan_z
+1782,Thailand,Bangkok,Bromsgrove International School,High,,pan_z
+1783,Thailand,Bangkok,Canadian International School Thailand,High,,pan_z
+1784,Thailand,Bangkok,Charter International School,High,,pan_z
+1785,Thailand,Chiang Mai,Chiang Mai International School,High,,pan_z
+1786,Thailand,Chiang Rai,Chiang Rai International School,High,,pan_z
+1787,Thailand,Bangkok,Concordian International School,High,Samut Prakan,pan_z
+1788,Thailand,Bangkok,Denla British School,High,Nonthaburi,pan_z
+1789,Thailand,Bangkok,Early Learning Centre,Medium,,pan_z
+1790,Thailand,Bangkok,Garden International School Bangkok,High,,pan_z
+1791,Thailand,Rayong,Garden International School Rayong,High,,pan_z
+1792,Thailand,Koh Lanta,Global Village School Lanta,High,,pan_z
+1793,Thailand,Bangkok,Harrow International School,High,,pan_z
+1794,Thailand,Phuket,HeadStart International School,High,,pan_z
+1795,Thailand,Bangkok,Heathfield International School,High,,pan_z
+1796,Thailand,Bangkok,International Community School Bangkok,High,,pan_z
+1797,Thailand,Bangkok,International Pioneers School,High,,pan_z
+1798,Thailand,Bangkok,International School Bangkok,High,"Pak Kret, Nonthaburi",pan_z
+1799,Thailand,Chonburi,International School Chonburi,High,,pan_z
+1800,Thailand,Rayong,International School Eastern Seaboard,High,Ban Chang,pan_z
+1801,Thailand,Phuket,Kajonkietsuksa School Group,High,,pan_z
+1802,Thailand,Bangkok,Keera-Pat International School,High,,pan_z
+1803,Thailand,Bangkok,Kensington International School,High,,pan_z
+1804,Thailand,Bangkok,King Mongkhut International Demonstration School,High,,pan_z
+1805,Thailand,Bangkok,King's College International School Bangkok,High,,pan_z
+1806,Thailand,Bangkok,KIS International School,High,,pan_z
+1807,Thailand,Chiang Mai,Lanna International School,High,,pan_z
+1808,Thailand,Bangkok,Magic Years International School,Medium,Nonthaburi,pan_z
+1809,Thailand,Nakhon Pathom,Mahidol University International Demonstration School,High,"Salaya, Bangkok metro",pan_z
+1810,Thailand,Bangkok,Mandarin International School,Medium,,pan_z
+1811,Thailand,Bangkok,Meritton British International School,Medium,,pan_z
+1812,Thailand,Pattaya,Mooltripakdee International School,High,,pan_z
+1813,Thailand,Chiang Mai,Nakornpayap International School,High,,pan_z
+1814,Thailand,Bangkok,New Sathorn International School,High,,pan_z
+1815,Thailand,Bangkok,NIST International School,High,,pan_z
+1816,Thailand,Bangkok,Norwich International School,Medium,,pan_z
+1817,Thailand,Bangkok,Pan Asia International School,High,,pan_z
+1818,Thailand,Chiang Mai,Panyaden International School,High,,pan_z
+1819,Thailand,Koh Samui,PBISS International School,High,,pan_z
+1820,Thailand,Bangkok,Prasarnmit Primary International Programme,High,,pan_z
+1821,Thailand,Chiang Mai,Prem Center International Chiangmai,High,,pan_z
+1822,Thailand,Bangkok,Prep International Academy,Medium,Prep International Kindergarten,pan_z
+1823,Thailand,Phuket,QSI International School Phuket,High,,pan_z
+1824,Thailand,Bangkok,Raffles American School Bangkok,High,,pan_z
+1825,Thailand,Bangkok,Rasami British International School,High,,pan_z
+1826,Thailand,Bangkok,Regent's International School Bangkok,High,,pan_z
+1827,Thailand,Pattaya,Regent's School Pattaya,High,,pan_z
+1828,Thailand,Bangkok,Roong Aroon International School,High,,pan_z
+1829,Thailand,Bangkok,Ruamrudee International School Bangkok,High,,pan_z
+1830,Thailand,Chonburi,Rugby School,High,"Rugby School Thailand, Ban Chang area",pan_z
+1831,Thailand,Chiang Mai,Satit International Bilingual School of Rangsit University Chiang Mai,High,,pan_z
+1832,Thailand,Koh Samui,SCL International School Koh Samui,High,,pan_z
+1833,Thailand,Bangkok,Shrewsbury International School Bangkok,High,,pan_z
+1834,Thailand,Bangkok,Siam International School,Medium,"Thanyaburi, Pathum Thani",pan_z
+1835,Thailand,Roi Et,Silver Fern International School,High,,pan_z
+1836,Thailand,Bangkok,Singapore International School Bangkok,High,,pan_z
+1837,Thailand,Hat Yai,Southern International School Hatyai,High,,pan_z
+1838,Thailand,Rayong,St. Andrews International Green Valley,High,Ban Chang,pan_z
+1839,Thailand,Bangkok,St. Andrews International School Sukhumvit 107,High,,pan_z
+1840,Thailand,Bangkok,St. Andrews International Sukhumvit 71,High,,pan_z
+1841,Thailand,Bangkok,St. John Mary International School,Medium,,pan_z
+1842,Thailand,Bangkok,St. John's International School,High,,pan_z
+1843,Thailand,Bangkok,St. Stephen's International School,High,also Khao Yai campus,pan_z
+1844,Thailand,Thung Song,Tantiwatra School,High,"Nakhon Si Thammarat; Thai school, not international",pan_z
+1845,Thailand,Bangkok,Thai-Chinese International School Bangplee,High,"Bang Phli, Samut Prakan",pan_z
+1846,Thailand,Bangkok,Thai-Japanese Association School Bangkok,High,,pan_z
+1847,Thailand,Bang Saen,Tonlew International School,High,Chonburi; Tonlew International Kindergarten,pan_z
+1848,Thailand,Bangkok,Topsy Turvy British School Bangkok,High,,pan_z
+1849,Thailand,Bangkok,Traill International School,High,,pan_z
+1850,Thailand,Bangkok,Trinity International School Bangkok,High,,pan_z
+1851,Thailand,Udon Thani,Udon Thani International School,High,,pan_z
+1852,Thailand,Phuket,United World College,High,UWC Thailand,pan_z
+1853,Thailand,Chiang Mai,Unity Concord International School,High,,pan_z
+1854,Thailand,Chiang Mai,Varee Chiang Mai International,High,,pan_z
+1855,Thailand,Bangkok,VERSO International School,High,Samut Prakan,pan_z
+1856,Thailand,Bangkok,Wellington College International School Bangkok,High,,pan_z
+1857,Thailand,Bangkok,Wells International School,High,,pan_z
+1858,Togo,Lome,Arc en Ciel Ecole Internationale,High,,pan_z
+1859,Togo,Lome,British School of Lome,High,,pan_z
+1860,Trinidad & Tobago,Port of Spain,International School of Port of Spain,High,,pan_z
+1861,Trinidad & Tobago,Port of Spain,Maple Leaf International School Trinidad,High,Westmoorings,pan_z
+1862,Trinidad & Tobago,Chaguanas,Trillium International of Trinidad &Tobago,High,,pan_z
+1863,Tunisia,Tunis,American Cooperative School Tunis,High,,pan_z
+1864,Tunisia,Tunis,British Academy Tunis,High,,pan_z
+1865,Tunisia,Tunis,British International School Tunis,High,,pan_z
+1866,Tunisia,Tunis,English International School Tunis,High,,pan_z
+1867,Tunisia,Tunis,Kheireddine Tunisian International School,Medium,,pan_z
+1868,Turkey,Istanbul,Aci Pre & Primary Schools Istanbul,High,,pan_z
+1869,Turkey,Izmir,American Collegiate Institute,High,,pan_z
+1870,Turkey,Erzurum,Bilkent Erzurum Laboratory School,High,,pan_z
+1871,Turkey,Ankara,Bilkent Laboratory & International School,High,,pan_z
+1872,Turkey,Istanbul,British International School,High,,pan_z
+1873,Turkey,Bursa,Cakir Schools,High,,pan_z
+1874,Turkey,Istanbul,Enka Okullari Istanbul,High,,pan_z
+1875,Turkey,Istanbul,Eyuboglu Schools K-12,High,,pan_z
+1876,Turkey,Istanbul,Final Okullari Cekmekoy,High,,pan_z
+1877,Turkey,Istanbul,Hisar School,High,,pan_z
+1878,Turkey,Izmir,Isikkent School Izmir,High,,pan_z
+1879,Turkey,Istanbul,Istanbul International Community School,High,,pan_z
+1880,Turkey,Istanbul,ISTEK Foundation,High,group with multiple campuses,pan_z
+1881,Turkey,Istanbul,Keystone International School,High,,pan_z
+1882,Turkey,Istanbul,Kok School Istanbul,High,,pan_z
+1883,Turkey,Istanbul,MEF International School Istanbul,High,,pan_z
+1884,Turkey,Izmir,MEF International School Izmir,High,,pan_z
+1885,Turkey,Ankara,Nesibe Aydin,High,,pan_z
+1886,Turkey,Gaziantep,Private Sanko Schools Gaziantep,High,,pan_z
+1887,Turkey,Istanbul,Robert College Istanbul,High,,pan_z
+1888,Turkey,Istanbul,SEV American College,High,Tuzla,pan_z
+1889,Turkey,Izmir,SEV Izmir,High,,pan_z
+1890,Turkey,Istanbul,Tarabya British Schools,High,,pan_z
+1891,Turkey,Tarsus,Tarsus American College,High,,pan_z
+1892,Turkey,Ankara,TED Ankara College Foundation,High,,pan_z
+1893,Turkey,Istanbul,TED College Istanbul (TED Istanbul Koleji),High,,pan_z
+1894,Turkey,Gebze,Tevitol High School,High,Kocaeli,pan_z
+1895,Turkey,Istanbul,Uskudar American Acad. & SEV Elementary,High,,pan_z
+1896,Turkey,Gaziantep,Zirve University,High,"university, not a school",pan_z
+1897,Turkmenistan,Ashgabat,Ashgabat International School,High,,pan_z
+1898,Uganda,Kampala,7Hills International School,High,,pan_z
+1899,Uganda,Kampala,Acorns International School,High,,pan_z
+1900,Uganda,Kampala,Galaxy International School,High,,pan_z
+1901,Uganda,Kampala,GEMS Cambridge International School Kampala,High,,pan_z
+1902,Uganda,Kampala,International School of Uganda,High,Lubowa,pan_z
+1903,Uganda,Kampala,Kampala International School,High,,pan_z
+1904,Ukraine,Kyiv,British International School Kyiv,High,,pan_z
+1905,Ukraine,Kyiv,Kyiv International,High,,pan_z
+1906,Ukraine,Kyiv,Pechersk School International,High,,pan_z
+1907,United Arab Emirates,Abu Dhabi,Abu Dhabi International Private School,High,,pan_z
+1908,United Arab Emirates,Abu Dhabi,Abu Dhabi National Oil Company (ADNOC),High,ADNOC Schools,pan_z
+1909,United Arab Emirates,Ajman,Ajman Academy,High,,pan_z
+1910,United Arab Emirates,Abu Dhabi,Ajyal International School,High,,pan_z
+1911,United Arab Emirates,Al Ain,Al Ain British Academy,High,,pan_z
+1912,United Arab Emirates,Al Ain,Al Ain English Speaking School,High,,pan_z
+1913,United Arab Emirates,Al Ain,Al Ain Juniors School,High,,pan_z
+1914,United Arab Emirates,Abu Dhabi,Al Basma British School,High,,pan_z
+1915,United Arab Emirates,Dubai,Al Fanar School,High,,pan_z
+1916,United Arab Emirates,Dubai,Al Ittihad Private School Jumeirah,High,,pan_z
+1917,United Arab Emirates,Sharjah,Al Ma'arifa International School,High,,pan_z
+1918,United Arab Emirates,Abu Dhabi,Al Maharat Private School,High,,pan_z
+1919,United Arab Emirates,Dubai,Al Mizhar American Academy,High,,pan_z
+1920,United Arab Emirates,Abu Dhabi,Al Nahda National School Abu Dhabi,High,,pan_z
+1921,United Arab Emirates,Abu Dhabi,Al Rabeeh Academy,High,,pan_z
+1922,United Arab Emirates,Abu Dhabi,Al Raha International Abu Dhabi,High,,pan_z
+1923,United Arab Emirates,Abu Dhabi,Al Rayana School,Medium,,pan_z
+1924,United Arab Emirates,Abu Dhabi,Al Shohub Private School,Medium,,pan_z
+1925,United Arab Emirates,Sharjah,Al Shola American School,Medium,,pan_z
+1926,United Arab Emirates,Abu Dhabi,Al Worood Academy Private School,High,,pan_z
+1927,United Arab Emirates,Abu Dhabi,Al Yasmina School Abu Dhabi,High,,pan_z
+1928,United Arab Emirates,Abu Dhabi,Aldar Academies,High,group with multiple campuses; all in Abu Dhabi,pan_z
+1929,United Arab Emirates,Abu Dhabi,American Community School Abu Dhabi,High,,pan_z
+1930,United Arab Emirates,Abu Dhabi,American International School,Medium,ambiguous name; assumed AIS Abu Dhabi,pan_z
+1931,United Arab Emirates,Al Ain,American National School Al Ain,High,,pan_z
+1932,United Arab Emirates,Dubai,American School Dubai,High,,pan_z
+1933,United Arab Emirates,Abu Dhabi,Amity International School,Medium,Amity has Abu Dhabi and Dubai campuses; Abu Dhabi given,pan_z
+1934,United Arab Emirates,Dubai,Arab Unity School,High,,pan_z
+1935,United Arab Emirates,Sharjah,Australian International School Sharjah,High,,pan_z
+1936,United Arab Emirates,Dubai,Bloom World Academy Dubai,High,,pan_z
+1937,United Arab Emirates,Dubai,Bradenton Preparatory Academy,High,,pan_z
+1938,United Arab Emirates,Abu Dhabi,Brighton College Abu Dhabi,High,,pan_z
+1939,United Arab Emirates,Al Ain,Brighton College Al Ain,High,,pan_z
+1940,United Arab Emirates,Dubai,Brighton College Dubai,High,,pan_z
+1941,United Arab Emirates,Dubai,British Institute for Learning Development,Medium,,pan_z
+1942,United Arab Emirates,Abu Dhabi,British International School,Medium,ambiguous name; assumed British International School Abu Dhabi,pan_z
+1943,United Arab Emirates,Abu Dhabi,Canadian International School Abu Dhabi,High,,pan_z
+1944,United Arab Emirates,Dubai,Capital School,Medium,,pan_z
+1945,United Arab Emirates,Abu Dhabi,CfBT Abu Dhabi,High,,pan_z
+1946,United Arab Emirates,Dubai,Clarion School Dubai,High,,pan_z
+1947,United Arab Emirates,Dubai,Collegiate International School,High,,pan_z
+1948,United Arab Emirates,Abu Dhabi,Cranleigh Abu Dhabi,High,,pan_z
+1949,United Arab Emirates,Dubai,Deira International School,High,,pan_z
+1950,United Arab Emirates,Abu Dhabi,Diyar International Private School,Medium,,pan_z
+1951,United Arab Emirates,Dubai,Dubai American Scientific Academy,High,,pan_z
+1952,United Arab Emirates,Dubai,Dubai English Speaking College,High,,pan_z
+1953,United Arab Emirates,Dubai,Dubai International Academy,High,,pan_z
+1954,United Arab Emirates,Dubai,Dubai International Private School,High,,pan_z
+1955,United Arab Emirates,Dubai,Dubai Schools Al Barsha,High,,pan_z
+1956,United Arab Emirates,Dubai,Dwight School Dubai,High,,pan_z
+1957,United Arab Emirates,Abu Dhabi,Elite Private School,Medium,,pan_z
+1958,United Arab Emirates,Dubai,Emirates International School Jumeirah,High,,pan_z
+1959,United Arab Emirates,Dubai,Emirates International School Meadows,High,,pan_z
+1960,United Arab Emirates,Abu Dhabi,Emirates National School Abu Dhabi,High,,pan_z
+1961,United Arab Emirates,Al Ain,Emirates National School Al Ain,High,,pan_z
+1962,United Arab Emirates,Ras Al Khaimah,Emirates National School Ras Al Khaimah,High,,pan_z
+1963,United Arab Emirates,Dubai,English College Dubai,High,,pan_z
+1964,United Arab Emirates,Al Ain,Garden City British School Al Ain,High,,pan_z
+1965,United Arab Emirates,Dubai,GEMS Al Barsha National School,High,,pan_z
+1966,United Arab Emirates,Abu Dhabi,GEMS American Academy-Abu Dhabi,High,,pan_z
+1967,United Arab Emirates,Dubai,GEMS American Academy Dubai,High,usually named GEMS Dubai American Academy,pan_z
+1968,United Arab Emirates,Abu Dhabi,GEMS Cambridge International School,Medium,GEMS Cambridge has Abu Dhabi and Sharjah campuses; Abu Dhabi given,pan_z
+1969,United Arab Emirates,Dubai,GEMS Founders School Al Barsha,High,,pan_z
+1970,United Arab Emirates,Dubai,GEMS International School Al Khail,High,,pan_z
+1971,United Arab Emirates,Dubai,GEMS Metropole School,High,,pan_z
+1972,United Arab Emirates,Abu Dhabi,GEMS Sheikh Zayed Private Academy,Medium,,pan_z
+1973,United Arab Emirates,Dubai,GEMS United School,High,,pan_z
+1974,United Arab Emirates,Dubai,GEMS Wellington International School,High,,pan_z
+1975,United Arab Emirates,Dubai,GEMS Wellington Primary School,High,,pan_z
+1976,United Arab Emirates,Abu Dhabi,GEMS World Academy Abu Dhabi,High,,pan_z
+1977,United Arab Emirates,Dubai,GEMS World Academy Dubai,High,,pan_z
+1978,United Arab Emirates,Dubai,Greenfield International School Dubai,High,,pan_z
+1979,United Arab Emirates,Dubai,Horizon School Dubai,High,,pan_z
+1980,United Arab Emirates,Dubai,Ignite School,Medium,,pan_z
+1981,United Arab Emirates,Abu Dhabi,Institute of Applied Technology,Medium,multiple campuses across UAE; Abu Dhabi HQ given,pan_z
+1982,United Arab Emirates,Abu Dhabi,International Community School City Centre,Medium,,pan_z
+1983,United Arab Emirates,Dubai,International Montessori Nursery,Low,,pan_z
+1984,United Arab Emirates,Dubai,International School Choueifat,Medium,"group with campuses in Abu Dhabi, Dubai, Sharjah, Al Ain, RAK; Dubai given",pan_z
+1985,United Arab Emirates,Dubai,Jumeria Baccalaureate School,High,source typo: Jumeirah Baccalaureate School,pan_z
+1986,United Arab Emirates,Dubai,Kings' School Dubai,High,,pan_z
+1987,United Arab Emirates,Dubai,Kent College Dubai,High,,pan_z
+1988,United Arab Emirates,Al Ain,LIWA International School,High,,pan_z
+1989,United Arab Emirates,Al Ain,MADAR International School Al Ain,High,,pan_z
+1990,United Arab Emirates,Al Ain,Manor Hall International School,High,,pan_z
+1991,United Arab Emirates,Dubai,Maplewood International School,Medium,,pan_z
+1992,United Arab Emirates,Abu Dhabi,Mosaica Education Abu Dhabi,High,,pan_z
+1993,United Arab Emirates,Dubai,Next Generation School,Medium,,pan_z
+1994,United Arab Emirates,Dubai,Nord Anglia International School Dubai,High,,pan_z
+1995,United Arab Emirates,Abu Dhabi,Noya British School,High,,pan_z
+1996,United Arab Emirates,Dubai,Ontario International Canadian School,Medium,,pan_z
+1997,United Arab Emirates,Sharjah,PACE British School,Medium,,pan_z
+1998,United Arab Emirates,Dubai,Raffles International School,High,,pan_z
+1999,United Arab Emirates,Dubai,Raffles World Academy,High,,pan_z
+2000,United Arab Emirates,Abu Dhabi,Raha International School,High,,pan_z
+2001,United Arab Emirates,Ras Al Khaimah,Ras Al Khaimah Academy,High,,pan_z
+2002,United Arab Emirates,Ras Al Khaimah,Ras Al Khaimah English School BC,High,,pan_z
+2003,United Arab Emirates,Abu Dhabi,Reach British School,High,,pan_z
+2004,United Arab Emirates,Dubai,Regent International School,High,,pan_z
+2005,United Arab Emirates,Abu Dhabi,Repton Abu Dhabi,High,,pan_z
+2006,United Arab Emirates,Dubai,Repton School Dubai,High,,pan_z
+2007,United Arab Emirates,Sharjah,Scholars International Academy,Medium,,pan_z
+2008,United Arab Emirates,Dubai,School of Research Science,High,,pan_z
+2009,United Arab Emirates,Dubai,School of Modern Skills,Medium,,pan_z
+2010,United Arab Emirates,Sharjah,Sharjah American International School,High,,pan_z
+2011,United Arab Emirates,Sharjah,Sharjah English School,High,,pan_z
+2012,United Arab Emirates,Dubai,Sheffield Private School,High,,pan_z
+2013,United Arab Emirates,Dubai,South View School,Medium,,pan_z
+2014,United Arab Emirates,Dubai,Star International School Al Twar,High,,pan_z
+2015,United Arab Emirates,Dubai,Swiss International Scientific School Dubai,High,,pan_z
+2016,United Arab Emirates,Abu Dhabi,Taaleem Charter Schools – Al Nayfa,Medium,,pan_z
+2017,United Arab Emirates,Dubai,The Aquila School,High,,pan_z
+2018,United Arab Emirates,Dubai,The Arbor School,High,,pan_z
+2019,United Arab Emirates,Dubai,Universal American School,High,,pan_z
+2020,United Arab Emirates,Dubai,Uptown International School,High,,pan_z
+2021,United Arab Emirates,Sharjah,Victoria International School – Sharjah,High,,pan_z
+2022,United Arab Emirates,Sharjah,Wesgreen International Private School,High,,pan_z
+2023,United States of America,Atlanta,Atlanta International School,High,,pan_z
+2024,United States of America,Boston,British International School Boston,High,,pan_z
+2025,United States of America,Chicago,British International School Chicago,High,,pan_z
+2026,United States of America,Houston,British International School Houston,High,"campus in Katy, Houston area",pan_z
+2027,United States of America,New York,British International School New York,High,,pan_z
+2028,United States of America,Washington,British International School of Washington,High,,pan_z
+2029,United States of America,New York,EF International Academy,Medium,"multiple campuses (New York, Pasadena); New York given",pan_z
+2030,United States of America,Los Angeles,Elan International School,Medium,,pan_z
+2031,United States of America,Boston,International School Boston,High,"campus in Cambridge, MA",pan_z
+2032,United States of America,Indianapolis,International School of Indiana,High,,pan_z
+2033,United States of America,Monterey,International School of Monterey,High,"campus in Seaside, CA",pan_z
+2034,United States of America,Palo Alto,International School of the Peninsula,High,,pan_z
+2035,United States of America,Tucson,"International School Tucson, Arizona",High,,pan_z
+2036,United States of America,Berkeley,Shu Ren International School California,High,,pan_z
+2037,United States of America,Stevenson,St. Timothy's School Maryland,Medium,"Stevenson, Maryland (Baltimore area)",pan_z
+2038,United States of America,New York,Think Global School,Medium,travelling school with no fixed campus; New York HQ given,pan_z
+2039,United States of America,New York,United Nations International School,High,,pan_z
+2040,United States of America,Shanghai,Vermont International Academy USA/China,Medium,"listed under USA on source; school is located in Shanghai, China",pan_z
+2041,United States of America,Washington,Washington International School,High,,pan_z
+2042,Uruguay,Montevideo,British School Uruguay,High,,pan_z
+2043,Uruguay,Punta del Este,International College Punta del Este,High,,pan_z
+2044,Uruguay,Montevideo,Uruguayan American School,High,,pan_z
+2045,U.S. Virgin Islands,Frederiksted,Good Hope School St. Croix,Medium,St. Croix,pan_z
+2046,U.S. Virgin Islands,Charlotte Amalie,Virgin Islands Montessori School & Peter Gruber International Academy,Medium,St. Thomas,pan_z
+2047,Uzbekistan,Tashkent,Al Beruniy International School,Medium,,pan_z
+2048,Uzbekistan,Tashkent,British School Tashkent,High,,pan_z
+2049,Uzbekistan,Tashkent,Canadian School Tashkent,High,,pan_z
+2050,Uzbekistan,Tashkent,Cambridge International School Tashkent,High,,pan_z
+2051,Uzbekistan,Tashkent,Invento The Uzbek International School,Medium,,pan_z
+2052,Uzbekistan,Tashkent,Maple Bear School Uzbekistan,Medium,,pan_z
+2053,Uzbekistan,Tashkent,Oxbridge International School,High,,pan_z
+2054,Uzbekistan,Tashkent,Presidential School Tashkent,High,,pan_z
+2055,Uzbekistan,Tashkent,Tashkent International School,High,,pan_z
+2056,Uzbekistan,Tashkent,Tashkent Ulugbek International School,High,,pan_z
+2057,Uzbekistan,Tashkent,Westminster International School,High,,pan_z
+2058,Venezuela,Anaco,Anzoategui International School,Medium,,pan_z
+2059,Venezuela,Caracas,British School Caracas,High,,pan_z
+2060,Venezuela,Valencia,Colegio Internacional de Carabobo,High,,pan_z
+2061,Venezuela,Puerto La Cruz,Colegio Internacional Puerto La Cruz,High,campus in Lecheria,pan_z
+2062,Venezuela,Caracas,Colegio International de Caracas,High,source typo: Colegio Internacional de Caracas,pan_z
+2063,Venezuela,Anaco,Escuela Anaco,High,,pan_z
+2064,Venezuela,Maracaibo,Escuela Bella Vista Maracaibo,High,,pan_z
+2065,Venezuela,Caracas,Escuela Campo Alegre,High,,pan_z
+2066,Venezuela,Ciudad Ojeda,Escuela Las Morochas,Medium,,pan_z
+2067,Venezuela,Maturin,International School Monagas,Medium,,pan_z
+2068,Venezuela,El Tigre,QSI International School of El Tigre,High,,pan_z
+2069,Vietnam,Ho Chi Minh City,ABC International,High,,pan_z
+2070,Vietnam,Ho Chi Minh City,Academic Colleges Group (ACG),Medium,,pan_z
+2071,Vietnam,Ho Chi Minh City,American International School,Medium,ambiguous name; assumed American International School Vietnam (Saigon),pan_z
+2072,Vietnam,Ho Chi Minh City,American School of Vietnam,High,,pan_z
+2073,Vietnam,Ho Chi Minh City,APU International School,Medium,also has Da Nang campus,pan_z
+2074,Vietnam,Ho Chi Minh City,Australian International School Saigon,High,,pan_z
+2075,Vietnam,Ho Chi Minh City,Brighton College Vietnam,High,,pan_z
+2076,Vietnam,Hanoi,British International School Hanoi,High,,pan_z
+2077,Vietnam,Ho Chi Minh City,British International School Ho Chi Minh City,High,,pan_z
+2078,Vietnam,Hanoi,British Vietnamese International School Hanoi,High,,pan_z
+2079,Vietnam,Ho Chi Minh City,British Vietnamese International School Ho Chi Minh City,High,,pan_z
+2080,Vietnam,Ho Chi Minh City,Canadian International School,High,,pan_z
+2081,Vietnam,Lao Cai,Canadian International School Lao Cai,High,,pan_z
+2082,Vietnam,Hanoi,Concordia International School Hanoi,High,,pan_z
+2083,Vietnam,Hanoi,Delta Global School,Medium,,pan_z
+2084,Vietnam,Ho Chi Minh City,Einstein School Ho Chi Minh City,High,,pan_z
+2085,Vietnam,Ho Chi Minh City,Emasi School Van Phuc City,High,"Van Phuc City, Thu Duc",pan_z
+2086,Vietnam,Ho Chi Minh City,European International School,High,,pan_z
+2087,Vietnam,Hanoi,Hanoi International School,High,,pan_z
+2088,Vietnam,Hanoi,Hanoi Toronto School,High,,pan_z
+2089,Vietnam,Bac Ninh,Him Lam International School,Medium,campus in Bac Ninh (near Hanoi),pan_z
+2090,Vietnam,Hoi An,Hoi An International School,High,,pan_z
+2091,Vietnam,Hanoi,International School @ ParkCity Hanoi,High,,pan_z
+2092,Vietnam,Ho Chi Minh City,International School Ho Chi Minh City American Academy,High,,pan_z
+2093,Vietnam,Ho Chi Minh City,International School Ho Chi Minh City,High,,pan_z
+2094,Vietnam,Ho Chi Minh City,International School Saigon Pearl,High,,pan_z
+2095,Vietnam,Ho Chi Minh City,International Schools of North America,Medium,,pan_z
+2096,Vietnam,Hanoi,Japanese International School,Medium,,pan_z
+2097,Vietnam,Hanoi,Korea Global School Hanoi,High,,pan_z
+2098,Vietnam,Ho Chi Minh City,Lawrence S. Ting School,High,,pan_z
+2099,Vietnam,Haiphong,QSI International School Haiphong,High,,pan_z
+2100,Vietnam,Hanoi,Reigate Grammar School,High,,pan_z
+2101,Vietnam,Ho Chi Minh City,Renaissance International School,High,,pan_z
+2102,Vietnam,Ho Chi Minh City,Sedbergh Vietnam,High,BCIS campus,pan_z
+2103,Vietnam,Ho Chi Minh City,Saigon South International,High,,pan_z
+2104,Vietnam,Ho Chi Minh City,Saigon Star International School,High,,pan_z
+2105,Vietnam,Ho Chi Minh City,Schools of North America,Medium,,pan_z
+2106,Vietnam,Ho Chi Minh City,Singapore International School – Kinder World,Medium,group with many campuses across Vietnam; HCMC given,pan_z
+2107,Vietnam,Ho Chi Minh City,Smartkids International Childcare Centre,Medium,,pan_z
+2108,Vietnam,Bien Hoa,SNA Marianapolis International School,Medium,,pan_z
+2109,Vietnam,Hanoi,St. Mary's International School,Medium,,pan_z
+2110,Vietnam,Da Nang,St. Nicholas International School,Medium,,pan_z
+2111,Vietnam,Hanoi,St. Paul American School,Medium,,pan_z
+2112,Vietnam,Ho Chi Minh City,Taipei School Ho Chi Minh City,High,,pan_z
+2113,Vietnam,Ho Chi Minh City,Tesla Education,Medium,,pan_z
+2114,Vietnam,Hanoi,The Dewey Schools,Medium,group with multiple campuses; Hanoi given,pan_z
+2115,Vietnam,Hanoi,True North International School,High,,pan_z
+2116,Vietnam,Hanoi,TH School,High,,pan_z
+2117,Vietnam,Ho Chi Minh City,Vietnam Australia International School,High,,pan_z
+2118,Vietnam,Hanoi,VinSchool,Medium,group with many campuses; Hanoi given,pan_z
+2119,Vietnam,Hanoi,VIP International School – Alfred Nobel HS,Medium,,pan_z
+2120,Vietnam,Hanoi,Wellspring International Bilingual School,Medium,also has HCMC (Saigon) campus; Hanoi given,pan_z
+2121,Vietnam,Ho Chi Minh City,Western Australian International School System,High,,pan_z
+2122,Vietnam,Hanoi,Westlink International School,High,,pan_z
+2123,West Indies,Providenciales,British West Indies Collegiate,High,located in Turks and Caicos Islands,pan_z
+2124,West Indies,St. John's,Island Academy Antigua,High,Antigua and Barbuda,pan_z
+2125,Yemen,Taiz,Mohammed Ali Othman National School,High,,pan_z
+2126,Yemen,Sanaa,Sanaa British School,High,,pan_z
+2127,Yemen,Sanaa,Sanaa International School,High,,pan_z
+2128,Zambia,Lusaka,American International School,High,,pan_z
+2129,Zambia,Lusaka,Baobab College,High,,pan_z
+2130,Zambia,Lusaka,International School Lusaka,High,,pan_z
+2131,Zambia,Kitwe,Lechwe School,High,,pan_z
+2132,Zambia,Lusaka,Lusaka International Community School,High,,pan_z
+2133,Zimbabwe,Harare,Harare International School,High,,pan_z

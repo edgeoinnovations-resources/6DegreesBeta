@@ -19,6 +19,13 @@ For a pair, the strongest (lowest) degree across all their postings wins. **The 
 degrees are fixed** (Paul's rule). A mutually approved tag adds an *acknowledged*
 connection alongside; it never changes a degree.
 
+**A city only counts when it is known.** `schools.city_confidence` is high / medium /
+low / null. Degrees 3 and 4 require BOTH schools to be high or medium; anything
+weaker falls through to 5/6 (same country), which is always true of the pair.
+Before Paul's geocoding pass (18 Sep 2026) 1,180 of 2,120 cities were the country's
+largest city standing in for an unknown, which made strangers look like they shared
+a city. It is now 77. A member-added school counts as high: they worked there.
+
 - **Live site:** https://edgeoinnovations-resources.github.io/6DegreesBeta/ (GitHub Pages, `main`, repo root)
 - **Backend:** Supabase project `tyukcebfecdwnnbrjbvr` (free tier, ap-southeast-2)
 - **Client:** buildless ES modules, no bundler. `js/loadData.js` is the only data layer.
