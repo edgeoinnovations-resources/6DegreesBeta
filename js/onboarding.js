@@ -13,7 +13,7 @@
 //     2026: "we talked about NOT having teaching assignment".)
 //   * Months and years. (Paul: "I think we can do months and years.")
 import { supabase, friendlyDbError } from './supabaseClient.js';
-import { el } from './widgets.js';
+import { el, append } from './widgets.js';
 
 const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -510,7 +510,7 @@ export function onboardingView(user, profile, onDone) {
   });
 
   const who = el('div.card');
-  who.append(
+  append(who,
     el('h4', { text: 'You' }),
     el('div.controls', {}, [
       el('div.control-group', {}, [el('label', { text: 'First name' }), first]),

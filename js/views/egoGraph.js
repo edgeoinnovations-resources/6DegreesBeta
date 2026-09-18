@@ -84,7 +84,9 @@ export const view = {
 
     let showAll = false;
     const showAllWrap = el('div.control-group');
-    const showAllCb = el('input', { type: 'checkbox' });
+    // autocomplete=off, or Chrome restores this control's previous state AFTER the
+    // script has set it — see contrastToggle below for what that cost.
+    const showAllCb = el('input', { type: 'checkbox', autocomplete: 'off' });
     showAllCb.addEventListener('change', () => { showAll = showAllCb.checked; draw(true); });
     showAllWrap.appendChild(el('label', {}, [showAllCb, ' Show every person on crowded rings']));
     controls.appendChild(showAllWrap);
@@ -577,12 +579,27 @@ function setHighContrast(on) {
 }
 
 function contrastToggle(onChange) {
-  const cb = el('input', { type: 'checkbox' });
-  cb.checked = highContrast();
-  document.body.classList.toggle('high-contrast', cb.checked);
+  // Chrome restores a checkbox's previous state on reload, and it does so AFTER
+  // scripts have run. That silently unticked this box while localStorage still
+  // said the setting was on, so the graph drew every degree number and the
+  // control underneath it said "off" — found on Paul's own screen, 18 Sep 2026.
+  // The control has to agree with the setting, or turning it off takes two
+  // clicks and nobody can tell what state they are in.
+  const cb = el('input', { type: 'checkbox', autocomplete: 'off' });
+  const sync = () => {
+    const on = highContrast();
+    cb.checked = on;
+    cb.defaultChecked = on;              // the attribute, so a restore restores THIS
+    document.body.classList.toggle('high-contrast', on);
+  };
+  sync();
   cb.addEventListener('change', () => { setHighContrast(cb.checked); onChange(); });
-  return el('div.control-group', {}, [
+  const wrap = el('div.control-group', {}, [
     el('label', { title: 'Show the degree number on every node and strengthen the rings' },
       [cb, ' Easier to tell apart']),
   ]);
+  // Belt and braces: re-read the setting once the element is actually in the
+  // document, after any restoration has had its go.
+  requestAnimationFrame(sync);
+  return wrap;
 }

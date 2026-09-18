@@ -7,7 +7,7 @@
 // So clicking opens this instead of re-centring, and you stay at the middle of
 // your own graph — which is also what Dee asked for: "it's always tied to the
 // user who is logged in."
-import { el } from './widgets.js';
+import { el, append } from './widgets.js';
 import { degreeColor, degreeLabel, roleCategory } from './degrees.js';
 import { pairKey } from './loadData.js';
 import { tagSection } from './tags.js';
@@ -50,7 +50,7 @@ export function openPersonCard(ctx, id, extras = []) {
   const goesBy = t.PREFERRED_NAME && t.GIVEN_NAME && t.PREFERRED_NAME !== t.GIVEN_NAME
     ? `${t.GIVEN_NAME} ${t.LAST_NAME}`.trim()
     : '';
-  card.append(
+  append(card,
     el('h3.person-name', { text: t.FULL_NAME }),
     goesBy ? el('p.person-meta', { text: goesBy }) : null,
   );

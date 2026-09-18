@@ -27,7 +27,7 @@
 // max_degree, anchor, …); the function runs that filter against Postgres and returns
 // rows, which render exactly like the faceted table. The model only ever emits a query
 // spec — never data, never a key in the client.
-import { el, teacherTypeahead } from '../widgets.js';
+import { el, append, teacherTypeahead } from '../widgets.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
   teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
@@ -300,7 +300,7 @@ function findPeople(ctx) {
   const ackAvailable = hasAcknowledged(data);
 
   const controls = el('div.controls');
-  controls.append(fCountry, fCity, fCurr, fRole,
+  append(controls, fCountry, fCity, fCurr, fRole,
     el('div.control-group', {}, [el('label', { text: 'Min years' }), minYears]),
     ackAvailable ? el('div.control-group', {}, [el('label', {}, [verifiedOnly, ' verified (mutual) only'])]) : null,
     el('button.btn', { text: 'Search', onclick: run }));

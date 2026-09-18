@@ -22,6 +22,19 @@ export function el(spec, attrs = {}, children = []) {
   return node;
 }
 
+// Node.append() turns null into the literal TEXT "null" and inserts it — unlike
+// appendChild, which throws and would have been noticed immediately. Every
+// optional child in this app is written `cond ? el(...) : null`, and el() filters
+// those out of its own children list, so the pattern looks safe everywhere until
+// someone calls append() directly. It printed the word "null" under every name on
+// the person card, under the registration form, and in the search controls.
+// Found on 18 Sep 2026; it had been in the person card since the card was written
+// and only became visible to everyone when nationality and subject were dropped.
+export function append(parent, ...kids) {
+  for (const k of kids) if (k != null) parent.append(k);
+  return parent;
+}
+
 // Search-as-you-type teacher picker. Calls onPick(teacherId) on selection.
 export function teacherTypeahead(teachers, idx, onPick, { placeholder = 'Search a teacher…', value = '' } = {}) {
   const wrap = el('div.typeahead');
