@@ -105,8 +105,16 @@ menu and on the sign-in screen. Ask for it whenever someone reports a bug.
 **Database:**
 1. Add `supabase/migrations/<YYYYMMDDHHMMSS>_<what>.sql`. Never edit an applied migration.
 2. Test it against a local scratch database first when it touches RLS, grants or
-   triggers. `psql` is installed. Stub `auth.users`, `auth.uid()` and the `anon` and
-   `authenticated` roles.
+   triggers:
+   ```bash
+   bash tools/scratch-db.sh          # throwaway Postgres, every migration applied
+   psql -h /tmp/6dpg -p 55433 -U postgres -d sixdeg
+   bash tools/scratch-db.sh stop
+   ```
+   It stubs `auth.users`, `auth.uid()`, `auth.role()`, `auth.jwt()` and the four
+   roles. Inside it, **test as the real role, never as `postgres`**, which bypasses
+   RLS — see §2.3 for the `set_config` incantation. A test member needs an invite
+   row *before* the `auth.users` row, or the invite-only trigger rejects it.
 3. `~/.local/bin/supabase db push`
 4. Re-run `bash tools/healthcheck.sh`. Sections 5 and 6 catch security and integrity regressions.
 
