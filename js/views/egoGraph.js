@@ -24,6 +24,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { el } from '../widgets.js';
 import { openPersonCard } from '../personCard.js';
+import { pairKey } from '../loadData.js';
 import {
   DEGREE_META, DEGREES, degreeColor, degreeLabel, regionOf, ACCENT, teacherName, confirmBadge,
 } from '../degrees.js';
@@ -470,13 +471,13 @@ export const view = {
         .on('mouseleave', () => tooltip.hide());
 
       // ── The rail: every person, grouped by degree, however crowded the rings ─
-      buildRail(byDeg, neighbours.length, hiddenTotal);
+      buildRail(byDeg, neighbours.length, hiddenTotal, ego);
       showAllWrap.style.display = hiddenTotal || showAll ? '' : 'none';
     }
 
     // ── Side rail ─────────────────────────────────────────────────────────────
     const railRows = new Map();
-    function buildRail(byDeg, total, hiddenTotal) {
+    function buildRail(byDeg, total, hiddenTotal, ego) {
       rail.innerHTML = '';
       railRows.clear();
       rail.appendChild(el('div.rail-head', {}, [
@@ -503,7 +504,13 @@ export const view = {
           const ring = n.acknowledged
             ? `<span class="confirmed-mark" title="Confirmed connection">◎</span>`
             : '';
-          const li = el('li', { html: `${t.FULL_NAME || n.id}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}</small>` });
+          // Linda, 13 Sep 2026: "Robb and I only show 1 1st degree connection, but
+          // we have almost all of the schools the same." The rail still shows the
+          // headline context, but says how much more sits behind it — otherwise
+          // there is no reason to open the card and find out.
+          const all = (data.sharedByPair && data.sharedByPair.get(pairKey(ego, n.id))) || [];
+          const more = all.length > 1 ? ` · +${all.length - 1} more` : '';
+          const li = el('li', { html: `${t.FULL_NAME || n.id}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
           li.addEventListener('click', () => showPerson(n.id));
           li.addEventListener('mouseenter', () => {
             gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === n.id ? 1 : 0.22));

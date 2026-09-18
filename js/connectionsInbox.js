@@ -147,14 +147,38 @@ export function connectionsIcon(ctx) {
   btn.appendChild(badge);
   btn.addEventListener('click', () => openInbox(ctx));
 
+  // This poll runs every minute for as long as a tab is open, so anything that
+  // breaks it breaks it sixty times an hour. By 18 Sep 2026 it was the ENTIRE
+  // contents of the error log: eleven rows across three people, all of them
+  // "TypeError: Failed to fetch" or no message at all. None named a bug. A
+  // sleeping laptop, a backgrounded tab and a dropped wifi connection all land
+  // here, and reporting them buries anything real.
+  //
+  // So: don't poll when nobody is looking or the browser says it is offline, and
+  // treat a dropped request as something to retry rather than something to
+  // report. Only a failure that PERSISTS while the tab is visible and the
+  // browser believes it is online is worth a member's error log — that one is a
+  // real outage rather than a blip.
+  const POLL_MS = 60000;
+  const REPORT_AFTER = 5;        // five straight minutes of failure, not one blip
+  let consecutiveFailures = 0;
+
+  // No PostgREST code means the request never reached the database. An empty
+  // message is the same story: supabase-js hands back an error object with
+  // nothing on it when fetch itself rejects.
+  const neverReachedServer = (e) => !e?.code
+    && /fetch|network|load failed|aborted|^$/i.test(String(e?.message || ''));
+
   const refresh = async () => {
+    if (document.hidden || navigator.onLine === false) return;
     try {
       const { count, error } = await supabase
         .from('connection_tags')
         .select('id', { count: 'exact', head: true })
         .eq('subject_id', ctx.me)
         .eq('status', 'pending');
-      if (error) { logError({ action: 'count pending connections', code: error.code, message: error.message }); return; }
+      if (error) throw error;
+      consecutiveFailures = 0;
       if (count > 0) {
         badge.textContent = String(count);
         badge.style.display = '';
@@ -165,10 +189,36 @@ export function connectionsIcon(ctx) {
         btn.title = 'Connections';
         btn.classList.remove('has-pending');
       }
-    } catch (err) { logError({ action: 'count pending connections', code: err?.name, message: err?.message }); }
+    } catch (err) {
+      if (neverReachedServer(err)) {
+        consecutiveFailures += 1;
+        // Exactly at the threshold, so a long outage reports once and not hourly.
+        if (consecutiveFailures === REPORT_AFTER) {
+          logError({
+            action: 'count pending connections',
+            code: 'no-response',
+            message: `${REPORT_AFTER} consecutive failures while visible and online: ${err?.message || 'no message'}`,
+          });
+        }
+        return;
+      }
+      // A real answer from the database — a permission or query fault. Always
+      // worth reporting, and worth reporting the first time.
+      consecutiveFailures = 0;
+      logError({
+        action: 'count pending connections',
+        code: err?.code || err?.name || '',
+        message: err?.message || String(err),
+      });
+    }
   };
+
   refresh();
   // Someone may confirm while you have the page open.
-  setInterval(refresh, 60000);
+  setInterval(refresh, POLL_MS);
+  // Catch up the moment someone comes back to the tab or the network returns,
+  // rather than showing a stale badge for the rest of the minute.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+  window.addEventListener('online', refresh);
   return btn;
 }

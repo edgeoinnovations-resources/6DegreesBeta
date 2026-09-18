@@ -9,6 +9,7 @@
 // user who is logged in."
 import { el } from './widgets.js';
 import { degreeColor, degreeLabel, roleCategory } from './degrees.js';
+import { pairKey } from './loadData.js';
 import { tagSection } from './tags.js';
 
 let overlay = null;
@@ -26,7 +27,7 @@ function onKey(e) { if (e.key === 'Escape') closePersonCard(); }
  * @param extras optional array of elements appended to the card (tags, notes)
  */
 export function openPersonCard(ctx, id, extras = []) {
-  const { idx, adj, me } = ctx;
+  const { data, idx, adj, me } = ctx;
   const t = idx.teacherById.get(id);
   if (!t) return;
 
@@ -59,30 +60,49 @@ export function openPersonCard(ctx, id, extras = []) {
   }
 
   // ── how you're connected ──────────────────────────────────────────────────
+  // EVERY shared context, not just the strongest. Dave, 13 Sep 2026: "Linda is
+  // only listed as a Degree 1 connection, even though we are technically also
+  // Degree 2 and Degree 4 connections as well (we were both at ASW in Poland, but
+  // during different years)." Linda the same evening: "Robb and I only show 1 1st
+  // degree connection, but we have almost all of the schools the same."
+  //
+  // The headline degree — the one that puts someone on a ring — is still the
+  // lowest of these, and it is the first row because the list is sorted by degree.
   if (id !== me) {
-    const links = (adj.get(me) || []).filter((e) => e.other === id)
-      .sort((a, b) => (a.degree ?? 99) - (b.degree ?? 99));
+    const shared = (data.sharedByPair && data.sharedByPair.get(pairKey(me, id))) || [];
+    const link = (adj.get(me) || []).find((e) => e.other === id);
+    const acknowledged = !!(link && link.acknowledged);
     const box = el('div.person-conn');
-    if (!links.length) {
+
+    if (!shared.length && !acknowledged) {
       box.append(el('h4', { text: 'How you’re connected' }),
         el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'You haven’t shared a school, city or country — and haven’t confirmed knowing each other.' }));
     } else {
-      box.appendChild(el('h4', { text: 'How you’re connected' }));
-      links.forEach((e) => {
-        const row = el('div.conn-row');
-        if (e.degree) {
-          row.append(
-            el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: `Degree ${e.degree}` }),
-            el('span', { html: `<strong>${e.label || ''}</strong><br><small class="muted">${degreeLabel(e.degree)}${e.overlap ? ` · ${e.overlap}` : ''}</small>` }),
-          );
-        } else {
-          // a mutually approved tag between two people who never shared a place
-          row.append(
-            el('span.deg-pill.ack', { text: 'Acknowledged' }),
-            el('span', { html: '<strong>You’ve both confirmed you know each other</strong><br><small class="muted">No shared school, city or country</small>' }),
-          );
-        }
-        box.appendChild(row);
+      box.appendChild(el('h4', {
+        text: shared.length > 1 ? `How you’re connected — ${shared.length} ways` : 'How you’re connected',
+      }));
+
+      // The confirmation first: it is the one thing the two of you said yourselves.
+      if (acknowledged) {
+        box.appendChild(el('div.conn-row', {}, [
+          el('span.deg-pill.ack', { text: 'Confirmed' }),
+          el('span', {
+            html: '<strong>You’ve both confirmed you know each other</strong>'
+              + `<br><small class="muted">${shared.length
+                ? 'Alongside the shared history below — it doesn’t change your degree'
+                : 'No shared school, city or country'}</small>`,
+          }),
+        ]));
+      }
+
+      shared.forEach((e) => {
+        box.appendChild(el('div.conn-row', {}, [
+          el('span.deg-pill', { style: `background:${degreeColor(e.DEGREE)}`, text: `Degree ${e.DEGREE}` }),
+          el('span', {
+            html: `<strong>${e.SHARED_CONTEXT_LABEL}</strong><br><small class="muted">`
+              + `${degreeLabel(e.DEGREE)}${e.OVERLAP_YEARS ? ` · ${e.OVERLAP_YEARS}` : ''}</small>`,
+          }),
+        ]));
       });
     }
     card.appendChild(box);

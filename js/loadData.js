@@ -21,19 +21,27 @@ let _cache = null;
 
 export function invalidate() { _cache = null; }
 
+// Pairs are stored canonically (profile_a < profile_b), so look them up that way.
+export const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+
 export async function loadData() {
   if (_cache) return _cache;
 
-  const [profilesRes, postingsRes, connRes, tagsRes] = await Promise.all([
+  const [profilesRes, postingsRes, connRes, tagsRes, sharedRes] = await Promise.all([
     supabase.from('public_profiles').select('*'),
     supabase.from('postings')
       .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,country,latitude,longitude,city_source)'),
     supabase.from('connections').select('*'),
     supabase.from('connection_tags')
       .select('id, requester_id, subject_id, tag_key, status, context, created_at, responded_at'),
+    // Every way each pair is connected, not just the strongest. This is the table
+    // that grows fastest — pairs × contexts — so it will be the first to meet
+    // PostgREST's 1,000-row default cap. At seven members it is a few dozen rows;
+    // paginate this one first when the group grows.
+    supabase.from('shared_contexts').select('*'),
   ]);
 
-  for (const r of [profilesRes, postingsRes, connRes, tagsRes]) {
+  for (const r of [profilesRes, postingsRes, connRes, tagsRes, sharedRes]) {
     if (r.error) throw r.error;   // keep code/details intact for friendlyDbError
   }
 
@@ -116,11 +124,34 @@ export async function loadData() {
     VERIFIED: c.acknowledged ? 'mutual' : 'unverified',
   }));
 
+  // ── every shared context, keyed by pair ───────────────────────────────────
+  // Dave, 13 Sep 2026: "Linda is only listed as a Degree 1 connection, even though
+  // we are technically also Degree 2 and Degree 4 connections as well." The
+  // headline degree still places someone on a ring; this is what the person card
+  // lists underneath it.
+  const sharedByPair = new Map();
+  for (const r of sharedRes.data || []) {
+    const key = pairKey(r.profile_a, r.profile_b);
+    if (!sharedByPair.has(key)) sharedByPair.set(key, []);
+    sharedByPair.get(key).push({
+      DEGREE: r.degree,
+      SHARED_CONTEXT_TYPE: r.context_type,
+      SHARED_CONTEXT_LABEL: r.context_label,
+      TIME_RELATION: r.time_relation,
+      OVERLAP_YEARS: r.overlap_years || '',
+    });
+  }
+  for (const list of sharedByPair.values()) {
+    list.sort((a, b) => a.DEGREE - b.DEGREE
+      || a.SHARED_CONTEXT_LABEL.localeCompare(b.SHARED_CONTEXT_LABEL));
+  }
+
   _cache = {
     teachers,
     schools: [...schoolById.values()],
     assignments,
     colleagueships,
+    sharedByPair,
     tags: tagsRes.data || [],
     generated_at: new Date().toISOString().slice(0, 10),
   };
