@@ -37,10 +37,13 @@ async function fetchAll(table, cols, order) {
   return out;
 }
 
-let _schools = null, _cities = null;
-const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,name,city,country,country_code,city_source', ['country', 'city', 'name']));
-const cityCatalogue  = async () => (_cities  ??= await fetchAll('cities', 'id,name,country_code,latitude,longitude,population', ['country_code', 'name']));
-export function invalidateCatalogue() { _schools = null; }
+let _schools = null, _cities = null, _regions = null;
+const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,name,city,region,country,country_code,city_source', ['country', 'city', 'name']));
+const cityCatalogue  = async () => (_cities  ??= await fetchAll('cities', 'id,name,admin1,region,country_code,latitude,longitude,population', ['country_code', 'name']));
+// States and provinces, with an approximate centre each. Linda, 13 Sep 2026:
+// "I worked in Annandale, MN, but it puts me in Annandale, VA."
+const regionCatalogue = async () => (_regions ??= await fetchAll('regions', 'country_code,code,name,latitude,longitude', ['country_code', 'code']));
+export function invalidateCatalogue() { _schools = null; _cities = null; }
 
 // ── School picker: country → city → school, with escape hatches ─────────────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
@@ -73,14 +76,29 @@ function schoolPicker(onPick, initial = {}) {
   wrap.prepend(searchWrap);
   wrap.append(note, addBox);
 
-  let schools = [], cities = [], ccOf = new Map();
+  let schools = [], cities = [], regions = [], ccOf = new Map();
 
   const CITY_OTHER = '__other__';
+  const CITY_NEW = '__newcity__';
   const SCHOOL_NEW = '__new__';
+
+  // A city is a NAME PLUS A REGION now, because "Annandale, United States" names
+  // two towns a thousand miles apart. The <select> can only carry a string, so the
+  // region rides along on the option and is read back from it.
+  const cityRegion = () => citySel.selectedOptions[0]?.dataset.region || '';
+  const sameRegion = (a, b) => !a || !b || a === b;   // unknown never blocks a match
+  const cityLabel = (name, region) => (region ? `${name}, ${region}` : name);
+  const cityOption = (name, region) => {
+    const o = el('option', { value: name, text: cityLabel(name, region) });
+    if (region) o.dataset.region = region;
+    return o;
+  };
 
   (async () => {
     try {
-      [schools, cities] = await Promise.all([schoolCatalogue(), cityCatalogue()]);
+      [schools, cities, regions] = await Promise.all([
+        schoolCatalogue(), cityCatalogue(), regionCatalogue().catch(() => []),
+      ]);
     } catch (err) { note.textContent = friendlyDbError(err, 'load the school list'); return; }
     for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
     const countries = [...new Set(schools.map((r) => r.country))].sort();
@@ -102,11 +120,22 @@ function schoolPicker(onPick, initial = {}) {
     if (!cSel.value) return;
 
     // cities that already have schools, then everywhere else in that country
-    const withSchools = [...new Set(schools.filter((r) => r.country === cSel.value)
-      .map((r) => r.city).filter(Boolean))].sort();
-    withSchools.forEach((c) => citySel.appendChild(el('option', { value: c, text: c })));
+    const seen = new Set();
+    schools.filter((r) => r.country === cSel.value && r.city)
+      .map((r) => [r.city, r.region || ''])
+      .filter(([c, rg]) => { const k = `${c}|${rg}`; if (seen.has(k)) return false; seen.add(k); return true; })
+      .sort((a, b) => cityLabel(...a).localeCompare(cityLabel(...b)))
+      .forEach(([c, rg]) => citySel.appendChild(cityOption(c, rg)));
     citySel.appendChild(el('option', { value: CITY_OTHER, text: '— another city in this country —' }));
-    if (initial.city) { citySel.value = initial.city; initial.city = null; citySel.dispatchEvent(new Event('change')); }
+    citySel.appendChild(el('option', { value: CITY_NEW, text: '+ My city isn’t listed…' }));
+    if (initial.city) {
+      const want = initial.region || '';
+      const opt = [...citySel.options].find((o) => o.value === initial.city
+        && (o.dataset.region || '') === want)
+        || [...citySel.options].find((o) => o.value === initial.city);
+      initial.city = null; initial.region = null;
+      if (opt) { opt.selected = true; citySel.dispatchEvent(new Event('change')); }
+    }
   });
 
   // The full gazetteer for a country, shown only when the listed cities don't cover it.
@@ -116,19 +145,98 @@ function schoolPicker(onPick, initial = {}) {
       .sort((a, b) => b.population - a.population);
     citySel.innerHTML = '';
     citySel.appendChild(el('option', { value: '', text: `City… (${pool.length.toLocaleString()} in ${cSel.value})` }));
-    pool.slice().sort((a, b) => a.name.localeCompare(b.name))
-      .forEach((c) => citySel.appendChild(el('option', { value: c.name, text: c.name })));
+    pool.slice().sort((a, b) => cityLabel(a.name, a.region).localeCompare(cityLabel(b.name, b.region)))
+      .forEach((c) => citySel.appendChild(cityOption(c.name, c.region || '')));
+    citySel.appendChild(el('option', { value: CITY_NEW, text: '+ My city isn’t listed…' }));
     note.textContent = `Showing every city in ${cSel.value}. Pick yours, then add your school.`;
+  }
+
+  // ── Adding a city the gazetteer has never heard of ────────────────────────
+  // Annandale, Minnesota has about 3,300 people and is below the GeoNames
+  // threshold, so no amount of fixing the city list would ever have offered it to
+  // Linda. She has to be able to say where she worked.
+  function showAddCity() {
+    addBox.innerHTML = '';
+    addBox.style.display = '';
+    const cc = ccOf.get(cSel.value);
+    const here = regions.filter((r) => r.country_code === cc)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const nameInput = el('input', {
+      type: 'text', autocomplete: 'off', 'aria-label': 'City or town',
+      placeholder: 'City or town',
+    });
+    const regionSel = here.length
+      ? el('select', { 'aria-label': 'State or province' },
+        [el('option', { value: '', text: 'State…' }),
+          ...here.map((r) => el('option', { value: r.code, text: `${r.name} (${r.code})` }))])
+      : null;
+    const go = el('button.btn', { type: 'button', text: 'Add it' });
+    const status = el('span.muted', { style: 'font-size:12px;' });
+
+    addBox.append(
+      el('p.muted', {
+        style: 'font-size:11.5px;margin:0 0 6px;',
+        text: here.length
+          ? `Adding a town in ${cSel.value}. Pick the state so it isn’t confused with a town of the same name somewhere else.`
+          : `Adding a town in ${cSel.value}. Everyone will be able to pick it.`,
+      }),
+      el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' },
+        [nameInput, regionSel, go, status].filter(Boolean)),
+    );
+
+    go.addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (name.length < 2) { status.textContent = 'Give it a name.'; return; }
+      if (regionSel && !regionSel.value) { status.textContent = 'Pick the state.'; return; }
+      go.disabled = true; status.textContent = 'Adding…';
+
+      // The centre of the state, not of the town: it puts the map dot in the right
+      // state instead of the wrong one. Degrees come from city NAMES, never from
+      // coordinates, so an approximate point costs nothing but map precision.
+      const centre = regions.find((r) => r.country_code === cc && r.code === regionSel?.value);
+      const { data, error } = await supabase.from('cities').insert({
+        name,
+        country_code: cc,
+        admin1: regionSel?.value || null,
+        region: regionSel?.value || null,
+        latitude: centre?.latitude ?? null,
+        longitude: centre?.longitude ?? null,
+        population: 0,
+      }).select('id,name,admin1,region,country_code,latitude,longitude,population').single();
+
+      if (error) {
+        const dup = (error.message || '').match(/ALREADY_LISTED\|([^|]*)\|([^|]*)/);
+        status.textContent = dup
+          ? `${dup[1]}${dup[2] ? `, ${dup[2]}` : ''} is already listed — pick it from the list.`
+          : friendlyDbError(error, 'add that city');
+        go.disabled = false;
+        return;
+      }
+
+      cities.push(data);
+      _cities = cities;
+      const opt = cityOption(data.name, data.region || '');
+      citySel.appendChild(opt);
+      citySel.value = data.name;
+      opt.selected = true;
+      addBox.style.display = 'none'; addBox.innerHTML = '';
+      citySel.dispatchEvent(new Event('change'));
+    });
+    nameInput.focus();
   }
 
   citySel.addEventListener('change', () => {
     if (citySel.value === CITY_OTHER) { showAllCities(); onPick(null); return; }
+    if (citySel.value === CITY_NEW) { showAddCity(); onPick(null); return; }
     resetSchools();
     sSel.disabled = !citySel.value;
     onPick(null);
     if (!citySel.value) return;
 
-    const here = schools.filter((r) => r.country === cSel.value && r.city === citySel.value);
+    const rg = cityRegion();
+    const here = schools.filter((r) => r.country === cSel.value && r.city === citySel.value
+      && sameRegion(r.region || '', rg));
     here.forEach((r) => sSel.appendChild(el('option', { value: r.id, text: r.name })));
     sSel.appendChild(el('option', { value: SCHOOL_NEW, text: '+ My school isn’t listed…' }));
 
@@ -173,12 +281,17 @@ function schoolPicker(onPick, initial = {}) {
       go.disabled = true; status.textContent = 'Adding…';
 
       const cc = ccOf.get(cSel.value);
-      const city = cities.find((c) => c.country_code === cc && c.name === citySel.value);
+      const rg = cityRegion();
+      // Match the region too, or a school in Annandale MN takes Annandale VA's
+      // coordinates — which is exactly the bug this is fixing.
+      const city = cities.find((c) => c.country_code === cc && c.name === citySel.value
+        && (c.region || '') === rg);
       const { data: { user } } = await supabase.auth.getUser();
 
       const { data, error } = await supabase.from('schools').insert({
         name,
         city: citySel.value,
+        region: rg || null,
         country: cSel.value,
         country_code: cc || null,
         latitude: city?.latitude ?? null,
@@ -186,7 +299,7 @@ function schoolPicker(onPick, initial = {}) {
         city_source: 'manual',
         is_verified: false,
         added_by: user.id,
-      }).select('id,name,city,country,country_code,city_source').single();
+      }).select('id,name,city,region,country,country_code,city_source').single();
 
       if (error) {
         const m = error.message || '';
@@ -232,10 +345,14 @@ function schoolPicker(onPick, initial = {}) {
   function selectSchool(row) {
     cSel.value = row.country;
     cSel.dispatchEvent(new Event('change'));
-    if (row.city && ![...citySel.options].some((o) => o.value === row.city)) {
-      citySel.insertBefore(el('option', { value: row.city, text: row.city }), citySel.lastElementChild);
+    const rg = row.region || '';
+    // Match on region too: two options can legitimately share a city name now.
+    let opt = [...citySel.options].find((o) => o.value === row.city && (o.dataset.region || '') === rg);
+    if (row.city && !opt) {
+      opt = cityOption(row.city, rg);
+      citySel.insertBefore(opt, citySel.lastElementChild);
     }
-    citySel.value = row.city || '';
+    if (opt) opt.selected = true; else citySel.value = '';
     citySel.dispatchEvent(new Event('change'));
     sSel.value = String(row.id);
     onPick(row.id);
@@ -251,7 +368,7 @@ function schoolPicker(onPick, initial = {}) {
     const inCountry = cSel.value && cSel.value !== '';
     const hits = schools
       .filter((r) => !inCountry || r.country === cSel.value)
-      .filter((r) => { const h = fold(`${r.name} ${r.city} ${r.country}`); return terms.every((t) => h.includes(t)); })
+      .filter((r) => { const h = fold(`${r.name} ${r.city} ${r.region || ''} ${r.country}`); return terms.every((t) => h.includes(t)); })
       .slice(0, 12);
     if (!hits.length) {
       results.appendChild(el('div.school-result.empty', {
@@ -261,14 +378,14 @@ function schoolPicker(onPick, initial = {}) {
     hits.forEach((r) => {
       const row = el('button.school-result', { type: 'button' }, [
         el('strong', { text: r.name }),
-        el('small', { text: [r.city, r.country].filter(Boolean).join(', ') }),
+        el('small', { text: [r.city, r.region, r.country].filter(Boolean).join(', ') }),
       ]);
       row.addEventListener('mousedown', (e) => {
         e.preventDefault();
         selectSchool(r);
         search.value = '';
         closeResults();
-        note.textContent = `Selected ${r.name} (${[r.city, r.country].filter(Boolean).join(', ')}).`;
+        note.textContent = `Selected ${r.name} (${[r.city, r.region, r.country].filter(Boolean).join(', ')}).`;
       });
       results.appendChild(row);
     });
@@ -295,7 +412,8 @@ function postingRow(posting, onRemove) {
   row._state = state;
 
   row.appendChild(schoolPicker((id) => { state.school_id = id; }, {
-    country: posting?._country, city: posting?._city, school_id: posting?.school_id,
+    country: posting?._country, city: posting?._city, region: posting?._region,
+    school_id: posting?.school_id,
   }));
 
   const roleSel = el('select', { 'aria-label': 'Role' },
@@ -449,7 +567,7 @@ export function onboardingView(user, profile, onDone) {
           addRow({
             school_id: p.school_id, role: p.role,
             start_date: p.start, end_date: p.current ? null : p.end,
-            _country: sc?.country, _city: sc?.city,
+            _country: sc?.country, _city: sc?.city, _region: sc?.region,
           });
         });
         if (!rows.children.length) addRow();
@@ -462,11 +580,12 @@ export function onboardingView(user, profile, onDone) {
     }
     const { data } = await supabase
       .from('postings')
-      .select('id, school_id, role, start_date, end_date, schools(name, city, country)')
+      .select('id, school_id, role, start_date, end_date, schools(name, city, region, country)')
       .eq('profile_id', profile.id)
       .order('start_date');
     if (data?.length) {
-      data.forEach((p) => addRow({ ...p, _country: p.schools?.country, _city: p.schools?.city }));
+      data.forEach((p) => addRow({ ...p,
+        _country: p.schools?.country, _city: p.schools?.city, _region: p.schools?.region }));
     } else addRow();
   })();
 

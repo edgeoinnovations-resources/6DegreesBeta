@@ -30,7 +30,7 @@ export async function loadData() {
   const [profilesRes, postingsRes, connRes, tagsRes, sharedRes] = await Promise.all([
     supabase.from('public_profiles').select('*'),
     supabase.from('postings')
-      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,country,latitude,longitude,city_source)'),
+      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,region,country,latitude,longitude,city_source)'),
     supabase.from('connections').select('*'),
     supabase.from('connection_tags')
       .select('id, requester_id, subject_id, tag_key, status, context, created_at, responded_at'),
@@ -73,6 +73,9 @@ export async function loadData() {
         SCHOOL_ID: String(s.id),
         SCHOOL_NAME: s.name,
         CITY: s.city || '',
+        // State or province, where it is known. Two towns can share a name inside
+        // one country, so this is what tells Annandale MN from Annandale VA.
+        REGION: s.region || '',
         COUNTRY: s.country,
         LATITUDE: s.latitude,
         LONGITUDE: s.longitude,

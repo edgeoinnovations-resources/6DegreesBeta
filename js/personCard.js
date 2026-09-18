@@ -124,7 +124,7 @@ export function openPersonCard(ctx, id, extras = []) {
       const from = String(p.START_DATE || '').slice(0, 4);
       const to = p.END_DATE ? String(p.END_DATE).slice(0, 4) : 'present';
       ul.appendChild(el('li', {
-        html: `<strong>${s.SCHOOL_NAME || p.SCHOOL_ID}</strong><small>${[s.CITY, s.COUNTRY].filter(Boolean).join(', ')} · ${roleCategory(p.POSITION_TITLE)} · ${from}–${to}</small>`,
+        html: `<strong>${s.SCHOOL_NAME || p.SCHOOL_ID}</strong><small>${[s.CITY, s.REGION, s.COUNTRY].filter(Boolean).join(', ')} · ${roleCategory(p.POSITION_TITLE)} · ${from}–${to}</small>`,
       }));
     });
     hist.appendChild(ul);
