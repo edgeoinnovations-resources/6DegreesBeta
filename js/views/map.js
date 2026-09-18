@@ -234,6 +234,29 @@ export const view = {
     });
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
 
+    // Keep the canvas the size of its container.
+    //
+    // MapLibre sizes its canvas once, from whatever the container measured at the
+    // moment the map was built, and its own resize tracking watches the WINDOW.
+    // That leaves a gap: anything that changes the container without changing the
+    // window — a scrollbar appearing, the view mounting before layout has settled,
+    // a window resize that happened while this view was not on screen — leaves the
+    // canvas at its old width and the map drawn in a box smaller than the space it
+    // has, with blank page beside it. Paul hit exactly that on 18 Sep 2026.
+    //
+    // A ResizeObserver on the container closes it: whatever moved, the canvas
+    // follows. Cheap, and it makes the whole class of bug impossible rather than
+    // fixing one path to it.
+    const ro = new ResizeObserver(() => {
+      if (destroyed) return;
+      try { map.resize(); } catch { /* mid-teardown */ }
+    });
+    ro.observe(mapDiv);
+
+    // Belt and braces for the case the observer cannot see: the view being shown
+    // again after the window changed while it was hidden.
+    requestAnimationFrame(() => { if (!destroyed) { try { map.resize(); } catch {} } });
+
     // Handy when debugging the map from the console: window.__6deg.map, .state()
     // (Defined with defineProperty rather than Object.assign: Object.assign INVOKES
     //  getters on the source and copies their values, which would freeze these at
@@ -575,6 +598,7 @@ export const view = {
       for (const t of timers) clearTimeout(t);
       timers.clear();
       clearPopups();
+      try { ro.disconnect(); } catch {}
       try { map.remove(); } catch {}
       root.style.padding = '';
     };

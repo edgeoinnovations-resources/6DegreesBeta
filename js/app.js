@@ -219,9 +219,15 @@ async function boot() {
   }
   ctx.activate = activate;
 
-  NAV.forEach((v) => {
+  // Numbered by POSITION, not by a field on the view.
+  //
+  // Each view carried its own hard-coded `num` from the eight-view layout, and when
+  // Network moved out of the primary nav nobody renumbered Explore. The tabs read
+  // 1, 2, 3, 5 on Paul's screen for a week. A number that describes where something
+  // sits should be derived from where it sits.
+  NAV.forEach((v, i) => {
     const btn = el('button.tab-btn', { type: 'button' }, [
-      el('span.tab-num', { text: String(v.num) }),
+      el('span.tab-num', { text: String(i + 1) }),
       el('span.tab-label', { text: v.title }),
     ]);
     btn.addEventListener('click', () => activate(v.id));
