@@ -13,6 +13,7 @@ import { requireSession, loadMyProfile, signOut } from './auth.js';
 import { friendlyDbError, logError } from './supabaseClient.js';
 import { BUILD } from './config.js';
 import { connectionsIcon } from './connectionsInbox.js';
+import { openInvitePanel } from './invites.js';
 import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
@@ -269,6 +270,9 @@ function mountHeaderAccount(user, profile, ctx) {
     return b;
   };
   if (profile && ctx) menu.appendChild(item('Your details', () => ctx.navigateTo('me')));
+  // Growth is the bottleneck, not features: eight views and seven people. Putting
+  // this in the menu means nobody has to ask Paul to run SQL again.
+  if (profile && ctx) menu.appendChild(item('Invite someone', () => openInvitePanel(ctx)));
   menu.appendChild(item('Sign out', signOut));
   // The build stamp is for diagnosing "did the fix reach you?" — useful, but not
   // something that belongs on the main screen.

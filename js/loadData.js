@@ -21,29 +21,59 @@ let _cache = null;
 
 export function invalidate() { _cache = null; }
 
+// PostgREST answers at most 1,000 rows and says nothing about the rest.
+//
+// At seven members every table here is tiny, so a plain select was fine and the
+// cap was invisible. At the 500 members Paul wants it is not: 3,000 postings,
+// ~3,700 connections, ~7,500 shared contexts. Every one of those would have come
+// back cut to 1,000 with no error — the app would have drawn a third of the
+// network and looked entirely healthy doing it. This is the same cap that made
+// Venezuela disappear from the country list in September.
+async function page(build) {
+  const size = 1000;
+  const out = [];
+  for (let from = 0; ; from += size) {
+    const { data, error } = await build().range(from, from + size - 1);
+    if (error) throw error;
+    out.push(...(data || []));
+    if (!data || data.length < size) break;
+  }
+  return out;
+}
+
 // Pairs are stored canonically (profile_a < profile_b), so look them up that way.
 export const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
 export async function loadData() {
   if (_cache) return _cache;
 
-  const [profilesRes, postingsRes, connRes, tagsRes, sharedRes] = await Promise.all([
-    supabase.from('public_profiles').select('*'),
-    supabase.from('postings')
-      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,region,country,latitude,longitude,city_source)'),
-    supabase.from('connections').select('*'),
-    supabase.from('connection_tags')
-      .select('id, requester_id, subject_id, tag_key, status, context, created_at, responded_at'),
-    // Every way each pair is connected, not just the strongest. This is the table
-    // that grows fastest — pairs × contexts — so it will be the first to meet
-    // PostgREST's 1,000-row default cap. At seven members it is a few dozen rows;
-    // paginate this one first when the group grows.
-    supabase.from('shared_contexts').select('*'),
+  // Who is asking. shared_contexts is only ever read for pairs involving this
+  // person (the person card and the ego rail), so it is fetched that way rather
+  // than pulling every pair in the network: at 500 members that is ~20 rows
+  // instead of ~7,500.
+  const { data: { user } } = await supabase.auth.getUser();
+  const me = user?.id || null;
+
+  const [profiles, postings, conns, tags, shared] = await Promise.all([
+    page(() => supabase.from('public_profiles').select('*').order('id')),
+    page(() => supabase.from('postings')
+      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,region,country,latitude,longitude,city_source)')
+      .order('id')),
+    page(() => supabase.from('connections').select('*').order('profile_a').order('profile_b')),
+    page(() => supabase.from('connection_tags')
+      .select('id, requester_id, subject_id, tag_key, status, context, created_at, responded_at')
+      .order('id')),
+    me
+      ? page(() => supabase.from('shared_contexts').select('*')
+          .or(`profile_a.eq.${me},profile_b.eq.${me}`).order('degree'))
+      : Promise.resolve([]),
   ]);
 
-  for (const r of [profilesRes, postingsRes, connRes, tagsRes, sharedRes]) {
-    if (r.error) throw r.error;   // keep code/details intact for friendlyDbError
-  }
+  const profilesRes = { data: profiles };
+  const postingsRes = { data: postings };
+  const connRes = { data: conns };
+  const tagsRes = { data: tags };
+  const sharedRes = { data: shared };
 
   // ── teachers ──────────────────────────────────────────────────────────────
   // Column names stay in the old SHAPE so the views need no changes, even
@@ -131,7 +161,8 @@ export async function loadData() {
   // Dave, 13 Sep 2026: "Linda is only listed as a Degree 1 connection, even though
   // we are technically also Degree 2 and Degree 4 connections as well." The
   // headline degree still places someone on a ring; this is what the person card
-  // lists underneath it.
+  // lists underneath it. Only pairs involving the signed-in member are fetched,
+  // which is all any screen asks for.
   const sharedByPair = new Map();
   for (const r of sharedRes.data || []) {
     const key = pairKey(r.profile_a, r.profile_b);
