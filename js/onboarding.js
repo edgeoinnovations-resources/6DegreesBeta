@@ -19,15 +19,16 @@ const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
-// ── Reference data, fetched once ────────────────────────────────────────────
-// One request each, paginated past PostgREST's 1,000-row default cap — there are
-// 2,130 schools and 32,966 cities, and querying a level at a time silently
-// dropped everything past the cap (which is how Venezuela went missing).
-async function fetchAll(table, cols, order) {
+// ── Reference data ──────────────────────────────────────────────────────────
+// Paginated past PostgREST's 1,000-row default cap, because querying a level at a
+// time silently dropped everything past it (which is how Venezuela went missing).
+// `where` narrows the query server-side.
+async function fetchAll(table, cols, order, where) {
   const page = 1000;
   const out = [];
   for (let from = 0; ; from += page) {
     let q = supabase.from(table).select(cols);
+    if (where) q = where(q);
     for (const o of order) q = q.order(o);
     const { data, error } = await q.range(from, from + page - 1);
     if (error) throw error;
@@ -37,13 +38,39 @@ async function fetchAll(table, cols, order) {
   return out;
 }
 
-let _schools = null, _cities = null, _regions = null;
+const CITY_COLS = 'id,name,admin1,region,country_code,latitude,longitude,population';
+
+let _schools = null, _regions = null;
+const _citiesByCountry = new Map();
+
 const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,name,city,region,country,country_code,city_source', ['country', 'city', 'name']));
-const cityCatalogue  = async () => (_cities  ??= await fetchAll('cities', 'id,name,admin1,region,country_code,latitude,longitude,population', ['country_code', 'name']));
+
+// Cities ONE COUNTRY AT A TIME, not all of them.
+//
+// This used to download the whole gazetteer before the form could do anything:
+// 34 pages of cities plus 3 of schools, each awaited after the last — 37 round
+// trips before a school name could appear in a dropdown. That is what Melissa
+// reported on 15 Sep 2026: "when I went back to my profile to add one more
+// school, the previous school names weren't listed, just the dates I was there."
+// It was diagnosed as load speed and left, on the hope that a paid database would
+// fix it. It would not have: the round trips are in the client, and they get
+// worse with every city added to the gazetteer.
+//
+// Now: 3 requests at open, and one more the first time a country is picked.
+const citiesIn = async (cc) => {
+  if (!cc) return [];
+  if (!_citiesByCountry.has(cc)) {
+    _citiesByCountry.set(cc, await fetchAll('cities', CITY_COLS, ['name'],
+      (q) => q.eq('country_code', cc)));
+  }
+  return _citiesByCountry.get(cc);
+};
+
 // States and provinces, with an approximate centre each. Linda, 13 Sep 2026:
-// "I worked in Annandale, MN, but it puts me in Annandale, VA."
+// "I worked in Annandale, MN, but it puts me in Annandale, VA." 51 rows.
 const regionCatalogue = async () => (_regions ??= await fetchAll('regions', 'country_code,code,name,latitude,longitude', ['country_code', 'code']));
-export function invalidateCatalogue() { _schools = null; _cities = null; }
+
+export function invalidateCatalogue() { _schools = null; _citiesByCountry.clear(); }
 
 // ── School picker: country → city → school, with escape hatches ─────────────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
@@ -76,6 +103,8 @@ function schoolPicker(onPick, initial = {}) {
   wrap.prepend(searchWrap);
   wrap.append(note, addBox);
 
+  // `cities` holds ONLY the currently selected country's cities, refreshed when
+  // the country changes. It used to be all 33,885 of them.
   let schools = [], cities = [], regions = [], ccOf = new Map();
 
   const CITY_OTHER = '__other__';
@@ -96,8 +125,8 @@ function schoolPicker(onPick, initial = {}) {
 
   (async () => {
     try {
-      [schools, cities, regions] = await Promise.all([
-        schoolCatalogue(), cityCatalogue(), regionCatalogue().catch(() => []),
+      [schools, regions] = await Promise.all([
+        schoolCatalogue(), regionCatalogue().catch(() => []),
       ]);
     } catch (err) { note.textContent = friendlyDbError(err, 'load the school list'); return; }
     for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
@@ -112,12 +141,16 @@ function schoolPicker(onPick, initial = {}) {
     addBox.style.display = 'none'; addBox.innerHTML = '';
   };
 
-  cSel.addEventListener('change', () => {
+  cSel.addEventListener('change', async () => {
     citySel.innerHTML = ''; citySel.appendChild(el('option', { value: '', text: 'City…' }));
     resetSchools();
     sSel.disabled = true; citySel.disabled = !cSel.value;
     onPick(null);
     if (!cSel.value) return;
+
+    // One request, for this country only. Fire it now; the list below is built
+    // from the schools we already have, so nothing waits on it.
+    const pending = citiesIn(ccOf.get(cSel.value)).catch(() => []);
 
     // cities that already have schools, then everywhere else in that country
     const seen = new Set();
@@ -136,13 +169,18 @@ function schoolPicker(onPick, initial = {}) {
       initial.city = null; initial.region = null;
       if (opt) { opt.selected = true; citySel.dispatchEvent(new Event('change')); }
     }
+    // Keep the country's gazetteer to hand for "another city" and for the
+    // coordinates a newly added school needs.
+    cities = await pending;
   });
 
   // The full gazetteer for a country, shown only when the listed cities don't cover it.
-  function showAllCities() {
+  async function showAllCities() {
     const cc = ccOf.get(cSel.value);
-    const pool = cities.filter((c) => c.country_code === cc)
-      .sort((a, b) => b.population - a.population);
+    citySel.innerHTML = '';
+    citySel.appendChild(el('option', { value: '', text: 'Loading cities…' }));
+    const pool = await citiesIn(cc).catch(() => []);
+    cities = pool;
     citySel.innerHTML = '';
     citySel.appendChild(el('option', { value: '', text: `City… (${pool.length.toLocaleString()} in ${cSel.value})` }));
     pool.slice().sort((a, b) => cityLabel(a.name, a.region).localeCompare(cityLabel(b.name, b.region)))
@@ -214,8 +252,9 @@ function schoolPicker(onPick, initial = {}) {
         return;
       }
 
+      // Put it in the per-country cache so it survives switching country and back.
+      cities = await citiesIn(cc);
       cities.push(data);
-      _cities = cities;
       const opt = cityOption(data.name, data.region || '');
       citySel.appendChild(opt);
       citySel.value = data.name;
@@ -284,8 +323,8 @@ function schoolPicker(onPick, initial = {}) {
       const rg = cityRegion();
       // Match the region too, or a school in Annandale MN takes Annandale VA's
       // coordinates — which is exactly the bug this is fixing.
-      const city = cities.find((c) => c.country_code === cc && c.name === citySel.value
-        && (c.region || '') === rg);
+      const city = (await citiesIn(cc).catch(() => []))
+        .find((c) => c.name === citySel.value && (c.region || '') === rg);
       const { data: { user } } = await supabase.auth.getUser();
 
       const { data, error } = await supabase.from('schools').insert({
