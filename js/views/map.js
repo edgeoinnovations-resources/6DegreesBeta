@@ -253,9 +253,28 @@ export const view = {
     });
     ro.observe(mapDiv);
 
-    // Belt and braces for the case the observer cannot see: the view being shown
-    // again after the window changed while it was hidden.
-    requestAnimationFrame(() => { if (!destroyed) { try { map.resize(); } catch {} } });
+    // AND a guard that does not depend on the observer being delivered at all.
+    //
+    // ResizeObserver callbacks ride the rendering lifecycle. On 18 Sep 2026, in a
+    // tab whose renderer had stalled, an observer on this very element never fired
+    // even its guaranteed first callback — so a fix resting only on it could not be
+    // verified, and would be silently useless wherever that happens. map.resize()
+    // itself was proven to work in exactly that state.
+    //
+    // So: on every frame MapLibre paints, compare the canvas with its container and
+    // correct it when they differ. It is one comparison per rendered frame, it
+    // cannot loop (after a resize they agree), and it needs nothing but the map
+    // already drawing.
+    const fitCanvas = () => {
+      if (destroyed) return;
+      const want = mapDiv.clientWidth;
+      const has = map.getCanvas().clientWidth;
+      if (want && has && Math.abs(want - has) > 1) {
+        try { map.resize(); } catch { /* mid-teardown */ }
+      }
+    };
+    map.on('render', fitCanvas);
+    requestAnimationFrame(fitCanvas);
 
     // Handy when debugging the map from the console: window.__6deg.map, .state()
     // (Defined with defineProperty rather than Object.assign: Object.assign INVOKES
