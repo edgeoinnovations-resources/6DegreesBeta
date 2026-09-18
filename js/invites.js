@@ -37,7 +37,8 @@ const when = (iso) => {
 function invitationText(name, email) {
   return `I've added you to 6 Degrees — it maps how international school teachers `
     + `are connected through the schools and cities we've shared.\n\n`
-    + `${SITE}\n\n`
+    + `${SITE}\n`
+    + `What it is: ${SITE}about.html\n\n`
     + `Sign in with ${email} and it'll email you a link. No password. `
     + `Check your spam for the first one.\n\n`
     + `It asks where you've worked — country, city, school, and the years. `

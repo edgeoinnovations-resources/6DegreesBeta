@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — 6 Degrees</title>
+  <meta name="description" content="How 6 Degrees started, what it is for, and what we will never do with your data." />
+  <link rel="stylesheet" href="./css/styles.css" />
+  <style>
+    /* This page is plain static HTML on purpose: it has to render for someone who
+       has not signed in and may never sign in, so it depends on no script at all. */
+    .about-wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 72px; }
+    .about-wrap h2 { font-size: 26px; margin: 40px 0 10px; letter-spacing: -0.01em; }
+    .about-wrap h2:first-of-type { margin-top: 28px; }
+    .about-wrap h3 { font-size: 16px; margin: 26px 0 8px; }
+    .about-wrap p { line-height: 1.65; margin: 0 0 14px; color: #33454e; }
+    .about-wrap ul { line-height: 1.65; margin: 0 0 14px; padding-left: 22px; color: #33454e; }
+    .about-wrap li { margin-bottom: 6px; }
+    .about-lead { font-size: 18px; color: #21323a; }
+    .about-sig { font-style: italic; color: #5d7480; }
+    .about-back { display: inline-block; margin-bottom: 8px; font-size: 13px; }
+    .about-cards { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; margin: 6px 0 14px; }
+    @media (max-width: 620px) { .about-cards { grid-template-columns: 1fr; } }
+    .about-card { border: 1px solid #d7e3e8; border-radius: 10px; padding: 14px 16px; background: #fff; }
+    .about-card h3 { margin: 0 0 8px; }
+    .about-card.is-yes { border-left: 4px solid var(--turquoise, #2a9db3); }
+    .about-card.is-no { border-left: 4px solid #d98157; }
+    .about-card ul { margin: 0; }
+    .about-quotes li { margin-bottom: 10px; }
+    .about-foot { margin-top: 44px; padding-top: 18px; border-top: 1px solid #e3edf1; font-size: 13px; color: #5d7480; }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">6&deg;</span>
+      <div class="brand-text">
+        <h1>6&nbsp;Degrees</h1>
+        <p>How international school teachers are connected by place &amp; time</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="about-wrap">
+    <a class="about-back" href="./">&larr; Back to 6 Degrees</a>
+
+    <h2>It started at dinner</h2>
+
+    <p class="about-lead">
+      I was planning to host some of my Dubai friends, including Dave and Melissa, for our
+      weekly dinner when I learned that Dee, my friend from Doha who currently lives in Addis
+      Ababa, was in town for a conference. Of course I invited Dee and her friend Sarah to join
+      us, knowing that international teachers are always cool to hang out with other
+      international teachers, even if they&rsquo;d never met before.
+    </p>
+
+    <p>
+      If you&rsquo;re an international educator, you know what happened next. We started playing
+      the &ldquo;Oh, you worked in X? You must know Y! We used to work together in Z!&rdquo;
+      game. After more connections than I can count, someone eventually mentioned Kevin Bacon.
+      And then one of us &mdash; I&rsquo;m not really sure who &mdash; said, &ldquo;We should
+      build an app!&rdquo; And we all agreed.
+    </p>
+
+    <p>
+      The thing is, none of us at that dinner knows how to build an app or a site. But I knew
+      that our Dubai friend and colleague Paul had the right combination of curiosity and skill
+      to make it happen. When we proposed the idea to him the next day, he didn&rsquo;t hesitate
+      to jump in.
+    </p>
+
+    <p>
+      That was over a year ago. In the meantime we&rsquo;d have spurts of WhatsApp chats and an
+      occasional Zoom meeting, trying to figure out what we really wanted this site to be. And in
+      the background, Paul was upskilling and tinkering and taking it all in. And then one day he
+      dropped the beta on us. We entered our data and commented and questioned and Paul
+      responded, and now we feel like it&rsquo;s ready to release to the world of international
+      education. We&rsquo;re so excited to share it with you!
+    </p>
+
+    <p class="about-sig">&mdash; Linda</p>
+
+    <h2>What this is, and what it isn&rsquo;t</h2>
+
+    <div class="about-cards">
+      <div class="about-card is-yes">
+        <h3>This site is about connection</h3>
+        <ul>
+          <li>A way to re-connect with old friends and colleagues.</li>
+          <li>A way to visualise your connections with other international school teachers.</li>
+          <li>A way to find shared connections.</li>
+        </ul>
+      </div>
+      <div class="about-card is-no">
+        <h3>This site is not</h3>
+        <ul>
+          <li>A place to provide opinions about schools and colleagues.</li>
+          <li>A place to promote yourself and your career.</li>
+          <li>A place that will sell your data.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>How the six degrees work</h2>
+
+    <p>
+      Every connection here is worked out from two things only: <strong>where you have been and
+      when</strong>. Nobody rates anybody, and nobody decides who you know.
+    </p>
+
+    <ul>
+      <li><strong>1</strong> &mdash; same school, same time</li>
+      <li><strong>2</strong> &mdash; same school, different time</li>
+      <li><strong>3</strong> &mdash; same city, same time</li>
+      <li><strong>4</strong> &mdash; same city, different time</li>
+      <li><strong>5</strong> &mdash; same country, same time</li>
+      <li><strong>6</strong> &mdash; same country, different time</li>
+    </ul>
+
+    <p>
+      You can also confirm that you actually know someone &mdash; socially, professionally, or as
+      family. Both of you have to agree before it shows, either of you can undo it, and it never
+      changes your degree. Place and time decide that, and only place and time.
+    </p>
+
+    <h2>What we decided before we built it</h2>
+
+    <p>
+      In June 2026 the six of us sat down for ninety minutes to answer the questions that get
+      harder the longer you defer them. This is what came out of it.
+    </p>
+
+    <h3>Things that are off the table, permanently</h3>
+    <ul>
+      <li>Selling your data.</li>
+      <li>Selling email addresses.</li>
+      <li>Letting outside tools scrape the connections.</li>
+      <li>Advertising built on tracking what you do here.</li>
+    </ul>
+
+    <p>
+      There is a real difference between making money from the data and making money from the
+      service that holds it. One of those we might one day do to cover our costs. The other ends
+      the project. As we put it at the time: <em>one breach of trust ends this. The international
+      community is too small for second chances.</em>
+    </p>
+
+    <h3>What we ask you for</h3>
+    <ul>
+      <li>Your name, and the name you actually go by if it&rsquo;s different.</li>
+      <li>Where you have worked, and when. Including schools back home &mdash; the whole point is who knows who.</li>
+      <li>Your email, used to sign you in and nothing else.</li>
+    </ul>
+    <p>
+      That is the entire list. We dropped nationality and subject area in September 2026 because
+      they fed nothing. <strong>Nobody ever sees your email address</strong> &mdash; not other
+      members, and not us.
+    </p>
+
+    <h3>Leaving</h3>
+    <p>
+      You can change anything you entered, at any time, and your connections recalculate. Leaving
+      is different, and we want to be straight about why. Your history is part of other
+      people&rsquo;s connections too &mdash; if you and I taught together, that is a fact about
+      both of us. So when you leave, your name comes off and your profile becomes a ghost:
+      unnamed, unsearchable, and still holding the shape of the connections other people made with
+      you. We would rather tell you that now than bury it in terms nobody reads.
+    </p>
+
+    <h3>Who can join</h3>
+    <p>
+      Invitation only, by someone already here. That was Dave&rsquo;s idea from the very first
+      week, and it is the main thing keeping this a community rather than a directory.
+    </p>
+
+    <h2>Who we are</h2>
+    <p>
+      Six international school teachers and one dinner party: Paul, Linda, Dee, Sarah, Dave and
+      Melissa. Nobody is paid. Nobody has sold anything. It exists because a room full of teachers
+      could not stop finding people they had in common.
+    </p>
+
+    <p class="about-foot">
+      6 Degrees is in beta and run by teachers in their spare time. If something is wrong &mdash;
+      a school in the wrong city, a connection that makes no sense &mdash; tell whoever invited
+      you, and it gets fixed.
+      <br><br>
+      <a href="./">&larr; Back to 6 Degrees</a>
+    </p>
+  </main>
+</body>
+</html>

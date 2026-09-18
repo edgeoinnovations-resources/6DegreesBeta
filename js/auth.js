@@ -32,8 +32,11 @@ function signInScreen(onSent) {
   form.append(input, btn);
   card.append(form, msg);
 
+  // Someone invited from outside the original six lands here knowing nothing.
+  // A sign-in box with no explanation is not an invitation, it is a locked door.
   card.append(el('p.auth-foot', {
     html: 'Invite only while we’re in beta. If your email isn’t on the list, ask someone in the group to add you.'
+      + '<br><a href="./about.html">What is 6 Degrees?</a>'
       + `<br><span class="auth-build">${BUILD}</span>`,
   }));
 

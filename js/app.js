@@ -273,6 +273,7 @@ function mountHeaderAccount(user, profile, ctx) {
   // Growth is the bottleneck, not features: eight views and seven people. Putting
   // this in the menu means nobody has to ask Paul to run SQL again.
   if (profile && ctx) menu.appendChild(item('Invite someone', () => openInvitePanel(ctx)));
+  menu.appendChild(item('About 6 Degrees', () => { window.location.href = './about.html'; }));
   menu.appendChild(item('Sign out', signOut));
   // The build stamp is for diagnosing "did the fix reach you?" — useful, but not
   // something that belongs on the main screen.
