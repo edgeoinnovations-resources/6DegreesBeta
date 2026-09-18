@@ -103,7 +103,8 @@ for r in d.get("results") or []:
     m = r.get("metadata") or {}
     key = (r["name"], m.get("name") or m.get("entity") or "")
     if key not in accepted:
-        new.append(f'{r["level"]} {key[0]} {key[1]}')
+        lvl = r["level"]
+        new.append(f"{lvl} {key[0]} {key[1]}")
 if new:
     print(f"  FAIL  {len(new)} NEW security finding(s):")
     for n in new: print(f"          {n}")
