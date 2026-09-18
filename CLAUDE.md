@@ -127,6 +127,19 @@ in as a member, so say plainly which UI paths you verified and which you didn't.
 
 **Every session:** §1.
 
+**Before any migration that touches real data, and weekly:**
+```bash
+bash tools/backup.sh          # writes to ~/6DegreesBackups, never the repo
+bash tools/backup.sh --list
+```
+The free tier gives no downloadable backups and `supabase db dump` needs Docker,
+which isn't installed here — this goes through the authenticated CLI instead. It
+saves only what the migrations cannot rebuild; `colleagueships` and
+`shared_contexts` are derived and restored with `select public.recompute_all();`.
+Each backup carries a RESTORE.md. **It cannot save `auth.users`**, so a restore
+means re-inviting everyone and remapping profile ids — read the RESTORE.md before
+relying on it.
+
 **Weekly, or before the group tests:**
 - **Project paused?** The free tier pauses after 7 idle days. The health check shows
   it; Paul restores it from the dashboard.
@@ -180,7 +193,8 @@ Query with `supabase db query "<sql>" --linked`. Output is JSON; parse from the 
 
 Not bugs. These are decisions and gaps, so raise them with Paul rather than acting on them alone:
 
-- **No backup routine exists.** The free tier gives no downloadable backups, and the data is real.
+- **Backups are manual.** `bash tools/backup.sh` (§5). Nothing runs it on a schedule, and it
+  cannot capture `auth.users` — a real restore means re-inviting everyone and remapping ids.
 - **Governance of the school list** (Dave): who may edit or delete schools? Members can currently only add.
 - **Delhi vs New Delhi**, and other metro splits: two city names for one place turn a
   degree 3 into a degree 5.

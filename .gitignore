@@ -46,3 +46,8 @@ supabase/.temp/
 supabase/.branches/
 **/service_role*
 **/*secret*
+
+# Backups contain real member data and must never be committed.
+# tools/backup.sh refuses to write here, but belt and braces.
+backups/
+*6DegreesBackups*
