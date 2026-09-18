@@ -192,7 +192,17 @@ table.data tr:hover td { background: #f6fbfc; }
 
 /* ── Map ─────────────────────────────────────────────────────────────── */
 #map { position: absolute; inset: 0; }
-.map-shell { position: absolute; inset: 0; }
+/* overflow:hidden is load-bearing, not tidiness.
+   .side-panel parks itself off the right edge with transform: translateX(100%)
+   when closed. A transform still contributes to an ancestor's scrollable area, and
+   .view-container is overflow:auto — so the closed panel made the map view
+   scrollable by exactly its own 320px. Scroll into that strip (which a journey
+   flight does on its own) and the map, sized to the CLIENT box, stays put while
+   blank page slides in beside it. That is the "map glitch" Paul reported three
+   times on 18 Sep 2026, and it is why measuring the canvas against the container
+   kept reporting no gap: the canvas was never wrong. Clipping the shell means the
+   parked panel cannot extend anything. */
+.map-shell { position: absolute; inset: 0; overflow: hidden; }
 .map-overlay {
   position: absolute; top: 14px; left: 14px; z-index: 5; max-width: 280px;
   background: rgba(255,255,255,.95); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px;
