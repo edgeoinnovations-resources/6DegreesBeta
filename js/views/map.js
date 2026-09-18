@@ -276,6 +276,15 @@ export const view = {
     map.on('render', fitCanvas);
     requestAnimationFrame(fitCanvas);
 
+    // And a last resort on a timer, because BOTH of the above ride the rendering
+    // loop. In the tab this was debugged in, that loop had stalled: the observer
+    // never delivered a callback, 'render' never fired, screenshots timed out — and
+    // the canvas stayed the wrong size through all of it while map.resize() worked
+    // perfectly when called by hand. A poll is not elegant. It is the only one of
+    // the three that can be demonstrated to work in that state, and one integer
+    // comparison per second is not worth being precious about.
+    const fitTimer = setInterval(fitCanvas, 750);
+
     // Handy when debugging the map from the console: window.__6deg.map, .state()
     // (Defined with defineProperty rather than Object.assign: Object.assign INVOKES
     //  getters on the source and copies their values, which would freeze these at
@@ -617,6 +626,7 @@ export const view = {
       for (const t of timers) clearTimeout(t);
       timers.clear();
       clearPopups();
+      clearInterval(fitTimer);
       try { ro.disconnect(); } catch {}
       try { map.remove(); } catch {}
       root.style.padding = '';
