@@ -40,10 +40,22 @@ async function fetchAll(table, cols, order, where) {
 
 const CITY_COLS = 'id,name,admin1,region,country_code,latitude,longitude,population';
 
-let _schools = null, _regions = null;
+// Cache the PROMISE, not the resolved value.
+//
+// `x ??= await fetch()` looks like memoisation and is not: every caller that
+// arrives before the first one resolves still sees null and starts its own
+// request. Each posting row builds its own picker, so opening "Your details"
+// with three postings fetched the 2,120-school catalogue three times over —
+// nine requests — and the regions table three times. Linda has nine postings.
+// Holding the promise means the second caller awaits the first one's request.
+let _schoolsP = null, _regionsP = null;
 const _citiesByCountry = new Map();
 
-const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,name,city,region,country,country_code,city_source', ['country', 'city', 'name']));
+// Caching a promise means caching a FAILED one too, which would leave the picker
+// empty for the rest of the session over one dropped request. Evict on rejection
+// so the next caller retries.
+const schoolCatalogue = () => (_schoolsP ??= fetchAll('schools', 'id,name,city,region,country,country_code,city_source', ['country', 'city', 'name'])
+  .catch((e) => { _schoolsP = null; throw e; }));
 
 // Cities ONE COUNTRY AT A TIME, not all of them.
 //
@@ -57,20 +69,21 @@ const schoolCatalogue = async () => (_schools ??= await fetchAll('schools', 'id,
 // worse with every city added to the gazetteer.
 //
 // Now: 3 requests at open, and one more the first time a country is picked.
-const citiesIn = async (cc) => {
-  if (!cc) return [];
+const citiesIn = (cc) => {
+  if (!cc) return Promise.resolve([]);
   if (!_citiesByCountry.has(cc)) {
-    _citiesByCountry.set(cc, await fetchAll('cities', CITY_COLS, ['name'],
-      (q) => q.eq('country_code', cc)));
+    _citiesByCountry.set(cc, fetchAll('cities', CITY_COLS, ['name'], (q) => q.eq('country_code', cc))
+      .catch((e) => { _citiesByCountry.delete(cc); throw e; }));
   }
   return _citiesByCountry.get(cc);
 };
 
 // States and provinces, with an approximate centre each. Linda, 13 Sep 2026:
 // "I worked in Annandale, MN, but it puts me in Annandale, VA." 51 rows.
-const regionCatalogue = async () => (_regions ??= await fetchAll('regions', 'country_code,code,name,latitude,longitude', ['country_code', 'code']));
+const regionCatalogue = () => (_regionsP ??= fetchAll('regions', 'country_code,code,name,latitude,longitude', ['country_code', 'code'])
+  .catch((e) => { _regionsP = null; throw e; }));
 
-export function invalidateCatalogue() { _schools = null; _citiesByCountry.clear(); }
+export function invalidateCatalogue() { _schoolsP = null; _citiesByCountry.clear(); }
 
 // ── School picker: country → city → school, with escape hatches ─────────────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
@@ -254,7 +267,7 @@ function schoolPicker(onPick, initial = {}) {
 
       // Put it in the per-country cache so it survives switching country and back.
       cities = await citiesIn(cc);
-      cities.push(data);
+      cities.push(data);            // the cached array, so it survives switching country
       const opt = cityOption(data.name, data.region || '');
       citySel.appendChild(opt);
       citySel.value = data.name;
