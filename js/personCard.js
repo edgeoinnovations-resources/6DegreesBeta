@@ -166,25 +166,61 @@ export function openPersonCard(ctx, id, extras = []) {
   }
 
   // ── their history ─────────────────────────────────────────────────────────
-  const postings = (idx.postingsByTeacher.get(id) || []).slice()
-    .sort((a, b) => String(b.START_DATE).localeCompare(String(a.START_DATE)));
+  // Only YOUR postings are loaded at boot now, so somebody else's history is
+  // fetched here. It said "No postings listed" for everyone until this was
+  // caught on Linda's card, which shows nine.
   const hist = el('div.person-hist');
   hist.appendChild(el('h4', { text: 'Where they’ve been' }));
-  if (!postings.length) {
-    hist.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'No postings listed.' }));
-  } else {
-    const ul = el('ul');
-    postings.forEach((p) => {
-      const s = idx.schoolById.get(p.SCHOOL_ID) || {};
-      const from = String(p.START_DATE || '').slice(0, 4);
-      const to = p.END_DATE ? String(p.END_DATE).slice(0, 4) : 'present';
-      ul.appendChild(el('li', {
-        html: `<strong>${s.SCHOOL_NAME || p.SCHOOL_ID}</strong><small>${[s.CITY, s.REGION, s.COUNTRY].filter(Boolean).join(', ')} · ${roleCategory(p.POSITION_TITLE)} · ${from}–${to}</small>`,
-      }));
-    });
-    hist.appendChild(ul);
-  }
+  const histBody = el('div');
+  hist.appendChild(histBody);
   card.appendChild(hist);
+
+  const drawHistory = (postings, schoolOf) => {
+    histBody.innerHTML = '';
+    if (!postings.length) {
+      histBody.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'No postings listed.' }));
+      return;
+    }
+    const ul = el('ul');
+    postings.slice()
+      .sort((a, b) => String(b.START_DATE).localeCompare(String(a.START_DATE)))
+      .forEach((p) => {
+        const s = schoolOf(p) || {};
+        const from = String(p.START_DATE || '').slice(0, 4);
+        const to = p.END_DATE ? String(p.END_DATE).slice(0, 4) : 'present';
+        ul.appendChild(el('li', {
+          html: `<strong>${s.SCHOOL_NAME || p.SCHOOL_ID}</strong><small>${[s.CITY, s.REGION, s.COUNTRY].filter(Boolean).join(', ')} · ${roleCategory(p.POSITION_TITLE)} · ${from}–${to}</small>`,
+        }));
+      });
+    histBody.appendChild(ul);
+  };
+
+  const known = idx.postingsByTeacher.get(id) || [];
+  if (known.length) {
+    drawHistory(known, (p) => idx.schoolById.get(p.SCHOOL_ID));
+  } else {
+    histBody.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'Loading…' }));
+    supabase.from('postings')
+      .select('id, school_id, role, start_date, end_date, schools(name, city, region, country)')
+      .eq('profile_id', id)
+      .then(({ data, error }) => {
+        if (error || !document.body.contains(histBody)) {
+          histBody.innerHTML = '';
+          histBody.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'No postings listed.' }));
+          return;
+        }
+        drawHistory(
+          (data || []).map((r) => ({
+            SCHOOL_ID: String(r.school_id), POSITION_TITLE: r.role,
+            START_DATE: r.start_date, END_DATE: r.end_date, _s: r.schools,
+          })),
+          (p) => (p._s ? {
+            SCHOOL_NAME: p._s.name, CITY: p._s.city || '',
+            REGION: p._s.region || '', COUNTRY: p._s.country,
+          } : null),
+        );
+      });
+  }
 
   // Writing to someone belongs here too: you are already looking at them, and
   // this is the moment Linda described — "if I saw we were connected but I had
