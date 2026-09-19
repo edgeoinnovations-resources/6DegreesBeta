@@ -14,6 +14,7 @@ import { friendlyDbError, logError } from './supabaseClient.js';
 import { BUILD } from './config.js';
 import { connectionsIcon } from './connectionsInbox.js';
 import { openInvitePanel } from './invites.js';
+import { issueButton } from './reportIssue.js';
 import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
@@ -164,6 +165,10 @@ async function boot() {
   };
 
   mountHeaderAccount(user, profile, ctx);
+
+  // Always reachable, on every screen. A problem reported while you are looking
+  // at it carries the screen and the build with it; one remembered later does not.
+  document.body.appendChild(issueButton(ctx));
 
   // Header ego readout.
   const headerEgo = document.getElementById('header-ego');

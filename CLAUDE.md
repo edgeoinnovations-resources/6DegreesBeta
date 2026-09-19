@@ -45,11 +45,17 @@ a city. It is now 77. A member-added school counts as high: they worked there.
    `~/.local/bin/supabase login` **in a separate Terminal window**. It needs a real TTY
    and fails inside Claude Code's `!` bash mode.
 
-2. **Review member-reported errors.**
+2. **Review what members have reported.** Two sources, both required.
    ```bash
-   bash tools/errors.sh            # grouped, most recent first
+   bash tools/errors.sh            # exceptions the app threw, grouped
    bash tools/errors.sh code <C>   # every occurrence of one code, with stacks
+   bash tools/issues.sh            # what members TOLD us went wrong
+   bash tools/issues.sh show <id>  # one report in full, with its context
    ```
+   `errors.sh` catches what crashed. `issues.sh` catches everything that did not —
+   a school in the wrong city, a connection that makes no sense, a button that does
+   nothing. Most real complaints in this project have been the second kind, and
+   before 19 Sep 2026 they arrived as screenshots in WhatsApp days later.
 
 3. **Tell Paul what you found before starting new work.** Cover open errors, any
    FAIL or WARN lines, and new members. Fix errors before building features unless
@@ -70,7 +76,10 @@ a city. It is now 77. A member-added school counts as high: they worked there.
    rollback;
    ```
 4. Fix the root cause, deploy (§4), and verify on the live site.
-5. Close it: `bash tools/errors.sh resolve <code> "what fixed it"`.
+5. Close it: `bash tools/errors.sh resolve <code> "what fixed it"`, or
+   `bash tools/issues.sh resolve <id> "what fixed it"` for a member's report.
+   Tell Paul which reports you closed — the member who took the trouble to file it
+   deserves to hear back.
 
 ## 3. Hard rules
 

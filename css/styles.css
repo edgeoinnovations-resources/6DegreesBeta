@@ -579,3 +579,15 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
 .school-result.empty { cursor: default; color: var(--muted); font-size: 12.5px; }
 .inbox-err { flex: 1 1 100%; margin: 6px 0 0; font-size: 12px; color: #b8410f; }
 .inbox-row { flex-wrap: wrap; }
+
+/* ── "Having an issue?" ───────────────────────────────────────────────────
+   Bottom LEFT: MapLibre puts its attribution and controls bottom-right, and a
+   report button must never sit on top of the thing being reported. */
+.issue-btn {
+  position: fixed; left: 14px; bottom: 14px; z-index: 60;
+  border: 1px solid var(--line); background: #fff; color: var(--muted);
+  font: inherit; font-size: 12px; padding: 7px 12px; border-radius: 999px;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.issue-btn:hover { color: var(--turquoise-dark); border-color: var(--turquoise); }
+@media (max-width: 760px) { .issue-btn { font-size: 11px; padding: 6px 10px; } }
