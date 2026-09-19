@@ -754,7 +754,13 @@ function postingRow(posting, onRemove) {
     ROLES.map((r) => el('option', { value: r, text: r, selected: r === state.role ? 'selected' : null })));
   roleSel.addEventListener('change', () => { state.role = roleSel.value; });
 
-  const ym = (label, onChange, val) => {
+  // Month and year as a pair on ONE line, not stacked.
+  //
+  // They used to be a vertical column each — the label, then the month, then the
+  // year underneath — so "STARTED / September / 2011" ran downwards while "ENDED"
+  // ran downwards beside it, and the two years ended up on a line of their own
+  // with nothing saying what they were. Paul, 19 Sep 2026: read it left to right.
+  const ymPair = (label, onChange, val) => {
     const now = new Date().getFullYear();
     const m = el('select', { 'aria-label': `${label} month` },
       [el('option', { value: '', text: 'Month' }),
@@ -765,28 +771,37 @@ function postingRow(posting, onRemove) {
     if (val) { y.value = val.slice(0, 4); m.value = val.slice(5, 7); }
     const fire = () => onChange(y.value && m.value ? `${y.value}-${m.value}-01` : '');
     m.addEventListener('change', fire); y.addEventListener('change', fire);
-    return el('div.ym', {}, [el('label', { text: label }), m, y]);
+    return { m, y };
   };
 
-  const endWrap = ym('Ended', (v) => { state.end = v; }, state.end);
-  const curCb = el('input', { type: 'checkbox' });
-  if (state.current) { curCb.checked = true; endWrap.style.display = 'none'; }
-  curCb.addEventListener('change', () => {
-    state.current = curCb.checked;
-    endWrap.style.display = curCb.checked ? 'none' : '';
-    if (curCb.checked) state.end = '';
-  });
+  const started = ymPair('Started', (v) => { state.start = v; }, state.start);
+  const ended = ymPair('Ended', (v) => { state.end = v; }, state.end);
 
+  const curCb = el('input', { type: 'checkbox', autocomplete: 'off' });
   const remove = el('button.btn.ghost', { type: 'button', text: 'Remove' });
   remove.addEventListener('click', () => onRemove(row));
 
-  row.append(
-    el('div.control-group', {}, [el('label', { text: 'Role' }), roleSel]),
-    ym('Started', (v) => { state.start = v; }, state.start),
-    endWrap,
+  // Three lines, in the order somebody fills them in.
+  const line1 = el('div.pw-line', {}, [
+    el('span.pw-label', { text: 'Role' }), roleSel,
+    el('span.pw-label', { text: 'Started' }), started.m, started.y,
+  ]);
+  const line2 = el('div.pw-line', {}, [
+    el('span.pw-label', { text: 'Ended' }), ended.m, ended.y,
+  ]);
+  const line3 = el('div.pw-line', {}, [
     el('label.still-here', {}, [curCb, ' I’m still here']),
-    remove,
-  );
+    el('span', { style: 'margin-left:auto;' }, [remove]),
+  ]);
+
+  if (state.current) { curCb.checked = true; line2.style.display = 'none'; }
+  curCb.addEventListener('change', () => {
+    state.current = curCb.checked;
+    line2.style.display = curCb.checked ? 'none' : '';
+    if (curCb.checked) state.end = '';
+  });
+
+  row.append(el('div.posting-when', {}, [line1, line2, line3]));
   return row;
 }
 

@@ -404,13 +404,21 @@ body.signed-out .header-ego { display: none; }
 }
 .school-picker { display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 100%; }
 .school-picker select { min-width: 150px; flex: 1 1 auto; }
-.ym { display: flex; flex-direction: column; gap: 4px; }
-.ym label {
+/* Role, Started month + year on one line; Ended month + year on the next;
+   "I'm still here" on a third. Reads left to right, the way it is filled in. */
+.posting-when { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; }
+.pw-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pw-label {
   font-size: 12px; font-weight: 600; letter-spacing: .02em;
   text-transform: uppercase; color: var(--muted);
+  min-width: 56px;                 /* Role / Started / Ended line up down the left */
 }
-.ym select { min-width: 92px; }
+.pw-line select { min-width: 112px; }
 .still-here { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+@media (max-width: 620px) {
+  .pw-label { min-width: 100%; }
+  .pw-line select { flex: 1 1 40%; min-width: 0; }
+}
 
 /* Adding a school that isn't listed */
 .add-school {
