@@ -60,6 +60,11 @@ function toTeacher(p) {
     YEARS_EXPERIENCE: 0,
     STATUS: p.status,
     IS_GHOST: p.status === 'ghost',
+    // Where they stopped moving, if they said and chose to show it.
+    FINAL_CITY: p.final_city || '',
+    FINAL_REGION: p.final_region || '',
+    FINAL_COUNTRY: p.final_country || '',
+    FINAL_STATUS: p.final_status || '',
     EMAIL: '',                        // never fetched, never shown
   };
 }

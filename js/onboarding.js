@@ -85,6 +85,126 @@ const regionCatalogue = () => (_regionsP ??= fetchAll('regions', 'country_code,c
 
 export function invalidateCatalogue() { _schoolsP = null; _citiesByCountry.clear(); }
 
+// ── Final destination ───────────────────────────────────────────────────────
+//
+// Asked for by a member: international teachers scatter, and when they stop
+// moving they would like to know who else stopped nearby.
+//
+// Two questions, because one cannot write the sentence: WHERE, and whether they
+// are there yet. "Retired in Chiang Mai" and "Plans to retire in Chiang Mai" are
+// different facts and guessing between them would be wrong half the time.
+//
+// Not a degree. The six come from where people WORKED; this is searchable and
+// mappable and touches the degree engine nowhere.
+function finalDestination(profile) {
+  const card = el('div.card');
+  const has = !!profile?.final_city;
+
+  const country = el('select', { 'aria-label': 'Country' }, [el('option', { value: '', text: 'Country…' })]);
+  const city = el('select', { 'aria-label': 'Town or city', disabled: 'disabled' },
+    [el('option', { value: '', text: 'Town or city…' })]);
+  const state = el('select', { 'aria-label': 'Already there?' }, [
+    el('option', { value: 'there', text: 'I already live there' }),
+    el('option', { value: 'planned', text: 'That’s the plan' }),
+  ]);
+  const shown = el('input', { type: 'checkbox', autocomplete: 'off' });
+  shown.checked = profile?.final_public !== false;
+  const save = el('button.btn', { type: 'button', text: 'Save' });
+  const clear = el('button.btn.ghost', { type: 'button', text: 'Remove' });
+  const msg = el('p.auth-msg', { style: 'margin:8px 0 0;' });
+
+  if (profile?.final_status) state.value = profile.final_status;
+
+  append(card,
+    el('h4', { text: 'Final destination' }),
+    el('p.muted', {
+      style: 'font-size:12.5px;margin:0 0 10px;max-width:70ch;',
+      text: 'Where you have retired, or expect to. Other members can find who else '
+          + 'landed in the same place. It never changes anyone’s degree — those come '
+          + 'from where you worked.',
+    }),
+    el('div.controls', {}, [
+      el('div.control-group', {}, [el('label', { text: 'Country' }), country]),
+      el('div.control-group', {}, [el('label', { text: 'Town or city' }), city]),
+      el('div.control-group', {}, [el('label', { text: 'Status' }), state]),
+    ]),
+    el('div.control-group', { style: 'margin-top:4px;' },
+      [el('label', {}, [shown, ' Show this to other members'])]),
+    el('div', { style: 'display:flex;gap:10px;align-items:center;margin-top:10px;' },
+      has ? [save, clear] : [save]),
+    msg,
+  );
+
+  // Countries come from the school catalogue; towns from the gazetteer, so a
+  // retirement town is as structured as a school's city and can be mapped.
+  (async () => {
+    try {
+      const schools = await schoolCatalogue();
+      const names = [...new Set(schools.map((r) => r.country))].sort();
+      const cc = new Map();
+      for (const r of schools) if (r.country_code) cc.set(r.country, r.country_code);
+      names.forEach((n) => country.appendChild(el('option', { value: n, text: n })));
+
+      const fillCities = async (countryName, preselect) => {
+        city.innerHTML = '';
+        city.appendChild(el('option', { value: '', text: 'Town or city…' }));
+        const rows = await citiesIn(cc.get(countryName)).catch(() => []);
+        rows.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach((c) => {
+          const label = c.region ? `${c.name}, ${c.region}` : c.name;
+          const o = el('option', { value: c.name, text: label });
+          if (c.region) o.dataset.region = c.region;
+          city.appendChild(o);
+        });
+        city.disabled = !rows.length;
+        if (preselect) {
+          const o = [...city.options].find((x) => x.value === preselect);
+          if (o) o.selected = true;
+        }
+      };
+
+      country.addEventListener('change', () => fillCities(country.value, null));
+      if (profile?.final_country) {
+        country.value = profile.final_country;
+        await fillCities(profile.final_country, profile.final_city);
+      }
+    } catch (err) {
+      msg.className = 'auth-msg error';
+      msg.textContent = friendlyDbError(err, 'load the place list');
+    }
+  })();
+
+  const write = async (wipe) => {
+    msg.className = 'auth-msg';
+    if (!wipe && (!country.value || !city.value)) {
+      msg.className = 'auth-msg error';
+      msg.textContent = 'Pick a country and a town.';
+      return;
+    }
+    save.disabled = true; clear.disabled = true;
+    const region = city.selectedOptions[0]?.dataset.region || null;
+    const { error } = await supabase.rpc('save_final_destination', {
+      p_city: wipe ? null : city.value,
+      p_region: wipe ? null : region,
+      p_country: wipe ? null : country.value,
+      p_state: wipe ? null : state.value,
+      p_public: shown.checked,
+    });
+    save.disabled = false; clear.disabled = false;
+    if (error) {
+      msg.className = 'auth-msg error';
+      msg.textContent = friendlyDbError(error, 'save your final destination');
+      return;
+    }
+    msg.className = 'auth-msg ok';
+    msg.textContent = wipe ? 'Removed.' : 'Saved.';
+    if (wipe) { country.value = ''; city.innerHTML = ''; city.disabled = true; }
+  };
+  save.addEventListener('click', () => write(false));
+  clear.addEventListener('click', () => write(true));
+
+  return card;
+}
+
 // ── Your sign-in address ────────────────────────────────────────────────────
 //
 // Linda, 19 Sep 2026: what if she registered with her work email and then left
@@ -663,6 +783,8 @@ export function onboardingView(user, profile, onDone) {
     emailBlock(user),
   );
   root.appendChild(who);
+
+  root.appendChild(finalDestination(profile));
 
   // postings
   const postWrap = el('div.card');

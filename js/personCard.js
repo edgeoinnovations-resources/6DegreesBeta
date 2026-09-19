@@ -56,6 +56,34 @@ export function openPersonCard(ctx, id, extras = []) {
     goesBy ? el('p.person-meta', { text: goesBy }) : null,
   );
 
+  // Final destination, where they gave one. Phrased from what they told us
+  // rather than guessed: "retired in" and "plans to retire in" are different
+  // facts and picking wrong would be wrong half the time.
+  if (t.FINAL_CITY) {
+    const where = [t.FINAL_CITY, t.FINAL_REGION, t.FINAL_COUNTRY].filter(Boolean).join(', ');
+    const lead = t.FINAL_STATUS === 'planned' ? 'Plans to retire in' : 'Retired in';
+    const line = el('p.person-final', { style: 'margin:2px 0 10px;font-size:13px;' });
+    line.innerHTML = `<span aria-hidden="true">🏡</span> ${lead} <strong>${where}</strong>`;
+    if (id !== me) {
+      const who = el('button.acct-edit', { type: 'button', text: 'who else is there?' });
+      who.addEventListener('click', async () => {
+        who.disabled = true; who.textContent = 'looking…';
+        const { data } = await supabase.rpc('who_else_retired', {
+          p_city: t.FINAL_CITY, p_country: t.FINAL_COUNTRY,
+        });
+        const names = (data || []).filter((r) => r.id !== id).map((r) => r.display_name);
+        who.replaceWith(el('span.muted', {
+          style: 'font-size:12px;',
+          text: names.length
+            ? `Also there: ${names.slice(0, 6).join(', ')}${names.length > 6 ? ` and ${names.length - 6} more` : ''}`
+            : 'Nobody else here yet.',
+        }));
+      });
+      line.append(' ', who);
+    }
+    card.appendChild(line);
+  }
+
   if (t.IS_GHOST) {
     card.appendChild(el('p.muted', { style: 'font-size:12.5px;', text: 'This person has left 6 Degrees. Their history stays so everyone else’s connections remain correct.' }));
   }
