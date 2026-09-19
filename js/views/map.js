@@ -107,6 +107,24 @@ export const view = {
     // including here — this only stops the accidental gesture.
     const blockPageZoom = (e) => { if (e.ctrlKey) e.preventDefault(); };
     shell.addEventListener('wheel', blockPageZoom, { passive: false });
+
+    // Nothing may scroll this view sideways. Ever.
+    //
+    // The glitch Paul filmed: at 6.5s into Dee's flight the map jumps left and the
+    // "Worldwide community" panel vanishes. A resize cannot hide that panel — it is
+    // pinned to the shell's left edge — but a horizontal SCROLL hides it and leaves
+    // blank space on the right, which is exactly the picture. The distance is ~310
+    // CSS px, and .side-panel parked off the right edge is 320px wide.
+    //
+    // overflow:clip above should make this impossible. This is the backstop for
+    // browsers that only honour overflow:hidden, which clips the view but still
+    // leaves a scroll container the BROWSER can move — popups being scrolled into
+    // view during a flight will do it even though the user never can.
+    const unscroll = () => {
+      if (shell.scrollLeft !== 0) shell.scrollLeft = 0;
+      if (shell.scrollTop !== 0) shell.scrollTop = 0;
+    };
+    shell.addEventListener('scroll', unscroll, { passive: true });
     root.appendChild(shell);
 
     // ── Aggregates ───────────────────────────────────────────────────────────
@@ -648,6 +666,7 @@ export const view = {
       timers.clear();
       clearPopups();
       shell.removeEventListener('wheel', blockPageZoom);
+      shell.removeEventListener('scroll', unscroll);
       window.removeEventListener('resize', onWinResize);
       try { ro.disconnect(); } catch {}
       try { map.remove(); } catch {}

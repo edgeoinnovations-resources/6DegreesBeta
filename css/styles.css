@@ -153,8 +153,13 @@ button.btn:disabled { opacity: .5; cursor: not-allowed; }
   position: absolute; top: 0; right: 0; bottom: 0; width: 320px; z-index: 20;
   background: #fff; border-left: 1px solid var(--line); box-shadow: -6px 0 18px rgba(0,0,0,.06);
   padding: 16px; overflow-y: auto; transform: translateX(100%); transition: transform .18s;
+  /* Parked off the right edge, a transform still counts as overflow and gives the
+     shell something to scroll to. Taking it out of the layout when closed removes
+     the 320px entirely; visibility keeps the slide animation working, because
+     display:none would kill the transition. */
+  visibility: hidden;
 }
-.side-panel.open { transform: translateX(0); }
+.side-panel.open { transform: translateX(0); visibility: visible; }
 .side-panel h3 { margin: 0 0 2px; font-size: 16px; }
 .side-panel .sub { color: var(--muted); font-size: 12.5px; margin-bottom: 12px; }
 .side-panel .close { position: absolute; top: 12px; right: 12px; border: none; background: none; font-size: 18px; cursor: pointer; color: var(--muted); }
@@ -202,7 +207,16 @@ table.data tr:hover td { background: #f6fbfc; }
    times on 18 Sep 2026, and it is why measuring the canvas against the container
    kept reporting no gap: the canvas was never wrong. Clipping the shell means the
    parked panel cannot extend anything. */
-.map-shell { position: absolute; inset: 0; overflow: hidden; }
+.map-shell {
+  position: absolute; inset: 0;
+  /* overflow:hidden CLIPS but still creates a scroll container, and a scroll
+     container can be scrolled by the BROWSER even when the user cannot touch it —
+     anything focused or scrolled into view drags it. overflow:clip creates no
+     scroll container at all, so scrollLeft can never leave 0. Browsers that do not
+     know `clip` keep `hidden` from the line above. */
+  overflow: hidden;
+  overflow: clip;
+}
 .map-overlay {
   position: absolute; top: 14px; left: 14px; z-index: 5; max-width: 280px;
   background: rgba(255,255,255,.95); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px;
