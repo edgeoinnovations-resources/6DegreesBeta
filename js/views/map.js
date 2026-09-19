@@ -86,6 +86,27 @@ export const view = {
     const shell = el('div.map-shell');
     const mapDiv = el('div', { id: 'map' });
     shell.appendChild(mapDiv);
+
+    // A pinch over the map must never zoom the PAGE.
+    //
+    // On a Mac trackpad a two-finger pinch arrives as a wheel event with ctrlKey
+    // set. Over the canvas MapLibre takes it and zooms the map. Over anything else
+    // in this view — the "Worldwide community" panel, which is exactly where the
+    // cursor rests after clicking "Fly the journey" — it falls through to the
+    // browser, which zooms the page instead. Page zoom changes innerWidth, the map
+    // correctly refits to the new width, and the whole view appears to jump size
+    // mid-flight for no reason.
+    //
+    // That is what Paul reported four times, and his diagnostic is what showed it:
+    // nine different viewport widths during one 60-second flight, with the canvas
+    // matching the container at every one of 121 samples. Nothing was broken. The
+    // window kept changing underneath it.
+    //
+    // passive:false because a passive listener is not allowed to preventDefault.
+    // Deliberately scoped to this view, so Cmd +/- still zooms the page everywhere,
+    // including here — this only stops the accidental gesture.
+    const blockPageZoom = (e) => { if (e.ctrlKey) e.preventDefault(); };
+    shell.addEventListener('wheel', blockPageZoom, { passive: false });
     root.appendChild(shell);
 
     // ── Aggregates ───────────────────────────────────────────────────────────
@@ -275,6 +296,14 @@ export const view = {
     };
     map.on('render', fitCanvas);
     requestAnimationFrame(fitCanvas);
+
+    // Resize on the window event as well, synchronously. The header and nav are
+    // ordinary HTML and repaint with the new width immediately; a WebGL canvas does
+    // not, so for a frame or two the map is still drawn at its old size with blank
+    // page beside it. That gap is the thing that actually looks like a glitch.
+    // Handling the event directly, rather than waiting for the observer, closes it.
+    const onWinResize = () => { if (!destroyed) { try { map.resize(); } catch {} } };
+    window.addEventListener('resize', onWinResize);
 
 
     // Handy when debugging the map from the console: window.__6deg.map, .state()
@@ -618,6 +647,8 @@ export const view = {
       for (const t of timers) clearTimeout(t);
       timers.clear();
       clearPopups();
+      shell.removeEventListener('wheel', blockPageZoom);
+      window.removeEventListener('resize', onWinResize);
       try { ro.disconnect(); } catch {}
       try { map.remove(); } catch {}
       root.style.padding = '';
