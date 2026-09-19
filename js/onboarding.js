@@ -952,17 +952,47 @@ export function onboardingView(user, profile, onDone) {
       return;
     }
 
-    const wanted = [...rows.children].map((r) => r._state)
-      .filter((s) => s.school_id && s.start);
+    // A HALF-FILLED ROW IS NOT SILENTLY THROWN AWAY.
+    //
+    // This used to be `.filter(s => s.school_id && s.start)` — anything missing a
+    // school or a start date simply vanished at save time, with nothing said.
+    // Sarah entered three postings on 13 Sep and two arrived; she told the group
+    // "probably user error" and blamed herself. It was not: her Addis row lost its
+    // school (most likely while the school list was still loading, which used to
+    // take 37 sequential requests) and the save discarded it without a word. She
+    // has been the only member with no current posting ever since.
+    //
+    // A row nobody has touched is fine to ignore. A row somebody started and did
+    // not finish must stop the save and say which one.
+    const all = [...rows.children].map((r, i) => ({ r, i, st: r._state }));
+    const touched = all.filter(({ st }) => st.school_id || st.start || st.end || st.current);
+    const incomplete = touched.filter(({ st }) => !st.school_id || !st.start);
+
+    all.forEach(({ r }) => r.classList.remove('row-problem'));
+    if (incomplete.length) {
+      incomplete.forEach(({ r }) => r.classList.add('row-problem'));
+      incomplete[0].r.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      const which = incomplete.map(({ i }) => `#${i + 1}`).join(', ');
+      const missing = !incomplete[0].st.school_id ? 'a school' : 'a start date';
+      status.className = 'auth-msg error';
+      status.textContent = incomplete.length === 1
+        ? `Posting ${which} still needs ${missing}. Nothing has been saved.`
+        : `Postings ${which} are missing a school or a start date. Nothing has been saved.`;
+      return;
+    }
+
+    const wanted = touched.map(({ st }) => st);
     if (!wanted.length) {
       status.className = 'auth-msg error';
       status.textContent = 'Add at least one posting — a school and a start date.';
       return;
     }
-    const bad = wanted.find((s) => !s.current && !s.end);
-    if (bad) {
+    const badIdx = touched.findIndex(({ st }) => !st.current && !st.end);
+    if (badIdx >= 0) {
+      touched[badIdx].r.classList.add('row-problem');
+      touched[badIdx].r.scrollIntoView({ block: 'center', behavior: 'smooth' });
       status.className = 'auth-msg error';
-      status.textContent = 'Every posting needs an end date, or “I’m still here” ticked.';
+      status.textContent = `Posting #${touched[badIdx].i + 1} needs an end date, or “I’m still here” ticked.`;
       return;
     }
 

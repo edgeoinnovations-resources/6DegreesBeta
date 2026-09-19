@@ -632,3 +632,9 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
 .switch:disabled { opacity: .5; cursor: default; }
 .switch:focus-visible { outline: 2px solid var(--turquoise-dark); outline-offset: 2px; }
 .switch-label { font-size: 12.5px; color: var(--muted); }
+
+/* A posting that stopped the save — so "which one?" needs no hunting. */
+.posting-row.row-problem {
+  border-color: var(--orange); background: #fff7f3;
+  box-shadow: 0 0 0 3px rgba(217,129,87,.12);
+}
