@@ -12,7 +12,7 @@
 //   * Role is one of four basics, never a job title or subject. (Linda, 7 Jun
 //     2026: "we talked about NOT having teaching assignment".)
 //   * Months and years. (Paul: "I think we can do months and years.")
-import { supabase, friendlyDbError } from './supabaseClient.js';
+import { supabase, friendlyDbError, friendlyAuthError } from './supabaseClient.js';
 import { el, append } from './widgets.js';
 
 const ROLES = ['Faculty', 'Staff', 'Administrator', 'Student'];
@@ -84,6 +84,91 @@ const regionCatalogue = () => (_regionsP ??= fetchAll('regions', 'country_code,c
   .catch((e) => { _regionsP = null; throw e; }));
 
 export function invalidateCatalogue() { _schoolsP = null; _citiesByCountry.clear(); }
+
+// ── Your sign-in address ────────────────────────────────────────────────────
+//
+// Linda, 19 Sep 2026: what if she registered with her work email and then left
+// for another school — can she change it without losing her connections?
+//
+// Yes, and it has always been possible: a profile is keyed to the auth user's
+// ID, not their address. Change the address, the ID stays, and every posting,
+// connection and tag is untouched. There was simply no way to ask.
+//
+// It is the likeliest way for someone here to lose their account. Half this
+// group registered on @asdubai.org, in a network whose defining feature is that
+// people change schools every few years. The day that address stops working,
+// so does the only key to a career history.
+//
+// ONE ADDRESS, NOT A LIST. Supabase gives an account exactly one email, so this
+// is a change rather than "add a second and retire the first".
+//
+// DO IT BEFORE YOU LOSE THE OLD ONE. Confirmation may be sent to both addresses
+// depending on the project's security setting. Anyone already locked out needs
+// Paul to move them by hand.
+function emailBlock(user) {
+  const wrap = el('div', { style: 'margin:10px 2px 0;' });
+  const line = el('p.muted', { style: 'font-size:12px;margin:0;' });
+  line.innerHTML = `Signed in as <strong>${user.email}</strong> — this is never shown to anyone else. `;
+  const change = el('button.acct-edit', { type: 'button', text: 'Change it' });
+  line.appendChild(change);
+  wrap.appendChild(line);
+
+  const form = el('div', { style: 'margin-top:8px;' });
+  form.hidden = true;
+  const next = el('input', {
+    type: 'email', autocomplete: 'off', 'aria-label': 'New email address',
+    placeholder: 'your personal address',
+  });
+  const go = el('button.btn', { type: 'button', text: 'Send confirmation' });
+  const msg = el('p.auth-msg', { style: 'margin:8px 0 0;' });
+  append(form,
+    el('p.muted', {
+      style: 'font-size:11.5px;margin:0 0 6px;max-width:62ch;',
+      html: 'Use a <strong>personal</strong> address, not a school one — schools close your '
+        + 'account when you leave, and this is the only key to your history. '
+        + 'Your connections, postings and tags all stay exactly as they are.',
+    }),
+    el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' }, [next, go]),
+    msg,
+  );
+  wrap.appendChild(form);
+
+  change.addEventListener('click', () => {
+    form.hidden = !form.hidden;
+    change.textContent = form.hidden ? 'Change it' : 'Cancel';
+    if (!form.hidden) next.focus();
+  });
+
+  go.addEventListener('click', async () => {
+    const addr = next.value.trim();
+    msg.className = 'auth-msg';
+    if (!addr || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(addr)) {
+      msg.className = 'auth-msg error'; msg.textContent = 'That does not look like an email address.'; return;
+    }
+    if (addr.toLowerCase() === (user.email || '').toLowerCase()) {
+      msg.className = 'auth-msg error'; msg.textContent = 'That is already your address.'; return;
+    }
+    go.disabled = true; go.textContent = 'Sending…';
+    const { error } = await supabase.auth.updateUser(
+      { email: addr },
+      { emailRedirectTo: `${location.origin}${location.pathname}` },
+    );
+    go.disabled = false; go.textContent = 'Send confirmation';
+    if (error) {
+      msg.className = 'auth-msg error';
+      msg.textContent = friendlyAuthError
+        ? friendlyAuthError(error)
+        : (error.message || 'That did not go through.');
+      return;
+    }
+    msg.className = 'auth-msg ok';
+    msg.textContent = `Check ${addr} for a confirmation link. `
+      + 'Until you click it, keep signing in with your current address. '
+      + 'You may also get a confirmation at your old address — click both.';
+  });
+
+  return wrap;
+}
 
 // ── School picker: country → city → school, with escape hatches ─────────────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
@@ -575,7 +660,7 @@ export function onboardingView(user, profile, onDone) {
     hadOnlyInitial
       ? el('p.auth-msg', { style: 'margin:6px 2px 0;', text: `We now ask for your full last name — until you add it you show as “${profile.display_name}”.` })
       : null,
-    el('p.muted', { style: 'font-size:12px;margin:6px 2px 0;', text: `Signed in as ${user.email} — this is never shown to anyone else.` }),
+    emailBlock(user),
   );
   root.appendChild(who);
 

@@ -60,14 +60,18 @@ export async function openInvitePanel(ctx) {
   card.append(x, el('h3.person-name', { text: 'Invite someone' }));
   card.appendChild(el('p.muted', {
     style: 'font-size:12.5px;margin:0 0 12px;',
-    text: 'The network only works with people in it. Invite anyone you have worked with — '
-        + 'they get an email with a sign-in link, and only that address can use it.',
+    html: 'The network only works with people in it. Invite anyone you have worked with — '
+        + 'they get an email with a sign-in link, and only that address can use it.'
+        + '<br><br><strong>Use their personal address, not a school one.</strong> '
+        + 'Schools close accounts when people leave, and this is the only key to '
+        + 'their history here — so a work address is a bill that comes due at the '
+        + 'worst possible moment.',
   }));
 
   // ── the form ──────────────────────────────────────────────────────────────
   const email = el('input', {
     type: 'email', autocomplete: 'off', 'aria-label': 'Their email address',
-    placeholder: 'their email address',
+    placeholder: 'their personal email address',
   });
   const note = el('input', {
     type: 'text', maxlength: '200', autocomplete: 'off', 'aria-label': 'Note to yourself',
@@ -238,6 +242,19 @@ export async function openInvitePanel(ctx) {
       logError({ action: 'invite someone', code: err?.code, message: err?.message });
     } finally {
       go.disabled = false; go.textContent = 'Send invitation';
+    }
+  });
+
+  const WORKISH = /\.(edu|ac|sch|k12)\b|\b(school|academy|college|isd|edu)\b/i;
+  email.addEventListener('input', () => {
+    const v = email.value.trim();
+    const looksInstitutional = v.includes('@') && WORKISH.test(v.split('@')[1] || '');
+    status.className = looksInstitutional ? 'auth-msg' : status.className;
+    if (looksInstitutional) {
+      status.textContent = 'That looks like a school address. It will work — but they '
+        + 'lose access the day they leave. A personal one is safer.';
+    } else if (status.textContent.startsWith('That looks like a school address')) {
+      status.textContent = '';
     }
   });
 
