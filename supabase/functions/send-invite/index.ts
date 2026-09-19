@@ -94,8 +94,14 @@ Deno.serve(async (req) => {
     // is already written for a person to read.
     return json({ error: rpcError.message, stage: 'record' }, 400, origin);
   }
+  let resent = false;
   if (result === 'ALREADY_LISTED') {
-    return json({ status: 'ALREADY_LISTED' }, 200, origin);
+    // Typing an address a second time should send it again, not lecture the
+    // member. Only if it is THEIR invitation and the person has not finished
+    // registering — may_resend_invite() decides, not this file.
+    const { data: mayResend } = await asUser.rpc('may_resend_invite', { p_email: email });
+    if (!mayResend) return json({ status: 'ALREADY_LISTED' }, 200, origin);
+    resent = true;
   }
 
   // ── 2. Send it, with the key that never leaves this function ──────────────
@@ -114,5 +120,5 @@ Deno.serve(async (req) => {
     }, 200, origin);
   }
 
-  return json({ status: 'SENT' }, 200, origin);
+  return json({ status: resent ? 'RESENT' : 'SENT' }, 200, origin);
 });

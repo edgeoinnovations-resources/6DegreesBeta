@@ -136,9 +136,17 @@ export async function openInvitePanel(ctx) {
       append(row, pill, body);
 
       if (!r.registered) {
-        const copy = el('button.btn.ghost', { type: 'button', text: 'copy message' });
-        copy.addEventListener('click', async () => {
-          await share(r.email, copy);
+        // Was "copy message", from before invitations sent themselves. Re-sending
+        // the email is the useful action now — and the only way to deliver the
+        // invitations that were recorded before the sender existed.
+        const again = el('button.btn.ghost', { type: 'button', text: 'resend' });
+        again.addEventListener('click', async () => {
+          again.disabled = true; again.textContent = 'sending…';
+          const sent = await sendInvite(r.email, null);
+          again.textContent = sent.ok ? 'sent' : 'failed';
+          if (!sent.ok && sent.fallback) await share(r.email);
+          setTimeout(() => { again.disabled = false; again.textContent = 'resend'; }, 2500);
+          if (sent.ok) refreshList();
         });
         const drop = r.signed_in_at ? null
           : el('button.btn.ghost', { type: 'button', text: 'withdraw' });
@@ -151,16 +159,17 @@ export async function openInvitePanel(ctx) {
           });
         }
         row.append(el('span', { style: 'margin-left:auto;display:flex;gap:6px;' },
-          [copy, drop].filter(Boolean)));
+          [again, drop].filter(Boolean)));
       }
       ul.appendChild(row);
     });
     list.appendChild(ul);
   }
 
-  // Clipboard access can be refused (insecure context, permissions), so always
-  // leave the text on screen to copy by hand.
-  async function share(addr, btn) {
+  // Only reached when the email could NOT be sent. Clipboard access can be
+  // refused (insecure context, permissions), so the text is always left on screen
+  // to copy by hand as well.
+  async function share(addr) {
     const text = invitationText(ctx.profile?.first_name || '', addr);
     let copied = false;
     try { await navigator.clipboard.writeText(text); copied = true; } catch { /* shown below instead */ }
@@ -178,7 +187,35 @@ export async function openInvitePanel(ctx) {
       }, [text]),
     );
     shareBox.querySelector('textarea').select();
-    if (btn) { btn.textContent = copied ? 'copied' : 'shown below'; setTimeout(() => { btn.textContent = 'copy message'; }, 2500); }
+  }
+
+  // The single path to the sender. Returns { ok, status, message, fallback }.
+  async function sendInvite(addr, noteText) {
+    const { data, error } = await supabase.functions.invoke('send-invite', {
+      body: {
+        email: addr,
+        note: noteText || null,
+        redirectTo: `${location.origin}${location.pathname}`,
+      },
+    });
+    if (error) {
+      let msg = '';
+      try { msg = (await error.context?.json())?.error || ''; } catch { /* not json */ }
+      return { ok: false, message: msg || error.message || 'That didn’t go through.' };
+    }
+    if (data?.status === 'ALREADY_LISTED') {
+      return { ok: false, status: 'ALREADY_LISTED', already: true,
+        message: 'Someone else already invited that address — they can sign in whenever they like.' };
+    }
+    if (data?.status === 'RECORDED_NOT_SENT') {
+      logError({ action: 'send invite email', code: 'not-sent', message: String(data.error || '') });
+      return { ok: false, fallback: true,
+        message: 'They’re on the list, but the email didn’t go out. Send them the message below yourself.' };
+    }
+    return { ok: true, status: data?.status,
+      message: data?.status === 'RESENT'
+        ? `Invitation sent again to ${addr}.`
+        : `Invitation emailed to ${addr}. Tell them to check spam for the first one.` };
   }
 
   go.addEventListener('click', async () => {
@@ -187,43 +224,14 @@ export async function openInvitePanel(ctx) {
     if (!addr) { status.className = 'auth-msg error'; status.textContent = 'Put in their email address.'; return; }
     go.disabled = true; go.textContent = 'Sending…';
     try {
-      // The function records the invitation (as you, under the same rules as
-      // before) and then sends it. It never reports a send failure as a failure:
-      // if the row exists, the person can still be let in by hand.
-      const { data, error } = await supabase.functions.invoke('send-invite', {
-        body: {
-          email: addr,
-          note: note.value.trim() || null,
-          redirectTo: `${location.origin}${location.pathname}`,
-        },
-      });
-
-      // A non-2xx from the function arrives as an error with the body attached.
-      if (error) {
-        let msg = '';
-        try { msg = (await error.context?.json())?.error || ''; } catch { /* not json */ }
-        throw new Error(msg || error.message || 'That didn’t go through.');
-      }
-
-      if (data?.status === 'ALREADY_LISTED') {
-        status.className = 'auth-msg';
-        status.textContent = 'That address is already on the list — they can sign in whenever they like.';
-      } else if (data?.status === 'RECORDED_NOT_SENT') {
-        // Worth knowing about: the daily sending allowance is shared with sign-in
-        // links, so this is the likeliest thing to go wrong on a busy day.
-        status.className = 'auth-msg error';
-        status.textContent = 'They’re on the list, but the email didn’t go out. '
-          + 'Send them the message below yourself.';
-        await share(addr, null);
-        email.value = ''; note.value = '';
-        refreshList();
-        logError({ action: 'send invite email', code: 'not-sent', message: String(data.error || '') });
-      } else {
-        status.className = 'auth-msg ok';
-        status.textContent = `Invitation emailed to ${addr}. Tell them to check spam for the first one.`;
-        email.value = ''; note.value = '';
-        refreshList();
-      }
+      // Typing an address you already invited re-sends it, rather than telling you
+      // that you already did. The server decides whether that is allowed.
+      const res = await sendInvite(addr, note.value.trim());
+      status.className = res.ok ? 'auth-msg ok' : 'auth-msg error';
+      status.textContent = res.message;
+      if (res.fallback) await share(addr);
+      if (res.ok) { email.value = ''; note.value = ''; }
+      refreshList();
     } catch (err) {
       status.className = 'auth-msg error';
       status.textContent = friendlyDbError(err, 'send that invitation');

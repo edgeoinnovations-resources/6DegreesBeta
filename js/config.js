@@ -22,4 +22,4 @@ export const REDIRECT_URL = `${location.origin}${location.pathname}`;
 // after a deploy a browser can be running a MIX of old and new modules — which
 // makes "did my fix reach you?" unanswerable without it. Updated by
 // tools/stamp-build.sh on every commit.
-export const BUILD = '19 Sep 14:26 UTC';
+export const BUILD = '19 Sep 14:47 UTC';
