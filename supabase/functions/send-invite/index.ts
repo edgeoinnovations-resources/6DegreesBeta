@@ -31,7 +31,12 @@ const ALLOWED = new Set([
 ]);
 const cors = (origin: string | null) => ({
   'Access-Control-Allow-Origin': origin && ALLOWED.has(origin) ? origin : [...ALLOWED][0],
-  'Access-Control-Allow-Headers': 'authorization, content-type',
+  // supabase-js sends apikey and x-client-info alongside the token. Leaving them
+  // out makes the browser reject the preflight and report "Failed to fetch" with
+  // no status and no body — which looks like the function is down when it is
+  // actually fine. curl never notices, because curl does not enforce CORS.
+  'Access-Control-Allow-Headers': 'authorization, content-type, apikey, x-client-info',
+  'Access-Control-Max-Age': '3600',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Vary': 'Origin',
 });
