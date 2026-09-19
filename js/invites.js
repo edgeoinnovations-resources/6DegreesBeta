@@ -60,8 +60,8 @@ export async function openInvitePanel(ctx) {
   card.append(x, el('h3.person-name', { text: 'Invite someone' }));
   card.appendChild(el('p.muted', {
     style: 'font-size:12.5px;margin:0 0 12px;',
-    text: 'The network only works with people in it. Add anyone you have worked with — '
-        + 'they can sign in with this address, and nobody else can.',
+    text: 'The network only works with people in it. Invite anyone you have worked with — '
+        + 'they get an email with a sign-in link, and only that address can use it.',
   }));
 
   // ── the form ──────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@ export async function openInvitePanel(ctx) {
     type: 'text', maxlength: '200', autocomplete: 'off', 'aria-label': 'Note to yourself',
     placeholder: 'note to yourself (optional) — where you know them from',
   });
-  const go = el('button.btn.accent', { type: 'button', text: 'Add them' });
+  const go = el('button.btn.accent', { type: 'button', text: 'Send invitation' });
   const status = el('p.auth-msg', { style: 'margin:8px 0 0;' });
   const shareBox = el('div');
   shareBox.hidden = true;
@@ -107,7 +107,7 @@ export async function openInvitePanel(ctx) {
       return;
     }
     const rows = data || [];
-    const joined = rows.filter((r) => r.accepted_at).length;
+    const joined = rows.filter((r) => r.registered).length;
     list.appendChild(el('h4', {
       text: rows.length
         ? `You've invited ${rows.length} ${rows.length === 1 ? 'person' : 'people'}`
@@ -119,29 +119,39 @@ export async function openInvitePanel(ctx) {
     const ul = el('div.inbox-sec');
     rows.forEach((r) => {
       const row = el('div.conn-row');
-      const pill = r.accepted_at
+      // Three states, not two. "Signed in" is someone who clicked the link and did
+      // not finish — worth seeing, because they are the ones to nudge.
+      const pill = r.registered
         ? el('span.deg-pill.ack', { text: 'Joined' })
-        : el('span.deg-pill', { style: 'background:#9fb3bd;', text: 'Waiting' });
+        : r.signed_in_at
+          ? el('span.deg-pill', { style: 'background:#e0a458;', text: 'Started' })
+          : el('span.deg-pill', { style: 'background:#9fb3bd;', text: 'Invited' });
+      const state = r.registered ? `joined ${when(r.signed_in_at || r.created_at)}`
+        : r.signed_in_at ? `opened the link ${when(r.signed_in_at)} — hasn’t finished their details`
+        : `invited ${when(r.created_at)}`;
       const body = el('span', {
         html: `<strong>${r.email}</strong><br><small class="muted">`
-          + `${r.note ? `${r.note} · ` : ''}`
-          + `${r.accepted_at ? `joined ${when(r.accepted_at)}` : `invited ${when(r.created_at)}`}</small>`,
+          + `${r.note ? `${r.note} · ` : ''}${state}</small>`,
       });
       append(row, pill, body);
 
-      if (!r.accepted_at) {
+      if (!r.registered) {
         const copy = el('button.btn.ghost', { type: 'button', text: 'copy message' });
         copy.addEventListener('click', async () => {
           await share(r.email, copy);
         });
-        const drop = el('button.btn.ghost', { type: 'button', text: 'withdraw' });
-        drop.addEventListener('click', async () => {
-          drop.disabled = true;
-          const { error } = await supabase.rpc('uninvite', { p_email: r.email });
-          if (error) { drop.disabled = false; drop.textContent = 'failed'; return; }
-          refreshList();
-        });
-        row.append(el('span', { style: 'margin-left:auto;display:flex;gap:6px;' }, [copy, drop]));
+        const drop = r.signed_in_at ? null
+          : el('button.btn.ghost', { type: 'button', text: 'withdraw' });
+        if (drop) {
+          drop.addEventListener('click', async () => {
+            drop.disabled = true;
+            const { error } = await supabase.rpc('uninvite', { p_email: r.email });
+            if (error) { drop.disabled = false; drop.textContent = 'failed'; return; }
+            refreshList();
+          });
+        }
+        row.append(el('span', { style: 'margin-left:auto;display:flex;gap:6px;' },
+          [copy, drop].filter(Boolean)));
       }
       ul.appendChild(row);
     });
@@ -175,28 +185,51 @@ export async function openInvitePanel(ctx) {
     const addr = email.value.trim();
     status.className = 'auth-msg';
     if (!addr) { status.className = 'auth-msg error'; status.textContent = 'Put in their email address.'; return; }
-    go.disabled = true; go.textContent = 'Adding…';
+    go.disabled = true; go.textContent = 'Sending…';
     try {
-      const { data, error } = await supabase.rpc('invite_someone', {
-        p_email: addr, p_note: note.value.trim() || null,
+      // The function records the invitation (as you, under the same rules as
+      // before) and then sends it. It never reports a send failure as a failure:
+      // if the row exists, the person can still be let in by hand.
+      const { data, error } = await supabase.functions.invoke('send-invite', {
+        body: {
+          email: addr,
+          note: note.value.trim() || null,
+          redirectTo: `${location.origin}${location.pathname}`,
+        },
       });
-      if (error) throw error;
-      if (data === 'ALREADY_LISTED') {
+
+      // A non-2xx from the function arrives as an error with the body attached.
+      if (error) {
+        let msg = '';
+        try { msg = (await error.context?.json())?.error || ''; } catch { /* not json */ }
+        throw new Error(msg || error.message || 'That didn’t go through.');
+      }
+
+      if (data?.status === 'ALREADY_LISTED') {
         status.className = 'auth-msg';
         status.textContent = 'That address is already on the list — they can sign in whenever they like.';
+      } else if (data?.status === 'RECORDED_NOT_SENT') {
+        // Worth knowing about: the daily sending allowance is shared with sign-in
+        // links, so this is the likeliest thing to go wrong on a busy day.
+        status.className = 'auth-msg error';
+        status.textContent = 'They’re on the list, but the email didn’t go out. '
+          + 'Send them the message below yourself.';
+        await share(addr, null);
+        email.value = ''; note.value = '';
+        refreshList();
+        logError({ action: 'send invite email', code: 'not-sent', message: String(data.error || '') });
       } else {
         status.className = 'auth-msg ok';
-        status.textContent = 'Added. Now send them the message below.';
-        await share(addr, null);
+        status.textContent = `Invitation emailed to ${addr}. Tell them to check spam for the first one.`;
         email.value = ''; note.value = '';
         refreshList();
       }
     } catch (err) {
       status.className = 'auth-msg error';
-      status.textContent = friendlyDbError(err, 'add that invitation');
+      status.textContent = friendlyDbError(err, 'send that invitation');
       logError({ action: 'invite someone', code: err?.code, message: err?.message });
     } finally {
-      go.disabled = false; go.textContent = 'Add them';
+      go.disabled = false; go.textContent = 'Send invitation';
     }
   });
 
