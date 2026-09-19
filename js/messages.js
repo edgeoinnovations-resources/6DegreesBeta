@@ -96,8 +96,18 @@ async function openThread(ctx, otherId, otherName, back) {
     if (!body) return;
     send.disabled = true; send.textContent = 'Sending…';
     try {
-      const { error } = await supabase.rpc('send_message', { p_to: otherId, p_body: body });
-      if (error) throw error;
+      // Through the function, so the recipient gets Dave's email nudge. It calls
+      // the same RPC with your token — the rules are unchanged, and a quietly
+      // declined message produces no email, which is what makes it quiet.
+      const { data, error } = await supabase.functions.invoke('send-message', {
+        body: { to: otherId, body },
+      });
+      if (error) {
+        let msg = '';
+        try { msg = (await error.context?.json())?.error || ''; } catch { /* not json */ }
+        throw new Error(msg || error.message || 'That didn’t go through.');
+      }
+      if (data?.error) throw new Error(data.error);
       box.value = '';
       await draw();
     } catch (err) {
