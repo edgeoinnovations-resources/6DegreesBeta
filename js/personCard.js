@@ -12,6 +12,7 @@ import { degreeColor, degreeLabel, roleCategory } from './degrees.js';
 import { pairKey } from './loadData.js';
 import { supabase } from './supabaseClient.js';
 import { tagSection } from './tags.js';
+import { messageSomeone } from './messages.js';
 
 let overlay = null;
 
@@ -184,6 +185,44 @@ export function openPersonCard(ctx, id, extras = []) {
     hist.appendChild(ul);
   }
   card.appendChild(hist);
+
+  // Writing to someone belongs here too: you are already looking at them, and
+  // this is the moment Linda described — "if I saw we were connected but I had
+  // lost touch with you, I'd want to be able to connect".
+  if (id !== me && !t.IS_GHOST) {
+    const write = el('button.btn.accent', {
+      type: 'button', text: `Message ${(t.FIRST_NAME || '').split(' ')[0] || 'them'}`,
+    });
+    write.addEventListener('click', () => {
+      closePersonCard();
+      messageSomeone(ctx, id, t.FULL_NAME);
+    });
+
+    // Quietly decline this one person. They are never told — that is the point,
+    // and it is why the only way back is the list in Your details.
+    const mute = el('button.acct-edit', { type: 'button', text: '' });
+    const paint = (blockedNow) => {
+      mute.textContent = blockedNow ? 'accept messages from them' : 'don’t accept messages from them';
+    };
+    supabase.from('message_blocks').select('blocked_id').eq('blocked_id', id).maybeSingle()
+      .then(({ data }) => paint(!!data), () => paint(false));
+    mute.addEventListener('click', async () => {
+      mute.disabled = true;
+      const { data: existing } = await supabase.from('message_blocks')
+        .select('blocked_id').eq('blocked_id', id).maybeSingle();
+      if (existing) {
+        await supabase.from('message_blocks').delete().eq('blocked_id', id);
+        paint(false);
+      } else {
+        const { data: { user } } = await supabase.auth.getUser();
+        await supabase.from('message_blocks').insert({ owner_id: user.id, blocked_id: id });
+        paint(true);
+      }
+      mute.disabled = false;
+    });
+
+    card.appendChild(el('div', { style: 'margin:4px 0 12px;' }, [write, ' ', mute]));
+  }
 
   // Confirming a connection and keeping a private note both belong here — this is
   // where you are already looking at the person.

@@ -591,3 +591,14 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
 }
 .issue-btn:hover { color: var(--turquoise-dark); border-color: var(--turquoise); }
 @media (max-width: 760px) { .issue-btn { font-size: 11px; padding: 6px 10px; } }
+
+/* ── Messages ─────────────────────────────────────────────────────────── */
+.msg-thread {
+  max-height: 46vh; overflow-y: auto; margin-top: 10px; padding-right: 4px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.msg { max-width: 82%; align-self: flex-start; background: #f2f7f9;
+  border: 1px solid var(--line); border-radius: 12px 12px 12px 3px; padding: 8px 11px; }
+.msg.mine { align-self: flex-end; background: #eef6f8; border-radius: 12px 12px 3px 12px; }
+.msg-body { font-size: 13px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+.msg-meta { font-size: 10.5px; color: var(--muted); margin-top: 4px; }

@@ -85,6 +85,83 @@ const regionCatalogue = () => (_regionsP ??= fetchAll('regions', 'country_code,c
 
 export function invalidateCatalogue() { _schoolsP = null; _citiesByCountry.clear(); }
 
+// ── Who may write to you ────────────────────────────────────────────────────
+//
+// Paul, 19 Sep 2026: a toggle that says "Allow People to Message Me".
+//
+// ON by default, deliberately. Off by default is a feature nobody finds, and the
+// use case it exists for — Linda reaching someone she has lost touch with — dies
+// if the other person never flipped a switch they did not know about.
+function messagePrefs() {
+  const card = el('div.card');
+  const box = el('input', { type: 'checkbox', autocomplete: 'off' });
+  const msg = el('p.auth-msg', { style: 'margin:6px 0 0;' });
+  const blocked = el('div', { style: 'margin-top:10px;' });
+
+  append(card,
+    el('h4', { text: 'Messages' }),
+    el('div.control-group', {}, [el('label', {}, [box, ' Allow people to message me'])]),
+    el('p.muted', {
+      style: 'font-size:11.5px;margin:4px 0 0;max-width:70ch;',
+      text: 'Any member can write to you. Nobody ever sees your email address — '
+          + 'messages stay on the site, and you get a note by email saying one is waiting.',
+    }),
+    msg,
+    blocked,
+  );
+
+  (async () => {
+    const { data } = await supabase.from('privacy_settings')
+      .select('accepts_messages').maybeSingle();
+    box.checked = data?.accepts_messages !== false;
+    box.dataset.ready = '1';
+  })();
+
+  box.addEventListener('change', async () => {
+    if (!box.dataset.ready) return;
+    msg.className = 'auth-msg';
+    const { data: { user } } = await supabase.auth.getUser();
+    const { error } = await supabase.from('privacy_settings')
+      .update({ accepts_messages: box.checked }).eq('profile_id', user.id);
+    if (error) {
+      box.checked = !box.checked;
+      msg.className = 'auth-msg error';
+      msg.textContent = friendlyDbError(error, 'save that');
+      return;
+    }
+    msg.className = 'auth-msg ok';
+    msg.textContent = box.checked ? 'People can message you.' : 'Nobody can message you.';
+  });
+
+  // People you have quietly declined. Listed here because this is the only place
+  // you could undo it — they are invisible everywhere else by design.
+  (async () => {
+    const { data } = await supabase.from('message_blocks').select('blocked_id');
+    if (!data?.length) return;
+    const ids = data.map((r) => r.blocked_id);
+    const { data: who } = await supabase.from('public_profiles')
+      .select('id, display_name').in('id', ids);
+    blocked.appendChild(el('p.muted', {
+      style: 'font-size:11.5px;margin:0 0 4px;',
+      text: 'Not accepting messages from:',
+    }));
+    (who || []).forEach((w) => {
+      const row = el('div.conn-row');
+      const undo = el('button.btn.ghost', { type: 'button', text: 'allow again' });
+      undo.addEventListener('click', async () => {
+        undo.disabled = true;
+        await supabase.from('message_blocks').delete().eq('blocked_id', w.id);
+        row.remove();
+      });
+      append(row, el('span', { text: w.display_name }),
+        el('span', { style: 'margin-left:auto;' }, [undo]));
+      blocked.appendChild(row);
+    });
+  })();
+
+  return card;
+}
+
 // ── Final destination ───────────────────────────────────────────────────────
 //
 // Asked for by a member: international teachers scatter, and when they stop
@@ -784,6 +861,7 @@ export function onboardingView(user, profile, onDone) {
   );
   root.appendChild(who);
 
+  root.appendChild(messagePrefs());
   root.appendChild(finalDestination(profile));
 
   // postings

@@ -15,6 +15,7 @@ import { BUILD } from './config.js';
 import { connectionsIcon } from './connectionsInbox.js';
 import { openInvitePanel } from './invites.js';
 import { issueButton } from './reportIssue.js';
+import { messagesIcon } from './messages.js';
 import { onboardingView } from './onboarding.js';
 import {
   buildIndexes, buildAdjacency, connectionCounts, confirmBadge,
@@ -306,6 +307,7 @@ function mountHeaderAccount(user, profile, ctx) {
 
   // Paul, 13 Sep 2026: a small icon at the top that says "Connections" on hover,
   // opening a window to validate and edit them.
+  if (ctx) host.appendChild(messagesIcon(ctx));
   if (ctx) host.appendChild(connectionsIcon(ctx));
 
   // Your name opens a menu. Paul, 13 Sep 2026: "I want the user to be able to
