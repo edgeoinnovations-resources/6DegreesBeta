@@ -510,6 +510,9 @@ export const view = {
           // we have almost all of the schools the same." The rail still shows the
           // headline context, but says how much more sits behind it — otherwise
           // there is no reason to open the card and find out.
+          // Only when the whole graph happens to be loaded. On the ordinary
+          // per-user load this is silent rather than wrong — the card fetches the
+          // real list when you open it.
           const all = (data.sharedByPair && data.sharedByPair.get(pairKey(ego, n.id))) || [];
           const more = all.length > 1 ? ` · +${all.length - 1} more` : '';
           const li = el('li', { html: `${t.FULL_NAME || n.id}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });

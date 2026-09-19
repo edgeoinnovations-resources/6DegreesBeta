@@ -8,7 +8,7 @@
 //   PRIMARY  — the four views that answer a teacher's actual questions.
 //   EXPLORE  — one nav entry leading to a landing screen; the four analytical views
 //              live behind it. Nothing is deleted, only de-ranked.
-import { loadData, invalidate } from './loadData.js';
+import { loadData, loadMyGraph, invalidate } from './loadData.js';
 import { requireSession, loadMyProfile, signOut } from './auth.js';
 import { friendlyDbError, logError } from './supabaseClient.js';
 import { BUILD } from './config.js';
@@ -130,7 +130,9 @@ async function boot() {
 
   let data;
   try {
-    data = await loadData();
+    // Only your own neighbourhood. The whole network is fetched later, and only
+    // by the views that genuinely need it — see needsFullGraph below.
+    data = await loadMyGraph();
   } catch (err) {
     container.innerHTML = `<div class="view"><div class="error-box">
       ${friendlyDbError(err, 'load the community')}
@@ -141,7 +143,10 @@ async function boot() {
   // Build shared analytical structures ONCE.
   const idx = buildIndexes(data);
   const adj = buildAdjacency(data.colleagueships);
-  const counts = connectionCounts(adj);
+  // With only your own neighbourhood loaded, node sizes cannot be counted from
+  // the edges in hand — the database sends each person's real total with the
+  // connection. Fall back to counting locally once the whole graph is present.
+  const counts = data.counts || connectionCounts(adj);
 
   // Cross-view state: the focused teacher and a generic param bag.
   // Default to a real member of the beta group rather than a fictional teacher, so the
@@ -210,6 +215,21 @@ async function boot() {
     current = v;
     window.__6degView = v.id;   // tags logged errors with the screen they happened on
     try {
+      if (NEEDS_EVERYONE.has(v.id)) {
+        // Render after the data lands, so a view never draws an empty community
+        // and then jumps.
+        ensureFullGraph(root).then((ok) => {
+          if (!ok || current !== v) return;
+          try {
+            v.render(root, ctx);
+          } catch (err) {
+            console.error(`[6deg] view "${v.id}" failed:`, err);
+            logError({ action: `render ${v.id}`, code: err?.name || 'Error', message: err?.message || String(err), stack: err?.stack || '' });
+            root.appendChild(el('div.error-box', { text: `Something went wrong showing ${v.title}. Reload the page, and if it keeps happening let Paul know.` }));
+          }
+        });
+        return;
+      }
       v.render(root, ctx);
     } catch (err) {
       console.error(`[6deg] view "${v.id}" failed:`, err);
@@ -217,6 +237,31 @@ async function boot() {
       root.appendChild(el('div.error-box', { text: `Something went wrong showing ${v.title}. Reload the page, and if it keeps happening let Paul know. Reference: ${err?.name || 'render'}.` }));
     }
   }
+  // Views that genuinely need everyone. The three primary screens do not: the
+  // rings are your own neighbourhood and the card is one pair. These analyse the
+  // whole community, so they pay for the full download themselves — once.
+  const NEEDS_EVERYONE = new Set(['map', 'search', 'matrix', 'timeline', 'chord', 'insights', 'network']);
+
+  async function ensureFullGraph(root) {
+    if (!ctx.data.partial) return true;
+    const note = el('div.loading', { text: 'Loading the whole community…' });
+    root.appendChild(note);
+    try {
+      const full = await loadData();
+      ctx.data = full;
+      ctx.idx = buildIndexes(full);
+      ctx.adj = buildAdjacency(full.colleagueships);
+      ctx.counts = connectionCounts(ctx.adj);
+      note.remove();
+      return true;
+    } catch (err) {
+      note.remove();
+      logError({ action: 'load full graph', code: err?.code, message: err?.message });
+      root.appendChild(el('div.error-box', { text: friendlyDbError(err, 'load the community') }));
+      return false;
+    }
+  }
+
   ctx.activate = activate;
 
   // Numbered by POSITION, not by a field on the view.

@@ -44,6 +44,118 @@ async function page(build) {
 // Pairs are stored canonically (profile_a < profile_b), so look them up that way.
 export const pairKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
 
+// Column names keep the old SHAPE so the eight views need no changes, even
+// though the database is snake_case. Both loaders use these, so the partial and
+// the full graph can never describe the same person differently.
+function toTeacher(p) {
+  return {
+    TEACHER_ID: p.id,
+    FULL_NAME: p.display_name || 'Former member',
+    // What to call someone: the name they go by, falling back to their first name.
+    FIRST_NAME: p.preferred_name || p.first_name || p.display_name || '',
+    LAST_NAME: p.last_name || (p.last_initial ? `${p.last_initial}.` : ''),
+    // The formal first name, kept because that is what an old staff list will say.
+    GIVEN_NAME: p.first_name || '',
+    PREFERRED_NAME: p.preferred_name || '',
+    YEARS_EXPERIENCE: 0,
+    STATUS: p.status,
+    IS_GHOST: p.status === 'ghost',
+    EMAIL: '',                        // never fetched, never shown
+  };
+}
+
+function shapePostings(rows) {
+  const schoolById = new Map();
+  for (const a of rows) {
+    const s = a.schools;
+    if (s && !schoolById.has(s.id)) {
+      schoolById.set(s.id, {
+        SCHOOL_ID: String(s.id), SCHOOL_NAME: s.name,
+        CITY: s.city || '', REGION: s.region || '', COUNTRY: s.country,
+        LATITUDE: s.latitude, LONGITUDE: s.longitude,
+        CITY_INFERRED: s.city_source === 'fallback-largest-city',
+        CURRICULUM_TYPE: '', ENROLLMENT_SIZE: null,
+      });
+    }
+  }
+  const assignments = rows.map((a) => ({
+    ASSIGNMENT_ID: String(a.id), TEACHER_ID: a.profile_id,
+    SCHOOL_ID: String(a.school_id), POSITION_TITLE: a.role,
+    START_DATE: a.start_date, END_DATE: a.end_date,
+    IS_CURRENT_POSITION: a.end_date ? 'No' : 'Yes',
+    SALARY_RANGE: '', SUPERVISOR_NAME: '',
+  }));
+  return { schools: [...schoolById.values()], assignments };
+}
+
+// ── Your own neighbourhood, which is all the opening screen needs ───────────
+//
+// The whole graph used to load before anything rendered. Density is ~56% —
+// "we both worked in Spain at some point" connects nearly everyone — so that
+// download grows with the square of the membership: 1 MB at 150 members, 35 MB
+// at 1,000, 307 MB at 3,000, against a 5 GB monthly egress allowance.
+//
+// The rings show YOUR connections and the card shows ONE pair. Both are the size
+// of your own neighbourhood however large the network gets. One RPC serves both.
+let _mine = null;
+
+export async function loadMyGraph() {
+  if (_mine) return _mine;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const me = user?.id || null;
+
+  const [connRes, postRes, profRes] = await Promise.all([
+    supabase.rpc('my_connections'),
+    // Your own history: the map journey and "where they've been" read it.
+    supabase.from('postings')
+      .select('id, profile_id, school_id, role, start_date, end_date, schools(id,name,city,region,country,latitude,longitude,city_source)')
+      .eq('profile_id', me),
+    supabase.from('public_profiles').select('*').eq('id', me).maybeSingle(),
+  ]);
+  for (const r of [connRes, postRes, profRes]) if (r.error) throw r.error;
+
+  const rows = connRes.data || [];
+
+  const teachers = [toTeacher(profRes.data || { id: me })].concat(
+    rows.map((r) => toTeacher({
+      id: r.other_id, display_name: r.display_name, first_name: r.first_name,
+      last_name: r.last_name, preferred_name: r.preferred_name, status: r.status,
+    })),
+  );
+
+  const colleagueships = rows.map((r, i) => ({
+    COLLEAGUESHIP_ID: `M${i}`,
+    TEACHER_A_ID: me, TEACHER_B_ID: r.other_id,
+    DEGREE: r.degree,
+    SHARED_CONTEXT_TYPE: r.context_type || '',
+    SHARED_CONTEXT_LABEL: r.context_label || '',
+    TIME_RELATION: r.time_relation || '',
+    OVERLAP_YEARS: r.overlap_years || '',
+    ACKNOWLEDGED: !!r.acknowledged,
+    TAG_KEYS: r.tag_keys ? r.tag_keys.split(',') : [],
+    VERIFIED: r.acknowledged ? 'mutual' : 'unverified',
+  }));
+
+  // Node size and ring grouping come back with the connection rather than being
+  // derived from a graph we no longer hold.
+  const counts = new Map(rows.map((r) => [r.other_id, Number(r.their_degree_count) || 0]));
+  counts.set(me, rows.length);
+  const homeCountry = new Map(rows.map((r) => [r.other_id, r.home_country || null]));
+
+  const { schools, assignments } = shapePostings(postRes.data || []);
+
+  _mine = {
+    me, teachers, schools, assignments, colleagueships,
+    counts, homeCountry,
+    sharedByPair: new Map(),
+    tags: [],
+    partial: true,          // views needing the whole network must say so
+    generated_at: new Date().toISOString().slice(0, 10),
+  };
+  return _mine;
+}
+
 export async function loadData() {
   if (_cache) return _cache;
 
@@ -75,59 +187,9 @@ export async function loadData() {
   const tagsRes = { data: tags };
   const sharedRes = { data: shared };
 
-  // ── teachers ──────────────────────────────────────────────────────────────
-  // Column names stay in the old SHAPE so the views need no changes, even
-  // though the database is snake_case.
-  const teachers = (profilesRes.data || []).map((p) => ({
-    TEACHER_ID: p.id,
-    FULL_NAME: p.display_name || 'Former member',
-    // What to call someone: the name they go by, falling back to their first name.
-    FIRST_NAME: p.preferred_name || p.first_name || p.display_name || '',
-    LAST_NAME: p.last_name || (p.last_initial ? `${p.last_initial}.` : ''),
-    // The formal first name, kept because that is what an old staff list will say.
-    // Only shown where it differs from what they go by.
-    GIVEN_NAME: p.first_name || '',
-    PREFERRED_NAME: p.preferred_name || '',
-    YEARS_EXPERIENCE: null,          // derived below from postings
-    STATUS: p.status,
-    IS_GHOST: p.status === 'ghost',
-    EMAIL: '',                        // never fetched, never shown
-  }));
+  const teachers = (profilesRes.data || []).map(toTeacher);
 
-  // ── schools actually in use ───────────────────────────────────────────────
-  const schoolById = new Map();
-  for (const a of postingsRes.data || []) {
-    const s = a.schools;
-    if (s && !schoolById.has(s.id)) {
-      schoolById.set(s.id, {
-        SCHOOL_ID: String(s.id),
-        SCHOOL_NAME: s.name,
-        CITY: s.city || '',
-        // State or province, where it is known. Two towns can share a name inside
-        // one country, so this is what tells Annandale MN from Annandale VA.
-        REGION: s.region || '',
-        COUNTRY: s.country,
-        LATITUDE: s.latitude,
-        LONGITUDE: s.longitude,
-        CITY_INFERRED: s.city_source === 'fallback-largest-city',
-        CURRICULUM_TYPE: '',
-        ENROLLMENT_SIZE: null,
-      });
-    }
-  }
-
-  // ── assignments ───────────────────────────────────────────────────────────
-  const assignments = (postingsRes.data || []).map((a) => ({
-    ASSIGNMENT_ID: String(a.id),
-    TEACHER_ID: a.profile_id,
-    SCHOOL_ID: String(a.school_id),
-    POSITION_TITLE: a.role,          // already one of the four role categories
-    START_DATE: a.start_date,
-    END_DATE: a.end_date,
-    IS_CURRENT_POSITION: a.end_date ? 'No' : 'Yes',
-    SALARY_RANGE: '',
-    SUPERVISOR_NAME: '',
-  }));
+  const { schools, assignments } = shapePostings(postingsRes.data || []);
 
   // years of experience, derived rather than asked for
   const yearsBy = new Map();
@@ -182,7 +244,7 @@ export async function loadData() {
 
   _cache = {
     teachers,
-    schools: [...schoolById.values()],
+    schools,
     assignments,
     colleagueships,
     sharedByPair,

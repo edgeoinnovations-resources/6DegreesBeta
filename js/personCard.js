@@ -10,6 +10,7 @@
 import { el, append } from './widgets.js';
 import { degreeColor, degreeLabel, roleCategory } from './degrees.js';
 import { pairKey } from './loadData.js';
+import { supabase } from './supabaseClient.js';
 import { tagSection } from './tags.js';
 
 let overlay = null;
@@ -69,12 +70,15 @@ export function openPersonCard(ctx, id, extras = []) {
   // The headline degree — the one that puts someone on a ring — is still the
   // lowest of these, and it is the first row because the list is sorted by degree.
   if (id !== me) {
-    const shared = (data.sharedByPair && data.sharedByPair.get(pairKey(me, id))) || [];
+    // Whatever is already in hand (the full graph, if a heavy view loaded it),
+    // otherwise asked for below — one pair, not the whole table.
+    let shared = (data.sharedByPair && data.sharedByPair.get(pairKey(me, id))) || [];
     const link = (adj.get(me) || []).find((e) => e.other === id);
     const acknowledged = !!(link && link.acknowledged);
     const box = el('div.person-conn');
 
-    if (!shared.length && !acknowledged) {
+    const nothingKnownYet = !shared.length && !acknowledged && !data.partial;
+    if (nothingKnownYet) {
       box.append(el('h4', { text: 'How you’re connected' }),
         el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'You haven’t shared a school, city or country — and haven’t confirmed knowing each other.' }));
     } else {
@@ -95,15 +99,37 @@ export function openPersonCard(ctx, id, extras = []) {
         ]));
       }
 
-      shared.forEach((e) => {
-        box.appendChild(el('div.conn-row', {}, [
-          el('span.deg-pill', { style: `background:${degreeColor(e.DEGREE)}`, text: `Degree ${e.DEGREE}` }),
-          el('span', {
-            html: `<strong>${e.SHARED_CONTEXT_LABEL}</strong><br><small class="muted">`
-              + `${degreeLabel(e.DEGREE)}${e.OVERLAP_YEARS ? ` · ${e.OVERLAP_YEARS}` : ''}</small>`,
-          }),
-        ]));
-      });
+      const drawShared = (rows) => {
+        box.querySelectorAll('.conn-row.ctx').forEach((n) => n.remove());
+        rows.forEach((e) => {
+          box.appendChild(el('div.conn-row.ctx', {}, [
+            el('span.deg-pill', { style: `background:${degreeColor(e.DEGREE)}`, text: `Degree ${e.DEGREE}` }),
+            el('span', {
+              html: `<strong>${e.SHARED_CONTEXT_LABEL}</strong><br><small class="muted">`
+                + `${degreeLabel(e.DEGREE)}${e.OVERLAP_YEARS ? ` · ${e.OVERLAP_YEARS}` : ''}</small>`,
+            }),
+          ]));
+        });
+        box.querySelector('h4').textContent = rows.length > 1
+          ? `How you’re connected — ${rows.length} ways`
+          : 'How you’re connected';
+      };
+      drawShared(shared);
+
+      // Nothing in hand means only your own neighbourhood is loaded. Ask for this
+      // one pair rather than pulling everyone's.
+      if (!shared.length) {
+        supabase.rpc('pair_contexts', { p_other: id }).then(({ data: rows }) => {
+          if (!rows?.length || !overlay || !document.body.contains(box)) return;
+          drawShared(rows.map((r) => ({
+            DEGREE: r.degree,
+            SHARED_CONTEXT_TYPE: r.context_type,
+            SHARED_CONTEXT_LABEL: r.context_label,
+            TIME_RELATION: r.time_relation,
+            OVERLAP_YEARS: r.overlap_years || '',
+          })));
+        }, () => {});
+      }
     }
     card.appendChild(box);
   } else {
