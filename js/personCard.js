@@ -234,30 +234,51 @@ export function openPersonCard(ctx, id, extras = []) {
       messageSomeone(ctx, id, t.FULL_NAME);
     });
 
-    // Quietly decline this one person. They are never told — that is the point,
-    // and it is why the only way back is the list in Your details.
-    const mute = el('button.acct-edit', { type: 'button', text: '' });
-    const paint = (blockedNow) => {
-      mute.textContent = blockedNow ? 'accept messages from them' : 'don’t accept messages from them';
+    // Quietly decline this one person. A switch rather than a sentence, and
+    // phrased POSITIVELY — "Accept messages" on or off, instead of asking someone
+    // to parse "don't accept messages from them" before they can act on it.
+    // They are never told either way, which is why the only way back is here or
+    // the list in Your details.
+    const sw = el('button.switch', {
+      type: 'button', role: 'switch', 'aria-checked': 'true', disabled: 'disabled',
+      'aria-label': `Accept messages from ${t.FIRST_NAME || 'them'}`,
+    }, [el('span.knob')]);
+    const swText = el('span.switch-label', { text: 'Accept messages' });
+    const paint = (accepting) => {
+      sw.setAttribute('aria-checked', accepting ? 'true' : 'false');
+      sw.classList.toggle('on', accepting);
+      swText.textContent = accepting
+        ? `Accepting messages from ${t.FIRST_NAME || 'them'}`
+        : `Not accepting messages from ${t.FIRST_NAME || 'them'}`;
+      sw.disabled = false;
     };
     supabase.from('message_blocks').select('blocked_id').eq('blocked_id', id).maybeSingle()
-      .then(({ data }) => paint(!!data), () => paint(false));
-    mute.addEventListener('click', async () => {
-      mute.disabled = true;
-      const { data: existing } = await supabase.from('message_blocks')
-        .select('blocked_id').eq('blocked_id', id).maybeSingle();
-      if (existing) {
-        await supabase.from('message_blocks').delete().eq('blocked_id', id);
-        paint(false);
-      } else {
+      .then(({ data }) => paint(!data), () => paint(true));
+
+    sw.addEventListener('click', async () => {
+      const accepting = sw.getAttribute('aria-checked') === 'true';
+      sw.disabled = true;
+      paint(!accepting);                       // move now; the write is quick
+      sw.disabled = true;
+      let failed = false;
+      if (accepting) {
         const { data: { user } } = await supabase.auth.getUser();
-        await supabase.from('message_blocks').insert({ owner_id: user.id, blocked_id: id });
-        paint(true);
+        const { error } = await supabase.from('message_blocks')
+          .insert({ owner_id: user.id, blocked_id: id });
+        failed = !!error;
+      } else {
+        const { error } = await supabase.from('message_blocks').delete().eq('blocked_id', id);
+        failed = !!error;
       }
-      mute.disabled = false;
+      // Put it back if the database refused, rather than showing a state that is
+      // not true — this one decides whether somebody can reach you.
+      paint(failed ? accepting : !accepting);
     });
 
-    card.appendChild(el('div', { style: 'margin:4px 0 12px;' }, [write, ' ', mute]));
+    card.appendChild(el('div.msg-actions', {}, [
+      write,
+      el('span.switch-row', {}, [sw, swText]),
+    ]));
   }
 
   // Confirming a connection and keeping a private note both belong here — this is
