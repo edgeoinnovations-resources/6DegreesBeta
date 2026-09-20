@@ -83,9 +83,24 @@ export const view = {
     const clearPopups = () => { for (const p of [...popups]) { try { p.remove(); } catch {} } popups.clear(); };
 
     root.style.padding = '0';
+
+    // The counter sits ABOVE the map rather than floating on it: the overlay
+    // panel already owns the top-left and the zoom controls the top-right, and a
+    // third floating thing is how a map becomes unreadable.
+    //
+    // .map-shell is position:absolute; inset:0, which resolves against the
+    // nearest POSITIONED ancestor — so it needs its own relative parent here, or
+    // it would size itself to the whole view container and cover the strip.
+    const stack = el('div.map-stack');
+    const counter = communityCounter({ compact: true });
+    const mapArea = el('div.map-area');
+    stack.append(counter, mapArea);
+    root.appendChild(stack);
+
     const shell = el('div.map-shell');
     const mapDiv = el('div', { id: 'map' });
     shell.appendChild(mapDiv);
+    mapArea.appendChild(shell);
 
     // A pinch over the map must never zoom the PAGE.
     //
@@ -125,7 +140,6 @@ export const view = {
       if (shell.scrollTop !== 0) shell.scrollTop = 0;
     };
     shell.addEventListener('scroll', unscroll, { passive: true });
-    root.appendChild(shell);
 
     // ── Aggregates ───────────────────────────────────────────────────────────
     const schoolMembers = new Map(); // SCHOOL_ID -> Set(teacherId)

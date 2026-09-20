@@ -207,6 +207,10 @@ table.data tr:hover td { background: #f6fbfc; }
    times on 18 Sep 2026, and it is why measuring the canvas against the container
    kept reporting no gap: the canvas was never wrong. Clipping the shell means the
    parked panel cannot extend anything. */
+/* Counter strip on top, map filling whatever is left. .map-area is the
+   positioned parent .map-shell measures itself against. */
+.map-stack { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.map-area { position: relative; flex: 1; min-height: 0; }
 .map-shell {
   position: absolute; inset: 0;
   /* overflow:hidden CLIPS but still creates a scroll container, and a scroll
@@ -660,3 +664,10 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   .cc-num { font-size: 20px; }
   .cc-lbl { font-size: 11.5px; }
 }
+
+/* On the map the strip is edge to edge and a touch tighter. */
+.community-bar.compact {
+  margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0;
+  padding: 9px 16px; gap: 22px;
+}
+.community-bar.compact .cc-num { font-size: 20px; }
