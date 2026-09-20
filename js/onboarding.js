@@ -729,8 +729,15 @@ function schoolPicker(onPick, initial = {}) {
     }
     citySel.appendChild(el('option', { value: '', text: 'City…' }));
 
+    // A school saved before this step existed has no state on it, so an exact
+    // match would hide it: Ontario would announce "no schools listed" with
+    // Ursuline College Chatham sitting in it. Take the city's word instead,
+    // which is the same rule the school list below already uses.
+    const cityState = new Map(cities.map((c) => [c.name, c.region || c.admin1 || '']));
     const withSchools = new Set(
-      schools.filter((r) => r.country === cSel.value && (r.region || '') === code && r.city)
+      schools.filter((r) => r.country === cSel.value && r.city
+        && ((r.region || '') === code
+          || (!r.region && cityState.get(r.city) === code)))
         .map((r) => r.city));
     [...withSchools].sort((a, b) => a.localeCompare(b))
       .forEach((c) => citySel.appendChild(cityOption(c, code)));
