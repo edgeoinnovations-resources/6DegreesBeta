@@ -80,7 +80,10 @@ export function openFocusPicker(ctx, currentId, onPick) {
     const deg = r.my_degree
       ? el('span.deg-pill', { style: `background:${degreeColor(r.my_degree)}`, text: String(r.my_degree) })
       : el('span.deg-pill', { style: 'background:#cfdce2;', text: '·' });
-    const where = r.matched_school && r.matched_school !== r.current_place
+    // current_place is "School · City", so comparing it to a bare school name
+    // never matched and every school search read "… was at <the same school>".
+    const already = (r.current_place || '').startsWith(r.matched_school || '\u0000');
+    const where = r.matched_school && !already
       ? `${r.current_place || ''} · was at ${r.matched_school}`
       : (r.current_place || '');
     append(btn, deg, el('span', {

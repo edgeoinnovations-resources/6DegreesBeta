@@ -144,17 +144,28 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
       }));
 
       // The confirmation first: it is the one thing the two of you said yourselves.
+      let ackNote = null;
       if (acknowledged) {
+        ackNote = el('small.muted');
         box.appendChild(el('div.conn-row', {}, [
           el('span.deg-pill.ack', { text: 'Confirmed' }),
-          el('span', {
-            html: '<strong>You’ve both confirmed you know each other</strong>'
-              + `<br><small class="muted">${shared.length
-                ? 'Alongside the shared history below — it doesn’t change your degree'
-                : 'No shared school, city or country'}</small>`,
-          }),
+          el('span', {}, [
+            el('strong', { text: 'You’ve both confirmed you know each other' }),
+            el('br'), ackNote,
+          ]),
         ]));
       }
+      // Whether there IS a shared history is not known yet when only your own
+      // neighbourhood is loaded, so this line has to be written again once the
+      // rows arrive. Paul and Linda's card read "No shared school, city or
+      // country" directly above their degree 1 at the American School of Dubai.
+      const sayAck = (n) => {
+        if (!ackNote) return;
+        ackNote.textContent = n
+          ? 'Alongside the shared history below — it doesn’t change your degree'
+          : 'No shared school, city or country';
+      };
+      sayAck(shared.length);
 
       const drawShared = (rows) => {
         box.querySelectorAll('.conn-row.ctx').forEach((n) => n.remove());
@@ -170,6 +181,7 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
         box.querySelector('h4').textContent = rows.length > 1
           ? `How you’re connected — ${rows.length} ways`
           : 'How you’re connected';
+        sayAck(rows.length);
       };
       drawShared(shared);
 
