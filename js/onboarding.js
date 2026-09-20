@@ -949,7 +949,13 @@ function schoolPicker(onPick, initial = {}) {
     // sets the country and city anyway.
     const here = cSel.value || '';
     const hits = schools
-      .map((r) => [scoreSchool(r, terms) + (here && r.country === here ? 3 : 0), r])
+      // The home-country bonus only lifts a REAL match. Added before this
+      // filter, it gave every school in the row's country a score of 3 and
+      // "AES" listed the whole of Venezuela under the one school it found.
+      .map((r) => {
+        const sc = scoreSchool(r, terms);
+        return [sc > 0 && here && r.country === here ? sc + 3 : sc, r];
+      })
       .filter(([sc]) => sc > 0)
       .sort((a, b) => b[0] - a[0] || a[1].name.localeCompare(b[1].name))
       .slice(0, 12)
