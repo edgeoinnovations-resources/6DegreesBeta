@@ -580,6 +580,19 @@ export const view = {
         hiddenTotal ? el('span.muted', { style: 'font-size:11.5px;', text: `${hiddenTotal} not drawn` }) : null,
       ]));
 
+      // A lone circle and a bare "0 connections" tells somebody nothing about
+      // why. Usually it is postings: a degree needs a shared country to start
+      // with, so an empty graph is a sign of a thin history rather than a
+      // lonely career.
+      if (!total) {
+        rail.appendChild(el('p.muted', {
+          style: 'font-size:12.5px;margin:10px 0 0;',
+          text: focusId === ctx.me
+            ? 'Nobody in the community has yet shared a school, city or country with you. Adding more of your postings under Your details is what finds them.'
+            : `Nobody in the community has yet shared a school, city or country with ${focusName || 'them'}.`,
+        }));
+      }
+
       for (const d of RINGS) {
         const list = byDeg.get(d) || [];
         if (!list.length) continue;
