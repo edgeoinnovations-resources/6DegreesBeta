@@ -457,18 +457,19 @@ export const view = {
       const nSel = gNodes.selectAll('g.ego-node').data(placed, (d) => d.id);
       // AN INTERRUPTED FADE MUST STILL REMOVE THE NODE.
       //
-      // `.transition().style('opacity', 0).remove()` only removes at the END of
-      // the transition, and anything that starts another transition on the same
-      // element cancels it — hovering the graph while a redraw is in flight is
-      // enough, because hovering dims every other node. The node then stays in
-      // the document at opacity 0 forever: invisible, and still clickable. Found
-      // while testing the focus button, with five people who were not on screen
-      // still sitting in the graph.
+      // `.transition().style('opacity', 0).remove()` removes only at the END of
+      // the transition, and anything starting another transition on the same
+      // element cancels it. Removing on 'interrupt' as well makes the removal
+      // the guaranteed part and the fade only how it looks on the way out, and
+      // dropping pointer events immediately means a node on its way out cannot
+      // be clicked during the 300ms either.
       //
-      // Removing on 'interrupt' as well as 'end' makes the removal the thing
-      // that is guaranteed, and the fade only how it looks on the way out.
-      // Losing pointer events immediately means it cannot be clicked even
-      // during the 300ms it is fading.
+      // HONESTLY: this is hardening, not a fix for an observed fault. It was
+      // written after reading nodes at zero opacity while focus changed — which
+      // on closer inspection was the staggered entrance still running, not
+      // wreckage. The settled graph was correct every time it was checked. The
+      // guarantee is still worth having, because an invisible clickable node
+      // would be a genuinely confusing thing to ship, but nobody has seen one.
       nSel.exit()
         .style('pointer-events', 'none')
         .transition().duration(300).style('opacity', 0)
