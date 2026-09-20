@@ -402,6 +402,7 @@ function schoolPicker(onPick, initial = {}) {
   // the country changes. It used to be all 33,885 of them.
   let schools = [], cities = [], regions = [], ccOf = new Map();
 
+  const COUNTRY_NEW = '__newcountry__';
   const CITY_OTHER = '__other__';
   const CITY_NEW = '__newcity__';
   const SCHOOL_NEW = '__new__';
@@ -427,6 +428,13 @@ function schoolPicker(onPick, initial = {}) {
     for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
     const countries = [...new Set(schools.map((r) => r.country))].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
+    // THE HARDEST WALL IN THIS FORM. The country list is built from the schools
+    // we hold, so it has 167 of the world's countries — 77 countries in the
+    // gazetteer have no school at all. Cities and schools have always had a way
+    // to say "mine isn't here"; a country had none, and someone who taught in
+    // one of those 77 met a dropdown that simply did not contain their working
+    // life, with nothing to click and nothing to report.
+    cSel.appendChild(el('option', { value: COUNTRY_NEW, text: '+ My country isn’t listed…' }));
     note.textContent = `${schools.length.toLocaleString()} schools in ${countries.length} countries.`;
     if (initial.country) { cSel.value = initial.country; initial.country = null; cSel.dispatchEvent(new Event('change')); }
   })();
@@ -437,6 +445,7 @@ function schoolPicker(onPick, initial = {}) {
   };
 
   cSel.addEventListener('change', async () => {
+    if (cSel.value === COUNTRY_NEW) { showAskCountry(); onPick(null); return; }
     citySel.innerHTML = ''; citySel.appendChild(el('option', { value: '', text: 'City…' }));
     resetSchools();
     sSel.disabled = true; citySel.disabled = !cSel.value;
@@ -482,6 +491,59 @@ function schoolPicker(onPick, initial = {}) {
       .forEach((c) => citySel.appendChild(cityOption(c.name, c.region || '')));
     citySel.appendChild(el('option', { value: CITY_NEW, text: '+ My city isn’t listed…' }));
     note.textContent = `Showing every city in ${cSel.value}. Pick yours, then add your school.`;
+  }
+
+  // ── A country that isn't there at all ─────────────────────────────────────
+  // A member cannot create a country: it is the top of the cascade and the list
+  // is derived from the schools. What they CAN do is tell us, in one line, and
+  // carry on with the rest of their history rather than stopping dead. Paul
+  // gets an email the same minute and adds the country's schools.
+  function showAskCountry() {
+    addBox.innerHTML = '';
+    addBox.style.display = '';
+    citySel.disabled = true; sSel.disabled = true;
+
+    const nameInput = el('input', {
+      type: 'text', autocomplete: 'off', 'aria-label': 'Country',
+      placeholder: 'Which country?',
+    });
+    const noteInput = el('input', {
+      type: 'text', autocomplete: 'off', 'aria-label': 'The school, if you know it',
+      placeholder: 'And the school, if you like — we’ll look it up',
+      style: 'min-width:260px;',
+    });
+    const go = el('button.btn', { type: 'button', text: 'Tell Paul' });
+    const status = el('span.muted', { style: 'font-size:12px;' });
+    addBox.append(
+      el('p.muted', { style: 'font-size:11.5px;margin:0 0 6px;',
+        text: 'No school anywhere in that country has been listed yet, so it isn’t in the list. '
+            + 'Tell us and it will be added — usually the same day.' }),
+      el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' },
+        [nameInput, noteInput, go, status]),
+    );
+
+    go.addEventListener('click', async () => {
+      const name = nameInput.value.trim();
+      if (name.length < 2) { status.textContent = 'Which country?'; return; }
+      go.disabled = true; status.textContent = 'Sending…';
+      try {
+        const { data, error } = await supabase.rpc('request_country', {
+          p_country: name, p_note: noteInput.value.trim() || null,
+        });
+        if (error) throw error;
+        if (data) await supabase.functions.invoke('notify-addition', { body: { id: data } });
+        status.textContent = '';
+        addBox.innerHTML = '';
+        addBox.appendChild(el('p', { style: 'font-size:12.5px;margin:0;color:#1f7a3f;',
+          text: `Thank you — Paul has been told about ${name}. `
+              + 'Carry on with the rest of your history; you can add that one when it appears.' }));
+        cSel.value = '';
+      } catch (err) {
+        status.textContent = friendlyDbError(err, 'send that');
+        go.disabled = false;
+      }
+    });
+    nameInput.focus();
   }
 
   // ── Adding a city the gazetteer has never heard of ────────────────────────
@@ -547,6 +609,7 @@ function schoolPicker(onPick, initial = {}) {
         return;
       }
 
+      tellPaul();
       // Put it in the per-country cache so it survives switching country and back.
       cities = await citiesIn(cc);
       cities.push(data);            // the cached array, so it survives switching country
@@ -609,9 +672,51 @@ function schoolPicker(onPick, initial = {}) {
       el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' }, [nameInput, go, status]),
     );
 
+    // Near matches, shown BEFORE anything is created. "International School of
+    // Choueifat, Lahore" was added on 20 Sep and filed under Lebanon while
+    // "International School Choueifat", Lahore, PAKISTAN was already listed —
+    // and a trailing ", Lahore" was enough that no automatic check saw it. A
+    // duplicate school turns same-school colleagues from degree 1 into degree
+    // 3, silently, which is the most expensive mistake this database can make.
+    const maybe = el('div', { style: 'margin-top:8px;' });
+    addBox.appendChild(maybe);
+    let dismissed = false;
+    const askFirst = async (name) => {
+      maybe.innerHTML = '';
+      if (dismissed || name.length < 3) return false;
+      const { data } = await supabase.rpc('schools_like', { p_name: name, p_country: cSel.value });
+      const hits = (data || []).slice(0, 5);
+      if (!hits.length) return false;
+      maybe.appendChild(el('p', {
+        style: 'font-size:12.5px;margin:0 0 6px;font-weight:600;',
+        text: hits.length === 1 ? 'Is it this one?' : 'Is it one of these?',
+      }));
+      hits.forEach((h) => {
+        const b = el('button.focus-row', { type: 'button' });
+        b.appendChild(el('span', {
+          html: `<strong>${h.name}</strong><br><small class="muted">${h.city || ''}`
+            + `${h.city && h.country ? ', ' : ''}${h.country || ''}</small>`,
+        }));
+        b.addEventListener('click', () => {
+          const row = schools.find((r) => r.id === h.id);
+          if (row) { selectSchool(row); addBox.style.display = 'none'; note.textContent = `Picked ${h.name}.`; }
+        });
+        maybe.appendChild(b);
+      });
+      const no = el('button.btn', {
+        type: 'button', text: 'No — mine is different, add it',
+        style: 'margin-top:6px;font-size:12.5px;',
+      });
+      no.addEventListener('click', () => { dismissed = true; maybe.innerHTML = ''; go.click(); });
+      maybe.appendChild(no);
+      return true;
+    };
+
     go.addEventListener('click', async () => {
       const name = nameInput.value.trim();
       if (name.length < 2) { status.textContent = 'Give it a name.'; return; }
+      status.textContent = '';
+      if (await askFirst(name)) return;      // they answer, then this runs again
       go.disabled = true; status.textContent = 'Adding…';
 
       const cc = ccOf.get(cSel.value);
@@ -669,6 +774,7 @@ function schoolPicker(onPick, initial = {}) {
       // the option was added, the school selected, or the box closed. Whoever
       // added a school saw nothing happen and no error.
       schools.push(data);
+      tellPaul();
       const opt = el('option', { value: data.id, text: data.name });
       sSel.insertBefore(opt, sSel.lastElementChild);
       sSel.value = String(data.id);
@@ -819,6 +925,17 @@ function postingRow(posting, onRemove) {
 // This form is long, and the two ways out of it — a reload, or a sign-in that
 // expired while you were typing — both used to throw the lot away. Keep a draft
 // locally so neither does. It never leaves the browser.
+// Paul hears the same day about anything a member had to add themselves.
+// Best-effort on purpose: the log is written by a trigger in Postgres and
+// cannot be skipped, so a mail server having a bad minute costs a notification,
+// never the addition — and never the member's place in the form.
+async function tellPaul() {
+  try {
+    const { data } = await supabase.rpc('my_latest_addition');
+    if (data) await supabase.functions.invoke('notify-addition', { body: { id: data } });
+  } catch { /* the trigger already recorded it; tools/additions.sh will show it */ }
+}
+
 const DRAFT_KEY = 'sixdeg.onboarding.draft';
 
 function saveDraft(d) {
