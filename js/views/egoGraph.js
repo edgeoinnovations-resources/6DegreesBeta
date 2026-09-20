@@ -26,6 +26,7 @@ import { el, append } from '../widgets.js';
 import { openPersonCard } from '../personCard.js';
 import { communityCounter } from '../communityCounter.js';
 import { openFocusPicker } from '../focusPicker.js';
+import { tagTypes } from '../tags.js';
 import { supabase, logError } from '../supabaseClient.js';
 import { pairKey } from '../loadData.js';
 import {
@@ -237,6 +238,26 @@ export const view = {
     // graph or from a fetch of somebody else's. Both live out here rather than
     // inside draw(): buildRail() needs them too, and when they were local the
     // rail threw ReferenceError and listed nobody under its heading.
+    // ── What a confirmed connection IS ───────────────────────────────────
+    // Paul, 20 Sep 2026, after he and Dee confirmed each other: the rail said
+    // "No shared place", which describes what they do NOT have. Once two people
+    // have said how they know one another, that is the most useful thing the
+    // line can carry — "Social connection", "Relative / family".
+    //
+    // The labels come from tag_types in the database rather than a copy kept
+    // here, so adding a kind of connection never needs a matching edit in the
+    // client. They arrive a moment after the first paint; the graph redraws
+    // when they land, and ring 0 is the only place that waits on them.
+    let tagLabels = new Map();
+    tagTypes().then((types) => {
+      if (destroyed) return;
+      tagLabels = new Map((types || []).map((ty) => [ty.key, ty.label]));
+      if (tagLabels.size) draw(false);
+    }).catch(() => { /* the fallback below still reads properly */ });
+    const kindsOf = (n) => (n.tagKeys || [])
+      .map((k) => tagLabels.get(k) || k.replace(/_/g, ' '))
+      .filter(Boolean);
+
     const nameOf = (n) => n._name || (idx.teacherById.get(n.id) || {}).FULL_NAME || n.id;
     const countOf = (n) => (n._count ?? counts.get(n.id) ?? 0);
 
@@ -272,6 +293,9 @@ export const view = {
           time: r.time_relation,
           overlap: r.overlap_years,
           acknowledged: !!r.acknowledged,
+          // connections_of() returns these too; without them a ring-0 person in
+          // somebody else's graph would have had nothing on their line.
+          tagKeys: r.tag_keys ? r.tag_keys.split(',') : [],
           verified: r.acknowledged ? 'mutual' : 'unverified',
           _name: r.display_name,
           _count: Number(r.their_degree_count) || 0,
@@ -550,7 +574,7 @@ export const view = {
             ? `<small class="muted">${t.GIVEN_NAME} ${t.LAST_NAME}</small><br>` : '') +
           (d.degree
             ? `<span style="color:${ringColor(d.degree)}">●</span> Degree ${d.degree} — ${degreeLabel(d.degree)}<br>`
-            : `<span style="color:${ACCENT}">●</span> No shared school, city or country<br>`) +
+            : `<span style="color:${ACCENT}">●</span> ${kindsOf(d).join(' · ') || 'No shared school, city or country'}<br>`) +
           // The degree and the confirmation are two separate facts about the same
           // pair, so show both rather than letting one replace the other.
           (d.acknowledged
@@ -631,14 +655,22 @@ export const view = {
         const list = byDeg.get(d) || [];
         if (!list.length) continue;
         const sec = el('div.rail-sec');
+        // Ring 0 is everybody who confirmed they know you and shares no place
+        // with you. Name the KIND of connection — that is what they told each
+        // other — and fall back to the generic heading only when the ring holds
+        // more than one kind, or when the labels have not arrived yet.
+        const kinds = d ? [] : [...new Set(list.flatMap(kindsOf))];
+        const head = d ? `Degree ${d}`
+          : (kinds.length === 1 ? kinds[0]
+            : kinds.length ? 'Confirmed connections' : 'No shared place');
         sec.appendChild(el('div.rail-sec-head', {}, [
           el('span.swatch', { style: `background:${ringColor(d)}` }),
-          el('span', { text: d ? `Degree ${d}` : 'No shared place' }),
+          el('span', { text: head }),
           el('span.muted', { text: String(list.length) }),
         ]));
         sec.appendChild(el('div.muted.rail-sec-sub', {
           text: d ? DEGREE_META[d].short
-                  : 'Confirmed, but you have never shared a school, city or country',
+                  : 'You both said you know each other. No shared school, city or country.',
         }));
         const ul = el('ul');
         list.forEach((n) => {
@@ -656,7 +688,10 @@ export const view = {
           // real list when you open it.
           const all = (data.sharedByPair && data.sharedByPair.get(pairKey(ego, n.id))) || [];
           const more = all.length > 1 ? ` · +${all.length - 1} more` : '';
-          const li = el('li', { html: `${shownName}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
+          // A ring-0 person has no place to name, so their line carries how
+          // the two of you know each other instead of nothing at all.
+          const said = n.label || (n.degree ? '' : kindsOf(n).join(' · '));
+          const li = el('li', { html: `${shownName}${ring}<small>${said}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
           li.addEventListener('click', () => showPerson(n.id));
           li.addEventListener('mouseenter', () => {
             gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === n.id ? 1 : 0.22));
