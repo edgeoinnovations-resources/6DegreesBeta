@@ -348,6 +348,8 @@ function findPeople(ctx) {
       .flatMap((x) => [x.TEACHER_A_ID, x.TEACHER_B_ID])) : null;
 
     const results = data.teachers.filter((t) => {
+      // Not you. This is a list of people to find, and you are not lost.
+      if (t.TEACHER_ID === ctx.me) return false;
       if ((t.YEARS_EXPERIENCE || 0) < minY) return false;
       if (vOnly && !mutualSet.has(t.TEACHER_ID)) return false;
       const postings = idx.postingsByTeacher.get(t.TEACHER_ID) || [];
