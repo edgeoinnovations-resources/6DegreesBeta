@@ -48,7 +48,7 @@ const CITY_COLS = 'id,name,admin1,region,country_code,latitude,longitude,populat
 // with three postings fetched the 2,120-school catalogue three times over —
 // nine requests — and the regions table three times. Linda has nine postings.
 // Holding the promise means the second caller awaits the first one's request.
-let _schoolsP = null, _regionsP = null;
+let _schoolsP = null, _regionsP = null, _countriesP = null;
 const _citiesByCountry = new Map();
 
 // Caching a promise means caching a FAILED one too, which would leave the picker
@@ -77,6 +77,14 @@ const citiesIn = (cc) => {
   }
   return _citiesByCountry.get(cc);
 };
+
+// Every country on Earth, 252 of them, not the 167 that happen to have a school
+// in the catalogue. Sarah asked for Benin on 19 Sep; Benin had never been on the
+// list, because the list was derived from the schools. Nor had 84 others, and
+// nobody asked about those — a person who cannot find their country assumes the
+// site is not for them and closes it.
+const countryCatalogue = () => (_countriesP ??= fetchAll('countries', 'code,name,continent', ['name'])
+  .catch((e) => { _countriesP = null; throw e; }));
 
 // States and provinces, with an approximate centre each. Linda, 13 Sep 2026:
 // "I worked in Annandale, MN, but it puts me in Annandale, VA." 51 rows.
@@ -216,10 +224,17 @@ function finalDestination(profile) {
   // retirement town is as structured as a school's city and can be mapped.
   (async () => {
     try {
-      const schools = await schoolCatalogue();
-      const names = [...new Set(schools.map((r) => r.country))].sort();
+      const [schools, all] = await Promise.all([
+        schoolCatalogue(), countryCatalogue().catch(() => []),
+      ]);
+      // Retiring somewhere nobody has taught is the normal case, not the odd
+      // one — this list has always needed every country more than the postings
+      // list did.
       const cc = new Map();
+      for (const c of all) cc.set(c.name, c.code);
       for (const r of schools) if (r.country_code) cc.set(r.country, r.country_code);
+      const names = all.length ? all.map((c) => c.name)
+                               : [...new Set(schools.map((r) => r.country))].sort();
       names.forEach((n) => country.appendChild(el('option', { value: n, text: n })));
 
       const fillCities = async (countryName, preselect) => {
@@ -420,22 +435,29 @@ function schoolPicker(onPick, initial = {}) {
   };
 
   (async () => {
+    let allCountries = [];
     try {
-      [schools, regions] = await Promise.all([
-        schoolCatalogue(), regionCatalogue().catch(() => []),
+      [schools, regions, allCountries] = await Promise.all([
+        schoolCatalogue(), regionCatalogue().catch(() => []), countryCatalogue().catch(() => []),
       ]);
     } catch (err) { note.textContent = friendlyDbError(err, 'load the school list'); return; }
+    // EVERY COUNTRY, not the ones that happen to have a school already. The list
+    // used to be derived from the catalogue, so 85 countries — Benin among them,
+    // which is what Sarah asked for — had never appeared at all. A country with
+    // no schools yet is not a dead end: its cities come from the gazetteer and
+    // the school gets added by the person who worked there.
+    for (const c of allCountries) ccOf.set(c.name, c.code);
     for (const s of schools) if (s.country_code) ccOf.set(s.country, s.country_code);
-    const countries = [...new Set(schools.map((r) => r.country))].sort();
+    const withSchools = new Set(schools.map((r) => r.country));
+    const countries = allCountries.length
+      ? allCountries.map((c) => c.name)
+      : [...withSchools].sort();
     countries.forEach((c) => cSel.appendChild(el('option', { value: c, text: c })));
-    // THE HARDEST WALL IN THIS FORM. The country list is built from the schools
-    // we hold, so it has 167 of the world's countries — 77 countries in the
-    // gazetteer have no school at all. Cities and schools have always had a way
-    // to say "mine isn't here"; a country had none, and someone who taught in
-    // one of those 77 met a dropdown that simply did not contain their working
-    // life, with nothing to click and nothing to report.
-    cSel.appendChild(el('option', { value: COUNTRY_NEW, text: '+ My country isn’t listed…' }));
-    note.textContent = `${schools.length.toLocaleString()} schools in ${countries.length} countries.`;
+    // Still offered, even now that every country is there: it catches a country
+    // somebody cannot find under the name they expect.
+    cSel.appendChild(el('option', { value: COUNTRY_NEW, text: '+ I can’t find my country…' }));
+    note.textContent = `${schools.length.toLocaleString()} schools in ${withSchools.size} countries, `
+      + `and every country on Earth to add one in.`;
     if (initial.country) { cSel.value = initial.country; initial.country = null; cSel.dispatchEvent(new Event('change')); }
   })();
 
@@ -465,6 +487,15 @@ function schoolPicker(onPick, initial = {}) {
       .forEach(([c, rg]) => citySel.appendChild(cityOption(c, rg)));
     citySel.appendChild(el('option', { value: CITY_OTHER, text: '— another city in this country —' }));
     citySel.appendChild(el('option', { value: CITY_NEW, text: '+ My city isn’t listed…' }));
+    // Nobody has listed a school in this country yet — 85 countries are in that
+    // position now that all of them are offered. Don't hand them a dropdown with
+    // two apologies in it: show the country's real cities straight away.
+    const anyHere = schools.some((r) => r.country === cSel.value);
+    if (!anyHere) {
+      cities = await pending;
+      await showAllCities();
+      return;
+    }
     if (initial.city) {
       const want = initial.region || '';
       const opt = [...citySel.options].find((o) => o.value === initial.city
