@@ -1233,6 +1233,30 @@ export function onboardingView(user, profile, onDone) {
     postings: [...rows.children].map((r) => r._state),
   });
   if (isNew) markStep('opened');
+
+  // ── Unsaved work should never be a silent condition ──────────────────────
+  //
+  // Sarah added a school at 08:53 on 20 Sep. At 10:00 it was still attached to
+  // nothing: she last saved at 07:58. Either she was still working or she shut
+  // the tab, and the form gave her no way to tell the difference. This page has
+  // a Save button a long way down a long form, and everything above it looks
+  // exactly the same saved or not.
+  //
+  // A bar, not a browser "are you sure?" dialog. The dialog appears only as you
+  // leave, says something generic in browser-speak, and is dismissed by
+  // reflex — and half this membership would read it as an error.
+  let savedState = '';
+  const unsavedBar = el('div.unsaved-bar');
+  unsavedBar.hidden = true;
+  const unsavedSave = el('button.btn.accent', { type: 'button', text: 'Save now' });
+  append(unsavedBar,
+    el('span', { text: 'You have changes that are not saved yet.' }),
+    unsavedSave);
+  const checkDirty = () => {
+    const now = JSON.stringify(snapshot());
+    unsavedBar.hidden = (now === savedState);
+  };
+
   const noteProgress = () => {
     if (!isNew) return;
     const st = snapshot();
@@ -1241,8 +1265,8 @@ export function onboardingView(user, profile, onDone) {
     if (p) markStep('school');
     if (p && p.start) markStep('dated');
   };
-  root.addEventListener('change', () => { saveDraft(snapshot()); noteProgress(); });
-  root.addEventListener('input', () => { saveDraft(snapshot()); noteProgress(); });
+  root.addEventListener('change', () => { saveDraft(snapshot()); noteProgress(); checkDirty(); });
+  root.addEventListener('input', () => { saveDraft(snapshot()); noteProgress(); checkDirty(); });
   // The push is debounced by a couple of seconds, which is exactly the window in
   // which somebody closes the laptop. Flush it when the page goes away.
   const flush = () => { if (document.body.contains(root)) pushDraft(snapshot()); };
@@ -1252,6 +1276,8 @@ export function onboardingView(user, profile, onDone) {
   const status = el('p.auth-msg');
   const save = el('button.btn.accent', { type: 'button', text: isNew ? 'Join 6 Degrees' : 'Save changes' });
   root.append(el('div', { style: 'display:flex;gap:10px;align-items:center;margin-top:14px;' }, [save, status]));
+  unsavedSave.addEventListener('click', () => save.click());
+  root.appendChild(unsavedBar);
 
   // existing postings
   (async () => {
@@ -1289,6 +1315,11 @@ export function onboardingView(user, profile, onDone) {
       data.forEach((p) => addRow({ ...p,
         _country: p.schools?.country, _city: p.schools?.city, _region: p.schools?.region }));
     } else addRow();
+    // The baseline for "unsaved", taken once the saved history is on screen.
+    // The school pickers fill their dropdowns asynchronously, so give them a
+    // turn before reading the state — otherwise the form declares itself dirty
+    // the moment it finishes loading itself.
+    setTimeout(() => { savedState = JSON.stringify(snapshot()); unsavedBar.hidden = true; }, 600);
   })();
 
   save.addEventListener('click', async () => {
@@ -1368,6 +1399,8 @@ export function onboardingView(user, profile, onDone) {
 
       if (isNew) markStep('done');
       clearDraft();
+      savedState = JSON.stringify(snapshot());
+      unsavedBar.hidden = true;
       status.className = 'auth-msg ok';
       status.textContent = 'Saved.';
       onDone();

@@ -720,3 +720,19 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   margin: 16px 0 6px; font-size: 12px; letter-spacing: .06em;
   text-transform: uppercase; color: var(--muted);
 }
+
+/* "You have changes that are not saved yet." Sarah added a school at 08:53 on
+   20 Sep 2026 and at 10:00 it was attached to nothing; she had last saved at
+   07:58. The Save button is a long way down a long form and everything above it
+   looks identical saved or not. A bar, not a browser "are you sure?" dialog:
+   that appears only as you leave, speaks browser, and is dismissed by reflex. */
+.unsaved-bar {
+  position: sticky; bottom: 0; z-index: 30;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin: 18px 0 0; padding: 12px 16px;
+  background: #fff4ef; border: 2px solid var(--orange); border-radius: var(--radius);
+  font-size: 14px; color: #8a4520;
+  box-shadow: 0 -6px 18px -12px rgba(0,0,0,.3);
+}
+.unsaved-bar[hidden] { display: none; }
+.unsaved-bar .btn { margin-left: auto; }

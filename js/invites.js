@@ -245,17 +245,49 @@ export async function openInvitePanel(ctx) {
     }
   });
 
+  // ── Does this address belong to the person, or to their employer? ────────
+  //
+  // Four of Linda's thirteen invitations went to asdubai.org and aes.ac.in and
+  // have never been opened. School mail systems filter a message like this, and
+  // the address stops working the day the person leaves — which for a teaching
+  // career is every two or three years, and this is the only key to their
+  // history here.
+  //
+  // The pattern check caught aes.ac.in and missed asdubai.org, because a school
+  // domain does not have to announce itself. So the test is turned around:
+  // anything that is not a KNOWN CONSUMER MAIL PROVIDER gets a gentler
+  // question. A false positive costs one sentence; a missed work address costs
+  // somebody their account.
   const WORKISH = /\.(edu|ac|sch|k12)\b|\b(school|academy|college|isd|edu)\b/i;
+  const CONSUMER = new Set([
+    'gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.co.uk', 'outlook.com',
+    'live.com', 'live.co.uk', 'msn.com', 'yahoo.com', 'yahoo.co.uk', 'yahoo.co.jp',
+    'ymail.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 'proton.me',
+    'protonmail.com', 'pm.me', 'gmx.com', 'gmx.de', 'gmx.net', 'web.de', 'mail.com',
+    'mail.ru', 'yandex.com', 'yandex.ru', 'zoho.com', 'fastmail.com', 'hey.com',
+    'qq.com', '163.com', '126.com', 'naver.com', 'daum.net', 'hanmail.net',
+    'orange.fr', 'free.fr', 'wanadoo.fr', 'laposte.net', 'sfr.fr',
+    'btinternet.com', 'sky.com', 'virginmedia.com', 'talktalk.net',
+    'bigpond.com', 'optusnet.com.au', 'xtra.co.nz', 'telus.net', 'shaw.ca',
+    'rogers.com', 'sympatico.ca', 'comcast.net', 'verizon.net', 'sbcglobal.net',
+    'cox.net', 'charter.net', 'earthlink.net', 'rediffmail.com',
+  ]);
+  const MINE = 'That looks like';
   email.addEventListener('input', () => {
     const v = email.value.trim();
-    const looksInstitutional = v.includes('@') && WORKISH.test(v.split('@')[1] || '');
-    status.className = looksInstitutional ? 'auth-msg' : status.className;
-    if (looksInstitutional) {
-      status.textContent = 'That looks like a school address. It will work — but they '
-        + 'lose access the day they leave. A personal one is safer.';
-    } else if (status.textContent.startsWith('That looks like a school address')) {
-      status.textContent = '';
+    const domain = (v.split('@')[1] || '').toLowerCase();
+    let msg = '';
+    if (v.includes('@') && domain.includes('.')) {
+      if (WORKISH.test(domain)) {
+        msg = `${MINE} a school address. It will work — but they lose access the day `
+            + 'they leave, and school systems often filter the invitation. A personal one is safer.';
+      } else if (!CONSUMER.has(domain)) {
+        msg = `${MINE} it might be a work address. If ${domain} belongs to their employer, `
+            + 'use a personal one instead — it is the only key to their history here.';
+      }
     }
+    if (msg) { status.className = 'auth-msg'; status.textContent = msg; }
+    else if (status.textContent.startsWith(MINE)) { status.textContent = ''; }
   });
 
   email.addEventListener('keydown', (e) => { if (e.key === 'Enter') go.click(); });
