@@ -117,7 +117,24 @@ export function openFocusPicker(ctx, currentId, onPick) {
       }));
       return;
     }
-    rows.forEach((r) => list.appendChild(row(r)));
+    // Your own people come back first, then everybody else. Say which is which
+    // rather than letting one heading stand over both — the first version of
+    // this listed Bob under "People you're connected to", and Paul is not
+    // connected to Bob.
+    const mineRows = rows.filter((r) => r.my_degree);
+    const others = rows.filter((r) => !r.my_degree);
+    if (term) {
+      rows.forEach((r) => list.appendChild(row(r)));
+      return;
+    }
+    if (mineRows.length) mineRows.forEach((r) => list.appendChild(row(r)));
+    else {
+      heading.textContent = 'Everyone in the community';
+    }
+    if (others.length) {
+      if (mineRows.length) list.appendChild(el('p.focus-group', { text: 'Others in the community' }));
+      others.forEach((r) => list.appendChild(row(r)));
+    }
   }
 
   let debounce = null;

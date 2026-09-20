@@ -709,3 +709,14 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   padding: 10px 12px; margin-bottom: 7px; font: inherit; cursor: pointer;
 }
 .focus-row:hover { border-color: var(--turquoise); background: #f7fcfd; }
+/* The degree badge only had rules inside .conn-row, so here it was a flex item
+   with nothing holding it open and squashed to a sliver. */
+.focus-row .deg-pill {
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 999px;
+  color: #fff; font-size: 12px; font-weight: 700;
+}
+.focus-group {
+  margin: 16px 0 6px; font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
