@@ -248,7 +248,11 @@ function withAPerson(ctx) {
     // (c) Mutual connections — "oh, we both know…"
     const bestA = bestEdges(adj, A), bestB = bestEdges(adj, B);
     const mutual = [...bestA.keys()]
-      .filter((id) => id !== B && bestB.has(id))
+      // Exclude BOTH ends. It excluded only "them", so whenever the two of you
+      // were connected to each other you turned up in your own list of people
+      // you both know — which is how Paul's name survived on this page even
+      // after the "You are" box stopped carrying it.
+      .filter((id) => id !== B && id !== A && bestB.has(id))
       .map((id) => ({ id, ea: bestA.get(id), eb: bestB.get(id) }))
       .sort((x, y) => (x.ea.degree + x.eb.degree) - (y.ea.degree + y.eb.degree));
 
@@ -293,7 +297,9 @@ function renderChain(chain, idx, ctx) {
     const t = idx.teacherById.get(step.id) || {};
     const endpoint = i === 0 || i === chain.length - 1;
     const node = el(`div.path-node${endpoint ? '.endpoint' : ''}`, { style: 'cursor:pointer;' }, [
-      el('div.nm', { text: t.FULL_NAME || step.id }),
+      // One end of every route is you, and reading your own name back at
+      // yourself is the thing Paul asked to be rid of on this page.
+      el('div.nm', { text: step.id === ctx.me ? 'You' : (t.FULL_NAME || step.id) }),
       el('div.meta', { text: rolesOf(idx, step.id).join(', ') }),
     ]);
     node.addEventListener('click', () => ctx.navigateTo('ego', { teacher: step.id }));
