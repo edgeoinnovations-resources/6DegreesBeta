@@ -842,6 +842,99 @@ function schoolPicker(onPick, initial = {}) {
 
   const fold = (x) => (x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const closeResults = () => { results.hidden = true; results.innerHTML = ''; };
+
+  // ── Finding a school by what people actually call it ──────────────────────
+  //
+  // "AES" found NOTHING and "embassy" found it, which is the wrong way round:
+  // nobody who worked at the American Embassy School calls it the embassy
+  // school. The search matched substrings, and "aes" is not a substring of
+  // anything in "American Embassy School Delhi".
+  //
+  // That is not a small annoyance. Somebody who cannot find their school
+  // concludes it is not listed and adds it again — and a duplicate school turns
+  // same-school colleagues from degree 1 into degree 3, silently. The two most
+  // expensive bugs in this database both start with a search that came back
+  // empty.
+  //
+  // So three ways to match now, in order of confidence:
+  //   1. the text, as before
+  //   2. INITIALS — aes, asd, isb, eac. Stop-words are skipped, so "American
+  //      School of Dubai" answers to both "asd" and "asod".
+  //   3. a single typo, for words long enough that one is not a coincidence.
+  const STOP = new Set(['of', 'the', 'and', 'at', 'in', 'de', 'la', 'el', 'du', 'des']);
+  const initialsOf = (name) => {
+    const words = fold(name).split(/[^a-z0-9]+/).filter(Boolean);
+    return {
+      strict: words.filter((w) => !STOP.has(w)).map((w) => w[0]).join(''),
+      loose: words.map((w) => w[0]).join(''),
+    };
+  };
+  // One insertion, deletion, substitution OR SWAP apart — no more. The swap
+  // matters most: "kuwiat" for Kuwait is two substitutions to an edit-distance
+  // counter and the commonest mistake there is to a pair of hands.
+  const nearlyEqual = (a, b) => {
+    if (Math.abs(a.length - b.length) > 1) return false;
+    if (a.length === b.length) {
+      let k = -1;
+      for (let n = 0; n < a.length; n += 1) {
+        if (a[n] !== b[n]) { if (k >= 0) { k = k === n - 1 ? k : -2; break; } k = n; }
+      }
+      if (k >= 0 && a[k] === b[k + 1] && a[k + 1] === b[k]
+          && a.slice(k + 2) === b.slice(k + 2)) return true;
+    }
+    let i = 0; let j = 0; let slips = 0;
+    while (i < a.length && j < b.length) {
+      if (a[i] === b[j]) { i += 1; j += 1; continue; }
+      slips += 1;
+      if (slips > 1) return false;
+      if (a.length > b.length) i += 1;
+      else if (b.length > a.length) j += 1;
+      else { i += 1; j += 1; }
+    }
+    return slips + (a.length - i) + (b.length - j) <= 1;
+  };
+
+  const _searchIndex = new Map();
+  const indexOf = (r) => {
+    let x = _searchIndex.get(r.id);
+    if (!x) {
+      const name = fold(r.name);
+      x = {
+        name,
+        hay: fold(`${r.name} ${r.city} ${r.region || ''} ${r.country}`),
+        // Words from the WHOLE haystack, not just the name: "kuwiat" is a
+        // misspelling of a city, and people misspell those more than they
+        // misspell the school they worked at for a decade.
+        nameWords: name.split(/[^a-z0-9]+/).filter((w) => w.length > 3),
+        words: fold(`${r.name} ${r.city} ${r.region || ''} ${r.country}`)
+          .split(/[^a-z0-9]+/).filter((w) => w.length > 3),
+        ...initialsOf(r.name),
+      };
+      _searchIndex.set(r.id, x);
+    }
+    return x;
+  };
+
+  const scoreSchool = (r, terms) => {
+    const x = indexOf(r);
+    let score = 0;
+    for (const t of terms) {
+      if (x.hay.includes(t)) {
+        score += x.name.startsWith(t) ? 4 : 2;
+      } else if (t.length >= 2 && (x.strict.startsWith(t) || x.loose.startsWith(t))) {
+        // An acronym is a deliberate, confident thing to type.
+        score += x.strict === t || x.loose === t ? 6 : 5;
+      } else if (t.length >= 4 && x.nameWords.some((w) => nearlyEqual(w, t))) {
+        score += 2;                    // a near-miss on the school's own name
+      } else if (t.length >= 4 && x.words.some((w) => nearlyEqual(w, t))) {
+        score += 1;                    // a near-miss on where it is
+      } else {
+        return 0;                      // every word has to earn its place
+      }
+    }
+    return score;
+  };
+
   search.addEventListener('input', () => {
     const terms = fold(search.value).split(/\s+/).filter((t) => t.length > 1);
     results.innerHTML = '';
@@ -849,8 +942,11 @@ function schoolPicker(onPick, initial = {}) {
     const inCountry = cSel.value && cSel.value !== '';
     const hits = schools
       .filter((r) => !inCountry || r.country === cSel.value)
-      .filter((r) => { const h = fold(`${r.name} ${r.city} ${r.region || ''} ${r.country}`); return terms.every((t) => h.includes(t)); })
-      .slice(0, 12);
+      .map((r) => [scoreSchool(r, terms), r])
+      .filter(([sc]) => sc > 0)
+      .sort((a, b) => b[0] - a[0] || a[1].name.localeCompare(b[1].name))
+      .slice(0, 12)
+      .map(([, r]) => r);
     if (!hits.length) {
       results.appendChild(el('div.school-result.empty', {
         text: inCountry ? `Nothing matching in ${cSel.value}. Pick a city below and add it.` : 'Nothing matching. Pick a country and city below and add it.',
