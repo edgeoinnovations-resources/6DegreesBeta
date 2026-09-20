@@ -135,6 +135,13 @@ export const view = {
       draw(true);
     }
     ctx.openFocusPicker = () => openFocusPicker(ctx, focusId, setFocus);
+    // Sarah, 20 Sep 2026: looking at Linda's card, she wants a button there that
+    // puts Linda in the middle — the same thing the readout at the top right
+    // does, offered at the moment she is already thinking about Linda. Both
+    // hooks are cleared when you leave this page, so a card opened from the Map
+    // does not offer to focus a graph that is not on screen.
+    ctx.focusOn = setFocus;
+    ctx.focusedId = () => focusId;
 
     // No "Center on" picker. You are the centre of your own graph, always —
     // Melissa: "I should always remain at the center of my ego-graph"; Dee:

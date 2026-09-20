@@ -243,6 +243,8 @@ async function boot() {
     headerEgo.innerHTML = '';
     headerEgo.classList.remove('viewing-other');
     ctx.openFocusPicker = null;
+    ctx.focusOn = null;
+    ctx.focusedId = null;
     refreshHeader();
     window.__6degView = v.id;   // tags logged errors with the screen they happened on
     try {

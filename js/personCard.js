@@ -57,6 +57,36 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
     goesBy ? el('p.person-meta', { text: goesBy }) : null,
   );
 
+  // ── "Focus on Linda", next to Linda's name ───────────────────────────────
+  //
+  // Sarah, 20 Sep 2026: she clicks her connection to Linda, reads where Linda
+  // has worked, and at that moment wants to see who LINDA knows. The readout at
+  // the top right already does it, but it is at the other end of the screen and
+  // she is thinking about Linda here.
+  //
+  // Only on the Connections page: ctx.focusOn is set by that view and cleared
+  // the moment you navigate away, so a card opened from the Map never offers to
+  // re-centre a graph that is not on screen. Never for yourself — you are
+  // already the middle — and never for a ghost, in step with them not being
+  // findable in the picker either.
+  const firstName = (t.FIRST_NAME || t.FULL_NAME || '').split(' ')[0] || 'them';
+  if (ctx.focusOn && id !== me && !t.IS_GHOST && ctx.focusedId?.() !== id) {
+    const focus = el('button.btn.focus-on', {
+      type: 'button', text: `Focus on ${firstName}`,
+      title: `See ${firstName}'s connections in the middle of the page`,
+    });
+    focus.addEventListener('click', () => {
+      closePersonCard();
+      ctx.focusOn(id, t.FULL_NAME);
+    });
+    append(card,
+      el('div', { style: 'margin:0 0 12px;' }, [focus]),
+      el('p.muted', { style: 'font-size:11.5px;margin:-8px 0 12px;',
+        text: `Puts ${firstName} in the middle and shows who ${firstName} knows. `
+            + 'Your own circles come back when you leave the page.' }),
+    );
+  }
+
   // Final destination, where they gave one. Phrased from what they told us
   // rather than guessed: "retired in" and "plans to retire in" are different
   // facts and picking wrong would be wrong half the time.

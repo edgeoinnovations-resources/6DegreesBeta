@@ -740,3 +740,12 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
 }
 .unsaved-bar[hidden] { display: none; }
 .unsaved-bar .btn { margin-left: auto; }
+
+/* "Focus on Linda" — Sarah's button, on the card, next to the name. Outlined
+   rather than solid: it sits above "Message Linda", which is the action most
+   people came for, and two filled buttons stacked read as a decision. */
+.btn.focus-on {
+  background: #fff; color: var(--orange); border: 2px solid var(--orange);
+  font-weight: 600;
+}
+.btn.focus-on:hover { background: #fff4ef; }
