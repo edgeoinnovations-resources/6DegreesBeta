@@ -20,7 +20,7 @@ function close() {
 }
 function onKey(e) { if (e.key === 'Escape') close(); }
 
-async function loadAll(me) {
+async function loadAll(me, ctx) {
   const [{ data: tags, error }, types] = await Promise.all([
     supabase.from('connection_tags')
       .select('*')
@@ -29,11 +29,34 @@ async function loadAll(me) {
     tagTypes(),
   ]);
   if (error) throw error;
-  return { tags: tags || [], types };
+  const rows = tags || [];
+
+  // WHO IS ASKING. Dee's inbox said "Someone says you know each other" over a
+  // request from Paul, while Robb, Bob and Linda were named correctly on the
+  // same screen — because names were read only from the graph already in the
+  // browser, and that holds your own neighbourhood alone. The people missing
+  // from it are exactly the people this feature is FOR: somebody you share no
+  // school, city or country with. The first person ever to use it was
+  // anonymous to the person she had to trust.
+  //
+  // So fetch the ones we cannot name. public_profiles is readable by any
+  // member, and these are people already asking to be recognised by name.
+  const names = new Map();
+  const unknown = [...new Set(rows
+    .map((t) => (t.requester_id === me ? t.subject_id : t.requester_id))
+    .filter((id) => !ctx.idx.teacherById.has(id)))];
+  if (unknown.length) {
+    const { data: people } = await supabase
+      .from('public_profiles').select('id, display_name').in('id', unknown);
+    (people || []).forEach((p) => names.set(p.id, p.display_name));
+  }
+  return { tags: rows, types, names };
 }
 
-function nameOf(ctx, id) {
-  return (ctx.idx.teacherById.get(id) || {}).FULL_NAME || 'Someone';
+function nameOf(ctx, id, names) {
+  return (ctx.idx.teacherById.get(id) || {}).FULL_NAME
+    || names?.get(id)
+    || 'Someone';
 }
 
 function group(title, blurb, rows) {
@@ -62,7 +85,7 @@ export async function openInbox(ctx) {
   document.body.appendChild(panel);
 
   try {
-    const { tags, types } = await loadAll(ctx.me);
+    const { tags, types, names } = await loadAll(ctx.me, ctx);
     const label = (k) => (types.find((t) => t.key === k) || {}).label || k;
     body.className = '';
     body.innerHTML = '';
@@ -88,7 +111,7 @@ export async function openInbox(ctx) {
       const other = t.requester_id === ctx.me ? t.subject_id : t.requester_id;
       const r = el('div.inbox-row');
       r.append(el('div', {}, [
-        el('strong', { text: nameOf(ctx, other) }),
+        el('strong', { text: nameOf(ctx, other, names) }),
         el('small', { text: label(t.tag_key) + (t.context ? ` · “${t.context}”` : '') }),
       ]));
       const buttons = el('div.inbox-act');
