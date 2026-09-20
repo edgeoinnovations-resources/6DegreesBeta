@@ -382,16 +382,37 @@ function emailBlock(user) {
   return wrap;
 }
 
-// ── School picker: country → city → school, with escape hatches ─────────────
+// ── School picker: country → state → city → school, with escape hatches ─────
 // Linda, 6 Sep 2025: "Country dropdown first / City dropdown next / Then school
 // dropdown?" — plus her other request from the same day, "with the option to add
 // a school that's not listed", which is what the two "not listed" paths are.
+//
+// And the state, 20 Sep 2026, when she asked to add schools in the United
+// States and Canada. Paul: "in order to do this correctly, we need to have the
+// users add Country, State / Province, City, School name." A flat list of 3,406
+// American towns is not a list anybody reads — and it is the Annandale problem
+// as a user interface: there are three Rochesters and two Annandales in there,
+// each pair a thousand miles apart, telling them apart only by a suffix.
+//
+// The step appears ONLY for countries that have states in the database: the
+// United States and, from today, Canada. Everywhere else the picker is exactly
+// as it was, because inventing an administrative level for a country that does
+// not use one is its own kind of wrong.
 function schoolPicker(onPick, initial = {}) {
   const wrap = el('div.school-picker');
   const cSel = el('select', { 'aria-label': 'Country' }, [el('option', { value: '', text: 'Country…' })]);
+  const regSel = el('select', { 'aria-label': 'State or province', disabled: 'disabled' },
+    [el('option', { value: '', text: 'State…' })]);
+  regSel.hidden = true;
   const citySel = el('select', { 'aria-label': 'City', disabled: 'disabled' }, [el('option', { value: '', text: 'City…' })]);
   const sSel = el('select', { 'aria-label': 'School', disabled: 'disabled' }, [el('option', { value: '', text: 'School…' })]);
-  wrap.append(cSel, citySel, sSel);
+  wrap.append(cSel, regSel, citySel, sSel);
+
+  // Canada says province, the United States says state, and being told the
+  // wrong word is a small daily insult to whichever country is not American.
+  const regionWord = (cc) => (cc === 'CA' ? 'Province' : 'State');
+  const regionsFor = (cc) => regions.filter((r) => r.country_code === cc)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const note = el('p.muted', { style: 'font-size:11.5px;margin:6px 0 0;flex:1 1 100%;' });
   const addBox = el('div.add-school');
@@ -477,6 +498,36 @@ function schoolPicker(onPick, initial = {}) {
     // One request, for this country only. Fire it now; the list below is built
     // from the schools we already have, so nothing waits on it.
     const pending = citiesIn(ccOf.get(cSel.value)).catch(() => []);
+
+    // ── the state step, for the countries that have one ─────────────────────
+    const here = regionsFor(ccOf.get(cSel.value));
+    regSel.innerHTML = '';
+    regSel.hidden = !here.length;
+    regSel.disabled = !here.length;
+    if (here.length) {
+      const word = regionWord(ccOf.get(cSel.value));
+      regSel.appendChild(el('option', { value: '', text: `${word}…` }));
+      here.forEach((r) => regSel.appendChild(el('option', { value: r.code, text: r.name })));
+      citySel.disabled = true;
+      citySel.innerHTML = '';
+      citySel.appendChild(el('option', { value: '', text: `Pick the ${word.toLowerCase()} first…` }));
+      note.textContent = `Pick the ${word.toLowerCase()}, then the city.`;
+      cities = await pending;
+      // A school saved BEFORE this step existed has no state on it — Dee's
+      // Ursuline College Chatham is one, and without this her posting would
+      // come back with the province and city blank and her school quietly
+      // detached. The city knows which state it is in, so ask the city.
+      let want = initial.region || '';
+      if (!want && initial.city) {
+        const hit = cities.find((c) => c.name === initial.city);
+        want = hit?.region || hit?.admin1 || '';
+      }
+      if (want) {
+        regSel.value = want;
+        if (regSel.value === want) { regSel.dispatchEvent(new Event('change')); return; }
+      }
+      return;
+    }
 
     // cities that already have schools, then everywhere else in that country
     const seen = new Set();
@@ -585,7 +636,10 @@ function schoolPicker(onPick, initial = {}) {
     addBox.innerHTML = '';
     addBox.style.display = '';
     const cc = ccOf.get(cSel.value);
-    const here = regions.filter((r) => r.country_code === cc)
+    // Already chosen upstairs in the cascade — asking again is the form not
+    // listening.
+    const chosen = (!regSel.hidden && regSel.value) ? regSel.value : '';
+    const here = chosen ? [] : regions.filter((r) => r.country_code === cc)
       .sort((a, b) => a.name.localeCompare(b.name));
 
     const nameInput = el('input', {
@@ -620,12 +674,13 @@ function schoolPicker(onPick, initial = {}) {
       // The centre of the state, not of the town: it puts the map dot in the right
       // state instead of the wrong one. Degrees come from city NAMES, never from
       // coordinates, so an approximate point costs nothing but map precision.
-      const centre = regions.find((r) => r.country_code === cc && r.code === regionSel?.value);
+      const rgCode = regionSel?.value || chosen || null;
+      const centre = regions.find((r) => r.country_code === cc && r.code === rgCode);
       const { data, error } = await supabase.from('cities').insert({
         name,
         country_code: cc,
-        admin1: regionSel?.value || null,
-        region: regionSel?.value || null,
+        admin1: rgCode,
+        region: rgCode,
         latitude: centre?.latitude ?? null,
         longitude: centre?.longitude ?? null,
         population: 0,
@@ -645,7 +700,9 @@ function schoolPicker(onPick, initial = {}) {
       cities = await citiesIn(cc);
       cities.push(data);            // the cached array, so it survives switching country
       const opt = cityOption(data.name, data.region || '');
-      citySel.appendChild(opt);
+      // Before "+ My city isn't listed…", not after it.
+      const tail = [...citySel.options].find((o) => o.value === CITY_NEW);
+      if (tail) citySel.insertBefore(opt, tail); else citySel.appendChild(opt);
       citySel.value = data.name;
       opt.selected = true;
       addBox.style.display = 'none'; addBox.innerHTML = '';
@@ -653,6 +710,52 @@ function schoolPicker(onPick, initial = {}) {
     });
     nameInput.focus();
   }
+
+  // ── Pick a state, get that state's towns ─────────────────────────────────
+  // Every town in the state, from the gazetteer, not just the ones that already
+  // have a school — Linda is adding schools in places nobody here has worked.
+  // Towns with a school first, because they are the likely answer, and the rest
+  // after a divider.
+  regSel.addEventListener('change', () => {
+    citySel.innerHTML = '';
+    resetSchools();
+    sSel.disabled = true;
+    onPick(null);
+    const code = regSel.value;
+    citySel.disabled = !code;
+    if (!code) {
+      citySel.appendChild(el('option', { value: '', text: 'City…' }));
+      return;
+    }
+    citySel.appendChild(el('option', { value: '', text: 'City…' }));
+
+    const withSchools = new Set(
+      schools.filter((r) => r.country === cSel.value && (r.region || '') === code && r.city)
+        .map((r) => r.city));
+    [...withSchools].sort((a, b) => a.localeCompare(b))
+      .forEach((c) => citySel.appendChild(cityOption(c, code)));
+
+    const rest = cities.filter((c) => (c.region || c.admin1 || '') === code && !withSchools.has(c.name))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    if (withSchools.size && rest.length) {
+      citySel.appendChild(el('option', { value: '', disabled: 'disabled', text: '──────────' }));
+    }
+    rest.forEach((c) => citySel.appendChild(cityOption(c.name, code)));
+    citySel.appendChild(el('option', { value: CITY_NEW, text: '+ My city isn’t listed…' }));
+
+    const word = regionWord(ccOf.get(cSel.value)).toLowerCase();
+    note.textContent = withSchools.size
+      ? `${withSchools.size} ${withSchools.size === 1 ? 'city' : 'cities'} with a school already, `
+        + `and every other town in the ${word}.`
+      : `No schools listed in that ${word} yet — pick the city and add yours.`;
+
+    if (initial.city) {
+      const want = initial.city;
+      initial.city = null; initial.region = null;
+      const opt = [...citySel.options].find((o) => o.value === want);
+      if (opt) { opt.selected = true; citySel.dispatchEvent(new Event('change')); }
+    }
+  });
 
   citySel.addEventListener('change', () => {
     if (citySel.value === CITY_OTHER) { showAllCities(); onPick(null); return; }
@@ -699,7 +802,10 @@ function schoolPicker(onPick, initial = {}) {
     const go = el('button.btn', { type: 'button', text: 'Add it' });
     const status = el('span.muted', { style: 'font-size:12px;' });
     addBox.append(
-      el('p.muted', { style: 'font-size:11.5px;margin:0 0 6px;', text: `Adding a school in ${citySel.value}, ${cSel.value}. Everyone will be able to pick it.` }),
+      el('p.muted', { style: 'font-size:11.5px;margin:0 0 6px;',
+        text: `Adding a school in ${citySel.value}`
+          + `${!regSel.hidden && regSel.value ? `, ${regSel.value}` : ''}, ${cSel.value}. `
+          + 'Everyone will be able to pick it.' }),
       el('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' }, [nameInput, go, status]),
     );
 
@@ -825,8 +931,16 @@ function schoolPicker(onPick, initial = {}) {
   // (everything is in memory), so each step's options exist before the next.
   function selectSchool(row) {
     cSel.value = row.country;
+    // The country handler stops at the state for the US and Canada and waits,
+    // so drive that step too before reaching for a city.
+    initial.region = row.region || '';
+    initial.city = null;
     cSel.dispatchEvent(new Event('change'));
     const rg = row.region || '';
+    if (!regSel.hidden && rg) {
+      regSel.value = rg;
+      if (regSel.value === rg) regSel.dispatchEvent(new Event('change'));
+    }
     // Match on region too: two options can legitimately share a city name now.
     let opt = [...citySel.options].find((o) => o.value === row.city && (o.dataset.region || '') === rg);
     if (row.city && !opt) {
