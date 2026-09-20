@@ -236,11 +236,14 @@ async function boot() {
     // Leaving the page drops the focus: the view is rebuilt from scratch every
     // time, so its local focusId starts at `you` again. This clears the readout
     // so it cannot linger on another view or outlive the graph it described.
+    // `current` first: refreshHeader() asks which view is on screen, and asking
+    // before this was set gave the answer for the page being left. That drew a
+    // "Focused on …" button on the Map, where clicking it does nothing.
+    current = v;
     headerEgo.innerHTML = '';
     headerEgo.classList.remove('viewing-other');
     ctx.openFocusPicker = null;
     refreshHeader();
-    current = v;
     window.__6degView = v.id;   // tags logged errors with the screen they happened on
     try {
       if (NEEDS_EVERYONE.has(v.id)) {
