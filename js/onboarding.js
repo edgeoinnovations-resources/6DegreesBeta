@@ -969,15 +969,73 @@ async function tellPaul() {
 
 const DRAFT_KEY = 'sixdeg.onboarding.draft';
 
+// TWO COPIES, on purpose.
+//
+// localStorage is instant, works with no connection, and cannot fail the form.
+// It is also trapped in one browser: start on the phone at school, finish on
+// the laptop at home, and there is nothing there — and a private window, which
+// plenty of people use on a shared staffroom machine, never had it at all.
+//
+// So the same draft goes to the database a couple of seconds behind, and
+// whichever copy is NEWER wins when the form opens. The server copy is the one
+// that survives a new device, a cleared history, and the session expiring.
+let _pushTimer = null;
+let _lastPushed = '';
+
 function saveDraft(d) {
-  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(d)); } catch {}
+  const at = Date.now();
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ at, body: d })); } catch {}
+  // Debounced: this fires on every keystroke in a long form.
+  const json = JSON.stringify(d);
+  if (json === _lastPushed) return;
+  clearTimeout(_pushTimer);
+  _pushTimer = setTimeout(() => pushDraft(d), 2500);
 }
-function readDraft() {
-  try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch { return null; }
+
+async function pushDraft(d) {
+  const json = JSON.stringify(d);
+  if (json === _lastPushed) return;
+  try {
+    const { error } = await supabase.rpc('save_draft', { p_body: d });
+    if (!error) _lastPushed = json;
+  } catch { /* the local copy is already written; nothing is lost */ }
 }
+
+/** The newest draft this person has anywhere. */
+async function readDraft() {
+  let local = null;
+  let localAt = 0;
+  try {
+    const raw = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    // The old format was the body on its own, with no timestamp.
+    if (raw && raw.body) { local = raw.body; localAt = Number(raw.at) || 1; }
+    else if (raw) { local = raw; localAt = 1; }
+  } catch { /* unreadable local draft is the same as none */ }
+
+  try {
+    const { data } = await supabase.from('registration_drafts')
+      .select('body, updated_at').limit(1);
+    const row = data?.[0];
+    if (row?.body) {
+      const serverAt = new Date(row.updated_at).getTime();
+      // A tie goes to the server: it is the copy that is definitely not stale.
+      if (serverAt >= localAt) return row.body;
+    }
+  } catch { /* offline, or not signed in yet */ }
+  return local;
+}
+
 function clearDraft() {
+  clearTimeout(_pushTimer);
+  _lastPushed = '';
   try { localStorage.removeItem(DRAFT_KEY); } catch {}
+  // Registration succeeded; the draft has done its job.
+  try { supabase.from('registration_drafts').delete().neq('user_id', ZERO_UUID); } catch {}
 }
+
+// RLS narrows this to the caller's own row; the filter is only here because
+// PostgREST refuses a DELETE with no WHERE clause at all.
+const ZERO_UUID = '00000000-0000-0000-0000-000000000000';
 
 // ── The form ────────────────────────────────────────────────────────────────
 export function onboardingView(user, profile, onDone) {
@@ -1056,6 +1114,11 @@ export function onboardingView(user, profile, onDone) {
   });
   root.addEventListener('change', () => saveDraft(snapshot()));
   root.addEventListener('input', () => saveDraft(snapshot()));
+  // The push is debounced by a couple of seconds, which is exactly the window in
+  // which somebody closes the laptop. Flush it when the page goes away.
+  const flush = () => { if (document.body.contains(root)) pushDraft(snapshot()); };
+  window.addEventListener('pagehide', flush);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) flush(); });
 
   const status = el('p.auth-msg');
   const save = el('button.btn.accent', { type: 'button', text: isNew ? 'Join 6 Degrees' : 'Save changes' });
@@ -1064,7 +1127,7 @@ export function onboardingView(user, profile, onDone) {
   // existing postings
   (async () => {
     if (!profile) {
-      const d = readDraft();
+      const d = await readDraft();
       if (d) {
         first.value = d.first || ''; lastName.value = d.last || '';
         preferred.value = d.preferred || '';
@@ -1082,7 +1145,7 @@ export function onboardingView(user, profile, onDone) {
         });
         if (!rows.children.length) addRow();
         status.className = 'auth-msg';
-        status.textContent = 'Restored what you had typed.';
+        status.textContent = 'Restored what you had typed — you can carry on where you left off.';
         return;
       }
       addRow();
