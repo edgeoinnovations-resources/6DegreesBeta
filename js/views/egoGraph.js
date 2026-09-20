@@ -226,6 +226,13 @@ export const view = {
     }
 
     // ── Draw ─────────────────────────────────────────────────────────────────
+    // A name and a size for anyone on screen, whether they came from your own
+    // graph or from a fetch of somebody else's. Both live out here rather than
+    // inside draw(): buildRail() needs them too, and when they were local the
+    // rail threw ReferenceError and listed nobody under its heading.
+    const nameOf = (n) => n._name || (idx.teacherById.get(n.id) || {}).FULL_NAME || n.id;
+    const countOf = (n) => (n._count ?? counts.get(n.id) ?? 0);
+
     function draw(animate) {
       if (destroyed) return;
       // Declared up front: the ring guides read it well before the nodes do, and
@@ -266,10 +273,6 @@ export const view = {
 
       // Angular position carries meaning: group each ring by region, then country, so
       // geography clusters instead of being scattered by insertion order.
-      // A name for anyone on screen, whether they came from your own graph or
-      // from somebody else's fetch.
-      const nameOf = (n) => n._name || (idx.teacherById.get(n.id) || {}).FULL_NAME || n.id;
-      const countOf = (n) => (n._count ?? counts.get(n.id) ?? 0);
 
       const sortKey = (n) => {
         const ps = idx.postingsByTeacher.get(n.id) || [];
