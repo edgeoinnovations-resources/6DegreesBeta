@@ -437,6 +437,11 @@ function schoolPicker(onPick, initial = {}) {
   // `cities` holds ONLY the currently selected country's cities, refreshed when
   // the country changes. It used to be all 33,885 of them.
   let schools = [], cities = [], regions = [], ccOf = new Map();
+  // The in-flight request for this country's towns. The state step has to wait
+  // for it: picking Minnesota a second too early used to give the three towns
+  // that already have schools instead of all 77, and Duluth looked absent —
+  // which is how somebody ends up adding a second Duluth.
+  let citiesPending = Promise.resolve([]);
 
   const COUNTRY_NEW = '__newcountry__';
   const CITY_OTHER = '__other__';
@@ -498,6 +503,7 @@ function schoolPicker(onPick, initial = {}) {
     // One request, for this country only. Fire it now; the list below is built
     // from the schools we already have, so nothing waits on it.
     const pending = citiesIn(ccOf.get(cSel.value)).catch(() => []);
+    citiesPending = pending;
 
     // ── the state step, for the countries that have one ─────────────────────
     const here = regionsFor(ccOf.get(cSel.value));
@@ -716,7 +722,7 @@ function schoolPicker(onPick, initial = {}) {
   // have a school — Linda is adding schools in places nobody here has worked.
   // Towns with a school first, because they are the likely answer, and the rest
   // after a divider.
-  regSel.addEventListener('change', () => {
+  regSel.addEventListener('change', async () => {
     citySel.innerHTML = '';
     resetSchools();
     sSel.disabled = true;
@@ -727,6 +733,12 @@ function schoolPicker(onPick, initial = {}) {
       citySel.appendChild(el('option', { value: '', text: 'City…' }));
       return;
     }
+    citySel.appendChild(el('option', { value: '', text: 'Loading towns…' }));
+    // Wait for the country's gazetteer. Without this the list is whatever had
+    // arrived by the time they clicked.
+    cities = await citiesPending;
+    if (regSel.value !== code) return;          // they moved on while we waited
+    citySel.innerHTML = '';
     citySel.appendChild(el('option', { value: '', text: 'City…' }));
 
     // A school saved before this step existed has no state on it, so an exact
