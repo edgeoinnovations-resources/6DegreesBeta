@@ -41,6 +41,7 @@
 //   3D     — mercator + pitch.         Points + arcs + headcount columns.
 // ─────────────────────────────────────────────────────────────────────────────
 import { el, teacherTypeahead } from '../widgets.js';
+import { communityCounter } from '../communityCounter.js';
 import { regionColor, roleCategory, PRIMARY, ACCENT } from '../degrees.js';
 
 // `points` and `columns` are declared per mode rather than inferred, so what each mode
