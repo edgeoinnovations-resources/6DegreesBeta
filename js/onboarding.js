@@ -1076,6 +1076,17 @@ async function tellPaul() {
   } catch { /* the trigger already recorded it; tools/additions.sh will show it */ }
 }
 
+// How far somebody got. Fire and forget: a failed beacon must never be visible
+// in a form somebody is trying to fill in.
+let _lastStep = 0;
+const STEP_RANK = { opened: 1, named: 2, school: 3, dated: 4, saving: 5, done: 6 };
+function markStep(step) {
+  const rank = STEP_RANK[step] || 0;
+  if (rank <= _lastStep) return;       // only ever forwards, and once each
+  _lastStep = rank;
+  try { supabase.rpc('mark_step', { p_step: step }); } catch { /* never mind */ }
+}
+
 const DRAFT_KEY = 'sixdeg.onboarding.draft';
 
 // TWO COPIES, on purpose.
@@ -1221,8 +1232,17 @@ export function onboardingView(user, profile, onDone) {
     first: first.value, last: lastName.value, preferred: preferred.value,
     postings: [...rows.children].map((r) => r._state),
   });
-  root.addEventListener('change', () => saveDraft(snapshot()));
-  root.addEventListener('input', () => saveDraft(snapshot()));
+  if (isNew) markStep('opened');
+  const noteProgress = () => {
+    if (!isNew) return;
+    const st = snapshot();
+    if (st.first.trim() && st.last.trim()) markStep('named');
+    const p = (st.postings || []).find((x) => x.school_id);
+    if (p) markStep('school');
+    if (p && p.start) markStep('dated');
+  };
+  root.addEventListener('change', () => { saveDraft(snapshot()); noteProgress(); });
+  root.addEventListener('input', () => { saveDraft(snapshot()); noteProgress(); });
   // The push is debounced by a couple of seconds, which is exactly the window in
   // which somebody closes the laptop. Flush it when the page goes away.
   const flush = () => { if (document.body.contains(root)) pushDraft(snapshot()); };
@@ -1327,6 +1347,7 @@ export function onboardingView(user, profile, onDone) {
     }
 
     save.disabled = true; save.textContent = 'Saving…';
+    if (isNew) markStep('saving');
     try {
       // One server-side call. The client deliberately does NOT send an id: the
       // database takes auth.uid() as the only possible answer, so the id it
@@ -1345,6 +1366,7 @@ export function onboardingView(user, profile, onDone) {
       });
       if (error) throw error;
 
+      if (isNew) markStep('done');
       clearDraft();
       status.className = 'auth-msg ok';
       status.textContent = 'Saved.';
