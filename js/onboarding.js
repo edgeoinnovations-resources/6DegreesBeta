@@ -631,6 +631,11 @@ function schoolPicker(onPick, initial = {}) {
         latitude: city?.latitude ?? null,
         longitude: city?.longitude ?? null,
         city_source: 'manual',
+        // The city was picked from the gazetteer by somebody who WORKED there,
+        // which is the strongest evidence this database has. Left null, as it
+        // was, the city is treated as unknown and degrees 3 and 4 can never
+        // form from it — seven schools added on 20 Sep were all in that state.
+        city_confidence: 'high',
         is_verified: false,
         added_by: user.id,
       }).select('id,name,city,region,country,country_code,city_source').single();
