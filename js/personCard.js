@@ -28,7 +28,7 @@ function onKey(e) { if (e.key === 'Escape') closePersonCard(); }
  * @param id     the person to show
  * @param extras optional array of elements appended to the card (tags, notes)
  */
-export function openPersonCard(ctx, id, extras = []) {
+export function openPersonCard(ctx, id, extras = [], via = null) {
   const { data, idx, adj, me } = ctx;
   const t = idx.teacherById.get(id);
   if (!t) return;
@@ -98,6 +98,34 @@ export function openPersonCard(ctx, id, extras = []) {
   //
   // The headline degree — the one that puts someone on a ring — is still the
   // lowest of these, and it is the first row because the list is sorted by degree.
+  // Looking at somebody else's graph: show THEIR link to this person as well as
+  // your own. Paul, 20 Sep 2026 — "both is good". It answers the question you
+  // actually arrived with, which is usually how to reach this person.
+  if (via && via.viaId && via.viaId !== me && via.viaId !== id) {
+    const box = el('div.person-conn');
+    box.appendChild(el('h4', { text: `${via.viaName || 'They'} and ${t.FIRST_NAME || 'them'}` }));
+    const body = el('div');
+    box.appendChild(body);
+    body.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'Loading…' }));
+    card.appendChild(box);
+    supabase.rpc('pair_contexts_between', { p_a: via.viaId, p_b: id }).then(({ data: rows }) => {
+      body.innerHTML = '';
+      if (!rows?.length) {
+        body.appendChild(el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'No shared school, city or country.' }));
+        return;
+      }
+      rows.forEach((e) => {
+        body.appendChild(el('div.conn-row', {}, [
+          el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: `Degree ${e.degree}` }),
+          el('span', {
+            html: `<strong>${e.context_label}</strong><br><small class="muted">`
+              + `${degreeLabel(e.degree)}${e.overlap_years ? ` · ${e.overlap_years}` : ''}</small>`,
+          }),
+        ]));
+      });
+    }, () => { body.innerHTML = ''; });
+  }
+
   if (id !== me) {
     // Whatever is already in hand (the full graph, if a heavy view loaded it),
     // otherwise asked for below — one pair, not the whole table.
@@ -112,7 +140,7 @@ export function openPersonCard(ctx, id, extras = []) {
         el('p.muted', { style: 'font-size:12.5px;margin:0;', text: 'You haven’t shared a school, city or country — and haven’t confirmed knowing each other.' }));
     } else {
       box.appendChild(el('h4', {
-        text: shared.length > 1 ? `How you’re connected — ${shared.length} ways` : 'How you’re connected',
+        text: shared.length > 1 ? `You and ${t.FIRST_NAME || 'them'} — ${shared.length} ways` : `You and ${t.FIRST_NAME || 'them'}`,
       }));
 
       // The confirmation first: it is the one thing the two of you said yourselves.

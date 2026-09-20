@@ -671,3 +671,38 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   padding: 9px 16px; gap: 22px;
 }
 .community-bar.compact .cc-num { font-size: 20px; }
+
+/* ── Focused on: choosing whose connections you see ──────────────────────── */
+.focus-trigger {
+  border: 1px solid transparent; background: none; font: inherit; font-size: 13px;
+  color: var(--muted); cursor: pointer; padding: 5px 9px; border-radius: 999px;
+}
+.focus-trigger:hover { background: #eef6f8; border-color: var(--line); color: var(--turquoise-dark); }
+.focus-trigger strong { color: var(--turquoise-dark); }
+.focus-caret { font-size: 10px; opacity: .7; }
+.focus-flag {
+  background: var(--orange); color: #fff; font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em; padding: 2px 6px; border-radius: 999px;
+}
+.header-ego.viewing-other .focus-trigger { background: #fff4ef; border-color: var(--orange); }
+
+/* The banner. Deliberately loud: somebody must not mistake another person's
+   network for their own, and several of these members are not going to hunt
+   for a subtle cue. */
+.focus-banner {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; margin: 0 0 14px;
+  background: #fff4ef; border: 2px solid var(--orange); border-radius: var(--radius);
+}
+.focus-eye { font-size: 19px; }
+.focus-text { font-size: 14px; color: #8a4520; }
+.focus-text strong { color: #7a3a16; }
+.focus-acts { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* A row in the picker. Big targets, not a dense list. */
+.focus-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  border: 1px solid var(--line); background: #fff; border-radius: 9px;
+  padding: 10px 12px; margin-bottom: 7px; font: inherit; cursor: pointer;
+}
+.focus-row:hover { border-color: var(--turquoise); background: #f7fcfd; }

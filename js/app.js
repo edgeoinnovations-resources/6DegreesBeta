@@ -173,11 +173,27 @@ async function boot() {
 
   // Header ego readout.
   const headerEgo = document.getElementById('header-ego');
-  const refreshHeader = () => {
-    const t = idx.teacherById.get(state.egoTeacher);
-    headerEgo.innerHTML = t
-      ? `Focused on <strong>${t.FULL_NAME}</strong>${confirmBadge(t)}`
-      : '';
+  // Whose connections the Connections page is showing. It is a BUTTON now: the
+  // readout used to be decoration that could only ever say your own name, while
+  // five other places quietly changed the variable behind it.
+  const refreshHeader = (focusId, focusName) => {
+    headerEgo.innerHTML = '';
+    if (current && current.id !== 'ego') return;      // only meaningful there
+    const mine = !focusId || focusId === state.me;
+    const name = mine
+      ? (idx.teacherById.get(state.me) || {}).FULL_NAME || 'you'
+      : focusName;
+    const btn = el('button.focus-trigger', {
+      type: 'button',
+      title: 'Choose whose connections to see',
+      'aria-label': `Focused on ${name}. Choose whose connections to see.`,
+    });
+    btn.innerHTML = `Focused on <strong>${name}</strong>`
+      + (mine ? '' : ' <span class="focus-flag">not you</span>')
+      + ' <span class="focus-caret" aria-hidden="true">▾</span>';
+    btn.addEventListener('click', () => { if (ctx.openFocusPicker) ctx.openFocusPicker(); });
+    headerEgo.appendChild(btn);
+    headerEgo.classList.toggle('viewing-other', !mine);
   };
   ctx.refreshHeader = refreshHeader;
 
@@ -217,6 +233,12 @@ async function boot() {
     }
 
     container.appendChild(root);
+    // Leaving the page drops the focus: the view is rebuilt from scratch every
+    // time, so its local focusId starts at `you` again. This clears the readout
+    // so it cannot linger on another view or outlive the graph it described.
+    headerEgo.innerHTML = '';
+    headerEgo.classList.remove('viewing-other');
+    ctx.openFocusPicker = null;
     refreshHeader();
     current = v;
     window.__6degView = v.id;   // tags logged errors with the screen they happened on

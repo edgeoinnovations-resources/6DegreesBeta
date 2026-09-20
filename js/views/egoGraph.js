@@ -22,9 +22,11 @@
 // empty space either side. The canvas is now square-ish and the leftover width becomes a
 // list rail, which is the thing Dee actually said she liked ("I like the list versions").
 // ─────────────────────────────────────────────────────────────────────────────
-import { el } from '../widgets.js';
+import { el, append } from '../widgets.js';
 import { openPersonCard } from '../personCard.js';
 import { communityCounter } from '../communityCounter.js';
+import { openFocusPicker } from '../focusPicker.js';
+import { supabase, logError } from '../supabaseClient.js';
 import { pairKey } from '../loadData.js';
 import {
   DEGREE_META, DEGREES, degreeColor, degreeLabel, regionOf, ACCENT, teacherName, confirmBadge,
@@ -80,6 +82,60 @@ export const view = {
 
     root.appendChild(communityCounter());
 
+    // WHOSE connections are on screen. Deliberately a variable in this view and
+    // NOT ctx.state: the group asked that it reset the moment you navigate away,
+    // and it is also kept out of the URL so a refresh or the back button cannot
+    // quietly restore somebody else's graph. It used to live in ctx.state, where
+    // it silently re-pointed the Map and Who knows whom at whoever you had last
+    // clicked.
+    let focusId = ctx.me;
+    let focusName = null;
+    let focusRows = null;      // their connections, fetched when it is not you
+
+    // Three separate reminders, because Paul asked for more than one: "Many of
+    // these users will be older and may need MORE ways to remind them about what
+    // they're looking at." A banner here, the name on the centre node, and the
+    // readout in the page header.
+    const banner = el('div.focus-banner');
+    banner.hidden = true;
+    root.appendChild(banner);
+
+    function paintBanner() {
+      if (focusId === ctx.me) { banner.hidden = true; return; }
+      banner.hidden = false;
+      banner.innerHTML = '';
+      const back = el('button.btn.accent', { type: 'button', text: '← Back to my connections' });
+      back.addEventListener('click', () => setFocus(null, null));
+      const change = el('button.btn.ghost', { type: 'button', text: 'Look at someone else' });
+      change.addEventListener('click', () => openFocusPicker(ctx, focusId, setFocus));
+      append(banner,
+        el('span.focus-eye', { text: '👁', 'aria-hidden': 'true' }),
+        el('span.focus-text', {
+          html: `You are looking at <strong>${focusName || 'someone else'}</strong>’s connections, not your own.`,
+        }),
+        el('span.focus-acts', {}, [back, change]),
+      );
+    }
+
+    async function setFocus(id, name) {
+      focusId = id || ctx.me;
+      focusName = id ? name : null;
+      focusRows = null;
+      paintBanner();
+      if (ctx.refreshHeader) ctx.refreshHeader(focusId, focusName);
+      if (focusId !== ctx.me) {
+        const { data, error } = await supabase.rpc('connections_of', { p_person: focusId });
+        if (error) {
+          logError({ action: 'load someone else\'s connections', code: error.code, message: error.message });
+          focusId = ctx.me; focusName = null; paintBanner();
+        } else {
+          focusRows = data || [];
+        }
+      }
+      draw(true);
+    }
+    ctx.openFocusPicker = () => openFocusPicker(ctx, focusId, setFocus);
+
     // No "Center on" picker. You are the centre of your own graph, always —
     // Melissa: "I should always remain at the center of my ego-graph"; Dee:
     // "it's always tied to the user who is logged in."
@@ -119,7 +175,9 @@ export const view = {
 
     // Clicking someone opens their details. It does NOT move the graph.
     function showPerson(id) {
-      openPersonCard(ctx, id);
+      // When you are looking at somebody else's graph the card shows BOTH
+      // relationships — theirs to this person, and yours.
+      openPersonCard(ctx, id, [], { viaId: focusId, viaName: focusName });
     }
 
     // ── Ring sizing ──────────────────────────────────────────────────────────
@@ -173,26 +231,51 @@ export const view = {
       // Declared up front: the ring guides read it well before the nodes do, and
       // `const` in a temporal dead zone throws rather than reading as undefined.
       const hc = highContrast();
-      // Always the signed-in user. There is no longer any way to move it.
-      const ego = ctx.me || state.egoTeacher;
-      const egoT = idx.teacherById.get(ego);
+      // Whoever is focused. Yourself unless somebody was chosen, and that choice
+      // lives only for as long as you stay on this page.
+      const ego = focusId;
+      const egoT = focusId === ctx.me
+        ? idx.teacherById.get(ego)
+        : { FULL_NAME: focusName, FIRST_NAME: (focusName || '').split(' ')[0] };
 
-      // strongest (lowest-degree) link per person
-      const best = new Map();
-      for (const e of adj.get(ego) || []) {
-        const cur = best.get(e.other);
-        if (!cur || e.degree < cur.degree) best.set(e.other, e);
+      let neighbours;
+      if (focusRows) {
+        // Somebody else's, fetched from the database — this page holds only your
+        // own neighbourhood, so theirs has to be asked for.
+        neighbours = focusRows.map((r) => ({
+          id: r.other_id,
+          degree: r.degree,
+          type: r.context_type,
+          label: r.context_label,
+          time: r.time_relation,
+          overlap: r.overlap_years,
+          acknowledged: !!r.acknowledged,
+          verified: r.acknowledged ? 'mutual' : 'unverified',
+          _name: r.display_name,
+          _count: Number(r.their_degree_count) || 0,
+          _home: r.home_country || null,
+        }));
+      } else {
+        const best = new Map();
+        for (const e of adj.get(ego) || []) {
+          const cur = best.get(e.other);
+          if (!cur || e.degree < cur.degree) best.set(e.other, e);
+        }
+        neighbours = [...best.entries()].map(([other, e]) => ({ id: other, ...e }));
       }
-      const neighbours = [...best.entries()].map(([other, e]) => ({ id: other, ...e }));
 
       // Angular position carries meaning: group each ring by region, then country, so
       // geography clusters instead of being scattered by insertion order.
+      // A name for anyone on screen, whether they came from your own graph or
+      // from somebody else's fetch.
+      const nameOf = (n) => n._name || (idx.teacherById.get(n.id) || {}).FULL_NAME || n.id;
+      const countOf = (n) => (n._count ?? counts.get(n.id) ?? 0);
+
       const sortKey = (n) => {
-        const t = idx.teacherById.get(n.id) || {};
         const ps = idx.postingsByTeacher.get(n.id) || [];
         const s = ps.length ? idx.schoolById.get(ps[ps.length - 1].SCHOOL_ID) : null;
-        const country = s ? s.COUNTRY : 'zz';
-        return `${regionOf(country)}|${country}|${t.FULL_NAME || n.id}`;
+        const country = n._home || (s ? s.COUNTRY : 'zz');
+        return `${regionOf(country)}|${country}|${nameOf(n)}`;
       };
       // A confirmed connection NEVER moves anyone. Dee, 17 Sep 2026, seeing Linda
       // at degree 3 with a confirmed social tag: "I wonder if we could have the 3rd
@@ -214,7 +297,7 @@ export const view = {
 
       const rScale = d3.scaleSqrt()
         .domain([1, d3.max([...counts.values()]) || 1]).range(NODE_R);
-      const rOf = (n) => rScale(counts.get(n.id) || 1);
+      const rOf = (n) => rScale(countOf(n) || 1);
 
       // Plan against the width we actually have, so the viewBox can be 1:1 with the
       // container and nothing gets scaled down.
@@ -406,7 +489,7 @@ export const view = {
         .attr('y', (d) => Math.sin(d.ang) * (d.r + 7))
         .attr('text-anchor', (d) => (Math.cos(d.ang) < -0.15 ? 'end' : (Math.cos(d.ang) > 0.15 ? 'start' : 'middle')))
         .attr('dy', (d) => (Math.abs(Math.cos(d.ang)) <= 0.15 ? (Math.sin(d.ang) > 0 ? '0.9em' : '-0.25em') : '0.32em'))
-        .text((d) => teacherName(idx, d.id).split(' ')[0])
+        .text((d) => nameOf(d).split(' ')[0])
         // Only label where there is room both along the ring and between rings; the rest
         // reveal on hover. Measured after the text is set, so it reflects the real width.
         .each(function (d) { this.style.display = labelFits(this, d) ? '' : 'none'; });
@@ -425,7 +508,7 @@ export const view = {
       nAll.on('mousemove', (ev, d) => {
         const t = idx.teacherById.get(d.id) || {};
         tooltip.show(
-          `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}<br>` +
+          `<strong>${nameOf(d)}</strong>${confirmBadge(t)}<br>` +
           (t.GIVEN_NAME && t.PREFERRED_NAME && t.GIVEN_NAME !== t.PREFERRED_NAME
             ? `<small class="muted">${t.GIVEN_NAME} ${t.LAST_NAME}</small><br>` : '') +
           (d.degree
@@ -486,7 +569,11 @@ export const view = {
       rail.innerHTML = '';
       railRows.clear();
       rail.appendChild(el('div.rail-head', {}, [
-        el('strong', { text: `${total} connection${total === 1 ? '' : 's'}` }),
+        el('strong', {
+          text: focusId === ctx.me
+            ? `${total} connection${total === 1 ? '' : 's'}`
+            : `${focusName || 'They'} — ${total} connection${total === 1 ? '' : 's'}`,
+        }),
         hiddenTotal ? el('span.muted', { style: 'font-size:11.5px;', text: `${hiddenTotal} not drawn` }) : null,
       ]));
 
@@ -506,6 +593,7 @@ export const view = {
         const ul = el('ul');
         list.forEach((n) => {
           const t = idx.teacherById.get(n.id) || {};
+          const shownName = nameOf(n);
           const ring = n.acknowledged
             ? `<span class="confirmed-mark" title="Confirmed connection">◎</span>`
             : '';
@@ -518,7 +606,7 @@ export const view = {
           // real list when you open it.
           const all = (data.sharedByPair && data.sharedByPair.get(pairKey(ego, n.id))) || [];
           const more = all.length > 1 ? ` · +${all.length - 1} more` : '';
-          const li = el('li', { html: `${t.FULL_NAME || n.id}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
+          const li = el('li', { html: `${shownName}${ring}<small>${n.label || ''}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
           li.addEventListener('click', () => showPerson(n.id));
           li.addEventListener('mouseenter', () => {
             gNodes.selectAll('g.ego-node').style('opacity', (o) => (o.id === n.id ? 1 : 0.22));
