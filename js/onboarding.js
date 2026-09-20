@@ -657,8 +657,13 @@ function schoolPicker(onPick, initial = {}) {
         go.disabled = false;
         return;
       }
+      // `schools` IS the array the catalogue promise resolved to, so pushing
+      // into it updates the cache. There used to be an assignment to a
+      // `_schools` that does not exist; in a module that is a ReferenceError,
+      // and it threw right here - after the school had been created but before
+      // the option was added, the school selected, or the box closed. Whoever
+      // added a school saw nothing happen and no error.
       schools.push(data);
-      _schools = schools;
       const opt = el('option', { value: data.id, text: data.name });
       sSel.insertBefore(opt, sSel.lastElementChild);
       sSel.value = String(data.id);
