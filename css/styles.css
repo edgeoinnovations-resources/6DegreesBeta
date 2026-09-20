@@ -691,9 +691,12 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
    for a subtle cue. */
 .focus-banner {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  /* `display:flex` beats the browser's own [hidden] rule, so an empty orange
+     bar sat on the page whenever you were looking at yourself. */
   padding: 12px 16px; margin: 0 0 14px;
   background: #fff4ef; border: 2px solid var(--orange); border-radius: var(--radius);
 }
+.focus-banner[hidden] { display: none; }
 .focus-eye { font-size: 19px; }
 .focus-text { font-size: 14px; color: #8a4520; }
 .focus-text strong { color: #7a3a16; }
