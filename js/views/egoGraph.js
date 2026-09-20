@@ -24,6 +24,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { el } from '../widgets.js';
 import { openPersonCard } from '../personCard.js';
+import { supabase } from '../supabaseClient.js';
 import { pairKey } from '../loadData.js';
 import {
   DEGREE_META, DEGREES, degreeColor, degreeLabel, regionOf, ACCENT, teacherName, confirmBadge,
@@ -76,6 +77,8 @@ export const view = {
       el('h2', { text: 'Your connections' }),
       el('p', { html: 'Concentric rings around one person. Ring = relationship degree (1 closest … 6 outermost), colour = degree. You are always at the centre. Hover for <em>why</em> a link exists; click anyone to see their details.' }),
     ]));
+
+    root.appendChild(communityCounter());
 
     // No "Center on" picker. You are the centre of your own graph, always —
     // Melissa: "I should always remain at the center of my ego-graph"; Dee:
@@ -562,6 +565,54 @@ function legend() {
     el('span.swatch', { style: `background:${DEGREE_META[d].color}` }),
     el('span', { text: `${d} · ${DEGREE_META[d].short}` }),
   ])));
+  return wrap;
+}
+
+// ── How big this has got ────────────────────────────────────────────────────
+//
+// Paul, 20 Sep 2026: a counter on the Connections page — fun and visible, but
+// simple. The point is watching it move. A network of nine is a curiosity and a
+// network of nine hundred is a tool, and this is the line that tells you which
+// one you are looking at.
+//
+// Counted server-side in one round trip, because this screen deliberately no
+// longer holds the whole network. Downloading everybody to say how many there
+// are would undo the morning's work.
+function communityCounter() {
+  const wrap = el('div.community-bar');
+  const cells = [
+    ['members', 'in the community'],
+    ['schools', 'schools'],
+    ['countries', 'countries'],
+    ['connections', 'connections between us'],
+  ].map(([key, label]) => {
+    const n = el('span.cc-num', { text: '—' });
+    wrap.appendChild(el('div.cc-cell', {}, [n, el('span.cc-lbl', { text: label })]));
+    return [key, n];
+  });
+
+  // Counting up is the whole "fun" of it. Skipped for anyone who has asked their
+  // system for less motion, and for numbers small enough that it would just look
+  // like a flicker.
+  const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const countTo = (node, target) => {
+    if (still || target <= 3) { node.textContent = String(target); return; }
+    const started = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - started) / 700);
+      const eased = 1 - (1 - k) ** 3;            // fast, then settles
+      node.textContent = String(Math.round(target * eased));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  supabase.rpc('community_stats').then(({ data, error }) => {
+    if (error || !data) { wrap.remove(); return; }   // never a broken box
+    const row = Array.isArray(data) ? data[0] : data;
+    cells.forEach(([key, node]) => countTo(node, Number(row[key]) || 0));
+  }, () => wrap.remove());
+
   return wrap;
 }
 
