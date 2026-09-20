@@ -939,17 +939,24 @@ function schoolPicker(onPick, initial = {}) {
     const terms = fold(search.value).split(/\s+/).filter((t) => t.length > 1);
     results.innerHTML = '';
     if (!terms.length) { closeResults(); return; }
-    const inCountry = cSel.value && cSel.value !== '';
+    // SEARCH EVERYWHERE, rank home first.
+    //
+    // This used to be filtered to the row's currently selected country, so
+    // typing AES on a row that said Venezuela answered "Nothing matching in
+    // Venezuela" — while the American Embassy School sat in the catalogue under
+    // India. The box says "type part of the school's name", and somebody typing
+    // a name is looking for a school, not checking a country. Picking a result
+    // sets the country and city anyway.
+    const here = cSel.value || '';
     const hits = schools
-      .filter((r) => !inCountry || r.country === cSel.value)
-      .map((r) => [scoreSchool(r, terms), r])
+      .map((r) => [scoreSchool(r, terms) + (here && r.country === here ? 3 : 0), r])
       .filter(([sc]) => sc > 0)
       .sort((a, b) => b[0] - a[0] || a[1].name.localeCompare(b[1].name))
       .slice(0, 12)
       .map(([, r]) => r);
     if (!hits.length) {
       results.appendChild(el('div.school-result.empty', {
-        text: inCountry ? `Nothing matching in ${cSel.value}. Pick a city below and add it.` : 'Nothing matching. Pick a country and city below and add it.',
+        text: 'Nothing matching anywhere. Pick the country and city below, then add it — it takes a moment.',
       }));
     }
     hits.forEach((r) => {
