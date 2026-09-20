@@ -245,6 +245,14 @@ export const view = {
       // Declared up front: the ring guides read it well before the nodes do, and
       // `const` in a temporal dead zone throws rather than reading as undefined.
       const hc = highContrast();
+
+      // Hovering a node dims every other one, and moving the mouse off it puts
+      // them back. If the node under the cursor is REMOVED — a redraw, a change
+      // of focus — no mouseleave ever fires and the graph stays at a fifth
+      // opacity, looking broken. Clear it here, before the joins, so nodes that
+      // are about to arrive still get their own fade in.
+      gNodes.selectAll('g.ego-node').style('opacity', null);
+      gSpokes.selectAll('path.spoke').style('opacity', 0.22);
       // Whoever is focused. Yourself unless somebody was chosen, and that choice
       // lives only for as long as you stay on this page.
       const ego = focusId;
@@ -433,7 +441,8 @@ export const view = {
         return `M${cx},${cy}Q${mx + (nx / len) * bow},${my + (ny / len) * bow} ${d.x},${d.y}`;
       };
       const spSel = gSpokes.selectAll('path.spoke').data(placed, (d) => d.id);
-      spSel.exit().transition().duration(300).style('opacity', 0).remove();
+      spSel.exit().transition().duration(300).style('opacity', 0)
+        .on('interrupt end', function remove() { this.remove(); });
       const spEnter = spSel.enter().append('path').attr('class', 'spoke')
         .attr('stroke-width', 1.2).style('opacity', 0)
         // start collapsed at the centre so the spoke grows out with its node instead of
@@ -446,7 +455,24 @@ export const view = {
 
       // ── Nodes ───────────────────────────────────────────────────────────────
       const nSel = gNodes.selectAll('g.ego-node').data(placed, (d) => d.id);
-      nSel.exit().transition().duration(300).style('opacity', 0).remove();
+      // AN INTERRUPTED FADE MUST STILL REMOVE THE NODE.
+      //
+      // `.transition().style('opacity', 0).remove()` only removes at the END of
+      // the transition, and anything that starts another transition on the same
+      // element cancels it — hovering the graph while a redraw is in flight is
+      // enough, because hovering dims every other node. The node then stays in
+      // the document at opacity 0 forever: invisible, and still clickable. Found
+      // while testing the focus button, with five people who were not on screen
+      // still sitting in the graph.
+      //
+      // Removing on 'interrupt' as well as 'end' makes the removal the thing
+      // that is guaranteed, and the fade only how it looks on the way out.
+      // Losing pointer events immediately means it cannot be clicked even
+      // during the 300ms it is fading.
+      nSel.exit()
+        .style('pointer-events', 'none')
+        .transition().duration(300).style('opacity', 0)
+        .on('interrupt end', function remove() { this.remove(); });
 
       const nEnter = nSel.enter().append('g').attr('class', 'ego-node')
         .attr('transform', `translate(${cx},${cy})`)   // fly out from the centre
