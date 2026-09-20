@@ -53,6 +53,7 @@ a city. It is now 77. A member-added school counts as high: they worked there.
    bash tools/issues.sh show <id>  # one report in full, with its context
    bash tools/additions.sh         # countries, cities and schools members had to add
    bash tools/additions.sh near <id>   # does this school already exist under another name?
+   bash tools/funnel.sh            # how far people get when they register, and where they stop
    ```
    `additions.sh` catches the third kind: somebody hit the edge of the catalogue
    while typing their own career in. They were NOT made to wait — the row was
