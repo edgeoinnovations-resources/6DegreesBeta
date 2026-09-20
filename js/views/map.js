@@ -255,7 +255,7 @@ export const view = {
 
     const journeyBox = el('div.control-group', { style: 'flex-direction:column;align-items:stretch;gap:6px;margin-top:6px;' });
     journeyBox.appendChild(el('label', { text: 'Fly a teacher’s journey' }));
-    let journeyId = ctx.state.egoTeacher || 'T001';
+    let journeyId = ctx.state.me;
     journeyBox.appendChild(teacherTypeahead(data.teachers, idx, (id) => { journeyId = id; }, { value: journeyId, placeholder: 'Pick a teacher…' }));
     const flyBtn = el('button.btn.accent', { text: '▶ Fly the journey' });
     flyBtn.addEventListener('click', () => (flying ? stopJourney() : flyJourney(journeyId)));

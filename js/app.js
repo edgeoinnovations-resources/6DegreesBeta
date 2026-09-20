@@ -156,7 +156,7 @@ async function boot() {
   // conference … 'look, we were both here!'" — that only lands with real people in it.)
   // You are the centre of your own graph, always. (Dee, 12 Sep 2026: "Do we keep
   // it focused on 'me' ... it's always tied to the user who is logged in".)
-  const state = { egoTeacher: user.id, me: user.id, profile, params: {} };
+  const state = { me: user.id, profile, params: {} };
 
   const ctx = {
     data, idx, adj, counts, tooltip, state,
@@ -209,7 +209,13 @@ async function boot() {
     const v = ALL_VIEWS.find((x) => x.id === viewId) || PRIMARY[0];
 
     state.params = params;
-    if (params.teacher) state.egoTeacher = params.teacher;
+    // `state.egoTeacher` used to live here: a URL parameter that re-pointed
+    // "you" for the whole app. The Connections page stopped reading it this
+    // morning, but the Matrix and the Map still did — so a "connections →"
+    // button in Who knows whom silently changed whose schools the Matrix
+    // opened on and whose journey the Map offered to fly. Removed rather than
+    // patched: one fewer way for the app to disagree with itself about who you
+    // are.
 
     const hash = encodeHash(v.id, params);
     if (push && location.hash !== hash) {

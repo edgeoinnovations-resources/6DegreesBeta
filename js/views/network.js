@@ -8,6 +8,7 @@
 //     an "auto-orbit" button to fly around it, and click a node to fly the camera to it.
 // A "Spread" slider loosens the forces in either mode so the web isn't clustered tight.
 import { el } from '../widgets.js';
+import { openPersonCard } from '../personCard.js';
 import {
   DEGREE_META, DEGREES, degreeColor, regionOf, regionColor, REGION_COLORS, roleCategory, ACCENT,
   currentPosting,
@@ -274,7 +275,7 @@ export const view = {
         el('button.close', { text: '×', onclick: () => panel.classList.remove('open') }),
         el('h3', { text: d.t.FULL_NAME }),
         el('div.sub', { text: [meta(d.t), d.t.YEARS_EXPERIENCE ? `${d.t.YEARS_EXPERIENCE} yrs` : '', `${counts.get(d.id) || 0} connections`].filter(Boolean).join(' · ') }),
-        el('div', {}, [el('button.btn.ghost', { text: 'Open in ego graph →', onclick: () => ctx.navigateTo('ego', { teacher: d.id }) })]),
+        el('div', {}, [el('button.btn.ghost', { text: 'Open their card →', onclick: () => openPersonCard(ctx, d.id) })]),
         el('h4', { text: 'Postings', style: 'margin:14px 0 4px;font-size:13px;' }),
         el('ul', {}, postings.map((p) => {
           const s = idx.schoolById.get(p.SCHOOL_ID) || {};

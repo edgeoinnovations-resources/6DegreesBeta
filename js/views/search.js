@@ -28,6 +28,7 @@
 // rows, which render exactly like the faceted table. The model only ever emits a query
 // spec — never data, never a key in the client.
 import { el, append, teacherTypeahead } from '../widgets.js';
+import { openPersonCard } from '../personCard.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
   teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
@@ -157,7 +158,7 @@ function whoDoIKnowAt(ctx) {
         el('td', { html: degPill(m.edge.degree) }),
         el('td', { html: `${m.edge.label || ''}<br><small class="muted">${degreeLabel(m.edge.degree)}</small>` }),
         ack ? el('td', { html: m.edge.verified === 'mutual' ? '<span class="badge-mutual">mutual ✓</span>' : (m.edge.verified || '') }) : null,
-        el('td', {}, [el('button.btn.ghost', { text: 'connections →', onclick: () => ctx.navigateTo('ego', { teacher: m.id }) })]),
+        el('td', {}, [el('button.btn.ghost', { text: 'open →', onclick: () => openPersonCard(ctx, m.id) })]),
       ]));
     });
     table.appendChild(tb);
@@ -271,7 +272,7 @@ function withAPerson(ctx) {
           el('td', { text: rolesOf(idx, m.id).join(', ') }),
           el('td', { html: `${degPill(m.ea.degree)}<br><small class="muted">${m.ea.label || ''}</small>` }),
           el('td', { html: `${degPill(m.eb.degree)}<br><small class="muted">${m.eb.label || ''}</small>` }),
-          el('td', {}, [el('button.btn.ghost', { text: 'connections →', onclick: () => ctx.navigateTo('ego', { teacher: m.id }) })]),
+          el('td', {}, [el('button.btn.ghost', { text: 'open →', onclick: () => openPersonCard(ctx, m.id) })]),
         ]));
       });
       table.appendChild(tb);
@@ -302,7 +303,9 @@ function renderChain(chain, idx, ctx) {
       el('div.nm', { text: step.id === ctx.me ? 'You' : (t.FULL_NAME || step.id) }),
       el('div.meta', { text: rolesOf(idx, step.id).join(', ') }),
     ]);
-    node.addEventListener('click', () => ctx.navigateTo('ego', { teacher: step.id }));
+    // Was: navigate to the ego page with a teacher parameter, which that page
+    // stopped reading this morning — so it silently showed you your own graph.
+    node.addEventListener('click', () => openPersonCard(ctx, step.id));
     wrap.appendChild(node);
   });
   return wrap;
@@ -377,7 +380,30 @@ function findPeople(ctx) {
         el('td', { text: String(t.YEARS_EXPERIENCE ?? '') }),
         el('td', { text: sc ? `${sc.SCHOOL_NAME}, ${sc.COUNTRY}` : '—' }),
         el('td', { text: String(counts.get(t.TEACHER_ID) || 0) }),
-        el('td', {}, [el('button.btn.ghost', { text: 'connections →', onclick: () => ctx.navigateTo('ego', { teacher: t.TEACHER_ID }) })]),
+        // THE DOORWAY. Paul, 20 Sep 2026: "there are people that I know but we
+        // don't share any degrees. How can I find them and add social
+        // connections or professional connections if I know they are on 6
+        // Degrees?"
+        //
+        // Everything needed already existed. The rules have never required a
+        // shared degree to confirm a connection; the `connections` view LEFT
+        // JOINs colleagueships, so an approved tag with no shared country still
+        // produces a row; and the rings already keep ring 0 for exactly that
+        // person — "the conference case — who has no degree and so has nowhere
+        // else to live". The only missing piece was a way to REACH them: the
+        // card opens from the rings, and somebody you share nothing with is by
+        // definition not in your rings.
+        //
+        // This button used to say "connections →" and navigate to the ego page
+        // with a teacher parameter that page stopped reading this morning. It
+        // opens the person card instead, which carries their history, how you
+        // are connected, "Your connection" to confirm you know each other, and
+        // Message.
+        el('td', {}, [el('button.btn.ghost', {
+          text: 'open →',
+          title: `${t.FULL_NAME}: their history, and confirm you know each other`,
+          onclick: () => openPersonCard(ctx, t.TEACHER_ID),
+        })]),
       ]));
     });
     table.appendChild(tb);

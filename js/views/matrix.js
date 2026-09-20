@@ -35,7 +35,7 @@ export const view = {
     // ── Default axes ─────────────────────────────────────────────────────────
     // Start with the focused person's own schools, then pad with the schools that share
     // the most people with them — so the opening view is about you, not about nothing.
-    const myPostings = idx.postingsByTeacher.get(state.egoTeacher) || [];
+    const myPostings = idx.postingsByTeacher.get(state.me) || [];
     const mySchoolIds = [...new Set(myPostings.map((p) => p.SCHOOL_ID))];
 
     const scored = data.schools
