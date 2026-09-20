@@ -668,10 +668,11 @@ export const view = {
           el('span', { text: head }),
           el('span.muted', { text: String(list.length) }),
         ]));
-        sec.appendChild(el('div.muted.rail-sec-sub', {
-          text: d ? DEGREE_META[d].short
-                  : 'You both said you know each other. No shared school, city or country.',
-        }));
+        // Degrees need their rule spelled out — "same school, same time" is not
+        // guessable from a number. "Social connection" needs nothing: it says
+        // what it is, and the explanation underneath was restating the heading
+        // and then dwelling on what the two of you do NOT share.
+        if (d) sec.appendChild(el('div.muted.rail-sec-sub', { text: DEGREE_META[d].short }));
         const ul = el('ul');
         list.forEach((n) => {
           const t = idx.teacherById.get(n.id) || {};
