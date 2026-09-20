@@ -94,9 +94,18 @@ function whoDoIKnowAt(ctx) {
   const schoolSel = el('select', {}, schoolsSorted.map((s) => el('option', { value: s.SCHOOL_ID, text: `${s.SCHOOL_NAME} · ${s.COUNTRY}` })));
   if (ctx.state.params.school) schoolSel.value = ctx.state.params.school;
 
-  let fromId = ctx.state.egoTeacher || 'T001';
-  const fromBox = el('div.control-group', {}, [el('label', { text: 'You are' })]);
-  fromBox.appendChild(teacherTypeahead(data.teachers, idx, (id) => { fromId = id; run(); }, { value: fromId }));
+  // YOU ARE YOU. This was a typeahead prefilled with your own name, which is
+  // both a strange thing to be shown — Paul, 20 Sep 2026, seeing "Paul
+  // Strootman" sitting in a box he could edit — and a leftover of the design
+  // the group rejected on 12 Sep, when Dee said nobody should be able to
+  // "search as Paul and see how many degrees are between you and someone
+  // else". Looking at somebody else's connections is allowed in exactly one
+  // place, the Connections page, and it is loud about it when you do.
+  const fromId = ctx.me;
+  const fromBox = el('div.control-group', {}, [
+    el('label', { text: 'You are' }),
+    el('span.you-chip', { text: 'You' }),
+  ]);
 
   const maxDeg = el('select', {}, [1, 2, 3, 4, 5, 6].map((d) =>
     el('option', { value: d, text: `≤ degree ${d}`, selected: d === 3 ? 'selected' : null })));
@@ -123,7 +132,7 @@ function whoDoIKnowAt(ctx) {
 
     out.innerHTML = '';
     const s = idx.schoolById.get(sid) || {};
-    out.appendChild(el('p.muted', { style: 'margin:8px 2px;', html: `<strong>${matches.length}</strong> of <strong>${teacherName(idx, fromId)}</strong>’s connections have been at <strong>${s.SCHOOL_NAME || sid}</strong> (within degree ${md}) — out of ${peopleAtSchool.size} community members who passed through.` }));
+    out.appendChild(el('p.muted', { style: 'margin:8px 2px;', html: `<strong>${matches.length}</strong> of <strong>your</strong> connections have been at <strong>${s.SCHOOL_NAME || sid}</strong> (within degree ${md}) — out of ${peopleAtSchool.size} community members who passed through.` }));
 
     if (!matches.length) {
       out.appendChild(el('div.card', { html: 'No links at that school within this degree. Widen <em>Max link</em>, or check the <strong>With a person</strong> tab to find a second-hand route.' }));
@@ -164,12 +173,21 @@ function withAPerson(ctx) {
   const pane = el('div');
   pane.appendChild(el('p.muted', { style: 'margin:4px 2px 12px;', text: 'You’ve just met someone, or you’re about to work with them. This shows how the two of you are linked and who you already know in common.' }));
 
-  let A = ctx.state.egoTeacher || 'T001';
-  let B = ctx.state.params.other || (idx.teacherById.has('B002') ? 'B002' : 'T010');
+  // You, fixed — see the note in whoDoIKnowAt(). "Them" is the part you choose.
+  const A = ctx.me;
+  // "Them" used to default to a seed id from the demo data — 'B002', or 'T010'
+  // if that was missing — neither of which exists in the real community, so the
+  // page opened on a person nobody could see and reported no route between
+  // them. Start on somebody you actually know.
+  const firstKnown = (adj.get(ctx.me) || [])
+    .slice().sort((x, y) => x.degree - y.degree)[0]?.other || null;
+  let B = ctx.state.params.other || firstKnown;
   let mode = 'hops';
 
-  const aBox = el('div.control-group', {}, [el('label', { text: 'You are' })]);
-  aBox.appendChild(teacherTypeahead(data.teachers, idx, (id) => { A = id; draw(); }, { value: A }));
+  const aBox = el('div.control-group', {}, [
+    el('label', { text: 'You are' }),
+    el('span.you-chip', { text: 'You' }),
+  ]);
   const bBox = el('div.control-group', {}, [el('label', { text: 'Them' })]);
   bBox.appendChild(teacherTypeahead(data.teachers, idx, (id) => { B = id; draw(); }, { value: B }));
 
@@ -189,8 +207,14 @@ function withAPerson(ctx) {
 
   function draw() {
     out.innerHTML = '';
+    if (!B) {
+      out.appendChild(el('div.card', { text: 'Pick somebody in “Them” to see how the two of you are linked.' }));
+      return;
+    }
     if (A === B) {
-      out.appendChild(el('div.card', { text: 'Pick two different people.' }));
+      // Now that one side is always you, "pick two different people" was
+      // telling somebody off for an instruction they were never given.
+      out.appendChild(el('div.card', { text: 'That one is you — pick somebody else.' }));
       return;
     }
 
@@ -234,7 +258,7 @@ function withAPerson(ctx) {
       mutualCard.appendChild(el('p.muted', { text: 'Nobody in common yet.' }));
     } else {
       const table = el('table.data');
-      table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'Role', `Link to ${teacherName(idx, A).split(' ')[0]}`, `Link to ${teacherName(idx, B).split(' ')[0]}`, ''].map((h) => el('th', { text: h })))]));
+      table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'Role', 'Link to you', `Link to ${teacherName(idx, B).split(' ')[0]}`, ''].map((h) => el('th', { text: h })))]));
       const tb = el('tbody');
       mutual.slice(0, 100).forEach((m) => {
         const t = idx.teacherById.get(m.id) || {};

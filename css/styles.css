@@ -749,3 +749,14 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   font-weight: 600;
 }
 .btn.focus-on:hover { background: #fff4ef; }
+
+/* "You are: You". The box used to be a typeahead carrying your own name, which
+   Paul saw as "Paul Strootman" sitting in a field he could edit. It reads as a
+   fact now, not a question — and it is no longer a way to search as somebody
+   else, which the group ruled out everywhere except the Connections page. */
+.you-chip {
+  display: inline-flex; align-items: center; height: 34px; padding: 0 14px;
+  border-radius: 999px; background: var(--panel-2, #eef5f7);
+  border: 1px solid var(--line); font-weight: 600; font-size: 13.5px;
+  color: var(--ink, #1f2a30); white-space: nowrap;
+}
