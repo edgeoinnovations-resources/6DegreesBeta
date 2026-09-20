@@ -51,7 +51,14 @@ a city. It is now 77. A member-added school counts as high: they worked there.
    bash tools/errors.sh code <C>   # every occurrence of one code, with stacks
    bash tools/issues.sh            # what members TOLD us went wrong
    bash tools/issues.sh show <id>  # one report in full, with its context
+   bash tools/additions.sh         # countries, cities and schools members had to add
+   bash tools/additions.sh near <id>   # does this school already exist under another name?
    ```
+   `additions.sh` catches the third kind: somebody hit the edge of the catalogue
+   while typing their own career in. They were NOT made to wait — the row was
+   created and they carried on — so nothing here is urgent, but a duplicate
+   school silently turns degree 1 into degree 3 and only a human eye catches it.
+
    `errors.sh` catches what crashed. `issues.sh` catches everything that did not —
    a school in the wrong city, a connection that makes no sense, a button that does
    nothing. Most real complaints in this project have been the second kind, and
