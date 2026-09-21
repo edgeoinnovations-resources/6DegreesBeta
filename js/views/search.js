@@ -32,8 +32,7 @@ import { openPersonCard } from '../personCard.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
   teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
-  currentPosting,
-} from '../degrees.js';
+  currentPosting, degreeChip } from '../degrees.js';
 
 export const view = {
   id: 'search', num: 2, title: 'Who knows whom',
@@ -45,9 +44,14 @@ export const view = {
 
     // Sub-tabs.
     const sub = el('div.checkrow', { style: 'margin-bottom:14px;' });
+    // Dee, 21 Sep 2026: "Could we have the 'with a person' first (or as the
+    // default)? I think that will be how most people search first." She is
+    // right, and the school tab was opening on AB Paterson College in
+    // Australia — the alphabetically first school in the catalogue — which
+    // told her nothing about anybody she knows.
     const sections = [
-      ['school', 'At a school'],
       ['person', 'With a person'],
+      ['school', 'At a school'],
       ['find', 'Find people'],
     ];
     const panes = {};
@@ -68,8 +72,9 @@ export const view = {
     panes.person = withAPerson(ctx); root.appendChild(panes.person);
     panes.find = findPeople(ctx); root.appendChild(panes.find);
 
-    // Honour a deep-linked sub-tab (?tab=person), else default to the school question.
-    const wanted = sections.some(([id]) => id === ctx.state.params.tab) ? ctx.state.params.tab : 'school';
+    // Honour a deep-linked sub-tab (?tab=school), else open on the person
+    // question — the one Dee says people reach for first.
+    const wanted = sections.some(([id]) => id === ctx.state.params.tab) ? ctx.state.params.tab : 'person';
     select(wanted);
   },
 };
@@ -83,7 +88,9 @@ function bestEdges(adj, from) {
   return best;
 }
 
-const degPill = (d) => `<span class="pill" style="background:${degreeColor(d)};color:#fff;">deg ${d}</span>`;
+// `deg ${d}` with no degree read "deg null" on Dee's screen. An inner-circle
+// connection has no number because it has no place or time behind it.
+const degPill = (d) => `<span class="pill" style="background:${degreeColor(d)};color:#fff;">${d ? `deg ${d}` : 'inner circle'}</span>`;
 
 // ── 1. Who do I know at School X? ───────────────────────────────────────────
 function whoDoIKnowAt(ctx) {
@@ -93,6 +100,14 @@ function whoDoIKnowAt(ctx) {
 
   const schoolsSorted = data.schools.slice().sort((a, b) => a.SCHOOL_NAME.localeCompare(b.SCHOOL_NAME));
   const schoolSel = el('select', {}, schoolsSorted.map((s) => el('option', { value: s.SCHOOL_ID, text: `${s.SCHOOL_NAME} · ${s.COUNTRY}` })));
+  // Open on a school of YOUR OWN — the one you are at now, or the last you
+  // were at. Dee's screen opened on "AB Paterson College · Australia", which
+  // is simply the first school alphabetically out of 2,135, and answered a
+  // question she had not asked with "0 of your connections".
+  const mine = (idx.postingsByTeacher.get(ctx.me) || []).slice()
+    .sort((a, b) => String(b.START_DATE || '').localeCompare(String(a.START_DATE || '')));
+  const mineCurrent = mine.find((x) => !x.END_DATE) || mine[0];
+  if (mineCurrent) schoolSel.value = mineCurrent.SCHOOL_ID;
   if (ctx.state.params.school) schoolSel.value = ctx.state.params.school;
 
   // YOU ARE YOU. This was a typeahead prefilled with your own name, which is
@@ -176,13 +191,17 @@ function withAPerson(ctx) {
 
   // You, fixed — see the note in whoDoIKnowAt(). "Them" is the part you choose.
   const A = ctx.me;
-  // "Them" used to default to a seed id from the demo data — 'B002', or 'T010'
-  // if that was missing — neither of which exists in the real community, so the
-  // page opened on a person nobody could see and reported no route between
-  // them. Start on somebody you actually know.
-  const firstKnown = (adj.get(ctx.me) || [])
-    .slice().sort((x, y) => x.degree - y.degree)[0]?.other || null;
-  let B = ctx.state.params.other || firstKnown;
+  // "Them" starts EMPTY.
+  //
+  // It used to default to a seed id from the demo data — 'B002', or 'T010' if
+  // that was missing — neither of which exists in the real community, so the
+  // tab opened on a person nobody could see. Yesterday I replaced that with
+  // "your strongest connection", and Dee's screen this morning read
+  // "Them: Paul Strootman" — she took it for a preset, and she was right to:
+  // it is a question about somebody you have just met, and the app cannot know
+  // who that is. Worse, the sort compared a null degree and put whichever
+  // inner-circle connection existed at the top.
+  let B = ctx.state.params.other || null;
   let mode = 'hops';
 
   const aBox = el('div.control-group', {}, [
@@ -209,7 +228,10 @@ function withAPerson(ctx) {
   function draw() {
     out.innerHTML = '';
     if (!B) {
-      out.appendChild(el('div.card', { text: 'Pick somebody in “Them” to see how the two of you are linked.' }));
+      out.appendChild(el('div.card', {
+        text: 'Start typing a name in “Them” — you will see how the two of you are '
+            + 'linked, and who you already know in common.',
+      }));
       return;
     }
     if (A === B) {
@@ -291,7 +313,7 @@ function renderChain(chain, idx, ctx) {
       const e = step.edge;
       wrap.appendChild(el('div.path-hop', {}, [
         el('span.arrow', { text: '→' }),
-        el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: `Degree ${e.degree}` }),
+        el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: degreeChip(e.degree) }),
         el('span.ctx', { html: `${degreeShort(e.degree)}<br>${e.label || ''}${e.overlap ? ` · ${e.overlap}` : ''}${e.verified === 'mutual' ? ' ✓' : ''}` }),
       ]));
     }

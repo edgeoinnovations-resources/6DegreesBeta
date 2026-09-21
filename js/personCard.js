@@ -8,7 +8,7 @@
 // your own graph — which is also what Dee asked for: "it's always tied to the
 // user who is logged in."
 import { el, append } from './widgets.js';
-import { degreeColor, degreeLabel, roleCategory } from './degrees.js';
+import { degreeColor, degreeLabel, roleCategory, degreeChip } from './degrees.js';
 import { pairKey } from './loadData.js';
 import { supabase } from './supabaseClient.js';
 import { tagSection } from './tags.js';
@@ -146,7 +146,7 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
       }
       rows.forEach((e) => {
         body.appendChild(el('div.conn-row', {}, [
-          el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: `Degree ${e.degree}` }),
+          el('span.deg-pill', { style: `background:${degreeColor(e.degree)}`, text: degreeChip(e.degree) }),
           el('span', {
             html: `<strong>${e.context_label}</strong><br><small class="muted">`
               + `${degreeLabel(e.degree)}${e.overlap_years ? ` · ${e.overlap_years}` : ''}</small>`,
@@ -201,7 +201,7 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
         box.querySelectorAll('.conn-row.ctx').forEach((n) => n.remove());
         rows.forEach((e) => {
           box.appendChild(el('div.conn-row.ctx', {}, [
-            el('span.deg-pill', { style: `background:${degreeColor(e.DEGREE)}`, text: `Degree ${e.DEGREE}` }),
+            el('span.deg-pill', { style: `background:${degreeColor(e.DEGREE)}`, text: degreeChip(e.DEGREE) }),
             el('span', {
               html: `<strong>${e.SHARED_CONTEXT_LABEL}</strong><br><small class="muted">`
                 + `${degreeLabel(e.DEGREE)}${e.OVERLAP_YEARS ? ` · ${e.OVERLAP_YEARS}` : ''}</small>`,

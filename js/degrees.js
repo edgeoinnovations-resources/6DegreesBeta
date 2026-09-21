@@ -20,9 +20,26 @@ export const DEGREES = [1, 2, 3, 4, 5, 6];
 export const ACCENT = '#FF6B35';       // focused/selected node + verified=mutual badge
 export const PRIMARY = '#17A2B8';
 
-export const degreeColor = (d) => (DEGREE_META[d] || {}).color || '#cccccc';
-export const degreeLabel = (d) => (DEGREE_META[d] || {}).label || `Degree ${d}`;
-export const degreeShort = (d) => (DEGREE_META[d] || {}).short || `Degree ${d}`;
+// A confirmed connection with no shared place has NO DEGREE — degrees come from
+// place and time, and there is neither. Dee's screen said "deg null — Degree
+// null ✓" the morning after she and Paul confirmed each other, because every
+// one of these helpers assumed a number was always there.
+//
+// "Inner circle" is the group's own word for it, settled on 20 Sep 2026:
+// Paul, "It will be an Inner Circle, like a 0 circle"; Dee, "Ooooo 'Inner
+// circle' sounds better haha".
+const INNER = {
+  label: 'Inner circle — you know each other',
+  short: 'Inner circle',
+  color: ACCENT,
+};
+const meta = (d) => (d ? (DEGREE_META[d] || {}) : INNER);
+
+export const degreeColor = (d) => meta(d).color || '#cccccc';
+export const degreeLabel = (d) => meta(d).label || `Degree ${d}`;
+export const degreeShort = (d) => meta(d).short || `Degree ${d}`;
+/** What goes on a small pill: "Degree 3", or "Inner circle" when there is none. */
+export const degreeChip = (d) => (d ? `Degree ${d}` : 'Inner circle');
 
 // ── Role categories ────────────────────────────────────────────────────────
 // Linda (7 Jun 2026): "we talked about NOT having teaching assignment, because that gets

@@ -34,7 +34,11 @@ import {
 } from '../degrees.js';
 
 // Ring 0 holds mutually confirmed connections, drawn in the accent colour.
-const RINGS = [0, ...DEGREES];
+// The circles are degrees 1-6 and nothing else. Ring 0 held confirmed
+// connections with no shared place until 21 Sep 2026; they live in the side
+// column now, because a ring is a statement about place and time and they have
+// neither.
+const RINGS = [...DEGREES];
 const ringColor = (d) => (d ? degreeColor(d) : ACCENT);
 
 const NODE_R = [6, 12];        // gentle range: size no longer fights the layout
@@ -329,13 +333,29 @@ export const view = {
       // Ring 0 is therefore NOT "confirmed people". It is only for someone with no
       // shared country at all — the conference case — who has no degree and so has
       // nowhere else to live.
+      // CONFIRMED CONNECTIONS ARE NO LONGER DRAWN IN THE CIRCLES.
+      //
+      // Paul, 21 Sep 2026: move Family, Personal and Professional connections
+      // out of the six circles and into the side column, in that order.
+      //
+      // They never fitted. The circles are a picture of place and time — ring 3
+      // means "same city" and means it for everybody on it — and a person you
+      // simply know has neither. Yesterday they sat at the centre as an inner
+      // circle, which read as "closer than degree 1" and quietly made the
+      // diagram say something it cannot support. The side column can hold them
+      // honestly, grouped by what the two of you actually said.
+      //
+      // Anybody who HAS a degree stays exactly where their degree puts them,
+      // confirmed or not, and keeps the outline. A tag has never moved anybody.
+      const inner = neighbours.filter((n) => !n.degree);
       const byDeg = new Map();
       for (const n of neighbours) {
-        const ring = n.degree ?? 0;      // 0 only when there is no shared place at all
-        if (!byDeg.has(ring)) byDeg.set(ring, []);
-        byDeg.get(ring).push(n);
+        if (!n.degree) continue;
+        if (!byDeg.has(n.degree)) byDeg.set(n.degree, []);
+        byDeg.get(n.degree).push(n);
       }
       for (const list of byDeg.values()) list.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+      inner.sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
 
       const rScale = d3.scaleSqrt()
         .domain([1, d3.max([...counts.values()]) || 1]).range(NODE_R);
@@ -620,13 +640,16 @@ export const view = {
         .on('mouseleave', () => tooltip.hide());
 
       // ── The rail: every person, grouped by degree, however crowded the rings ─
-      buildRail(byDeg, neighbours.length, hiddenTotal, ego);
+      buildRail(byDeg, neighbours.length, hiddenTotal, ego, inner);
       showAllWrap.style.display = hiddenTotal || showAll ? '' : 'none';
     }
 
     // ── Side rail ─────────────────────────────────────────────────────────────
     const railRows = new Map();
-    function buildRail(byDeg, total, hiddenTotal, ego) {
+    // Family, then Personal, then Professional — Paul's order, 21 Sep 2026.
+    const KIND_ORDER = ['family', 'social', 'professional_development'];
+
+    function buildRail(byDeg, total, hiddenTotal, ego, inner = []) {
       rail.innerHTML = '';
       railRows.clear();
       rail.appendChild(el('div.rail-head', {}, [
@@ -651,29 +674,59 @@ export const view = {
         }));
       }
 
-      for (const d of RINGS) {
+      // ── Confirmed connections, at the top, by kind ──────────────────────
+      // Each person appears once, under the first kind they carry in Paul's
+      // order, so somebody who is both a friend and a colleague is not listed
+      // twice in the same column.
+      if (inner.length) {
+        const taken = new Set();
+        KIND_ORDER.forEach((key) => {
+          const list = inner.filter((n) => !taken.has(n.id) && (n.tagKeys || []).includes(key));
+          if (!list.length) return;
+          list.forEach((n) => taken.add(n.id));
+          const sec = el('div.rail-sec.rail-kind');
+          sec.appendChild(el('div.rail-sec-head', {}, [
+            el('span.swatch', { style: `background:${ACCENT}` }),
+            el('span', { text: tagLabels.get(key) || key.replace(/_/g, ' ') }),
+            el('span.muted', { text: String(list.length) }),
+          ]));
+          sec.appendChild(railList(list, ego));
+          rail.appendChild(sec);
+        });
+        // Confirmed, but the label has not arrived or the kind is unknown.
+        const rest = inner.filter((n) => !taken.has(n.id));
+        if (rest.length) {
+          const sec = el('div.rail-sec.rail-kind');
+          sec.appendChild(el('div.rail-sec-head', {}, [
+            el('span.swatch', { style: `background:${ACCENT}` }),
+            el('span', { text: 'Confirmed connections' }),
+            el('span.muted', { text: String(rest.length) }),
+          ]));
+          sec.appendChild(railList(rest, ego));
+          rail.appendChild(sec);
+        }
+      }
+
+      for (const d of DEGREES) {
         const list = byDeg.get(d) || [];
         if (!list.length) continue;
         const sec = el('div.rail-sec');
-        // Ring 0 is everybody who confirmed they know you and shares no place
-        // with you. Name the KIND of connection — that is what they told each
-        // other — and fall back to the generic heading only when the ring holds
-        // more than one kind, or when the labels have not arrived yet.
-        const kinds = d ? [] : [...new Set(list.flatMap(kindsOf))];
-        const head = d ? `Degree ${d}`
-          : (kinds.length === 1 ? kinds[0]
-            : kinds.length ? 'Confirmed connections' : 'No shared place');
         sec.appendChild(el('div.rail-sec-head', {}, [
           el('span.swatch', { style: `background:${ringColor(d)}` }),
-          el('span', { text: head }),
+          el('span', { text: `Degree ${d}` }),
           el('span.muted', { text: String(list.length) }),
         ]));
         // Degrees need their rule spelled out — "same school, same time" is not
-        // guessable from a number. "Social connection" needs nothing: it says
-        // what it is, and the explanation underneath was restating the heading
-        // and then dwelling on what the two of you do NOT share.
-        if (d) sec.appendChild(el('div.muted.rail-sec-sub', { text: DEGREE_META[d].short }));
-        const ul = el('ul');
+        // guessable from a number.
+        sec.appendChild(el('div.muted.rail-sec-sub', { text: DEGREE_META[d].short }));
+        sec.appendChild(railList(list, ego));
+        rail.appendChild(sec);
+      }
+    }
+
+    /** The list of people under one heading, in the side column. */
+    function railList(list, ego) {
+      const ul = el('ul');
         list.forEach((n) => {
           const t = idx.teacherById.get(n.id) || {};
           const shownName = nameOf(n);
@@ -689,8 +742,8 @@ export const view = {
           // real list when you open it.
           const all = (data.sharedByPair && data.sharedByPair.get(pairKey(ego, n.id))) || [];
           const more = all.length > 1 ? ` · +${all.length - 1} more` : '';
-          // A ring-0 person has no place to name, so their line carries how
-          // the two of you know each other instead of nothing at all.
+          // Somebody with no degree has no place to name, so their line carries
+          // how the two of you know each other instead of nothing at all.
           const said = n.label || (n.degree ? '' : kindsOf(n).join(' · '));
           const li = el('li', { html: `${shownName}${ring}<small>${said}${n.overlap ? ` · ${n.overlap}` : ''}${more}</small>` });
           li.addEventListener('click', () => showPerson(n.id));
@@ -704,10 +757,8 @@ export const view = {
           });
           railRows.set(n.id, li);
           ul.appendChild(li);
-        });
-        sec.appendChild(ul);
-        rail.appendChild(sec);
-      }
+      });
+      return ul;
     }
 
     function railHighlight(id) {

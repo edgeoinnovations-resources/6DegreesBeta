@@ -760,3 +760,9 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
   border: 1px solid var(--line); font-weight: 600; font-size: 13.5px;
   color: var(--ink, #1f2a30); white-space: nowrap;
 }
+
+/* Family / Personal / Professional at the top of the side column, above the
+   degrees. Paul, 21 Sep 2026: these are connections people declared, not places
+   they shared, so they sit apart from the six rings rather than inside them. */
+.rail-sec.rail-kind { border-left: 3px solid var(--orange); padding-left: 9px; }
+.rail-sec.rail-kind + .rail-sec:not(.rail-kind) { margin-top: 16px; }
