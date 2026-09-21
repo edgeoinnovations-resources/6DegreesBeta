@@ -347,7 +347,14 @@ export const view = {
       //
       // Anybody who HAS a degree stays exactly where their degree puts them,
       // confirmed or not, and keeps the outline. A tag has never moved anybody.
-      const inner = neighbours.filter((n) => !n.degree);
+      // EVERY declared connection is listed in the column, whatever ring they
+      // are on. Paul, 21 Sep 2026, choosing between the readings: Liz is family
+      // AND a degree 1 at the American School of Dubai, and she belongs in both
+      // places — the column says how you know each other, the circles say where
+      // and when. Nobody is moved out of a ring by a tag; only people who have
+      // no degree at all are in the column alone, because there is no ring that
+      // can hold them.
+      const declared = neighbours.filter((n) => (n.tagKeys || []).length || !n.degree);
       const byDeg = new Map();
       for (const n of neighbours) {
         if (!n.degree) continue;
@@ -355,7 +362,7 @@ export const view = {
         byDeg.get(n.degree).push(n);
       }
       for (const list of byDeg.values()) list.sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
-      inner.sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
+      declared.sort((a, b) => nameOf(a).localeCompare(nameOf(b)));
 
       const rScale = d3.scaleSqrt()
         .domain([1, d3.max([...counts.values()]) || 1]).range(NODE_R);
@@ -640,7 +647,7 @@ export const view = {
         .on('mouseleave', () => tooltip.hide());
 
       // ── The rail: every person, grouped by degree, however crowded the rings ─
-      buildRail(byDeg, neighbours.length, hiddenTotal, ego, inner);
+      buildRail(byDeg, neighbours.length, hiddenTotal, ego, declared);
       showAllWrap.style.display = hiddenTotal || showAll ? '' : 'none';
     }
 
@@ -649,7 +656,7 @@ export const view = {
     // Family, then Personal, then Professional — Paul's order, 21 Sep 2026.
     const KIND_ORDER = ['family', 'social', 'professional_development'];
 
-    function buildRail(byDeg, total, hiddenTotal, ego, inner = []) {
+    function buildRail(byDeg, total, hiddenTotal, ego, declared = []) {
       rail.innerHTML = '';
       railRows.clear();
       rail.appendChild(el('div.rail-head', {}, [
@@ -675,15 +682,12 @@ export const view = {
       }
 
       // ── Confirmed connections, at the top, by kind ──────────────────────
-      // Each person appears once, under the first kind they carry in Paul's
-      // order, so somebody who is both a friend and a colleague is not listed
-      // twice in the same column.
-      if (inner.length) {
-        const taken = new Set();
+      // Somebody who is both a friend and a colleague is listed under BOTH,
+      // because both are true and each answers a different question.
+      if (declared.length) {
         KIND_ORDER.forEach((key) => {
-          const list = inner.filter((n) => !taken.has(n.id) && (n.tagKeys || []).includes(key));
+          const list = declared.filter((n) => (n.tagKeys || []).includes(key));
           if (!list.length) return;
-          list.forEach((n) => taken.add(n.id));
           const sec = el('div.rail-sec.rail-kind');
           sec.appendChild(el('div.rail-sec-head', {}, [
             el('span.swatch', { style: `background:${ACCENT}` }),
@@ -693,8 +697,11 @@ export const view = {
           sec.appendChild(railList(list, ego));
           rail.appendChild(sec);
         });
-        // Confirmed, but the label has not arrived or the kind is unknown.
-        const rest = inner.filter((n) => !taken.has(n.id));
+        // No degree and no recognised kind — the labels may not have arrived
+        // yet, or somebody confirmed a kind this build does not know about.
+        // They must still appear somewhere: there is no ring for them.
+        const rest = declared.filter((n) => !n.degree
+          && !(n.tagKeys || []).some((k) => KIND_ORDER.includes(k)));
         if (rest.length) {
           const sec = el('div.rail-sec.rail-kind');
           sec.appendChild(el('div.rail-sec-head', {}, [
