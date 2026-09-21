@@ -672,12 +672,24 @@ export const view = {
       // why. Usually it is postings: a degree needs a shared country to start
       // with, so an empty graph is a sign of a thin history rather than a
       // lonely career.
+      const onRings = [...byDeg.values()].reduce((a, l) => a + l.length, 0);
       if (!total) {
         rail.appendChild(el('p.muted', {
           style: 'font-size:12.5px;margin:10px 0 0;',
           text: focusId === ctx.me
             ? 'Nobody in the community has yet shared a school, city or country with you. Adding more of your postings under Your details is what finds them.'
             : `Nobody in the community has yet shared a school, city or country with ${focusName || 'them'}.`,
+        }));
+      } else if (!onRings) {
+        // Connections, but none of them on a ring — which will be the ordinary
+        // first experience now that people are confirming each other before
+        // they have typed their postings in. Empty circles with a full column
+        // beside them need one line saying why.
+        rail.appendChild(el('p.muted', {
+          style: 'font-size:12.5px;margin:10px 0 0;',
+          text: focusId === ctx.me
+            ? 'The circles are empty because nobody here has yet shared a school, city or country with you — the connections below were confirmed by the two of you instead. More postings under Your details is what fills the circles.'
+            : 'The circles are empty — these connections were confirmed between the two people, not worked out from a shared school, city or country.',
         }));
       }
 
