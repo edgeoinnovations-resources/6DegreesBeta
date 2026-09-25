@@ -26,14 +26,26 @@ const CELLS = [
 ];
 
 /**
- * @param {object} opts
- * @param {boolean} opts.compact  tighter, for sitting on top of the map
+ * @param {object}   opts
+ * @param {boolean}  opts.compact    tighter, for sitting on top of the map
+ * @param {function} opts.onMembers  called when the member count is clicked
  */
-export function communityCounter({ compact = false } = {}) {
+export function communityCounter({ compact = false, onMembers = null } = {}) {
   const wrap = el(`div.community-bar${compact ? '.compact' : ''}`);
   const nodes = CELLS.map(([key, label]) => {
     const n = el('span.cc-num', { text: '—' });
-    wrap.appendChild(el('div.cc-cell', {}, [n, el('span.cc-lbl', { text: label })]));
+    // Linda, 25 Sep 2026: "I love this dashboard. Is it possible to make this
+    // clickable so I can see the full community list?" Only the member count —
+    // it is the one with a list behind it that a person would want to read.
+    if (key === 'members' && onMembers) {
+      const cell = el('button.cc-cell.cc-link', {
+        type: 'button', title: 'See everyone in the community',
+      }, [n, el('span.cc-lbl', { text: label })]);
+      cell.addEventListener('click', onMembers);
+      wrap.appendChild(cell);
+    } else {
+      wrap.appendChild(el('div.cc-cell', {}, [n, el('span.cc-lbl', { text: label })]));
+    }
     return [key, n];
   });
 

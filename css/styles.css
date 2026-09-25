@@ -766,3 +766,16 @@ body.high-contrast .conn-row .deg-pill { outline: 1px solid rgba(31,42,48,.35); 
    they shared, so they sit apart from the six rings rather than inside them. */
 .rail-sec.rail-kind { border-left: 3px solid var(--orange); padding-left: 9px; }
 .rail-sec.rail-kind + .rail-sec:not(.rail-kind) { margin-top: 16px; }
+
+/* The member count is a button: Linda, 25 Sep 2026, "Is it possible to make
+   this clickable so I can see the full community list?" It has to keep looking
+   like the rest of the bar, so only the cursor and a quiet hover say so. */
+.cc-cell.cc-link {
+  font: inherit; color: inherit; background: none; border: 0;
+  /* padded for the hover, pulled back by the same amount so nothing in the
+     bar moves when this cell becomes a button */
+  padding: 5px 9px; margin: -5px -9px; cursor: pointer; text-align: left;
+  border-radius: 9px; transition: background .12s ease;
+}
+.cc-cell.cc-link:hover, .cc-cell.cc-link:focus-visible { background: rgba(23,162,184,.09); }
+.cc-cell.cc-link:focus-visible { outline: 2px solid var(--turquoise); outline-offset: 2px; }

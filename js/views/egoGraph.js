@@ -85,7 +85,12 @@ export const view = {
       el('p', { html: 'Concentric rings around one person. Ring = relationship degree (1 closest … 6 outermost), colour = degree. You are always at the centre. Hover for <em>why</em> a link exists; click anyone to see their details.' }),
     ]));
 
-    root.appendChild(communityCounter());
+    // The member count opens the community list — which is Find people, the
+    // page that already lists everybody with filters, rather than a second
+    // list to keep in step with it.
+    root.appendChild(communityCounter({
+      onMembers: () => ctx.navigateTo('search', { tab: 'find' }),
+    }));
 
     // WHOSE connections are on screen. Deliberately a variable in this view and
     // NOT ctx.state: the group asked that it reset the moment you navigate away,
@@ -347,14 +352,24 @@ export const view = {
       //
       // Anybody who HAS a degree stays exactly where their degree puts them,
       // confirmed or not, and keeps the outline. A tag has never moved anybody.
-      // EVERY declared connection is listed in the column, whatever ring they
-      // are on. Paul, 21 Sep 2026, choosing between the readings: Liz is family
-      // AND a degree 1 at the American School of Dubai, and she belongs in both
-      // places — the column says how you know each other, the circles say where
-      // and when. Nobody is moved out of a ring by a tag; only people who have
-      // no degree at all are in the column alone, because there is no ring that
-      // can hold them.
-      const declared = neighbours.filter((n) => (n.tagKeys || []).length || !n.degree);
+      // THE COLUMN IS ONLY FOR PEOPLE WHO DO NOT FIT IN THE DEGREES.
+      //
+      // It listed every declared connection for two days, on 21 Sep, including
+      // those who also had a degree. The group settled it that evening:
+      //
+      //   Linda: "If they're on the degree diagram with the ring around them,
+      //           do they also need to be in the connections list on the side?"
+      //   Dee:   "Maybe the list on the right is only the people that don't fit
+      //           in the degrees?"
+      //   Linda: "Yes... The degreed people who are also connections stay in the
+      //           degrees with circles. The others go to the right."
+      //
+      // Linda's reason for moving them out of the rings in the first place is
+      // the same reason they should not be listed twice: "I found it awkward
+      // that people I met but didn't work with were closer to the center than
+      // people I'd worked with for years. Sarah was closer to me than Robb."
+      // One person, one place, and the place says what it means.
+      const declared = neighbours.filter((n) => !n.degree);
       const byDeg = new Map();
       for (const n of neighbours) {
         if (!n.degree) continue;

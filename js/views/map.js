@@ -93,7 +93,10 @@ export const view = {
     // nearest POSITIONED ancestor — so it needs its own relative parent here, or
     // it would size itself to the whole view container and cover the strip.
     const stack = el('div.map-stack');
-    const counter = communityCounter({ compact: true });
+    const counter = communityCounter({
+      compact: true,
+      onMembers: () => ctx.navigateTo('search', { tab: 'find' }),
+    });
     const mapArea = el('div.map-area');
     stack.append(counter, mapArea);
     root.appendChild(stack);
