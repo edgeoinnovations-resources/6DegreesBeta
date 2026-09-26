@@ -60,6 +60,20 @@ const MODES = {
 const COLUMN_RADIUS_PX = 3;
 const COLUMN_MAX_HEIGHT_PX = 130;
 
+// A COORDINATE THAT IS NOT THERE IS NOT ZERO.
+//
+// These filters used the global isFinite(), and `isFinite(null)` is TRUE — it
+// coerces null to 0 before asking. So a school with no latitude sailed through
+// every guard and was plotted at [0, 0]: the Gulf of Guinea, about 600km south
+// of Ghana. Paul, 26 Sep 2026: "it's location shows it off the coast of Ghana
+// in Africa."
+//
+// Null Island is the classic destination for a missing coordinate, and the
+// classic cause is exactly this: a check that looks strict and is not.
+// Number.isFinite does not coerce, so null, undefined and '' all fail it.
+const coord = (v) => (v === null || v === undefined || v === '' ? NaN : Number(v));
+const hasPoint = (s) => s && Number.isFinite(coord(s.LONGITUDE)) && Number.isFinite(coord(s.LATITUDE));
+
 export const view = {
   id: 'map', num: 3, title: 'Map',
 
@@ -152,7 +166,7 @@ export const view = {
       schoolMembers.get(a.SCHOOL_ID).add(a.TEACHER_ID);
     }
 
-    const schools = data.schools.filter((s) => isFinite(s.LONGITUDE) && isFinite(s.LATITUDE));
+    const schools = data.schools.filter(hasPoint);
     const schoolFeatures = schools.map((s) => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [+s.LONGITUDE, +s.LATITUDE] },
@@ -171,7 +185,7 @@ export const view = {
         const a = idx.schoolById.get(postings[i].SCHOOL_ID);
         const b = idx.schoolById.get(postings[i + 1].SCHOOL_ID);
         if (!a || !b || a.SCHOOL_ID === b.SCHOOL_ID) continue;
-        if (![a.LONGITUDE, a.LATITUDE, b.LONGITUDE, b.LATITUDE].every(isFinite)) continue;
+        if (!hasPoint(a) || !hasPoint(b)) continue;
         const k = `${a.SCHOOL_ID}|${b.SCHOOL_ID}`;
         if (!arcAgg.has(k)) {
           arcAgg.set(k, {
@@ -625,7 +639,7 @@ export const view = {
     function flyJourney(teacherId) {
       const stops = (idx.postingsByTeacher.get(teacherId) || [])
         .map((p) => idx.schoolById.get(p.SCHOOL_ID))
-        .filter((s) => s && isFinite(s.LONGITUDE) && isFinite(s.LATITUDE));
+        .filter(hasPoint);
       if (!stops.length) return;
 
       stopJourney();
@@ -709,7 +723,7 @@ function greatCircle([lng1, lat1], [lng2, lat2], steps = 48) {
   ));
 
   // Coincident or antipodal-ish: a straight segment is the honest answer.
-  if (!isFinite(d) || d < 1e-9) return [[lng1, lat1], [lng2, lat2]];
+  if (!Number.isFinite(d) || d < 1e-9) return [[lng1, lat1], [lng2, lat2]];
 
   const pts = [];
   for (let i = 0; i <= steps; i++) {

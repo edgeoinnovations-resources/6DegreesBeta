@@ -879,8 +879,20 @@ function schoolPicker(onPick, initial = {}) {
       const rg = cityRegion();
       // Match the region too, or a school in Annandale MN takes Annandale VA's
       // coordinates — which is exactly the bug this is fixing.
-      const city = (await citiesIn(cc).catch(() => []))
-        .find((c) => c.name === citySel.value && (c.region || '') === rg);
+      //
+      // But a failed match must not leave the school with NO point. The
+      // Kehillah School was added in Palo Alto on 20 Sep and stored null,
+      // because the option it was picked from had been built from a school
+      // whose own region was null — so rg was '' while the gazetteer said 'CA'
+      // — and the map then drew it off the coast of Ghana. Fall back to the
+      // town by name when that is unambiguous, and to the state's centre after
+      // that. A point in the right state beats no point at all.
+      const pool = await citiesIn(cc).catch(() => []);
+      const sameName = pool.filter((c) => c.name === citySel.value);
+      const city = sameName.find((c) => (c.region || '') === rg)
+        || (sameName.length === 1 ? sameName[0] : null)
+        || regions.find((r) => r.country_code === cc
+             && r.code === (rg || (!regSel.hidden && regSel.value) || ''));
       const { data: { user } } = await supabase.auth.getUser();
 
       const { data, error } = await supabase.from('schools').insert({
