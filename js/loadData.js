@@ -65,6 +65,8 @@ function toTeacher(p) {
     FINAL_REGION: p.final_region || '',
     FINAL_COUNTRY: p.final_country || '',
     FINAL_STATUS: p.final_status || '',
+    // Stated by the member. A shared country gives no degree there (18 Oct 2026).
+    HOME_COUNTRY: p.home_country || '',
     EMAIL: '',                        // never fetched, never shown
   };
 }

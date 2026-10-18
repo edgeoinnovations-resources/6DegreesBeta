@@ -19,6 +19,12 @@ For a pair, the strongest (lowest) degree across all their postings wins. **The 
 degrees are fixed** (Paul's rule). A mutually approved tag adds an *acknowledged*
 connection alongside; it never changes a degree.
 
+**A shared HOME country is not a connection** (Paul, 18 Oct 2026, after Linda). Each member
+states a home country (`profiles.home_country`, from `countries`). A pair that shares only a
+country gets no degree 5/6 when it is either person's home; school and city degrees there
+still count, and the map still shows home-country schools. Changing it fires
+`profiles_home_recompute_trg`.
+
 **A city only counts when it is known.** `schools.city_confidence` is high / medium /
 low / null. Degrees 3 and 4 require BOTH schools to be high or medium; anything
 weaker falls through to 5/6 (same country), which is always true of the pair.

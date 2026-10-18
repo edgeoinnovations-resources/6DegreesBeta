@@ -29,6 +29,12 @@ with no build step so non-developers can edit it.
 | 5 | Same country, same time |
 | 6 | Same country, different time |
 
+**Home country exception (18 Oct 2026).** Each member states a home country under *Your
+details*. A pair that shares only a country earns no degree 5 or 6 when that country is the
+home country of either of them. School and city degrees there are unchanged, and the map and
+globe (which read postings, not degrees) still show every home-country school. Linda's point:
+with so many Americans, "same country" was going to connect everyone to everyone.
+
 For any pair, the **strongest (lowest) relationship found across all their postings wins** —
 share a city and you get 3/4, never 5/6.
 

@@ -115,6 +115,16 @@ export function openPersonCard(ctx, id, extras = [], via = null) {
     card.appendChild(line);
   }
 
+  // Their home country, when they have said. It explains a missing degree:
+  // a country that is home to either of you is never a connection on its own.
+  if (t.HOME_COUNTRY) {
+    card.appendChild(el('p.muted', {
+      style: 'font-size:12.5px;margin:0 0 10px;',
+      title: 'A shared country never counts as a connection when it is home to either of you. Schools and cities there still do.',
+      text: `Home country: ${t.HOME_COUNTRY}`,
+    }));
+  }
+
   if (t.IS_GHOST) {
     card.appendChild(el('p.muted', { style: 'font-size:12.5px;', text: 'This person has left 6 Degrees. Their history stays so everyone else’s connections remain correct.' }));
   }

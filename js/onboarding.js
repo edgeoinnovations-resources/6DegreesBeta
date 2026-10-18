@@ -1339,6 +1339,22 @@ export function onboardingView(user, profile, onDone) {
     type: 'text', maxlength: '60', autocomplete: 'off', value: profile?.preferred_name || '',
   });
 
+  // Home country. Linda, relayed by Paul on 18 Oct 2026: so many of us have
+  // taught back home in the United States that "same country" was going to
+  // connect every American to every other American. So a shared country counts
+  // for nothing on its own when it is home to either person. Schools and cities
+  // there still count, and the map still shows every home-country school.
+  //
+  // The options arrive after the list downloads, so the value we want is kept
+  // aside and applied when they do — a draft or a saved profile may name it first.
+  let wantHome = profile?.home_country || '';
+  const home = el('select', { 'aria-label': 'Home country' }, [el('option', { value: '', text: 'Choose…' })]);
+  countryCatalogue().then((all) => {
+    all.forEach((c) => home.appendChild(el('option', { value: c.name, text: c.name })));
+    home.value = wantHome;
+  }).catch(() => { /* the box stays empty; saving leaves the field alone */ });
+  const homeValue = () => (home.options.length > 1 ? home.value : wantHome);
+
   const who = el('div.card');
   append(who,
     el('h4', { text: 'You' }),
@@ -1349,7 +1365,14 @@ export function onboardingView(user, profile, onDone) {
         el('label', { text: 'Goes by (optional)' }), preferred,
         el('small.muted', { style: 'font-size:11px;', text: 'If people know you by another name — Deanna who goes by Dee.' }),
       ]),
+      el('div.control-group', {}, [el('label', { text: 'Home country' }), home]),
     ]),
+    el('p.muted', {
+      style: 'font-size:12.5px;margin:6px 2px 0;max-width:70ch;',
+      text: 'Why we ask: having worked in the same country counts as a degree 5 or 6 — '
+          + 'except your home country, where so many of us have taught that it would '
+          + 'connect everyone to everyone. Your schools there still count, and still show on your map.',
+    }),
     hadOnlyInitial
       ? el('p.auth-msg', { style: 'margin:6px 2px 0;', text: `We now ask for your full last name — until you add it you show as “${profile.display_name}”.` })
       : null,
@@ -1375,6 +1398,7 @@ export function onboardingView(user, profile, onDone) {
 
   const snapshot = () => ({
     first: first.value, last: lastName.value, preferred: preferred.value,
+    home: homeValue(),
     postings: [...rows.children].map((r) => r._state),
   });
   if (isNew) markStep('opened');
@@ -1431,6 +1455,7 @@ export function onboardingView(user, profile, onDone) {
       if (d) {
         first.value = d.first || ''; lastName.value = d.last || '';
         preferred.value = d.preferred || '';
+        if (d.home !== undefined) { wantHome = d.home || ''; home.value = wantHome; }
         // Postings need their school ids resolved back to country/city to re-populate
         // the cascade, so rebuild from the catalogue.
         const cat = await schoolCatalogue().catch(() => []);
@@ -1533,6 +1558,9 @@ export function onboardingView(user, profile, onDone) {
         p_first_name: f,
         p_last_name: lastName.value.trim(),
         p_preferred_name: preferred.value.trim() || null,
+        // Only named once the list has loaded: an empty box before that would
+        // wipe a home country somebody already set.
+        ...(home.options.length > 1 ? { p_home_country: home.value || null } : {}),
         p_postings: wanted.map((st) => ({
           school_id: st.school_id,
           role: st.role,
