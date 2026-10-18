@@ -570,7 +570,7 @@ export const view = {
       panel.append(
         el('button.close', { text: '×', onclick: () => panel.classList.remove('open') }),
         el('h3', { text: s.SCHOOL_NAME || schoolId }),
-        el('div.sub', { text: `${s.CITY || ''}, ${s.COUNTRY || ''} · ${s.CURRICULUM_TYPE || ''} · ${roster.length} postings` }),
+        el('div.sub', { text: `${[s.CITY, s.COUNTRY].filter(Boolean).join(', ')} · ${roster.length} postings` }),
         el('h4', { text: 'Who has been here', style: 'margin:8px 0 4px;font-size:13px;' }),
         el('ul', {}, roster.map((r) => el('li', {
           html: `<strong>${r.t.FULL_NAME}</strong> — ${roleCategory(r.a.POSITION_TITLE)}` +

@@ -19,7 +19,7 @@
 //   1. At a school   — everyone who has been there, and the chain of people who
 //                      know each other that leads from you to each of them.
 //   2. With a person — the chain between you, plus who you both know.
-//   3. Find people   — plain faceted list (place / curriculum / role / experience).
+//   3. Find people   — plain faceted list (place / role / experience).
 //
 // FUTURE — natural-language search. Deliberately not built, and no longer given a tab.
 // The plan, for whenever it earns its place: the browser NEVER holds an API key. Client
@@ -535,28 +535,29 @@ function renderChain(chain, idx, ctx, metaFor = null) {
 }
 
 // ── 3. Find people — plain faceted list ─────────────────────────────────────
-// Facets are place, curriculum, role category and experience. No subject, no job title:
-// see the header note.
+// Facets are place, role category and experience. No subject, no job title: see the
+// header note. No curriculum either — Paul, 18 Oct 2026: "We're not collecting
+// curriculum data anymore." The schools table never had the column; the filter
+// was a leftover of the demo data and could only ever offer "Any curriculum".
 function findPeople(ctx) {
   const { data, idx, counts } = ctx;
   const pane = el('div');
   const uniq = (arr) => [...new Set(arr.filter(Boolean))].sort();
   const countries = uniq(data.schools.map((s) => s.COUNTRY));
   const cities = uniq(data.schools.map((s) => s.CITY));
-  const curricula = uniq(data.schools.map((s) => s.CURRICULUM_TYPE));
 
   const sel = (label, options) => {
     const s = el('select', {}, [el('option', { value: '', text: `Any ${label}` }), ...options.map((o) => el('option', { value: o, text: o }))]);
     return el('div.control-group', {}, [el('label', { text: label }), s]);
   };
   const fCountry = sel('country', countries), fCity = sel('city', cities),
-    fCurr = sel('curriculum', curricula), fRole = sel('role', ROLE_CATEGORIES);
+    fRole = sel('role', ROLE_CATEGORIES);
   const minYears = el('input', { type: 'number', min: 0, max: 40, value: 0, style: 'width:64px;' });
   const verifiedOnly = el('input', { type: 'checkbox' });
   const ackAvailable = hasAcknowledged(data);
 
   const controls = el('div.controls');
-  append(controls, fCountry, fCity, fCurr, fRole,
+  append(controls, fCountry, fCity, fRole,
     el('div.control-group', {}, [el('label', { text: 'Min years' }), minYears]),
     ackAvailable ? el('div.control-group', {}, [el('label', {}, [verifiedOnly, ' verified (mutual) only'])]) : null,
     el('button.btn', { text: 'Search', onclick: run }));
@@ -566,7 +567,7 @@ function findPeople(ctx) {
   const val = (group) => group.querySelector('select').value;
 
   function run() {
-    const c = val(fCountry), city = val(fCity), curr = val(fCurr), role = val(fRole);
+    const c = val(fCountry), city = val(fCity), role = val(fRole);
     const minY = +minYears.value || 0;
     const vOnly = ackAvailable && verifiedOnly.checked;
 
@@ -582,7 +583,6 @@ function findPeople(ctx) {
       const schoolsT = postings.map((p) => idx.schoolById.get(p.SCHOOL_ID)).filter(Boolean);
       if (c && !schoolsT.some((s) => s.COUNTRY === c)) return false;
       if (city && !schoolsT.some((s) => s.CITY === city)) return false;
-      if (curr && !schoolsT.some((s) => s.CURRICULUM_TYPE === curr)) return false;
       if (role && !postings.some((p) => roleCategory(p.POSITION_TITLE) === role)) return false;
       return true;
     });

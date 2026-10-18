@@ -1,7 +1,7 @@
 // View 7 — Insights dashboard. Aggregate only (no individual call-outs).
 // Headline: average SEPARATION (mean BFS hop count) + network diameter — the literal
 // "six degrees" number for this community. Plus degree distribution, tenure by region,
-// curriculum mix, most-connected schools, top corridors, and cumulative growth (year slider).
+// most-connected schools, top corridors, and cumulative growth (year slider).
 import { el } from '../widgets.js';
 import {
   DEGREES, degreeColor, regionOf, regionColor, REGION_COLORS,
@@ -48,23 +48,22 @@ export const view = {
     grid.appendChild(chartCard('Average tenure by region', 'Mean years per completed posting.',
       barChart(tenureByRegion, { format: (v) => v.toFixed(1) + ' yr' })));
 
-    // ── 3. Curriculum mix by region (stacked) ──
-    grid.appendChild(chartCard('Curriculum mix by region', 'Share of schools by curriculum within each region.',
-      curriculumStacked(data)));
+    // (A "curriculum mix by region" chart lived here until 18 Oct 2026. Curriculum
+    // is not collected, so every school was "Other" and the chart said nothing.)
 
-    // ── 4. Most-connected schools ──
+    // ── 3. Most-connected schools ──
     const topSchools = mostConnectedSchools(idx).slice(0, 8)
       .map((s) => ({ key: trunc(s.name, 26), value: s.members, color: regionColor(s.country) }));
     grid.appendChild(chartCard('Most-connected schools', 'Distinct teachers who passed through.',
       barChart(topSchools, { format: (v) => `${v}` })));
 
-    // ── 5. Biggest migration corridors ──
+    // ── 4. Biggest migration corridors ──
     const corridors = topCorridors(data, idx).slice(0, 8)
       .map((c) => ({ key: `${trunc(c.from, 12)} → ${trunc(c.to, 12)}`, value: c.count, color: PRIMARY }));
     grid.appendChild(chartCard('Biggest migration corridors', 'Top country → country flows (consecutive postings).',
       barChart(corridors, { format: (v) => `${v}` })));
 
-    // ── 6. Cumulative connection growth (year slider) ──
+    // ── 5. Cumulative connection growth (year slider) ──
     grid.appendChild(growthCard(data));
   },
 };
@@ -91,41 +90,6 @@ function barChart(rows, { format = (v) => v } = {}) {
   g.append('text').attr('x', (d) => labelW + x(d.value) + 5).attr('y', rowH / 2).attr('dy', '0.1em')
     .attr('font-size', 11).attr('fill', '#6a7a82').text((d) => format(d.value));
   return svg.node();
-}
-
-// curriculum stacked bars by region
-function curriculumStacked(data) {
-  const regions = {};
-  for (const s of data.schools) {
-    const r = regionOf(s.COUNTRY); const c = s.CURRICULUM_TYPE || 'Other';
-    regions[r] = regions[r] || {};
-    regions[r][c] = (regions[r][c] || 0) + 1;
-  }
-  const curricula = [...new Set(data.schools.map((s) => s.CURRICULUM_TYPE || 'Other'))];
-  const palette = d3.scaleOrdinal().domain(curricula)
-    .range(['#17A2B8', '#FF6B35', '#6f5cc4', '#2ca02c', '#e6a817', '#d6457f', '#0b6b78', '#999']);
-  const regionNames = Object.keys(regions);
-  const W = 320, rowH = 30, H = regionNames.length * rowH + 30;
-  const svg = d3.create('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('max-width', `${W}px`);
-  const labelW = 90, barW = W - labelW - 10;
-  regionNames.forEach((r, i) => {
-    const total = d3.sum(Object.values(regions[r]));
-    const x = d3.scaleLinear().domain([0, total]).range([0, barW]);
-    let acc = 0;
-    const g = svg.append('g').attr('transform', `translate(0,${i * rowH + 6})`);
-    g.append('text').attr('x', labelW - 6).attr('y', rowH / 2).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', '#42525a').text(r);
-    curricula.forEach((c) => {
-      const v = regions[r][c] || 0; if (!v) return;
-      g.append('rect').attr('x', labelW + x(acc)).attr('y', 3).attr('width', x(v)).attr('height', rowH - 12).attr('fill', palette(c))
-        .append('title').text(`${c}: ${v}`);
-      acc += v;
-    });
-  });
-  const wrap = el('div', {}, [svg.node()]);
-  const leg = el('div.legend', { style: 'margin-top:8px;' });
-  curricula.forEach((c) => leg.appendChild(el('span.item', {}, [el('span.swatch', { style: `background:${palette(c)}` }), c])));
-  wrap.appendChild(leg);
-  return wrap;
 }
 
 // cumulative growth with year slider

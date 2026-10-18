@@ -79,7 +79,6 @@ function shapePostings(rows) {
         CITY: s.city || '', REGION: s.region || '', COUNTRY: s.country,
         LATITUDE: s.latitude, LONGITUDE: s.longitude,
         CITY_INFERRED: s.city_source === 'fallback-largest-city',
-        CURRICULUM_TYPE: '', ENROLLMENT_SIZE: null,
       });
     }
   }
