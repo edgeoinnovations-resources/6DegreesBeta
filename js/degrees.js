@@ -277,6 +277,71 @@ export function strengthPath(adj, a, b) {
   return null;
 }
 
+// Every route out of ONE person, in a single pass.
+//
+// "Who do I know at that school" asks for a chain to EVERY person who was there,
+// not to one of them. Running bfsPath once per person would walk the same graph
+// dozens of times; a single search from you reaches all of them and remembers
+// the way back.
+//
+// Options:
+//   allowEdge(e)      which links count as "knows". Default: every link. The
+//                     caller passes something like degree <= 2, because "we were
+//                     both in Spain once" (degree 5) connects almost everybody and
+//                     is no use for an introduction.
+//   allowThrough(id)  who may stand in the MIDDLE of a chain. Somebody who has
+//                     left 6 Degrees can still be reached (their history is real)
+//                     but cannot introduce anyone, so they are never a stepping
+//                     stone.
+//   weighted          false: fewest people in between (BFS).
+//                     true:  strongest links (Dijkstra on summed degree; an
+//                     inner-circle link with no degree costs 1, like degree 1 —
+//                     the two of you said you know each other).
+//
+// Returns { pathTo(id) } with the same chain shape as bfsPath, or null.
+export function pathsFrom(adj, source, { allowEdge = () => true, allowThrough = () => true, weighted = false } = {}) {
+  const prev = new Map([[source, null]]);
+  const prevEdge = new Map();
+  if (!weighted) {
+    const q = [source];
+    while (q.length) {
+      const cur = q.shift();
+      if (cur !== source && !allowThrough(cur)) continue;   // reachable, not a relay
+      for (const e of adj.get(cur) || []) {
+        if (prev.has(e.other) || !allowEdge(e)) continue;
+        prev.set(e.other, cur);
+        prevEdge.set(e.other, e);
+        q.push(e.other);
+      }
+    }
+  } else {
+    const dist = new Map([[source, 0]]);
+    const visited = new Set();
+    while (true) {
+      let cur = null, best = Infinity;
+      for (const [id, d] of dist) if (!visited.has(id) && d < best) { best = d; cur = id; }
+      if (cur === null) break;
+      visited.add(cur);
+      if (cur !== source && !allowThrough(cur)) continue;
+      for (const e of adj.get(cur) || []) {
+        if (visited.has(e.other) || !allowEdge(e)) continue;
+        const nd = best + (e.degree || 1);
+        if (nd < (dist.get(e.other) ?? Infinity)) {
+          dist.set(e.other, nd);
+          prev.set(e.other, cur);
+          prevEdge.set(e.other, e);
+        }
+      }
+    }
+  }
+  return {
+    pathTo(id) {
+      if (!prev.has(id)) return null;
+      return reconstruct(prev, prevEdge, source, id);
+    },
+  };
+}
+
 function reconstruct(prev, prevEdge, a, b) {
   const chain = [];
   let node = b;

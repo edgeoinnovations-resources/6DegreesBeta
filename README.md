@@ -80,7 +80,7 @@ live behind a single **Explore** entry. Nothing was deleted, only de-ranked.
 
 1. **Connections** — concentric rings around one person, ring = relationship degree. See [Connections](#connections-how-the-rings-are-laid-out).
 2. **Who knows whom** — the merged answer tool, in three tabs:
-   - *At a school* — "I'm looking at that school; who do I know there?"
+   - *At a school* — everyone in the community who has been at that school, each with the chain of people who know each other that leads from you to them (the school behind every hop), and a sentence naming who to ask first, with a Message button. "Know each other" defaults to having shared a school; widen it when a chain comes up empty.
    - *With a person* — the chain between you two, plus **who you both know**.
    - *Find people* — plain faceted list (place / curriculum / role / experience).
 3. **Map** — school points, great-circle migration arcs, headcount columns, globe, and "fly the journey". See [Map](#map-flat--globe--3d).

@@ -16,7 +16,8 @@
 // said they "don't have to be searchable". So the old subject/countries "reverse
 // recruiting" query builder is gone, and its job is done by the two modes below:
 //
-//   1. At a school   — "who do I know that's there or been there?"
+//   1. At a school   — everyone who has been there, and the chain of people who
+//                      know each other that leads from you to each of them.
 //   2. With a person — the chain between you, plus who you both know.
 //   3. Find people   — plain faceted list (place / curriculum / role / experience).
 //
@@ -27,19 +28,20 @@
 // max_degree, anchor, …); the function runs that filter against Postgres and returns
 // rows, which render exactly like the faceted table. The model only ever emits a query
 // spec — never data, never a key in the client.
-import { el, append, teacherTypeahead } from '../widgets.js';
+import { el, append, teacherTypeahead, schoolTypeahead } from '../widgets.js';
+import { messageSomeone } from '../messages.js';
 import { openPersonCard } from '../personCard.js';
 import {
   bfsPath, strengthPath, degreeColor, degreeLabel, degreeShort,
   teacherName, roleCategory, rolesOf, ROLE_CATEGORIES, confirmBadge, hasAcknowledged,
-  currentPosting, degreeChip } from '../degrees.js';
+  currentPosting, degreeChip, pathsFrom } from '../degrees.js';
 
 export const view = {
   id: 'search', num: 2, title: 'Who knows whom',
   render(root, ctx) {
     root.appendChild(el('div.view-head', {}, [
       el('h2', { text: 'Who knows whom' }),
-      el('p', { html: 'The two questions people actually ask: <em>“I’m looking at that school — who do I know there?”</em> and <em>“I just met this person — what do we have in common?”</em>' }),
+      el('p', { html: 'The two questions people actually ask: <em>“I’m looking at that school — who do I know there, or who could introduce me?”</em> and <em>“I just met this person — what do we have in common?”</em>' }),
     ]));
 
     // Sub-tabs.
@@ -92,95 +94,292 @@ function bestEdges(adj, from) {
 // connection has no number because it has no place or time behind it.
 const degPill = (d) => `<span class="pill" style="background:${degreeColor(d)};color:#fff;">${d ? `deg ${d}` : 'inner circle'}</span>`;
 
-// ── 1. Who do I know at School X? ───────────────────────────────────────────
+// ── 1. At a school — everyone who was there, and who can get you to them ────
+//
+// Paul, 18 Oct 2026: "a teacher can identify a school and then run an analysis
+// that shows who knows who, that was at that school. It would show the link
+// between people and the schools so the teacher could reach out to someone in
+// that chain to ask questions."
+//
+// The first version listed only the people at the school you were DIRECTLY
+// linked to, and sent you to the other tab for anyone else. But the person you
+// want to ask about a school is usually somebody you have never met — the whole
+// point is finding out who can introduce you. So this now takes everyone who was
+// ever at the school and works out, for each of them, the chain of people who
+// know each other that runs from you to them, with the school (or city, or
+// country) behind every hop, and says in words who to ask first.
+//
+// "Know each other" is the dial. A degree-5 link ("we were both in Spain once")
+// connects almost everybody and introduces nobody, so by default a hop has to be
+// the same school (degree 1 or 2) or a confirmed inner-circle connection. Widen
+// it when a chain comes up empty.
 function whoDoIKnowAt(ctx) {
   const { data, idx, adj } = ctx;
   const pane = el('div');
-  pane.appendChild(el('p.muted', { style: 'margin:4px 2px 12px;', text: 'Pick a school you’re curious about. These are the people you already have a link to who taught, studied or worked there — at any time.' }));
+  pane.appendChild(el('p.muted', {
+    style: 'margin:4px 2px 12px;',
+    text: 'Pick a school you’re curious about. Everyone in the community who has been there is listed, '
+        + 'with the chain of people who know each other that leads from you to them — and who to ask first.',
+  }));
 
-  const schoolsSorted = data.schools.slice().sort((a, b) => a.SCHOOL_NAME.localeCompare(b.SCHOOL_NAME));
-  const schoolSel = el('select', {}, schoolsSorted.map((s) => el('option', { value: s.SCHOOL_ID, text: `${s.SCHOOL_NAME} · ${s.COUNTRY}` })));
-  // Open on a school of YOUR OWN — the one you are at now, or the last you
-  // were at. Dee's screen opened on "AB Paterson College · Australia", which
-  // is simply the first school alphabetically out of 2,135, and answered a
-  // question she had not asked with "0 of your connections".
+  // Open on a school of YOUR OWN — the one you are at now, or the last you were
+  // at — unless the link you followed named one. (Dee's screen once opened on
+  // "AB Paterson College · Australia", the first school alphabetically.)
   const mine = (idx.postingsByTeacher.get(ctx.me) || []).slice()
     .sort((a, b) => String(b.START_DATE || '').localeCompare(String(a.START_DATE || '')));
   const mineCurrent = mine.find((x) => !x.END_DATE) || mine[0];
-  if (mineCurrent) schoolSel.value = mineCurrent.SCHOOL_ID;
-  if (ctx.state.params.school) schoolSel.value = ctx.state.params.school;
+  let sid = mineCurrent ? mineCurrent.SCHOOL_ID : null;
+  if (ctx.state.params.school && idx.schoolById.has(String(ctx.state.params.school))) {
+    sid = String(ctx.state.params.school);
+  }
 
-  // YOU ARE YOU. This was a typeahead prefilled with your own name, which is
-  // both a strange thing to be shown — Paul, 20 Sep 2026, seeing "Paul
-  // Strootman" sitting in a box he could edit — and a leftover of the design
-  // the group rejected on 12 Sep, when Dee said nobody should be able to
-  // "search as Paul and see how many degrees are between you and someone
-  // else". Looking at somebody else's connections is allowed in exactly one
-  // place, the Connections page, and it is loud about it when you do.
-  const fromId = ctx.me;
+  // YOU ARE YOU — see the note that used to sit here: the group rejected
+  // "search as Paul" on 12 Sep 2026, and the only place to look at someone
+  // else's connections is the Connections page, which is loud about it.
   const fromBox = el('div.control-group', {}, [
     el('label', { text: 'You are' }),
     el('span.you-chip', { text: 'You' }),
   ]);
 
-  const maxDeg = el('select', {}, [1, 2, 3, 4, 5, 6].map((d) =>
-    el('option', { value: d, text: `≤ degree ${d}`, selected: d === 3 ? 'selected' : null })));
+  // Only schools somebody has actually been at are offered. A school with no
+  // member behind it can only ever answer "nobody", and the list the browser
+  // holds is exactly those schools.
+  const schoolBox = el('div.control-group', {}, [el('label', { text: 'At school' })]);
+  schoolBox.appendChild(schoolTypeahead(data.schools, (id) => { sid = id; run(); }, {
+    value: sid, placeholder: 'School, city or country…',
+  }));
+
+  // What a hop in the chain has to be before it counts as two people knowing
+  // each other. Plain words rather than "≤ degree 2", for the people Paul says
+  // need reminding what they are looking at.
+  let md = 2;
+  const linkSel = el('select', {}, [
+    el('option', { value: 1, text: 'Same school, same time' }),
+    el('option', { value: 2, text: 'Same school, any time', selected: 'selected' }),
+    el('option', { value: 3, text: 'Same city, same time' }),
+    el('option', { value: 4, text: 'Same city, any time' }),
+    el('option', { value: 5, text: 'Same country, same time' }),
+    el('option', { value: 6, text: 'Same country, any time' }),
+  ]);
+  linkSel.title = 'A confirmed inner-circle connection always counts, whatever is chosen here.';
+  linkSel.addEventListener('change', () => { md = +linkSel.value; run(); });
+
+  let mode = 'hops';
+  const modeSel = el('select', {}, [
+    el('option', { value: 'hops', text: 'Fewest people in between' }),
+    el('option', { value: 'strength', text: 'Strongest links' }),
+  ]);
+  modeSel.addEventListener('change', () => { mode = modeSel.value; run(); });
 
   const controls = el('div.controls');
-  controls.append(fromBox,
-    el('div.control-group', {}, [el('label', { text: 'At school' }), schoolSel]),
-    el('div.control-group', {}, [el('label', { text: 'Max link' }), maxDeg]),
+  controls.append(fromBox, schoolBox,
+    el('div.control-group', {}, [el('label', { text: 'Two people know each other if' }), linkSel]),
+    el('div.control-group', {}, [el('label', { text: 'Route' }), modeSel]),
     el('button.btn', { text: 'Find', onclick: run }));
   pane.appendChild(controls);
 
   const out = el('div'); pane.appendChild(out);
-  schoolSel.addEventListener('change', run);
-  maxDeg.addEventListener('change', run);
+
+  const isGhost = (id) => !!(idx.teacherById.get(id) || {}).IS_GHOST;
+  const firstNameOf = (id) => {
+    const t = idx.teacherById.get(id) || {};
+    return (t.FIRST_NAME || t.FULL_NAME || '').split(' ')[0] || 'them';
+  };
 
   function run() {
-    const sid = schoolSel.value, md = +maxDeg.value;
-    const peopleAtSchool = idx.teachersBySchool.get(sid) || new Set();
-    const best = bestEdges(adj, fromId);
-    const matches = [...peopleAtSchool]
-      .filter((p) => p !== fromId && best.has(p) && best.get(p).degree <= md)
-      .map((p) => ({ id: p, edge: best.get(p) }))
-      .sort((a, b) => a.edge.degree - b.edge.degree);
-
     out.innerHTML = '';
+    if (!sid) {
+      out.appendChild(el('div.card', { text: 'Start typing the name of a school above — or a city or country, if the name escapes you.' }));
+      return;
+    }
     const s = idx.schoolById.get(sid) || {};
-    out.appendChild(el('p.muted', { style: 'margin:8px 2px;', html: `<strong>${matches.length}</strong> of <strong>your</strong> connections have been at <strong>${s.SCHOOL_NAME || sid}</strong> (within degree ${md}) — out of ${peopleAtSchool.size} community members who passed through.` }));
+    const everyone = [...(idx.teachersBySchool.get(sid) || new Set())].filter((p) => p !== ctx.me);
 
-    if (!matches.length) {
-      out.appendChild(el('div.card', { html: 'No links at that school within this degree. Widen <em>Max link</em>, or check the <strong>With a person</strong> tab to find a second-hand route.' }));
+    // One search from you reaches everybody; each person at the school then
+    // reads their own way back.
+    const routes = pathsFrom(adj, ctx.me, {
+      allowEdge: (e) => e.acknowledged || (e.degree != null && e.degree <= md),
+      allowThrough: (id) => !isGhost(id),
+      weighted: mode === 'strength',
+    });
+
+    const rows = everyone.map((id) => {
+      const chain = routes.pathTo(id);
+      const st = stintAt(idx, id, sid);
+      return {
+        id, chain, ...st,
+        between: chain ? chain.length - 2 : null,
+        cost: chain ? chain.slice(1).reduce((n, step) => n + (step.edge.degree || 1), 0) : Infinity,
+      };
+    });
+    // Closest first; among equals, whoever is there NOW, then the strongest
+    // chain, then whoever was there most recently.
+    rows.sort((a, b) => ((a.between ?? 99) - (b.between ?? 99))
+      || (Number(b.now) - Number(a.now))
+      || (a.cost - b.cost)
+      || String(b.latest || '').localeCompare(String(a.latest || '')));
+
+    const reachable = rows.filter((r) => r.chain);
+    const myStints = mine.filter((p) => p.SCHOOL_ID === sid);
+    const n = everyone.length;
+    out.appendChild(el('p.muted', {
+      style: 'margin:8px 2px;',
+      html: `<strong>${n}</strong> ${n === 1 ? 'person' : 'people'} in the community ${n === 1 ? 'has' : 'have'} been at `
+        + `<strong>${s.SCHOOL_NAME || sid}</strong>${myStints.length ? ` — and so have you (${yearsOf(myStints)})` : ''}. `
+        + (n ? `You can reach <strong>${reachable.length}</strong> of them through people who know each other.` : ''),
+    }));
+
+    if (!n) {
+      out.appendChild(el('div.card', { html: `Nobody else in the community has been at <strong>${s.SCHOOL_NAME || 'that school'}</strong> yet. If you know somebody who has, invite them — it is the only way this list grows.` }));
       return;
     }
 
-    const ack = hasAcknowledged(data);
-    const table = el('table.data');
-    const heads = ack ? ['Name', 'Role there', 'Link', 'Shared context', 'Verified', '']
-                      : ['Name', 'Role there', 'Link', 'Shared context', ''];
-    table.appendChild(el('thead', {}, [el('tr', {}, heads.map((h) => el('th', { text: h })))]));
-    const tb = el('tbody');
-    matches.forEach((m) => {
-      const t = idx.teacherById.get(m.id) || {};
-      const theirPosting = (idx.postingsByTeacher.get(m.id) || []).find((p) => p.SCHOOL_ID === sid);
-      const yrs = theirPosting
-        ? `${(theirPosting.START_DATE || '').slice(0, 4)}–${(theirPosting.END_DATE || '').slice(0, 4) || 'present'}`
-        : '';
-      tb.appendChild(el('tr', {}, [
-        el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}` }),
-        el('td', { html: `${theirPosting ? roleCategory(theirPosting.POSITION_TITLE) : '—'}<br><small class="muted">${yrs}</small>` }),
-        el('td', { html: degPill(m.edge.degree) }),
-        el('td', { html: `${m.edge.label || ''}<br><small class="muted">${degreeLabel(m.edge.degree)}</small>` }),
-        ack ? el('td', { html: m.edge.verified === 'mutual' ? '<span class="badge-mutual">mutual ✓</span>' : (m.edge.verified || '') }) : null,
-        el('td', {}, [el('button.btn.ghost', { text: 'open →', onclick: () => openPersonCard(ctx, m.id) })]),
-      ]));
+    // ── You know them directly: a table, with the link that makes it so ──
+    const direct = rows.filter((r) => r.between === 0);
+    if (direct.length) {
+      const card = el('div.card', { style: 'margin-top:10px;' });
+      card.appendChild(el('h4', { text: `You know them directly (${direct.length})` }));
+      const table = el('table.data');
+      table.appendChild(el('thead', {}, [el('tr', {}, ['Name', 'When they were there', 'Role there', 'How you know them', ''].map((h) => el('th', { text: h })))]));
+      const tb = el('tbody');
+      direct.forEach((r) => {
+        const t = idx.teacherById.get(r.id) || {};
+        const e = r.chain[1].edge;
+        tb.appendChild(el('tr', {}, [
+          el('td', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)}${r.now ? ' <span class="pill">there now</span>' : ''}` }),
+          el('td', { text: r.years || '—' }),
+          el('td', { text: r.roles || '—' }),
+          el('td', { html: `${degPill(e.degree)} ${e.label || ''}<br><small class="muted">${degreeLabel(e.degree)}${e.overlap ? ` · ${e.overlap}` : ''}</small>` }),
+          el('td', { style: 'white-space:nowrap;' }, [
+            el('button.btn.ghost', { text: 'open →', onclick: () => openPersonCard(ctx, r.id) }),
+            ' ',
+            messageButton(r.id, t),
+          ]),
+        ]));
+      });
+      table.appendChild(tb);
+      card.appendChild(table);
+      out.appendChild(card);
+    }
+
+    // ── Somebody in between: one chain per person, and who to ask ─────────
+    const bands = [
+      [1, 'One person in between'],
+      [2, 'Two people in between'],
+      [3, 'Three or more people in between'],
+    ];
+    bands.forEach(([k, title]) => {
+      const list = rows.filter((r) => r.chain && (k < 3 ? r.between === k : r.between >= 3));
+      if (!list.length) return;
+      out.appendChild(el('h4', { style: 'margin:18px 2px 6px;', text: `${title} (${list.length})` }));
+      list.forEach((r) => {
+        const t = idx.teacherById.get(r.id) || {};
+        const card = el('div.card', { style: 'margin-top:8px;' });
+        card.appendChild(el('div', { style: 'display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;' }, [
+          el('div', { html: `<strong>${t.FULL_NAME}</strong>${confirmBadge(t)} <small class="muted">· ${r.roles ? `${r.roles} at` : 'at'} ${s.SCHOOL_NAME || ''} ${r.years || ''}</small>${r.now ? ' <span class="pill">there now</span>' : ''}` }),
+          el('button.btn.ghost', { text: 'open →', onclick: () => openPersonCard(ctx, r.id) }),
+        ]));
+        // The last node is the person at the school: say so under their name,
+        // where the chain otherwise lists roles.
+        card.appendChild(renderChain(r.chain, idx, ctx, (id, i) => (
+          i === r.chain.length - 1 ? `at ${s.SCHOOL_NAME || 'this school'} ${r.years || ''}`.trim() : rolesOf(idx, id).join(', ')
+        )));
+        card.appendChild(askLine(r.chain));
+        out.appendChild(card);
+      });
     });
-    table.appendChild(tb);
-    out.appendChild(table);
+
+    // ── Nobody can introduce you, with links this strong ─────────────────
+    const none = rows.filter((r) => !r.chain);
+    if (none.length) {
+      const card = el('div.card', { style: 'margin-top:18px;' });
+      card.appendChild(el('h4', { text: none.length === 1 ? 'No chain to this person yet' : `No chain to these ${none.length} people yet` }));
+      card.appendChild(el('p.muted', {
+        style: 'font-size:12.5px;margin:0 0 8px;',
+        text: md < 6
+          ? 'Nobody who knows you knows them — not through links this strong. Try a wider setting for “Two people know each other if”, or open them anyway: their card shows whatever you do share.'
+          : 'Nobody who knows you knows them, even counting a shared country. You can still open their card and write to them directly.',
+      }));
+      const wrap = el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px;' });
+      none.forEach((r) => {
+        const t = idx.teacherById.get(r.id) || {};
+        wrap.appendChild(el('button.btn.ghost', {
+          html: `${t.FULL_NAME}${r.now ? ' · there now' : r.years ? ` · ${r.years}` : ''}`,
+          title: `${t.FULL_NAME}: their history, and how to reach them`,
+          onclick: () => openPersonCard(ctx, r.id),
+        }));
+      });
+      card.appendChild(wrap);
+      out.appendChild(card);
+    }
   }
+
+  // "Message Linda" — straight into a conversation. Not for somebody who has
+  // left, and never for you.
+  function messageButton(id, t) {
+    if (id === ctx.me || !t || t.IS_GHOST) return null;
+    return el('button.btn.ghost', {
+      text: `Message ${firstNameOf(id)}`,
+      title: `Write to ${t.FULL_NAME} inside 6 Degrees`,
+      onclick: () => messageSomeone(ctx, id, t.FULL_NAME),
+    });
+  }
+
+  // The chain in a sentence, ending in who to write to. Paul's brief was that the
+  // teacher should be able to "reach out to someone in that chain to ask
+  // questions" — this names that someone and says why they are the one.
+  function askLine(chain) {
+    const name = (i) => (chain[i].id === ctx.me ? 'you' : firstNameOf(chain[i].id));
+    const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
+    const parts = [];
+    for (let i = 1; i < chain.length; i++) {
+      parts.push(`${cap(name(i - 1))} and ${name(i)} ${describeLink(chain[i].edge)}`);
+    }
+    const firstId = chain[1].id;
+    const first = idx.teacherById.get(firstId) || {};
+    const lead = chain.length === 3 ? `Ask ${firstNameOf(firstId)}.` : `Start with ${firstNameOf(firstId)}.`;
+    const row = el('div', { style: 'display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;' });
+    row.appendChild(el('p.muted', {
+      style: 'font-size:12.5px;margin:0;max-width:70ch;',
+      html: `<strong>${lead}</strong> ${parts.join('; ')}.`,
+    }));
+    const btn = messageButton(firstId, first);
+    if (btn) row.appendChild(btn);
+    return row;
+  }
+
   run();
   return pane;
+}
+
+// A link, said out loud: "were both at AES Delhi at the same time (2010–2012)".
+function describeLink(e) {
+  if (!e || !e.degree) return 'have confirmed knowing each other';
+  const where = e.label || 'the same place';
+  const at = e.degree <= 2 ? `at ${where}` : `in ${where}`;
+  const sameTime = e.degree % 2 === 1;
+  return sameTime
+    ? `were both ${at} at the same time${e.overlap ? ` (${e.overlap})` : ''}`
+    : `were both ${at}, at different times`;
+}
+
+// Somebody's time at one school: "2010–2014, 2018–present", whether they are
+// still there, their role(s) there, and the latest date, for sorting.
+function stintAt(idx, id, sid) {
+  const ps = (idx.postingsByTeacher.get(id) || []).filter((p) => p.SCHOOL_ID === sid);
+  const roles = [...new Set(ps.map((p) => roleCategory(p.POSITION_TITLE)))].join(', ');
+  const latest = ps.reduce((m, p) => {
+    const k = p.END_DATE ? String(p.END_DATE) : '9999';
+    return k > m ? k : m;
+  }, '');
+  return { years: yearsOf(ps), now: ps.some((p) => !p.END_DATE), roles, latest };
+}
+
+function yearsOf(postings) {
+  return postings.slice()
+    .sort((a, b) => String(a.START_DATE).localeCompare(String(b.START_DATE)))
+    .map((p) => `${String(p.START_DATE || '').slice(0, 4)}–${p.END_DATE ? String(p.END_DATE).slice(0, 4) : 'present'}`)
+    .join(', ');
 }
 
 // ── 2. With a person — the chain, plus who you both know ────────────────────
@@ -306,7 +505,9 @@ function withAPerson(ctx) {
   return pane;
 }
 
-function renderChain(chain, idx, ctx) {
+// metaFor(id, i) overrides the small line under a name; the school tab uses it
+// to say "at <school> 2010–2014" under the person the chain leads to.
+function renderChain(chain, idx, ctx, metaFor = null) {
   const wrap = el('div.path-chain');
   chain.forEach((step, i) => {
     if (i > 0) {
@@ -323,7 +524,7 @@ function renderChain(chain, idx, ctx) {
       // One end of every route is you, and reading your own name back at
       // yourself is the thing Paul asked to be rid of on this page.
       el('div.nm', { text: step.id === ctx.me ? 'You' : (t.FULL_NAME || step.id) }),
-      el('div.meta', { text: rolesOf(idx, step.id).join(', ') }),
+      el('div.meta', { text: metaFor ? metaFor(step.id, i) : rolesOf(idx, step.id).join(', ') }),
     ]);
     // Was: navigate to the ego page with a teacher parameter, which that page
     // stopped reading this morning — so it silently showed you your own graph.

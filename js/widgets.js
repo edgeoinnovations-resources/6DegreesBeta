@@ -82,3 +82,51 @@ export function teacherTypeahead(teachers, idx, onPick, { placeholder = 'Search 
   input.addEventListener('blur', () => setTimeout(close, 120));
   return wrap;
 }
+
+// Search-as-you-type SCHOOL picker. Matches the school's name, city or country,
+// so "Dubai" finds the American School of Dubai and "Kuwait" finds everything
+// there. A <select> did this job before, which is fine at eighty schools and
+// hopeless at the thousands Paul wants.
+export function schoolTypeahead(schools, onPick, { placeholder = 'Search a school…', value = '' } = {}) {
+  const wrap = el('div.typeahead');
+  const input = el('input', { type: 'search', placeholder, autocomplete: 'off', 'aria-label': 'Search a school' });
+  const byId = new Map(schools.map((s) => [String(s.SCHOOL_ID), s]));
+  const place = (s) => [s.CITY, s.COUNTRY].filter(Boolean).join(', ');
+  if (value && byId.has(String(value))) input.value = byId.get(String(value)).SCHOOL_NAME;
+  const results = el('div.results');
+  results.style.display = 'none';
+  wrap.append(input, results);
+
+  const sorted = schools.slice().sort((a, b) => a.SCHOOL_NAME.localeCompare(b.SCHOOL_NAME));
+  let hl = -1, matches = [];
+  const close = () => { results.style.display = 'none'; hl = -1; };
+
+  function render() {
+    const q = input.value.trim().toLowerCase();
+    matches = !q ? sorted.slice(0, 30) : sorted.filter((s) =>
+      s.SCHOOL_NAME.toLowerCase().includes(q)
+      || (s.CITY || '').toLowerCase().includes(q)
+      || (s.COUNTRY || '').toLowerCase().includes(q)
+    ).slice(0, 30);
+    results.innerHTML = '';
+    matches.forEach((s, i) => {
+      const row = el('div', { html: `${s.SCHOOL_NAME} <small>· ${place(s)}</small>` });
+      if (i === hl) row.classList.add('hl');
+      row.addEventListener('mousedown', (e) => { e.preventDefault(); pick(s); });
+      results.appendChild(row);
+    });
+    results.style.display = matches.length ? 'block' : 'none';
+  }
+  function pick(s) { input.value = s.SCHOOL_NAME; close(); onPick(String(s.SCHOOL_ID)); }
+
+  input.addEventListener('focus', () => { input.select(); render(); });
+  input.addEventListener('input', () => { hl = -1; render(); });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') { hl = Math.min(hl + 1, matches.length - 1); render(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { hl = Math.max(hl - 1, 0); render(); e.preventDefault(); }
+    else if (e.key === 'Enter' && (matches[hl] || matches.length === 1)) { pick(matches[hl] || matches[0]); e.preventDefault(); }
+    else if (e.key === 'Escape') close();
+  });
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  return wrap;
+}

@@ -223,8 +223,10 @@ Not bugs. These are decisions and gaps, so raise them with Paul rather than acti
 - **Delhi vs New Delhi**, and other metro splits: two city names for one place turn a
   degree 3 into a degree 5.
 - School search matches words in the name, not acronyms: "AES" finds nothing, "embassy" does.
-- In-app contact between members is **deliberately not built** (June meeting: liability).
-  `contact_requests` exists in the schema but has no UI.
+- In-app **messaging exists** since 19 Sep 2026 (`js/messages.js`, `send_message`, the
+  `send-message` edge function): nobody ever sees an email address, and anyone can quietly
+  decline one person. The June-meeting liability concern was about sharing contact details;
+  `contact_requests` still exists in the schema but has no UI.
 - The "confirmed connection" inner ring was built as the alternative to Paul's 3D ego
   graph idea. His verdict on it is still pending.
 
